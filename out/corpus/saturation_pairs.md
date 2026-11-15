@@ -240,233 +240,233 @@ For choosing the threshold: read the pairs and mark from which similarity on two
 ### Similarity 0.95 to 1.00
 
 - **1.0**
-  - [pallets__click] Command.get_usage(ctx: Context) -> str: Formats the usage line into a string and returns it.
-  - [fastapi__typer] Command.get_usage(ctx: Context) -> str: Formats the usage line into a string and returns it.
+  - [pypa__setuptools] WheelFile.close() -> None
+  - [pypa__wheel] WheelFile.close() -> None
+- **0.958**
+  - [pyparsing__pyparsing] Or: symmetric difference of two of them (^)
+  - [rthalley__dnspython] Set: symmetric difference of two of them (^)
 - **1.0**
-  - [fastapi__typer] getchar(echo: bool) -> str: Fetches a single character from the terminal and returns it.  This will always return a unicode character and under certain rare circumstances this might return more than one character.  The situations which more than one character is returned is when for whatever reason 
-  - [pallets__click] getchar(echo: bool) -> str: Fetches a single character from the terminal and returns it.  This will always return a unicode character and under certain rare circumstances this might return more than one character.  The situations which more than one character is returned is when for whatever reason 
-- **1.0**
-  - [aio-libs__aiobotocore] with_current_context(hook)
-  - [boto__boto3] with_current_context(hook)
+  - [fastapi__typer] Command.get_help_option_names(ctx: Context) -> list[str]: Returns the names for the help option.
+  - [pallets__click] Command.get_help_option_names(ctx: Context) -> list[str]: Returns the names for the help option.
 - **0.99**
   - [fastapi__typer] Command.invoke(ctx: Context) -> Any: Given a context, this invokes the attached callback (if it exists) in the right way.
   - [pallets__click] Command.invoke(ctx: Context) -> t.Any: Given a context, this invokes the attached callback (if it exists) in the right way.
 - **1.0**
+  - [aio-libs__aiobotocore] with_current_context(hook)
+  - [boto__boto3] with_current_context(hook)
+- **0.993**
+  - [pallets__click] Command.get_params(ctx: Context) -> list[Parameter]
+  - [fastapi__typer] Command.get_params(ctx: Context) -> list['Parameter']
+- **1.0**
   - [pypa__wheel] WheelFile.writestr(zinfo_or_arcname: str | ZipInfo, data: SizedBuffer | str, compress_type: int | None) -> None
   - [pypa__setuptools] WheelFile.writestr(zinfo_or_arcname: str | ZipInfo, data: SizedBuffer | str, compress_type: int | None) -> None
 - **1.0**
-  - [pallets__werkzeug] Headers: unite two of them (|)
-  - [kludex__starlette] Headers: unite two of them (|)
-- **0.975**
-  - [textualize__rich] ProgressBar: read its properties: percentage_completed
-  - [prompt-toolkit__python-prompt-toolkit] ProgressBar: read its properties: percentage
+  - [pypa__wheel] WheelFile(file: StrPath, mode: Literal['r', 'w', 'x', 'a'], compression: int): build a WheelFile. A ZipFile derivative class that also reads SHA-256 hashes from .dist-info/RECORD and checks any read files against those.
+  - [pypa__setuptools] WheelFile(file: StrPath, mode: Literal['r', 'w', 'x', 'a'], compression: int): build a WheelFile. A ZipFile derivative class that also reads SHA-256 hashes from .dist-info/RECORD and checks any read files against those.
+- **0.988**
+  - [pytest-dev__pytest-asyncio] pytest_configure(config: Config) -> None
+  - [agronholm__anyio] pytest_configure(config: pytest.Config) -> None
 - **1.0**
-  - [boto__s3transfer] S3Transfer.upload_file(filename, bucket, key, callback, extra_args): Upload a file to an S3 object.
-  - [boto__boto3] S3Transfer.upload_file(filename, bucket, key, callback, extra_args): Upload a file to an S3 object.
-- **1.0**
-  - [fastapi__typer] Command.get_help_option_names(ctx: Context) -> list[str]: Returns the names for the help option.
-  - [pallets__click] Command.get_help_option_names(ctx: Context) -> list[str]: Returns the names for the help option.
-- **1.0**
-  - [pypa__hatch] main() -> None
-  - [encode__httpx] main() -> None
+  - [fastapi__typer] getchar(echo: bool) -> str: Fetches a single character from the terminal and returns it.  This will always return a unicode character and under certain rare circumstances this might return more than one character.  The situations which more than one character is returned is when for whatever reason 
+  - [pallets__click] getchar(echo: bool) -> str: Fetches a single character from the terminal and returns it.  This will always return a unicode character and under certain rare circumstances this might return more than one character.  The situations which more than one character is returned is when for whatever reason 
 
 ### Similarity 0.90 to 0.95
 
-- **0.917**
-  - [modelcontextprotocol__python-sdk] ContextReceiveStream.aclose() -> None
-  - [agronholm__anyio] TextReceiveStream.aclose() -> None
+- **0.927**
+  - [huggingface__huggingface_hub] InferenceClient.image_to_video(image: ContentT, model: str | None, prompt: str | None, negative_prompt: str | None, num_frames: float | None, num_inference_steps: int | None, guidance_scale: float | None, seed: int | None, target_size: ImageToVideoTargetSize | None, kwargs) -> bytes: Generate a vide
+  - [openai__openai-python] AsyncVideos.create(prompt: str, input_reference: video_create_params.InputReference | Omit, model: VideoModelParam | Omit, seconds: VideoSeconds | Omit, size: VideoSize | Omit, extra_headers: Headers | None, extra_query: Query | None, extra_body: Body | None, timeout: float | httpx2.Timeout | None |
+- **0.938**
+  - [pyparsing__pyparsing] And: add two of them (+)
+  - [rthalley__dnspython] Name: add two of them (+)
+- **0.934**
+  - [pallets__jinja] do_filesizeformat(value: str | float | int, binary: bool) -> str: Format the value like a 'human-readable' file size (i.e. 13 kB, 4.1 MB, 102 Bytes, etc).  Per default decimal prefixes are used (Mega, Giga, etc.), if the second parameter is set to `True` the binary prefixes are used (Mebi, Gibi).
+  - [huggingface__huggingface_hub] format_size(size: int | float, human_readable: bool) -> str: Format a size in bytes.
+- **0.934**
+  - [dateutil__dateutil] tzfile.tzname(dt)
+  - [stub42__pytz] USTimeZone.tzname(dt)
+- **0.923**
+  - [rthalley__dnspython] Message: compare two of them (smaller, equal, greater)
+  - [textualize__rich] Text: compare two of them (smaller, equal, greater)
+- **0.915**
+  - [openai__openai-python] AsyncCompletions.messages() -> AsyncMessages: Given a list of messages comprising a conversation, the model will return a response.
+  - [huggingface__huggingface_hub] InferenceClient.chat_completion(messages: list[dict | ChatCompletionInputMessage], model: str | None, stream: bool, frequency_penalty: float | None, logit_bias: list[float] | None, logprobs: bool | None, max_tokens: int | None, n: int | None, presence_penalty: float | None, response_format: ChatComp
+- **0.913**
+  - [pallets__werkzeug] MultiDict.poplist(key: K) -> list[V]: Pop the list for a key from the dict.  If the key is not in the dict an empty list is returned.
+  - [kludex__starlette] MultiDict.poplist(key: Any) -> list[Any]
+- **0.925**
+  - [stub42__pytz] LocalTimezone.dst(dt)
+  - [dateutil__dateutil] tzlocal.dst(dt)
 - **0.906**
   - [kludex__starlette] MultiDict.setdefault(key: Any, default: Any) -> Any
   - [pallets__werkzeug] MultiDict.setdefault(key: K) -> None
-- **0.923**
-  - [requests__toolbelt] get_unicode_from_response(response): Return the requested content back in unicode.
-  - [psf__requests] get_unicode_from_response(r: Response) -> str | bytes | None: Returns the requested content back in unicode.
-- **0.921**
-  - [kludex__uvicorn] Process.kill() -> None
-  - [agronholm__anyio] Process.kill() -> None: Kills the process.
-- **0.92**
-  - [sqlalchemy__mako] LoopContext: read its properties: reverse_index, first, last, even, odd
-  - [pallets__jinja] LoopContext: read its properties: length, depth, index, revindex0, revindex, first, last, previtem, nextitem
-- **0.949**
-  - [pyasn1__pyasn1] Tag: add two of them (+)
-  - [pyparsing__pyparsing] Keyword: add two of them (+)
 - **0.9**
-  - [requests__toolbelt] MultipartEncoder(fields, boundary, encoding): build a MultipartEncoder. The ``MultipartEncoder`` object is a generic interface to the engine that will create a ``multipart/form-data`` body for you.
-  - [pallets__werkzeug] MultipartEncoder(boundary: bytes): build a MultipartEncoder. Used by the test client to create a multipart body. This is not secure and must only be used during testing, never in applications.
-- **0.915**
-  - [openai__openai-python] Speech(): build a Speech. Turn audio into text or text into audio.
+  - [openai__openai-python] AudioWithStreamingResponse.speech() -> SpeechWithStreamingResponse: Turn audio into text or text into audio.
   - [huggingface__huggingface_hub] InferenceClient.text_to_speech(text: str, model: str | None, do_sample: bool | None, early_stopping: Union[bool, 'TextToSpeechEarlyStoppingEnum'] | None, epsilon_cutoff: float | None, eta_cutoff: float | None, max_length: int | None, max_new_tokens: int | None, min_length: int | None, min_new_tokens
-- **0.905**
-  - [fsspec__filesystem_spec] AbstractFileSystem.find(path, maxdepth, withdirs, detail, kwargs): List all files below path.
-  - [huggingface__huggingface_hub] HfFileSystem.find(path: str, maxdepth: int | None, withdirs: bool, detail: bool, refresh: bool, revision: str | None, kwargs) -> list[str] | dict[str, dict[str, Any]]: List all files below path.
-- **0.912**
-  - [modelcontextprotocol__python-sdk] UntitledJsonSchema.field_title_should_be_set(schema: Any) -> bool
-  - [pydantic__pydantic] GenerateJsonSchema.field_title_should_be_set(schema: CoreSchemaOrField) -> bool: Returns true if a field with the given schema should have a title set based on the field name.
 
 ### Similarity 0.85 to 0.90
 
-- **0.855**
-  - [rthalley__dnspython] IDNACodec(): build a IDNACodec. Abstract base class for IDNA encoder/decoders.
-  - [kjd__idna] Codec(): build a Codec. Stateless IDNA 2008 codec.
-- **0.875**
-  - [textualize__rich] ConsoleOptions: compare two of them (smaller, equal, greater)
-  - [rthalley__dnspython] Option: compare two of them (smaller, equal, greater)
-- **0.865**
-  - [textualize__rich] Console.set_alt_screen(enable: bool) -> bool: Enables alternative screen mode.
-  - [prompt-toolkit__python-prompt-toolkit] Output.enter_alternate_screen() -> None: Go to the alternate screen buffer. (For full screen applications).
+- **0.857**
+  - [fastapi__fastapi] APIRoute.handle(scope: Scope, receive: Receive, send: Send) -> None
+  - [kludex__starlette] Route.handle(scope: Scope, receive: Receive, send: Send) -> None
+- **0.854**
+  - [encode__httpcore] AsyncMockBackend.sleep(seconds: float) -> None
+  - [agronholm__anyio] AsyncBackend.sleep(delay: float) -> None: Pause the current task for the specified duration.
 - **0.893**
-  - [pallets__click] Context.get_usage() -> str: Helper method to get formatted usage string for the current context and command.
-  - [fastapi__typer] Command.get_usage(ctx: Context) -> str: Formats the usage line into a string and returns it.
-- **0.861**
+  - [huggingface__huggingface_hub] HfFileSystemStreamFile.seek(loc: int, whence: int)
+  - [fsspec__filesystem_spec] AsyncStreamFile.seek(loc, whence)
+- **0.86**
   - [kludex__starlette] Headers.keys() -> list[str]
   - [encode__httpx] Headers.keys() -> typing.KeysView[str]
-- **0.887**
-  - [dateutil__dateutil] isoparser.parse_tzstr(tzstr, zero_as_utc): Parse a valid ISO time zone string.
-  - [gweis__isodate] parse_tzinfo(tzstring: str) -> Union[tzinfo, None]: Parses ISO 8601 time zone designators to tzinfo objects.
-- **0.869**
-  - [requests__toolbelt] MultipartDecoder(content, content_type, encoding): build a MultipartDecoder. The ``MultipartDecoder`` object parses the multipart payload of a bytestring into a tuple of ``Response``-like ``BodyPart`` objects.
-  - [pallets__werkzeug] MultipartDecoder(boundary: bytes, max_form_memory_size: int | None, max_parts: int | None): build a MultipartDecoder. Decodes a multipart message as bytes into Python events.
-- **0.876**
-  - [pydantic__pydantic] GenerateJsonSchema.json_schema(schema: core_schema.JsonSchema) -> JsonSchemaValue: Generates a JSON schema that matches a schema that defines a JSON object.
-  - [modelcontextprotocol__python-sdk] UntitledJsonSchema(): build a UntitledJsonSchema. A JSON schema generator that leaves out the titles pydantic derives from field names.
+- **0.852**
+  - [openai__openai-python] AsyncStreamedBinaryAPIResponse.stream_to_file(file: str | os.PathLike[str], chunk_size: int | None) -> None: Streams the output to the given file.
+  - [requests__toolbelt] stream_response_to_file(response, path, chunksize): Stream a response body to the specified file.
+- **0.853**
+  - [rthalley__dnspython] Parser(): build a Parser
+  - [jmespath__jmespath.py] Parser(lookahead): build a Parser
 - **0.855**
-  - [kjd__idna] Codec(): build a Codec. Stateless IDNA 2008 codec.
-  - [rthalley__dnspython] IDNACodec(): build a IDNACodec. Abstract base class for IDNA encoder/decoders.
-- **0.877**
-  - [openai__openai-python] AsyncAudioWithRawResponse.speech() -> AsyncSpeechWithRawResponse: Turn audio into text or text into audio.
-  - [huggingface__huggingface_hub] AsyncInferenceClient.automatic_speech_recognition(audio: ContentT, model: str | None, extra_body: dict | None) -> AutomaticSpeechRecognitionOutput: Perform automatic speech recognition (ASR or audio-to-text) on the given audio content.
+  - [pydantic__pydantic] ByteSize.to(unit: str) -> float: Converts a byte size to another unit, including both byte and bit units.
+  - [pallets__jinja] do_filesizeformat(value: str | float | int, binary: bool) -> str: Format the value like a 'human-readable' file size (i.e. 13 kB, 4.1 MB, 102 Bytes, etc).  Per default decimal prefixes are used (Mega, Giga, etc.), if the second parameter is set to `True` the binary prefixes are used (Mebi, Gibi).
+- **0.878**
+  - [psf__requests] RequestsCookieJar.get(name: str, default: str | None, domain: str | None, path: str | None) -> str | None: Dict-like get() that also supports optional domain and path args in order to resolve naming collisions from using one cookie jar over multiple domains.
+  - [encode__httpx] Cookies.get(name: str, default: str | None, domain: str | None, path: str | None) -> str | None: Get a cookie by name. May optionally include domain and path in order to specify exactly which cookie to retrieve.
+- **0.862**
+  - [kludex__starlette] HTTPConnection: read its properties: app, url, base_url, headers, query_params, path_params, cookies, client, session, auth, user, state
+  - [urllib3__urllib3] HTTPConnection: read its properties: host, is_closed, is_connected, has_connected_to_proxy, proxy_is_forwarding, proxy_is_tunneling
+- **0.872**
+  - [psf__requests] options(url: _t.UriType, kwargs: Unpack[_t.RequestKwargs]) -> Response: Sends an OPTIONS request.
+  - [encode__httpx] options(url: URL | str, params: QueryParamTypes | None, headers: HeaderTypes | None, cookies: CookieTypes | None, auth: AuthTypes | None, proxy: ProxyTypes | None, follow_redirects: bool, verify: ssl.SSLContext | str | bool, timeout: TimeoutTypes, trust_env: bool) -> Response: Sends an `OPTIONS` req
 
 ### Similarity 0.80 to 0.85
 
+- **0.816**
+  - [openai__openai-python] AsyncOrganization.audit_logs() -> AsyncAuditLogs: List user actions and configuration changes within this organization.
+  - [huggingface__huggingface_hub] HfApi.get_organization_overview(organization: str, token: bool | str | None) -> Organization: Get an overview of an organization on the Hub.
+- **0.805**
+  - [tox-dev__filelock] SoftReadWriteLock.get_lock(lock_file: str | os.PathLike[str], timeout: float, blocking: bool) -> SoftReadWriteLock: Return the singleton :class:`SoftReadWriteLock` for *lock_file*.
+  - [huggingface__huggingface_hub] WeakFileLock(lock_file: str | Path, timeout: float | None) -> Generator[BaseFileLock, None, None]: A filelock with some custom logic.
+- **0.821**
+  - [openai__openai-python] Agents.create(model: str, compaction: Optional[agent_create_params.Compaction] | Omit, experimental: agent_create_params.Experimental | Omit, instructions: Optional[str] | Omit, metadata: Optional[Dict[str, str]] | Omit, multi_agent: Optional[MultiAgentConfigParam] | Omit, name: Optional[str] | Omit
+  - [huggingface__huggingface_hub] Agent(model: Optional[str], servers: Iterable[ServerConfig], provider: Optional[PROVIDER_OR_POLICY_T], base_url: Optional[str], api_key: Optional[str], prompt: Optional[str]): build a Agent. Implementation of a Simple Agent, which is a simple while loop built right on top of an [`MCPClient`].
+- **0.8**
+  - [prompt-toolkit__python-prompt-toolkit] Buffer.open_in_editor(validate_and_handle: bool) -> asyncio.Task[None]: Open code in editor.
+  - [sqlalchemy__alembic] open_in_editor(filename: str, environ: dict[str, str] | None) -> None: Opens the given file in a text editor. If the environment variable ``EDITOR`` is set, this is taken as preference.
+- **0.816**
+  - [kludex__starlette] Starlette.add_exception_handler(exc_class_or_status_code: int | type[Exception], handler: ExceptionHandler) -> None
+  - [fastapi__fastapi] FastAPI.exception_handler(exc_class_or_status_code: Annotated[int | type[Exception], Doc('\n                The Exception class this would handle, or a status code.\n                ')]) -> Callable[[DecoratedCallable], DecoratedCallable]: Add an exception handler to the app.
+- **0.843**
+  - [sqlalchemy__mako] LoopContext.cycle(values): Cycle through values as the loop progresses.
+  - [pallets__jinja] LoopContext.cycle(args: V) -> V: Return a value from the given args, cycling through based on the current :attr:`index0`.
+- **0.818**
+  - [encode__httpx] ASGITransport.handle_async_request(request: Request) -> Response
+  - [encode__httpcore] AsyncHTTPConnection.handle_async_request(request: Request) -> Response
+- **0.846**
+  - [rthalley__dnspython] PublicRSA(): build a PublicRSA
+  - [sybrenstuvel__python-rsa] PublicKey(): build a PublicKey. Represents a public RSA key.
 - **0.847**
   - [kludex__uvicorn] is_dir(path: Path) -> bool
   - [fsspec__filesystem_spec] DirFileSystem.isdir(path)
-- **0.825**
-  - [pyparsing__pyparsing] WordStart: unite two of them (|)
-  - [pypa__packaging] Marker: unite two of them (|)
-- **0.817**
-  - [python__importlib_metadata] PackagePath.read_binary() -> bytes
-  - [agronholm__anyio] Path.read_bytes() -> bytes
-- **0.828**
-  - [fsspec__filesystem_spec] AsyncStreamFile.close()
-  - [agronholm__anyio] AsyncFile.aclose() -> None
-- **0.814**
-  - [fsspec__filesystem_spec] GithubFileSystem: read its properties: kw, tags, branches, refs
-  - [huggingface__huggingface_hub] HfApi.list_repo_tree(repo_id: str, path_in_repo: str | None, recursive: bool, expand: bool, revision: str | None, repo_type: str | None, token: str | bool | None) -> Iterable[RepoFile | RepoFolder]: List a repo tree's files and folders and get information about them.
-- **0.811**
-  - [pydantic__pydantic] BaseValidateHandlerProtocol.on_error(error: ValidationError) -> None: Callback to be notified of validation errors.
-  - [textualize__rich] PromptBase.on_validate_error(value: str, error: InvalidResponse) -> None: Called to handle validation error.
-- **0.8**
-  - [urllib3__urllib3] wait_for_read(sock: socket.socket, timeout: float | None) -> bool: Waits for reading to be available on a given socket. Returns True if the socket is readable, or False if the timeout expired.
-  - [agronholm__anyio] wait_socket_readable(sock: socket.socket) -> Awaitable[None]: .. deprecated:: 4.7.0    Use :func:`wait_readable` instead.
-- **0.814**
-  - [pallets__jinja] fake_traceback(exc_value: BaseException, tb: TracebackType | None, filename: str, lineno: int) -> TracebackType: Produce a new traceback object that looks like it came from the template source instead of the compiled code. The filename, line number, and location name will point to the template, and 
-  - [textualize__rich] Traceback.from_exception(exc_type: type[Any], exc_value: BaseException, traceback: TracebackType | None, width: int | None, code_width: int | None, extra_lines: int, theme: str | None, word_wrap: bool, show_locals: bool, locals_max_length: int, locals_max_string: int, locals_max_depth: int | None, l
-- **0.838**
-  - [fsspec__filesystem_spec] AbstractFileSystem.rmdir(path): Remove a directory, if empty
-  - [agronholm__anyio] Path.rmdir() -> None
-- **0.801**
-  - [pytest-dev__pytest-asyncio] pytest_report_header(config: Config) -> list[str]: Add asyncio config to pytest header.
-  - [pytest-dev__pytest] TerminalReporter.pytest_report_header(config: Config) -> list[str]
+- **0.823**
+  - [textualize__rich] NullFile.seekable() -> bool
+  - [fsspec__filesystem_spec] AbstractBufferedFile.seekable(): Whether is seekable (only in read mode)
 
 ### Similarity 0.75 to 0.80
 
-- **0.791**
-  - [sybrenstuvel__python-rsa] PrivateKey(n: int, e: int, d: int, p: int, q: int, rs: typing.Optional[typing.List[int]]): build a PrivateKey. Represents a private RSA key.
-  - [rthalley__dnspython] CryptographyPrivateKey(key: Any): build a CryptographyPrivateKey
-- **0.76**
-  - [textualize__rich] Syntax.from_path(path: str, encoding: str, lexer: Lexer | str | None, theme: str | SyntaxTheme, dedent: bool, line_numbers: bool, line_range: tuple[int, int] | None, start_line: int, highlight_lines: set[int] | None, code_width: int | None, tab_size: int, word_wrap: bool, background_color: str | Non
-  - [prompt-toolkit__python-prompt-toolkit] PygmentsLexer.from_filename(filename: str, sync_from_start: FilterOrBool) -> Lexer: Create a `Lexer` from a filename.
-- **0.777**
-  - [pydantic__pydantic] EncoderProtocol.get_json_format() -> str: Get the JSON format for the encoded data.
-  - [textualize__rich] JSON.from_data(data: Any, indent: None | int | str, highlight: bool, skip_keys: bool, ensure_ascii: bool, check_circular: bool, allow_nan: bool, default: Callable[[Any], Any] | None, sort_keys: bool) -> 'JSON': Encodes a JSON object from arbitrary data.
-- **0.751**
-  - [pytest-dev__pytest] Collector(): build a Collector. Base class of all collectors.
-  - [pypa__hatch] EnvironmentCollectorInterface(root, config): build a EnvironmentCollectorInterface. Example usage:
-- **0.787**
-  - [textualize__rich] NullFile.writelines(__lines: Iterable[str]) -> None
-  - [agronholm__anyio] AsyncFile.writelines(lines: Iterable[ReadableBuffer] | Iterable[str]) -> None
-- **0.773**
-  - [oauthlib__oauthlib] Client.prepare_request_body(args, kwargs): Abstract method used to create request bodies.
-  - [psf__requests] PreparedRequest.prepare_body(data: _t.DataType, files: _t.FilesType, json: _t.JsonType) -> None: Prepares the given HTTP body data.
-- **0.755**
-  - [openai__openai-python] AsyncResponses.compact(model: Union[Literal['gpt-6-astra', 'gpt-6.1-sol', 'gpt-6.1-terra', 'gpt-6-sol', 'gpt-6-luna', 'gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-5.5', 'gpt-5.5-2026-04-23', 'gpt-5.4', 'gpt-5.4-mini', 'gpt-5.4-nano', 'gpt-5.4-mini-2026-03-17', 'gpt-5.4-nano-2026-03-17', 'gpt
+- **0.784**
+  - [pypa__packaging] normalize_pre(letter: str) -> str: Normalize the pre-release segment of a version string.
+  - [pypa__distlib] normalize_name(name): Normalize a python package name a la PEP 503
+- **0.795**
+  - [huggingface__huggingface_hub] SandboxPool.close() -> None: Release the pool. Idempotent.
+  - [encode__httpcore] ConnectionPool.close() -> None
+- **0.788**
+  - [pyasn1__pyasn1] NamedTypes(namedTypes, kwargs): build a NamedTypes. Create a collection of named fields for a constructed ASN.1 type.
+  - [python__typing_extensions] NamedTuple(typename, fields, kwargs): Typed version of namedtuple.
+- **0.775**
+  - [tqdm__tqdm] DiscordIO.delete(): Deletes internal `message_id`.
+  - [openai__openai-python] AsyncMessages.delete(message_id: str, thread_id: str, extra_headers: Headers | None, extra_query: Query | None, extra_body: Body | None, timeout: float | httpx2.Timeout | None | NotGiven) -> MessageDeleted: Deletes a message.
+- **0.799**
+  - [openai__openai-python] Conversations.create(items: Optional[Iterable[ResponseInputItemParam]] | Omit, metadata: Optional[Metadata] | Omit, extra_headers: Headers | None, extra_query: Query | None, extra_body: Body | None, timeout: float | httpx2.Timeout | None | NotGiven) -> Conversation: Create a conversation.
   - [huggingface__huggingface_hub] InferenceClient.chat_completion(messages: list[dict | ChatCompletionInputMessage], model: str | None, stream: bool, frequency_penalty: float | None, logit_bias: list[float] | None, logprobs: bool | None, max_tokens: int | None, n: int | None, presence_penalty: float | None, response_format: ChatComp
 - **0.769**
-  - [prompt-toolkit__python-prompt-toolkit] DummyInput: read its properties: closed
-  - [fsspec__filesystem_spec] LocalFileOpener: read its properties: closed
-- **0.769**
-  - [tartley__colorama] GetConsoleScreenBufferInfo(stream_id)
-  - [prompt-toolkit__python-prompt-toolkit] Win32Output.get_win32_screen_buffer_info() -> CONSOLE_SCREEN_BUFFER_INFO: Return Screen buffer info.
+  - [modelcontextprotocol__python-sdk] StreamableHTTPServerTransport.connect() -> AsyncGenerator[tuple[ReadStream[SessionMessage | Exception], WriteStream[SessionMessage]], None]: Context manager that provides read and write streams for a connection.
+  - [rthalley__dnspython] AsyncQuicConnection.make_stream() -> Any
+- **0.796**
+  - [pallets__werkzeug] MultiDict.values() -> cabc.Iterable[V]: Returns an iterator of the first value on every key's value list.
+  - [kludex__starlette] ImmutableMultiDict.values() -> ValuesView[_CovariantValueType]
 - **0.771**
-  - [fsspec__filesystem_spec] AbstractFileSystem.cp(path1, path2, kwargs): Alias of `AbstractFileSystem.copy`.
-  - [huggingface__huggingface_hub] HfFileSystem.cp_file(path1: str, path2: str, revision: str | None, kwargs) -> None: Copy a file within or between repositories, or into a bucket.
+  - [pydantic__pydantic] GenerateJsonSchema.get_default_value(schema: core_schema.WithDefaultSchema) -> Any: Get the default value to be used when generating a JSON Schema for a core schema with a default.
+  - [modelcontextprotocol__python-sdk] UntitledJsonSchema(): build a UntitledJsonSchema. A JSON schema generator that leaves out the titles pydantic derives from field names.
+- **0.754**
+  - [psf__requests] PreparedRequest.prepare(method: str | None, url: _t.UriType | None, headers: Mapping[str, str | bytes] | None, files: _t.FilesType, data: _t.DataType, params: _t.ParamsType, auth: _t.AuthType, cookies: RequestsCookieJar | CookieJar | dict[str, str] | None, hooks: _t.HooksInputType | None, json: _t.J
+  - [requests__toolbelt] BaseUrlSession.prepare_request(request, args, kwargs): Prepare the request after generating the complete URL.
+- **0.798**
+  - [aio-libs__aiobotocore] AioRefreshableCredentials: compare two of them (smaller, equal, greater)
+  - [modelcontextprotocol__python-sdk] OAuthToken: compare two of them (smaller, equal, greater)
 
 ### Similarity 0.70 to 0.75
 
-- **0.724**
-  - [prompt-toolkit__python-prompt-toolkit] FuzzyCompleter.get_completions(document: Document, complete_event: CompleteEvent) -> Iterable[Completion]
-  - [pallets__click] ShellComplete.get_completions(args: list[str], incomplete: str) -> list[CompletionItem[str]]: Determine the context and last complete command or parameter from the complete args. Call that object's ``shell_complete`` method to get the completions for the incomplete value.
-- **0.704**
-  - [pallets__werkzeug] MapAdapter.allowed_methods(path_info: str | None) -> t.Iterable[str]: Returns the valid methods that match for a given path.
-  - [openai__openai-python] Models(): build a Models. List and describe the various models available in the API.
-- **0.72**
-  - [openai__openai-python] AsyncEvals.retrieve(eval_id: str, extra_headers: Headers | None, extra_query: Query | None, extra_body: Body | None, timeout: float | httpx2.Timeout | None | NotGiven) -> EvalRetrieveResponse: Get an evaluation by ID.
-  - [huggingface__huggingface_hub] metadata_eval_result(model_pretty_name: str, task_pretty_name: str, task_id: str, metrics_pretty_name: str, metrics_id: str, metrics_value: Any, dataset_pretty_name: str, dataset_id: str, metrics_config: str | None, metrics_verified: bool, dataset_config: str | None, dataset_split: str | None, datas
-- **0.724**
-  - [agronholm__anyio] as_completed(awaitables: Awaitable[R]) -> AsyncGenerator[MemoryObjectReceiveStream[TaskHandle[R]]]: Run awaitable objects concurrently in a task group, returning an iterator which can be used to get finished task handles in the order they complete.
-  - [tqdm__tqdm] tqdm_asyncio.as_completed(fs, loop, timeout, total, tqdm_kwargs): Wrapper for `asyncio.as_completed`.
-- **0.724**
-  - [modelcontextprotocol__python-sdk] ResponseCacheStore.set(key: CacheKey, entry: CacheEntry) -> None
-  - [rthalley__dnspython] LRUCache.put(key: CacheKey, value: Answer) -> None: Associate key and value in the cache.
-- **0.72**
-  - [openai__openai-python] AsyncVideos.poll(video_id: str, poll_interval_ms: int | Omit) -> Video: Wait for the vector store file to finish processing.
-  - [huggingface__huggingface_hub] jobs_wait(job_ids: Annotated[list[str], Argument(help="Job IDs to wait for (or 'namespace/job_id').")], timeout: Annotated[str | None, Option(help='Max time to wait: int with s (seconds, default), m (minutes), h (hours) or d (days).')], namespace: NamespaceOpt, token: TokenOpt) -> None: Wait for one
-- **0.715**
-  - [openai__openai-python] RealtimeWithRawResponse.client_secrets() -> ClientSecretsWithRawResponse
-  - [oauthlib__oauthlib] RequestValidator.get_client_secret(client_key, request): Retrieves the client secret associated with the client key.
+- **0.73**
+  - [boto__s3transfer] InterruptReader.close()
+  - [pallets__werkzeug] InputStream.close() -> None
+- **0.745**
+  - [kludex__starlette] MultiPartParser.on_header_end() -> None
+  - [kludex__uvicorn] HttpToolsProtocol.on_headers_complete() -> None
+- **0.75**
+  - [prompt-toolkit__python-prompt-toolkit] is_dumb_terminal(term: str | None) -> bool: True if this terminal type is considered "dumb".
+  - [pallets__werkzeug] HTMLStringO.isatty() -> bool
+- **0.749**
+  - [pallets__click] HelpFormatter.section(name: str) -> cabc.Generator[None]: Helpful context manager that writes a paragraph, a heading, and the indents.
+  - [textualize__rich] Table.add_section() -> None: Add a new section (draw a line after current row).
+- **0.725**
+  - [textualize__rich] Console.save_html(path: str | PathLike[str], theme: TerminalTheme | None, clear: bool, code_format: str, inline_styles: bool) -> None: Generate HTML from console contents and write to a file (requires record=True argument in constructor).
+  - [prompt-toolkit__python-prompt-toolkit] HTML(value: str): build a HTML. HTML formatted text. Take something HTML-like, for use as a formatted string.
+- **0.719**
+  - [huggingface__huggingface_hub] HfApi.verify_repo_checksums(repo_id: str, repo_type: str | None, revision: str | None, local_dir: str | Path | None, cache_dir: str | Path | None, token: str | bool | None) -> FolderVerification: Verify local files for a repo against Hub checksums.
+  - [sybrenstuvel__python-rsa] VerifyOperation.perform_operation(indata: bytes, pub_key: rsa.key.AbstractKey, cli_args: Indexable) -> None: Verifies files.
+- **0.733**
+  - [prompt-toolkit__python-prompt-toolkit] HighlightSelectionProcessor(): build a HighlightSelectionProcessor. Processor that highlights the selection in the document.
+  - [textualize__rich] Highlighter(): build a Highlighter. Abstract base class for highlighters.
+- **0.711**
+  - [requests__toolbelt] urlencode(query, args, kwargs): Handle nested form-data queries and serialize them appropriately.
+  - [pallets__jinja] do_urlencode(value: str | t.Mapping[str, t.Any] | t.Iterable[tuple[str, t.Any]]) -> str: Quote data for use in a URL path or query using UTF-8.
+- **0.722**
+  - [urllib3__urllib3] HTTPConnectionPool: test whether it contains a value
+  - [pallets__werkzeug] MultiDict: test whether it contains a value
 - **0.702**
-  - [rthalley__dnspython] TrioQuicStream(connection, stream_id): build a TrioQuicStream
-  - [modelcontextprotocol__python-sdk] StreamableHTTPServerTransport.connect() -> AsyncGenerator[tuple[ReadStream[SessionMessage | Exception], WriteStream[SessionMessage]], None]: Context manager that provides read and write streams for a connection.
-- **0.71**
-  - [tiran__defusedxml] iterparse(args, kwargs)
-  - [boto__s3transfer] StreamReaderProgress.read(args, kwargs)
-- **0.701**
-  - [fsspec__filesystem_spec] DirCache(use_listings_cache, listings_expiry_time, max_paths, kwargs): build a DirCache. Caching of directory listings, in a structure like::
-  - [pytest-dev__pytest] Cache(cachedir: Path, config: Config, _ispytest: bool): build a Cache. Instance of the `cache` fixture.
+  - [pypa__setuptools] alias.finalize_options() -> None
+  - [pypa__wheel] bdist_wheel.finalize_options()
 
 ### Similarity 0.60 to 0.70
 
-- **0.64**
-  - [openai__openai-python] AsyncBrowserToolset(driver: AsyncBrowserDriver, members: Sequence[str] | None, additional_members: Sequence[str] | None, confirm_reads: Sequence[str] | None, confirm: Callable[[BrowserConfirmContext], Awaitable[bool]] | Callable[[BrowserConfirmContext | BrowserReadConfirmContext], Awaitable[bool]] |
-  - [modelcontextprotocol__python-sdk] Apps.tools() -> Sequence[ToolBinding]: The bound tools.
-- **0.602**
-  - [networkx__networkx] TimeRespectingDiGraphMatcher.test_two(pred_dates, succ_dates): Edges from a dual Gx_node in the mapping should be ordered in a time-respecting manner.
-  - [dateutil__dateutil] within_delta(dt1, dt2, delta): Useful for comparing two datetimes that may have a negligible difference to be considered equal.
-- **0.639**
-  - [fastapi__fastapi] get_request_handler(dependant: Dependant, body_field: ModelField | None, status_code: int | None, response_class: type[Response] | DefaultPlaceholder, response_field: ModelField | None, response_model_include: IncEx | None, response_model_exclude: IncEx | None, response_model_by_alias: bool, respons
-  - [modelcontextprotocol__python-sdk] Server.get_request_handler(method: str) -> HandlerEntry[LifespanResultT] | None: Return the registered entry for a request method, or `None`.
-- **0.66**
-  - [rthalley__dnspython] PrivateDSA.generate(key_size: int) -> Self
-  - [sybrenstuvel__python-rsa] newkeys(nbits: int, accurate: bool, poolsize: int, exponent: int, nprimes: int) -> typing.Tuple[PublicKey, PrivateKey]: Generates public and private keys, and returns them as (pub, priv).
+- **0.606**
+  - [kludex__uvicorn] resolve_reload_patterns(patterns_list: list[str], directories_list: list[str]) -> tuple[list[str], list[Path]]
+  - [pypa__setuptools] glob_relative(patterns: Iterable[str], root_dir: StrPath | None) -> list[str]: Expand the list of glob patterns, but preserving relative paths.
+- **0.684**
+  - [pallets__jinja] htmlsafe_json_dumps(obj: t.Any, dumps: t.Callable[..., str] | None, kwargs: t.Any) -> markupsafe.Markup: Serialize an object to a string of JSON with :func:`json.dumps`, then replace HTML-unsafe characters with Unicode escapes and mark the result safe with :class:`~markupsafe.Markup`.
+  - [textualize__rich] JSON(json: str, indent: None | int | str, highlight: bool, skip_keys: bool, ensure_ascii: bool, check_circular: bool, allow_nan: bool, default: Callable[[Any], Any] | None, sort_keys: bool): build a JSON. A renderable which pretty prints JSON.
 - **0.696**
-  - [kludex__uvicorn] WebSocketProtocol.connection_made(transport: asyncio.Transport) -> None
-  - [kludex__starlette] WebSocketEndpoint.on_connect(websocket: WebSocket) -> None: Override to handle an incoming websocket connection
-- **0.687**
-  - [jpadilla__pyjwt] HMACAlgorithm.prepare_key(key: str | bytes) -> bytes
-  - [pallets__itsdangerous] HMACAlgorithm.get_signature(key: bytes, value: bytes) -> bytes
-- **0.636**
-  - [rthalley__dnspython] ImmutableNode.is_immutable() -> bool
+  - [huggingface__huggingface_hub] app_callback(version: Annotated[bool | None, Option('-v', '--version', callback=_version_callback, is_eager=True, hidden=True)], skills: Annotated[bool, Option('--skills', callback=_skills_callback, is_eager=True, help='Print the `hf-cli` SKILL.md to stdout (alias for `hf skills preview`).')], insta
+  - [fastapi__typer] callback(ctx: typer.Context, path_or_module: str, app: str, func: str, version: bool) -> None: Run Typer scripts with completion, without having to create a package.
+- **0.651**
+  - [networkx__networkx] is_planar(G): Returns True if and only if `G` is planar.
+  - [sybrenstuvel__python-rsa] are_relatively_prime(a: int, b: int) -> bool: Returns True if a and b are relatively prime, and False if they are not.
+- **0.65**
+  - [rthalley__dnspython] NSEC3(rdclass, rdtype, algorithm, flags, iterations, salt, next, windows): build a NSEC3. NSEC3 record
+  - [pallets__itsdangerous] Signer.get_signature(value: str | bytes) -> bytes: Returns the signature for the given value.
+- **0.655**
+  - [networkx__networkx] estrada_index(G): Returns the Estrada index of a the graph G.
+  - [more-itertools__more-itertools] subfactorial(n): Number of permutations of *n* elements with no fixed points.
+- **0.607**
+  - [prompt-toolkit__python-prompt-toolkit] UIControl.create_content(width: int, height: int) -> UIContent: Generate the content for this user control.
+  - [openai__openai-python] Content(): build a Content
+- **0.673**
+  - [modelcontextprotocol__python-sdk] Prompt.render(arguments: dict[str, Any] | None, context: Context[LifespanContextT, RequestT]) -> list[Message] | InputRequiredResult: Render the prompt with arguments.
+  - [sqlalchemy__mako] Template.render_context(context, args, kwargs): Render this :class:`.Template` with the given context.
+- **0.632**
+  - [rthalley__dnspython] Node.is_immutable() -> bool
   - [networkx__networkx] is_frozen(G): Returns True if graph is frozen.
-- **0.669**
-  - [huggingface__huggingface_hub] read_tree_cache(tree_cache_folder: str, commit_hash: str) -> dict[str, TreeCacheEntry] | None: Return the cached tree listing for a commit hash, or `None` if not cached, invalid, or unreadable.
-  - [fsspec__filesystem_spec] CachingFileSystem.load_cache(): Read set of stored blocks from file
-- **0.62**
-  - [jmespath__jmespath.py] IncompleteExpressionError(): build a IncompleteExpressionError
-  - [python-poetry__tomlkit] Parser.parse_error(exception: type[ParseError], args: Any, kwargs: Any) -> ParseError: Creates a generic "parse error" at the current position.
-- **0.633**
-  - [networkx__networkx] topological_sort(G): Returns a generator of nodes in topologically sorted order.
-  - [more-itertools__more-itertools] derangements(iterable, r): Yield successive derangements of the elements in *iterable*.
+- **0.685**
+  - [executablebooks__markdown-it-py] Ruler.getRules(chainName: str) -> list[RuleFuncTv]: Return array of active functions (rules) for given chain name. It analyzes rules configuration, compiles caches if not exists and returns result.
+  - [pallets__jinja] compile_rules(environment: 'Environment') -> list[tuple[str, str]]: Compiles all the rules from the environment into a list of rules.
 
 ## high
 
@@ -476,158 +476,158 @@ For choosing the threshold: read the pairs and mark from which similarity on two
 ### Similarity 0.90 to 0.95
 
 - **0.929**
-  - [encode__httpx] Example that uses delete, head, options, put: r = httpx.put('https://httpbin.org/put', data={'key': 'value'}) r = httpx.delete('https://httpbin.org/delete') r = httpx.head('https://httpbin.org/get') r = httpx.options('https://httpbin.org/get')
   - [psf__requests] Example that uses delete, head, options, put: r = requests.put('https://httpbin.org/put', data={'key': 'value'}) r = requests.delete('https://httpbin.org/delete') r = requests.head('https://httpbin.org/get') r = requests.options('https://httpbin.org/get')
+  - [encode__httpx] Example that uses delete, head, options, put: r = httpx.put('https://httpbin.org/put', data={'key': 'value'}) r = httpx.delete('https://httpbin.org/delete') r = httpx.head('https://httpbin.org/get') r = httpx.options('https://httpbin.org/get')
 - **0.929**
-  - [psf__requests] Example that uses delete, head, options, put: r = requests.put('https://httpbin.org/put', data={'key': 'value'}) r = requests.delete('https://httpbin.org/delete') r = requests.head('https://httpbin.org/get') r = requests.options('https://httpbin.org/get')
   - [encode__httpx] Example that uses delete, head, options, put: r = httpx.put('https://httpbin.org/put', data={'key': 'value'}) r = httpx.delete('https://httpbin.org/delete') r = httpx.head('https://httpbin.org/get') r = httpx.options('https://httpbin.org/get')
+  - [psf__requests] Example that uses delete, head, options, put: r = requests.put('https://httpbin.org/put', data={'key': 'value'}) r = requests.delete('https://httpbin.org/delete') r = requests.head('https://httpbin.org/get') r = requests.options('https://httpbin.org/get')
+- **0.901**
+  - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
+  - [encode__httpx] Example that uses Response.raise_for_status, get: not_found = httpx.get('https://httpbin.org/status/404') not_found.status_code not_found.raise_for_status()
+- **0.901**
+  - [encode__httpx] Example that uses Response.raise_for_status, get: not_found = httpx.get('https://httpbin.org/status/404') not_found.status_code not_found.raise_for_status()
+  - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
 
 ### Similarity 0.85 to 0.90
 
-- **0.866**
-  - [psf__requests] Example that uses Response.text, Session.post: url = 'https://httpbin.org/post' multiple_files = [ r = requests.post(url, files=multiple_files) r.text
-  - [encode__httpx] Example that uses Response.text, post: files = {'upload-file': (None, 'text content', 'text/plain')} r = httpx.post("https://httpbin.org/post", files=files) print(r.text)
-- **0.86**
+- **0.859**
   - [encode__httpx] Example that uses Response.raise_for_status, Response.request, Response.url, get: response = httpx.get("https://www.example.com/") try:     response.raise_for_status() except httpx.HTTPStatusError as exc:     print(f"Error response {exc.response.status_code} while requesting {exc.request.url!r}.")
   - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
-- **0.9**
-  - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
-  - [encode__httpx] Example that uses Response.raise_for_status, get: not_found = httpx.get('https://httpbin.org/status/404') not_found.status_code not_found.raise_for_status()
-- **0.9**
-  - [encode__httpx] Example that uses Response.raise_for_status, get: not_found = httpx.get('https://httpbin.org/status/404') not_found.status_code not_found.raise_for_status()
-  - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
-- **0.866**
+- **0.867**
   - [encode__httpx] Example that uses Response.text, post: files = {'upload-file': (None, 'text content', 'text/plain')} r = httpx.post("https://httpbin.org/post", files=files) print(r.text)
   - [psf__requests] Example that uses Response.text, Session.post: url = 'https://httpbin.org/post' multiple_files = [ r = requests.post(url, files=multiple_files) r.text
+- **0.867**
+  - [psf__requests] Example that uses Response.text, Session.post: url = 'https://httpbin.org/post' multiple_files = [ r = requests.post(url, files=multiple_files) r.text
+  - [encode__httpx] Example that uses Response.text, post: files = {'upload-file': (None, 'text content', 'text/plain')} r = httpx.post("https://httpbin.org/post", files=files) print(r.text)
 
 ### Similarity 0.80 to 0.85
 
-- **0.811**
-  - [urllib3__urllib3] Example that uses BaseHTTPResponse.release_conn, BaseHTTPResponse.stream, request: import urllib3  resp = urllib3.request(     "GET",     "https://httpbin.org/bytes/1024",     preload_content=False )  for chunk in resp.stream(32):     print(chunk)     # b"\x9e\xa97'\x8e\x1eT ....  resp.release_conn(
-  - [encode__httpcore] Example that uses Response.iter_stream, stream: import httpcore  with httpcore.stream('GET', 'https://example.com') as response:     for chunk in response.iter_stream():         print(f"Downloaded: {chunk}")
-- **0.812**
-  - [pallets__werkzeug] Example that uses Client(), Response(), Client.get, Request.application, Response.text, Response.status_code: from werkzeug import Request, Response, Client  @Request.application def app(request: Request) -> Response:     return Response("Hello, World!")  c = Client(app) r = c.get("/") assert r.stat
-  - [encode__httpx] Example that uses Client(), WSGITransport(), Client.get, Response.text: from flask import Flask import httpx   app = Flask(__name__)  @app.route("/") def hello():     return "Hello World!"  transport = httpx.WSGITransport(app=app) with httpx.Client(transport=transport, base_url="http://testserver") 
-- **0.831**
-  - [psf__requests] Example that uses Response.json, Response.text, get: import requests r = requests.get('https://httpbin.org/basic-auth/user/pass', auth=('user', 'pass')) r.status_code r.headers['content-type'] r.encoding r.text r.json()
-  - [encode__httpx] Example that uses Response.text, get: import httpx r = httpx.get('https://www.example.org/') r r.status_code r.headers['content-type'] r.text
-- **0.811**
-  - [encode__httpcore] Example that uses Response.iter_stream, stream: import httpcore  with httpcore.stream('GET', 'https://example.com') as response:     for chunk in response.iter_stream():         print(f"Downloaded: {chunk}")
-  - [urllib3__urllib3] Example that uses BaseHTTPResponse.release_conn, BaseHTTPResponse.stream, request: import urllib3  resp = urllib3.request(     "GET",     "https://httpbin.org/bytes/1024",     preload_content=False )  for chunk in resp.stream(32):     print(chunk)     # b"\x9e\xa97'\x8e\x1eT ....  resp.release_conn(
-- **0.822**
+- **0.823**
   - [urllib3__urllib3] Example that uses BaseHTTPResponse.json, request: import urllib3 resp = urllib3.request("GET", "https://httpbin.org/anything")  print(resp.status)  # 200 print(resp.headers) # HTTPHeaderDict(...) print(resp.json())  # {"headers": {"Accept": "*/*", ...}, ...}
   - [psf__requests] Example that uses Response.json, Response.text, get: import requests r = requests.get('https://httpbin.org/basic-auth/user/pass', auth=('user', 'pass')) r.status_code r.headers['content-type'] r.encoding r.text r.json()
-- **0.836**
-  - [encode__httpcore] Example that uses Response.content, request: import httpcore  response = httpcore.request("GET", "https://www.example.com/")  print(response) # <Response [200]> print(response.status) # 200 print(response.headers) # [(b'Accept-Ranges', b'bytes'), (b'Age', b'557328'), (b'Cache-Control', b'max-age=604
-  - [psf__requests] Example that uses Response.content, get: import requests r = requests.get('https://www.python.org') r.status_code b'Python is a programming language' in r.content
+- **0.809**
+  - [psf__requests] Example that uses Response.json, get: import requests r = requests.get('https://api.github.com/events') r.json()   # This *call* raises an exception if JSON decoding fails
+  - [encode__httpx] Example that uses Response.json, get: r = httpx.get('https://api.github.com/events') r.json()
+- **0.82**
+  - [dateutil__dateutil] Example that uses tzname, tzname, tzname, tzname, tzname, tzoffset(): from datetime import * from dateutil.tz import * datetime.now(tzoffset("BRST", -10800)) datetime.now(tzoffset("BRST", -10800)).tzname() datetime.now(tzoffset("BRST", -10800)).astimezone(UTC)
+  - [stub42__pytz] Example that uses FixedOffset(), FixedOffset.dst, FixedOffset.utcoffset: one = FixedOffset(-330) one str(one.utcoffset(datetime.datetime.now())) str(one.dst(datetime.datetime.now())) two = FixedOffset(1380) two str(two.utcoffset(datetime.datetime.now())) str(two.dst(datetime.datetime.now()))
+- **0.831**
+  - [encode__httpx] Example that uses Response.text, get: import httpx r = httpx.get('https://www.example.org/') r r.status_code r.headers['content-type'] r.text
+  - [psf__requests] Example that uses Response.json, Response.text, get: import requests r = requests.get('https://httpbin.org/basic-auth/user/pass', auth=('user', 'pass')) r.status_code r.headers['content-type'] r.encoding r.text r.json()
 - **0.815**
   - [encode__httpx] Example that uses Cookies(), Cookies.set, Response.json, get: cookies = httpx.Cookies() cookies.set('cookie_on_domain', 'hello, there!', domain='httpbin.org') cookies.set('cookie_off_domain', 'nope.', domain='example.org') r = httpx.get('http://httpbin.org/cookies', cookies=cookies) r.json()
   - [psf__requests] Example that uses RequestsCookieJar(), Response.text, RequestsCookieJar.set, get: jar = requests.cookies.RequestsCookieJar() jar.set('tasty_cookie', 'yum', domain='httpbin.org', path='/cookies') jar.set('gross_cookie', 'blech', domain='httpbin.org', path='/elsewhere') url = 'https://httpbin.org/cook
-- **0.812**
+- **0.811**
+  - [pallets__werkzeug] Example that uses Client(), Response(), Client.get, Request.application, Response.text, Response.status_code: from werkzeug import Request, Response, Client  @Request.application def app(request: Request) -> Response:     return Response("Hello, World!")  c = Client(app) r = c.get("/") assert r.stat
+  - [encode__httpx] Example that uses Client(), WSGITransport(), Client.get, Response.text: from flask import Flask import httpx   app = Flask(__name__)  @app.route("/") def hello():     return "Hello World!"  transport = httpx.WSGITransport(app=app) with httpx.Client(transport=transport, base_url="http://testserver") 
+- **0.811**
   - [encode__httpx] Example that uses Client(), WSGITransport(), Client.get, Response.text: from flask import Flask import httpx   app = Flask(__name__)  @app.route("/") def hello():     return "Hello World!"  transport = httpx.WSGITransport(app=app) with httpx.Client(transport=transport, base_url="http://testserver") 
   - [pallets__werkzeug] Example that uses Client(), Response(), Client.get, Request.application, Response.text, Response.status_code: from werkzeug import Request, Response, Client  @Request.application def app(request: Request) -> Response:     return Response("Hello, World!")  c = Client(app) r = c.get("/") assert r.stat
-- **0.809**
-  - [encode__httpx] Example that uses Response.json, get: r = httpx.get('https://api.github.com/events') r.json()
-  - [psf__requests] Example that uses Response.json, get: import requests r = requests.get('https://api.github.com/events') r.json()   # This *call* raises an exception if JSON decoding fails
-- **0.823**
-  - [psf__requests] Example that uses Response.text, post: payload = {'key1': 'value1', 'key2': 'value2'} r = requests.post('https://httpbin.org/post', data=payload) print(r.text)
-  - [encode__httpx] Example that uses Response.text, post: files = {'upload-file': (None, 'text content', 'text/plain')} r = httpx.post("https://httpbin.org/post", files=files) print(r.text)
+- **0.82**
+  - [stub42__pytz] Example that uses FixedOffset(), FixedOffset.dst, FixedOffset.utcoffset: one = FixedOffset(-330) one str(one.utcoffset(datetime.datetime.now())) str(one.dst(datetime.datetime.now())) two = FixedOffset(1380) two str(two.utcoffset(datetime.datetime.now())) str(two.dst(datetime.datetime.now()))
+  - [dateutil__dateutil] Example that uses tzname, tzname, tzname, tzname, tzname, tzoffset(): from datetime import * from dateutil.tz import * datetime.now(tzoffset("BRST", -10800)) datetime.now(tzoffset("BRST", -10800)).tzname() datetime.now(tzoffset("BRST", -10800)).astimezone(UTC)
+- **0.815**
+  - [psf__requests] Example that uses RequestsCookieJar(), Response.text, RequestsCookieJar.set, get: jar = requests.cookies.RequestsCookieJar() jar.set('tasty_cookie', 'yum', domain='httpbin.org', path='/cookies') jar.set('gross_cookie', 'blech', domain='httpbin.org', path='/elsewhere') url = 'https://httpbin.org/cook
+  - [encode__httpx] Example that uses Cookies(), Cookies.set, Response.json, get: cookies = httpx.Cookies() cookies.set('cookie_on_domain', 'hello, there!', domain='httpbin.org') cookies.set('cookie_off_domain', 'nope.', domain='example.org') r = httpx.get('http://httpbin.org/cookies', cookies=cookies) r.json()
+- **0.812**
+  - [encode__httpcore] Example that uses Response.iter_stream, stream: import httpcore  with httpcore.stream('GET', 'https://example.com') as response:     for chunk in response.iter_stream():         print(f"Downloaded: {chunk}")
+  - [urllib3__urllib3] Example that uses BaseHTTPResponse.release_conn, BaseHTTPResponse.stream, request: import urllib3  resp = urllib3.request(     "GET",     "https://httpbin.org/bytes/1024",     preload_content=False )  for chunk in resp.stream(32):     print(chunk)     # b"\x9e\xa97'\x8e\x1eT ....  resp.release_conn(
 
 ### Similarity 0.75 to 0.80
 
-- **0.789**
-  - [pypa__packaging] Example that uses Version <, Version <=, Version ==, Version >, Version >=, Version(): v1 = Version("1.0a5") v2 = Version("1.0") v1 v2 v1 < v2 v1 == v2 v1 > v2 v1 >= v2 v1 <= v2
-  - [pypa__distlib] Example that uses LegacyVersion ==, LegacyVersion(), NormalizedVersion ==, NormalizedVersion(), SemanticVersion ==, SemanticVersion(): from distlib.version import SemanticVersion, LegacyVersion nv = NormalizedVersion('1.0.0') lv = LegacyVersion('1.0.0') sv = SemanticVersion('1.0.0') lv == sv nv == s
-- **0.769**
-  - [python-hyper__h11] Example that uses Connection(), Connection.send: import ssl, socket import h11  ctx = ssl.create_default_context() sock = ctx.wrap_socket(socket.create_connection(("httpbin.org", 443)),                        server_hostname="httpbin.org")  conn = h11.Connection(our_role=h11.CLIENT) request = h11.Re
-  - [encode__httpcore] Example that uses SyncBackend(), NetworkStream.read, NetworkStream.start_tls, NetworkStream.write, SyncBackend.connect_tcp, default_ssl_context: import httpcore  # Create an SSL context using 'certifi' for the certificates. ssl_context = httpcore.default_ssl_context()  # A basic HTTP/1.1 request as 
-- **0.767**
-  - [oauthlib__oauthlib] Example that uses MobileApplicationClient(), MobileApplicationClient.prepare_request_uri: from oauthlib.oauth2 import MobileApplicationClient client = MobileApplicationClient('your_id') client.prepare_request_uri('https://example.com') client.prepare_request_uri('https://example.com', redirect_uri='
-  - [requests__requests-oauthlib] Example that uses OAuth2Session(), OAuth2Session.authorization_url, OAuth2Session.token_from_fragment: import requests from requests_oauthlib import OAuth2Session from oauthlib.oauth2 import MobileApplicationClient client_id = "<your client ID here>" scope = ["activity", "heartrate", "location", "nu
-- **0.752**
-  - [encode__httpx] Example that uses ASGITransport(), AsyncClient(), Client.get, Response.text: transport = httpx.ASGITransport(app=app)  async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:     r = await client.get("/")     assert r.status_code == 200     assert r.text == "Hello 
-  - [pallets__werkzeug] Example that uses Client(), Response(), Client.get, Request.application, Response.text, Response.status_code: from werkzeug import Request, Response, Client  @Request.application def app(request: Request) -> Response:     return Response("Hello, World!")  c = Client(app) r = c.get("/") assert r.stat
-- **0.758**
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), RepoCard.content: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient("meta-llama/Meta-Llama-3-70B-Instruct") messages = [ response_format = { response = await client.chat_completion( response.choices[0].message.content
-  - [openai__openai-python] Example that uses AsyncOpenAI(), AsyncOpenAI.chat, OpenAI.chat, bedrock: from openai import AsyncOpenAI  client = AsyncOpenAI(provider=bedrock(endpoint="runtime", region="us-west-2", api_key=None)) completion = await client.chat.completions.create(     model="us.openai.gpt-5.6-sol",     messages=[{"
-- **0.768**
-  - [psf__requests] Example that uses Request(), Session(), Session.prepare_request, Session.send: from requests import Request, Session  s = Session() req = Request('GET',  url, data=data, headers=headers)  prepped = s.prepare_request(req)  # do something with prepped.body prepped.body = 'Seriously, send exactly these
-  - [requests__toolbelt] Example that uses HostHeaderSSLAdapter.send, BaseUrlSession.prepare_request, BaseUrlSession.request: from requests import Request from requests_toolbelt import sessions s = sessions.BaseUrlSession( request = Request(method='GET', url='sub-resource/') prepared_request = s.prepare_request(request) r =
-- **0.756**
-  - [urllib3__urllib3] Example that uses HTTPResponse.release_conn, HTTPConnection.getresponse: # Set by the HTTPConnectionPool before returning to the caller. resp = conn.getresponse() resp._pool = pool  # This will call resp._pool._put_conn(resp.connection) # Connection can get auto-released by exhausting. resp.release_
-  - [encode__httpcore] Example that uses ConnectionPool(), ConnectionPool.close: http = httpcore.ConnectionPool() try:     ... finally:     http.close()
+- **0.791**
+  - [dateutil__dateutil] Example that uses tzname, tzname, tzname, tzname, tzname, tzutc(): from datetime import * from dateutil.tz import * datetime.now() datetime.now(tzutc()) datetime.now(tzutc()).tzname()
+  - [stub42__pytz] Example that uses FixedOffset.tzname, LocalTimezone.tzname, USTimeZone.tzname, UTC.tzname, timezone, DstTzInfo.tzname, StaticTzInfo.tzname: from pytz import timezone tz = timezone('America/St_Johns') normal = datetime(2009, 9, 1) tz.tzname(normal) tz.tzname(normal, is_dst=False) tz.tzname(normal, is
+- **0.762**
+  - [oauthlib__oauthlib] Example that uses LegacyApplicationClient(), LegacyApplicationClient.prepare_request_body: from oauthlib.oauth2 import LegacyApplicationClient client = LegacyApplicationClient('your_id') client.prepare_request_body(username='foo', password='bar', scope=['hello', 'world'])
+  - [requests__requests-oauthlib] Example that uses OAuth2Session(), OAuth2Session.fetch_token: from oauthlib.oauth2 import BackendApplicationClient from requests_oauthlib import OAuth2Session from requests.auth import HTTPBasicAuth auth = HTTPBasicAuth(client_id, client_secret) client = BackendApplicationClient(client_id=client_id)
 - **0.757**
   - [pallets__werkzeug] Example that uses Response.status, Response.status_code: response.status response.status = '404 Not Found' response.status_code response.status_code = 400 response.status
   - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
-- **0.791**
-  - [stub42__pytz] Example that uses FixedOffset.tzname, LocalTimezone.tzname, USTimeZone.tzname, UTC.tzname, timezone, DstTzInfo.tzname, StaticTzInfo.tzname: from pytz import timezone tz = timezone('America/St_Johns') normal = datetime(2009, 9, 1) tz.tzname(normal) tz.tzname(normal, is_dst=False) tz.tzname(normal, is
-  - [dateutil__dateutil] Example that uses tzname, tzname, tzname, tzname, tzname, tzutc(): from datetime import * from dateutil.tz import * datetime.now() datetime.now(tzutc()) datetime.now(tzutc()).tzname()
-- **0.763**
-  - [psf__requests] Example that uses Request(), Session(), Request.prepare, Session.send: from requests import Request, Session  s = Session()  req = Request('POST', url, data=data, headers=headers) prepped = req.prepare()  # do something with prepped.body prepped.body = 'No, I want exactly this as the body.'  # do so
-  - [requests__toolbelt] Example that uses HostHeaderSSLAdapter.send, BaseUrlSession.prepare_request, BaseUrlSession.request: from requests import Request from requests_toolbelt import sessions s = sessions.BaseUrlSession( request = Request(method='GET', url='sub-resource/') prepared_request = s.prepare_request(request) r =
+- **0.785**
+  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.chat_completion: from huggingface_hub import AsyncInferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = AsyncInferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") await client.chat_completio
+  - [openai__openai-python] Example that uses AsyncOpenAI(), AsyncOpenAI.chat, OpenAI.chat, bedrock: from openai import AsyncOpenAI  client = AsyncOpenAI(provider=bedrock(endpoint="runtime", region="us-west-2", api_key=None)) completion = await client.chat.completions.create(     model="us.openai.gpt-5.6-sol",     messages=[{"
+- **0.781**
+  - [encode__httpx] Example that uses Response.json, Response.raise_for_status, get: r = httpx.get('...').raise_for_status() data = httpx.get('...').raise_for_status().json()
+  - [psf__requests] Example that uses Response.raise_for_status, get: bad_r = requests.get('https://httpbin.org/status/404') bad_r.status_code bad_r.raise_for_status()
+- **0.785**
+  - [openai__openai-python] Example that uses AsyncOpenAI(), AsyncOpenAI.chat, OpenAI.chat, bedrock: from openai import AsyncOpenAI  client = AsyncOpenAI(provider=bedrock(endpoint="runtime", region="us-west-2", api_key=None)) completion = await client.chat.completions.create(     model="us.openai.gpt-5.6-sol",     messages=[{"
+  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.chat_completion: from huggingface_hub import AsyncInferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = AsyncInferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") await client.chat_completio
+- **0.767**
+  - [requests__requests-oauthlib] Example that uses OAuth2Session(), OAuth2Session.authorization_url, OAuth2Session.token_from_fragment: import requests from requests_oauthlib import OAuth2Session from oauthlib.oauth2 import MobileApplicationClient client_id = "<your client ID here>" scope = ["activity", "heartrate", "location", "nu
+  - [oauthlib__oauthlib] Example that uses MobileApplicationClient(), MobileApplicationClient.prepare_request_uri: from oauthlib.oauth2 import MobileApplicationClient client = MobileApplicationClient('your_id') client.prepare_request_uri('https://example.com') client.prepare_request_uri('https://example.com', redirect_uri='
+- **0.768**
+  - [textualize__rich] Example that uses Progress(), Progress.get_default_columns: progress = Progress(     SpinnerColumn(),     *Progress.get_default_columns(),     TimeElapsedColumn(), )
+  - [prompt-toolkit__python-prompt-toolkit] Example that uses Bar(), Label(), Percentage(), Progress(), Text(), TimeLeft(): from prompt_toolkit.shortcuts.progress_bar.formatters import *  default_formatting = [     Label(),     Text(' '),     Percentage(),     Text(' '),     Bar(),     Text(' '),     Progress(),     Text(' '),     Text('eta [
+- **0.787**
+  - [textualize__rich] Example that uses Progress(), Progress.add_task, Progress.finished, Progress.update: import time  from rich.progress import Progress  with Progress() as progress:      task1 = progress.add_task("[red]Downloading...", total=1000)     task2 = progress.add_task("[green]Processing...", total=1000)     t
+  - [tqdm__tqdm] Example that uses tqdm(), update: with tqdm(total=100) as pbar:     for i in range(10):         sleep(0.1)         pbar.update(10)
+- **0.762**
+  - [fsspec__s3fs] Example that uses S3FileSystem(), S3FileSystem.set_session: s3 = S3FileSystem(profile="<profile name>")  # doctest: +SKIP await s3.set_session()  # doctest: +SKIP s3.connect(refresh=True)  # doctest: +SKIP
+  - [boto__boto3] Example that uses Session(), Session.client: import boto3  session = boto3.Session(profile_name='my-sso-profile') s3_client = session.client('s3')
 
 ### Similarity 0.70 to 0.75
 
-- **0.732**
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.question_answering: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() await client.question_answering(question="What's my name?", context="My name is Clara and I live in Berkeley.")
-  - [openai__openai-python] Example that uses AsyncOpenAI(), AsyncOpenAI.chat, OpenAI.chat, bedrock: from openai import AsyncOpenAI  client = AsyncOpenAI(provider=bedrock(endpoint="runtime", region="us-west-2", api_key=None)) completion = await client.chat.completions.create(     model="us.openai.gpt-5.6-sol",     messages=[{"
-- **0.747**
-  - [dateutil__dateutil] Example that uses parse, default_tzinfo, tzoffset(): from dateutil.tz import tzoffset from dateutil.parser import parse from dateutil.utils import default_tzinfo dflt_tz = tzoffset("EST", -18000) print(default_tzinfo(parse('2014-01-01 12:30 UTC'), dflt_tz)) print(default_tzinfo(parse('2014-01-01 12:
-  - [stub42__pytz] Example that uses FixedOffset.utcoffset, LocalTimezone.utcoffset, USTimeZone.utcoffset, UTC.utcoffset, timezone, DstTzInfo.utcoffset, StaticTzInfo.utcoffset: from pytz import timezone tz = timezone('America/St_Johns') ambiguous = datetime(2009, 10, 31, 23, 30) str(tz.utcoffset(ambiguous, is_dst=Fals
-- **0.701**
-  - [encode__httpx] Example that uses ASGITransport(), AsyncClient(): # Instantiate a client that makes ASGI requests with a client IP of "1.2.3.4", # on port 123. transport = httpx.ASGITransport(app=app, client=("1.2.3.4", 123)) async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-  - [openai__openai-python] Example that uses AsyncOpenAI(), OpenAI(), DefaultAsyncHttpx2Client, DefaultHttpx2Client: import httpx2 from openai import OpenAI, AsyncOpenAI, DefaultHttpx2Client, DefaultAsyncHttpx2Client  proxy_client = OpenAI(http_client=DefaultHttpx2Client(proxy="http://proxy.example.com:8080"))  transport_clie
-- **0.727**
-  - [requests__requests-oauthlib] Example that uses OAuth2Session(), OAuth2Session.authorization_url, OAuth2Session.fetch_token: # Credentials you get from registering a new application client_id = '<the id you get from github>' client_secret = '<the secret you get from github>' # OAuth endpoints given in the GitHub API documentatio
-  - [oauthlib__oauthlib] Example that uses WebApplicationClient(), WebApplicationClient.prepare_request_uri: from oauthlib.oauth2 import WebApplicationClient client = WebApplicationClient('your_id') client.prepare_request_uri('https://example.com') client.prepare_request_uri('https://example.com', redirect_uri='https://a.b/
-- **0.736**
-  - [python-attrs__attrs] Example that uses field, gt: @define class C:     x = field(validator=attrs.validators.gt(42)) C(43) C(42)
-  - [pydantic__pydantic] Example that uses TypeAdapter(), Field, TypeAdapter.validate_python: from typing import Annotated  from pydantic import Field, TypeAdapter, ValidationError  PositiveInt = Annotated[int, Field(gt=0)]  # (1)!  ta = TypeAdapter(PositiveInt)  print(ta.validate_python(1)) #> 1  try:     ta.validate_pytho
-- **0.711**
-  - [openai__openai-python] Example that uses OpenAI(), AsyncOpenAI.responses, OpenAI.responses: from openai import OpenAI  client = OpenAI()  stream = client.responses.create(     model="gpt-5.5",     input="Write a one-sentence bedtime story about a unicorn.",     stream=True, )  for event in stream:     print(event)
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.text_to_image, InferenceClient.text_to_image: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() image = await client.text_to_image("An astronaut riding a horse on the moon.") image.save("astronaut.png") asy
 - **0.718**
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.token_classification: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() await client.token_classification("My name is Sarah Jessica Parker but you can call me Jessica")
-  - [openai__openai-python] Example that uses AsyncOpenAI(), bedrock: client = AsyncOpenAI(     provider=bedrock(         endpoint="runtime",         region="us-west-2",         token_provider=refresh_bedrock_token,     ) )
-- **0.739**
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.health_check: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient("https://jzgu0buei5.us-east-1.aws.endpoints.huggingface.cloud") await client.health_check()
-  - [openai__openai-python] Example that uses AsyncOpenAI(), bedrock: client = AsyncOpenAI(     provider=bedrock(         endpoint="runtime",         region="us-west-2",         token_provider=refresh_bedrock_token,     ) )
-- **0.725**
-  - [prompt-toolkit__python-prompt-toolkit] Example that uses PromptSession(), PromptSession.prompt_async, patch_stdout: from prompt_toolkit import PromptSession from prompt_toolkit.patch_stdout import patch_stdout  async def my_coroutine():     session = PromptSession()     while True:         with patch_stdout():             result = await 
-  - [modelcontextprotocol__python-sdk] Example that uses ClientSession(), ClientSession.get_prompt, ClientSession.initialize, ClientSession.list_prompts, stdio_client: import asyncio from mcp.client.session import ClientSession from mcp.client.stdio import StdioServerParameters, stdio_client   async def main():     async with stdio_clien
-- **0.723**
-  - [stub42__pytz] Example that uses UTC.localize, timezone, DstTzInfo.localize, StaticTzInfo.localize: from pytz import timezone fmt = '%Y-%m-%d %H:%M:%S %Z (%z)' amdam = timezone('Europe/Amsterdam') dt  = datetime(2004, 10, 31, 2, 0, 0) loc_dt1 = amdam.localize(dt, is_dst=True) loc_dt2 = amdam.localize(dt, is_dst=Fa
+  - [stub42__pytz] Example that uses UTC.localize, UTC.normalize, timezone, DstTzInfo.localize, DstTzInfo.normalize, StaticTzInfo.localize, StaticTzInfo.normalize: la = timezone('America/Los_Angeles') dt = la.localize(datetime(2011, 5, 7, 1, 2, 3)) fmt = '%Y-%m-%d %H:%M:%S %Z (%z)' gmt.normalize(dt).strftime(fmt)
   - [dateutil__dateutil] Example that uses tzname, tzname, tzname, tzname, tzname, tzutc(): from datetime import * from dateutil.tz import * datetime.now() datetime.now(tzutc()) datetime.now(tzutc()).tzname()
+- **0.72**
+  - [openai__openai-python] Example that uses AsyncOpenAI(), OpenAI(), DefaultAsyncHttpx2Client, DefaultHttpx2Client: import httpx2 from openai import OpenAI, AsyncOpenAI, DefaultHttpx2Client, DefaultAsyncHttpx2Client  proxy_client = OpenAI(http_client=DefaultHttpx2Client(proxy="http://proxy.example.com:8080"))  transport_clie
+  - [encode__httpx] Example that uses AsyncClient(), AsyncHTTPTransport(): import httpx transport = httpx.AsyncHTTPTransport(retries=1) async with httpx.AsyncClient(transport=transport) as client:     ...
+- **0.735**
+  - [stub42__pytz] Example that uses FixedOffset.dst, LocalTimezone.dst, USTimeZone.dst, UTC.dst, timezone, DstTzInfo.dst, StaticTzInfo.dst: from pytz import timezone tz = timezone('America/St_Johns') normal = datetime(2009, 9, 1) str(tz.dst(normal)) str(tz.dst(normal, is_dst=False)) str(tz.dst(normal, is_dst=True)) a
+  - [dateutil__dateutil] Example that uses resolve_imaginary, gettz: from dateutil import tz from datetime import datetime NYC = tz.gettz('America/New_York') print(tz.resolve_imaginary(datetime(2017, 3, 12, 2, 30, tzinfo=NYC))) KIR = tz.gettz('Pacific/Kiritimati') print(tz.resolve_imaginary(datetime(1995, 1, 1, 12, 30, tzin
+- **0.736**
+  - [pydantic__pydantic] Example that uses TypeAdapter(), Field, TypeAdapter.validate_python: from typing import Annotated  from pydantic import Field, TypeAdapter, ValidationError  PositiveInt = Annotated[int, Field(gt=0)]  # (1)!  ta = TypeAdapter(PositiveInt)  print(ta.validate_python(1)) #> 1  try:     ta.validate_pytho
+  - [python-attrs__attrs] Example that uses field, gt: @define class C:     x = field(validator=attrs.validators.gt(42)) C(43) C(42)
+- **0.737**
+  - [stub42__pytz] Example that uses UTC.normalize, timezone, DstTzInfo.normalize, StaticTzInfo.normalize: from datetime import datetime, timedelta utc = timezone('UTC') eastern = timezone('US/Eastern') eastern.zone timezone(unicode('US/Eastern')) is eastern utc_dt = datetime(2002, 10, 27, 6, 0, 0, tzinfo=utc) loc_dt 
+  - [dateutil__dateutil] Example that uses tzname, tzname, tzname, tzname, tzname, tzoffset(): from datetime import * from dateutil.tz import * datetime.now(tzoffset("BRST", -10800)) datetime.now(tzoffset("BRST", -10800)).tzname() datetime.now(tzoffset("BRST", -10800)).astimezone(UTC)
+- **0.75**
+  - [pallets__werkzeug] Example that uses Response(), Request.application: from werkzeug import Request, Response from werkzeug.exceptions import NotFound  @Request.application def app(request: Request) -> Response:     if request.path != "/":         raise NotFound()      return Response("Hello, World!")
+  - [kludex__starlette] Example that uses Request(), Response(), Request.method: from starlette.requests import Request from starlette.responses import Response   async def app(scope, receive, send):     assert scope['type'] == 'http'     request = Request(scope, receive)     content = '%s %s' % (request.method, request.ur
+- **0.75**
+  - [kludex__starlette] Example that uses Request(), Response(), Request.method: from starlette.requests import Request from starlette.responses import Response   async def app(scope, receive, send):     assert scope['type'] == 'http'     request = Request(scope, receive)     content = '%s %s' % (request.method, request.ur
+  - [pallets__werkzeug] Example that uses Response(), Request.application: from werkzeug import Request, Response from werkzeug.exceptions import NotFound  @Request.application def app(request: Request) -> Response:     if request.path != "/":         raise NotFound()      return Response("Hello, World!")
+- **0.71**
+  - [huggingface__huggingface_hub] Example that uses InferenceClient(), InferenceClient.chat_completion: from huggingface_hub import InferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") client.chat_completion(messages, max_tokens=100
+  - [openai__openai-python] Example that uses OpenAI(), OpenAI.chat, bedrock: from openai import OpenAI from openai.providers import bedrock  client = OpenAI(     provider=bedrock(         endpoint="runtime",         region="us-west-2",         api_key=None,     ) )  completion = client.chat.completions.create(     model="us.o
+- **0.706**
+  - [encode__httpx] Example that uses AsyncClient.get, Client.get, Cookies.get, Headers.get, QueryParams.get: client = httpx.Client() response = client.get('https://example.org')
+  - [psf__requests] Example that uses Session(), Session.get: s = requests.Session()    # formerly, session took parameters s.auth = auth s.headers.update(headers) r = s.get('https://httpbin.org/headers')
+- **0.715**
+  - [openai__openai-python] Example that uses AsyncOpenAI.chat, OpenAI.chat: import openai  try:     completion = await client.chat.completions.create(         messages=[{"role": "user", "content": "Say this is a test"}], model="gpt-5.5"     ) except openai.APIStatusError as exc:     print(exc.request_id)  # req_123     raise 
+  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.chat_completion: from huggingface_hub import AsyncInferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = AsyncInferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") await client.chat_completio
 
 ### Similarity 0.60 to 0.70
 
-- **0.686**
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.summarization: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() await client.summarization("The Eiffel tower...")
-  - [openai__openai-python] Example that uses AsyncOpenAI.beta, AsyncOpenAI.vector_stores, AsyncOpenAI.videos, OpenAI.beta, OpenAI.vector_stores, OpenAI.videos: client.beta.threads.create_and_run_poll(...) client.beta.threads.runs.create_and_poll(...) client.beta.threads.runs.submit_tool_outputs_and_poll(...) client.vector_sto
-- **0.626**
-  - [openai__openai-python] Example that uses OpenAI(), k8s_service_account_token_provider: from openai import OpenAI from openai.auth import k8s_service_account_token_provider  client = OpenAI(     workload_identity={         "identity_provider_id": "idp-123",         "service_account_id": "sa-456",         "provider": k8s_se
-  - [huggingface__huggingface_hub] Example that uses InferenceClient(), InferenceClient.chat_completion: from huggingface_hub import InferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") client.chat_completion(messages, max_tokens=100
+- **0.617**
+  - [boto__boto3] Example that uses CollectionManager.all, ResourceCollection.all: bucket = s3.Bucket('boto3') for obj in bucket.objects.all():     print(obj.key)
+  - [fsspec__s3fs] Example that uses S3FileSystem(), S3AsyncStreamedFile.read: s3 = S3FileSystem(anon=False)  # doctest: +SKIP s3.ls('my-bucket/')  # doctest: +SKIP with s3.open('my-bucket/my-file.txt', mode='rb') as f:  # doctest: +SKIP     print(f.read())  # doctest: +SKIP
+- **0.61**
+  - [modelcontextprotocol__python-sdk] Example that uses ClientSession.call_tool, MCPError.code, MCPServer.call_tool: from mcp.shared.exceptions import MCPError from mcp.types import REQUEST_TIMEOUT  # -32001  try:     result = await client.call_tool("slow_tool", {}) except MCPError as e:     if e.code == REQUEST_TIMEOUT:         ...  # 
+  - [openai__openai-python] Example that uses AsyncOpenAI.beta, OpenAI.beta, AssistantEventHandler.until_done: def report_tool_error(failure):     logger.error(         "Tool %s failed during %s (call %s)",         failure.tool_name,         failure.stage,         failure.call_id,     )   with client.beta.agents.sessions.strea
+- **0.677**
+  - [dateutil__dateutil] Example that uses get, keys, tzical(): from dateutil.tz import *; from datetime import * tz = tzical('samples/EST5EDT.ics') tz.keys() est = tz.get('US-Eastern') est datetime.now(est) est == tz.get()
+  - [stub42__pytz] Example that uses FixedOffset.dst, LocalTimezone.dst, USTimeZone.dst, UTC.dst, timezone, DstTzInfo.dst, StaticTzInfo.dst: from pytz import timezone tz = timezone('America/St_Johns') normal = datetime(2009, 9, 1) str(tz.dst(normal)) str(tz.dst(normal, is_dst=False)) str(tz.dst(normal, is_dst=True)) a
 - **0.697**
-  - [openai__openai-python] Example that uses OpenAI(), AsyncOpenAI.chat, AsyncOpenAI.completions, OpenAI.chat, OpenAI.completions: from openai import OpenAI  # Configure the default for all requests: client = OpenAI(     # default is 2     max_retries=0, )  # Or, configure per-request: client.with_options(max_retries=5).chat.
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.chat_completion: from huggingface_hub import AsyncInferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = AsyncInferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") await client.chat_completio
-- **0.69**
-  - [requests__requests-oauthlib] Example that uses OAuth1Session(), OAuth1Session.fetch_request_token: request_token_url = 'https://api.twitter.com/oauth/request_token' # Using OAuth1Session oauth = OAuth1Session(client_key, client_secret=client_secret) fetch_response = oauth.fetch_request_token(request_token_url) resource_owner_ke
-  - [oauthlib__oauthlib] Example that uses Client(), Client.sign: # OAuth 1 Clients raise a value error for the example below from oauthlib.oauth1 import Client client = Client('client-id') headers = {'Content-Type': 'application/x-www-form-urlencoded'} body = 'hello world' client.sign('https://foo.bar', headers=headers, bo
+  - [textualize__rich] Example that uses Console(), Console.log, Console.status: from time import sleep from rich.console import Console  console = Console() tasks = [f"task {n}" for n in range(1, 11)]  with console.status("[bold green]Working on tasks...") as status:     while tasks:         task = tasks.pop(0)         s
+  - [pallets__click] Example that uses echo, progressbar: import time  with click.progressbar([1, 2, 3]) as bar:     for x in bar:         click.echo(f"sleep({x})...")         time.sleep(x)
+- **0.631**
+  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.image_to_image, RepoCard.save, ExtensionManifest.save: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() image = await client.image_to_image("cat.jpg", prompt="turn the cat into a tiger") image.save("tiger.
+  - [openai__openai-python] Example that uses AsyncOpenAI(), bedrock: client = AsyncOpenAI(     provider=bedrock(         endpoint="runtime",         region="us-west-2",         token_provider=refresh_bedrock_token,     ) )
 - **0.672**
-  - [huggingface__huggingface_hub] Example that uses InferenceClient(), RepoCard.content: from huggingface_hub import InferenceClient client = InferenceClient("meta-llama/Meta-Llama-3-70B-Instruct") messages = [ response_format = { response = client.chat_completion( response.choices[0].message.content
-  - [openai__openai-python] Example that uses OpenAI(), OpenAI.responses, vertex: from openai import OpenAI from openai.providers import vertex  client = OpenAI(provider=vertex(project="my-google-project", location="us-east5")) response = client.responses.create(model="your-enabled-model", input="Hello", store=False) print(res
-- **0.633**
-  - [openai__openai-python] Example that uses AsyncTranscriptGrouper(), AsyncTranscriptGrouper.push, TranscriptGrouper.push: from openai.lib.live import AsyncTranscriptGrouper  async with AsyncTranscriptGrouper() as transcript:     transcript.on("segment.updated", render_segment)     transcript.on("segment.closed", finalize_se
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.automatic_speech_recognition: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() await client.automatic_speech_recognition("hello_world.flac").text
-- **0.691**
+  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.text_classification: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() await client.text_classification("I like you")
+  - [openai__openai-python] Example that uses AsyncOpenAI(), AsyncOpenAI.chat, OpenAI.chat, bedrock: from openai import AsyncOpenAI  client = AsyncOpenAI(provider=bedrock(endpoint="runtime", region="us-west-2", api_key=None)) completion = await client.chat.completions.create(     model="us.openai.gpt-5.6-sol",     messages=[{"
+- **0.622**
+  - [textualize__rich] Example that uses Console(), Console.log: from rich.console import Console console = Console()  test_data = [     {"jsonrpc": "2.0", "method": "sum", "params": [None, 1, 2, 4, False, True], "id": "1",},     {"jsonrpc": "2.0", "method": "notify_hello", "params": [7]},     {"jsonrpc": "2.0", "method":
+  - [modelcontextprotocol__python-sdk] Example that uses Context.info, Context.log: # Before await ctx.info("Connection failed", extra={"host": "localhost", "port": 5432})  # extra= type-checked but raised TypeError at runtime in v1 await ctx.log(level="info", message="hello")  # After await ctx.info({"message": "Connection failed", "hos
+- **0.671**
+  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.fill_mask: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient() await client.fill_mask("The goal of life is <mask>.")
+  - [openai__openai-python] Example that uses AsyncOpenAI(), bedrock: client = AsyncOpenAI(     provider=bedrock(         endpoint="runtime",         region="us-west-2",         token_provider=refresh_bedrock_token,     ) )
+- **0.641**
+  - [textualize__rich] Example that uses Console(), Console.print: from rich.console import Console from rich.markdown import Markdown  console = Console() with open("README.md") as readme:     markdown = Markdown(readme.read()) console.print(markdown)
+  - [prompt-toolkit__python-prompt-toolkit] Example that uses HTML(), print_formatted_text: from prompt_toolkit import print_formatted_text, HTML  print_formatted_text(HTML('<b>This is bold</b>')) print_formatted_text(HTML('<i>This is italic</i>')) print_formatted_text(HTML('<u>This is underlined</u>'))
+- **0.689**
   - [pallets__werkzeug] Example that uses Response(), Response.data: from werkzeug.wrappers import Response response = Response("Hello World!") response.headers['content-type'] response.data response.headers['content-length'] = len(response.data)
   - [urllib3__urllib3] Example that uses BaseHTTPResponse.data, request: import urllib3 resp = urllib3.request("GET", "http://httpbin.org/robots.txt") resp.status resp.data
-- **0.65**
-  - [openai__openai-python] Example that uses AsyncOpenAI(), AsyncOpenAI.fine_tuning, OpenAI.fine_tuning: import asyncio from openai import AsyncOpenAI  client = AsyncOpenAI()   async def main() -> None:     all_jobs = []     # Iterate through items across all pages, issuing requests as needed.     async for job in client.fine
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.get_endpoint_info: from huggingface_hub import AsyncInferenceClient client = AsyncInferenceClient("meta-llama/Meta-Llama-3-70B-Instruct") await client.get_endpoint_info()
-- **0.634**
-  - [kludex__starlette] Example that uses Starlette(), Starlette.add_middleware: from starlette.applications import Starlette from starlette.middleware.base import BaseHTTPMiddleware   class CustomMiddleware(BaseHTTPMiddleware):     async def dispatch(self, request, call_next):         response = await call_next(request)  
-  - [fastapi__fastapi] Example that uses FastAPI(), FastAPI.get, Header: from typing import Annotated  from fastapi import FastAPI, Header from pydantic import BaseModel  app = FastAPI()   class CommonHeaders(BaseModel):     host: str     save_data: bool     if_modified_since: str | None = None     traceparent: str | None
-- **0.667**
-  - [openai__openai-python] Example that uses OpenAI(), AsyncOpenAI.chat, AsyncOpenAI.with_raw_response, OpenAI.chat, OpenAI.with_raw_response: from openai import OpenAI  client = OpenAI() response = client.chat.completions.with_raw_response.create(     messages=[         {             "role": "user",             "content": "S
-  - [huggingface__huggingface_hub] Example that uses AsyncInferenceClient(), AsyncInferenceClient.chat_completion: from huggingface_hub import AsyncInferenceClient messages = [{"role": "user", "content": "What is the capital of France?"}] client = AsyncInferenceClient("meta-llama/Meta-Llama-3-8B-Instruct") await client.chat_completio

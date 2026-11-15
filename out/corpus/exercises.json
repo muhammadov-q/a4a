@@ -12,23 +12,23 @@
    "errors": {
     "NameError": 7
    },
-   "seconds": 3.0
+   "seconds": 2.9
   },
   {
    "package": "packaging",
    "repo": "https://github.com/pypa/packaging",
    "commit": "5a7d3386d2777180a381eb947f21293124ce8df5",
    "error": null,
-   "drafts": 302,
+   "drafts": 311,
    "outcomes": {
     "not_json": 48,
-    "verified": 222,
+    "verified": 231,
     "error": 32
    },
    "errors": {
     "NameError": 32
    },
-   "seconds": 1.5
+   "seconds": 1.3
   },
   {
    "package": "typing-extensions",
@@ -44,7 +44,7 @@
    "errors": {
     "NameError": 5
    },
-   "seconds": 0.8
+   "seconds": 0.7
   },
   {
    "package": "certifi",
@@ -72,7 +72,7 @@
    "errors": {
     "InvalidCodepoint": 3
    },
-   "seconds": 0.8
+   "seconds": 0.4
   },
   {
    "package": "urllib3",
@@ -89,7 +89,7 @@
     "ModuleNotFoundError": 5,
     "NameError": 1
    },
-   "seconds": 1.5
+   "seconds": 0.7
   },
   {
    "package": "requests",
@@ -115,7 +115,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.1
+   "seconds": 0.0
   },
   {
    "package": "pycparser",
@@ -174,7 +174,7 @@
     "verified": 2
    },
    "errors": {},
-   "seconds": 1.4
+   "seconds": 1.1
   },
   {
    "package": "click",
@@ -188,7 +188,7 @@
    "errors": {
     "NameError": 1
    },
-   "seconds": 0.6
+   "seconds": 0.7
   },
   {
    "package": "anyio",
@@ -197,7 +197,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.2
+   "seconds": 0.1
   },
   {
    "package": "annotated-types",
@@ -227,7 +227,7 @@
     "ModuleNotFoundError": 3,
     "AttributeError": 2
    },
-   "seconds": 0.9
+   "seconds": 0.8
   },
   {
    "package": "iniconfig",
@@ -241,7 +241,7 @@
    "errors": {
     "FileNotFoundError": 7
    },
-   "seconds": 0.9
+   "seconds": 0.5
   },
   {
    "package": "typing-inspection",
@@ -268,7 +268,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.1
+   "seconds": 0.0
   },
   {
    "package": "attrs",
@@ -286,7 +286,7 @@
     "NameError": 11,
     "SyntaxError": 6
    },
-   "seconds": 1.1
+   "seconds": 0.9
   },
   {
    "package": "httpx",
@@ -303,7 +303,7 @@
     "ConnectError": 13,
     "SyntaxError": 1
    },
-   "seconds": 1.2
+   "seconds": 1.0
   },
   {
    "package": "httpcore",
@@ -317,7 +317,7 @@
    "errors": {
     "NameError": 7
    },
-   "seconds": 0.6
+   "seconds": 0.4
   },
   {
    "package": "s3transfer",
@@ -366,7 +366,7 @@
    "errors": {
     "NameError": 8
    },
-   "seconds": 1.3
+   "seconds": 0.7
   },
   {
    "package": "aiobotocore",
@@ -389,7 +389,7 @@
    "errors": {
     "ModuleNotFoundError": 6
    },
-   "seconds": 0.9
+   "seconds": 0.4
   },
   {
    "package": "platformdirs",
@@ -405,7 +405,7 @@
     "ModuleNotFoundError": 10,
     "NameError": 3
    },
-   "seconds": 1.0
+   "seconds": 0.9
   },
   {
    "package": "uvicorn",
@@ -440,7 +440,7 @@
    "errors": {
     "NameError": 5
    },
-   "seconds": 1.2
+   "seconds": 1.1
   },
   {
    "package": "jsonschema",
@@ -455,7 +455,7 @@
    "errors": {
     "NameError": 13
    },
-   "seconds": 0.7
+   "seconds": 1.1
   },
   {
    "package": "filelock",
@@ -476,7 +476,7 @@
     "verified": 2
    },
    "errors": {},
-   "seconds": 0.5
+   "seconds": 0.4
   },
   {
    "package": "tzdata",
@@ -511,7 +511,7 @@
    "errors": {
     "NameError": 1
    },
-   "seconds": 1.4
+   "seconds": 0.8
   },
   {
    "package": "jsonschema-specifications",
@@ -520,7 +520,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.0
+   "seconds": 0.1
   },
   {
    "package": "markdown-it-py",
@@ -534,7 +534,7 @@
    "errors": {
     "NameError": 1
    },
-   "seconds": 1.4
+   "seconds": 0.6
   },
   {
    "package": "rich",
@@ -549,7 +549,7 @@
    "errors": {
     "NameError": 3
    },
-   "seconds": 1.9
+   "seconds": 1.8
   },
   {
    "package": "mdurl",
@@ -565,9 +565,9 @@
    "repo": "https://github.com/pypa/pip",
    "commit": "4b71f36fb4dfbc87ce65ac4710eeccf81d379f55",
    "error": null,
-   "drafts": 252,
+   "drafts": 251,
    "outcomes": {
-    "verified": 145,
+    "verified": 144,
     "error": 79,
     "not_json": 26,
     "differs_from_docs": 2
@@ -576,7 +576,7 @@
     "NameError": 42,
     "ModuleNotFoundError": 37
    },
-   "seconds": 3.9
+   "seconds": 3.1
   },
   {
    "package": "annotated-doc",
@@ -585,7 +585,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.2
+   "seconds": 0.1
   },
   {
    "package": "fastapi",
@@ -598,25 +598,25 @@
     "not_json": 1
    },
    "errors": {},
-   "seconds": 2.6
+   "seconds": 2.8
   },
   {
    "package": "pytz",
    "repo": "https://github.com/stub42/pytz",
    "commit": "e3c6fe223abf0ad1c1c4e40a9bd319a87bb3b829",
    "error": null,
-   "drafts": 103,
+   "drafts": 128,
    "outcomes": {
-    "verified": 23,
-    "error": 78,
+    "verified": 36,
+    "error": 90,
     "not_json": 2
    },
    "errors": {
-    "NameError": 54,
+    "NameError": 66,
     "ImportError": 14,
     "FileNotFoundError": 10
    },
-   "seconds": 0.9
+   "seconds": 0.8
   },
   {
    "package": "tqdm",
@@ -631,7 +631,7 @@
    "errors": {
     "NameError": 2
    },
-   "seconds": 0.5
+   "seconds": 0.3
   },
   {
    "package": "pyasn1",
@@ -647,7 +647,7 @@
     "NameError": 12,
     "PyAsn1Error": 1
    },
-   "seconds": 0.5
+   "seconds": 0.9
   },
   {
    "package": "aiosignal",
@@ -692,7 +692,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.0
+   "seconds": 0.1
   },
   {
    "package": "trove-classifiers",
@@ -705,20 +705,20 @@
     "differs_from_docs": 1
    },
    "errors": {},
-   "seconds": 0.5
+   "seconds": 0.7
   },
   {
    "package": "zipp",
    "repo": "https://github.com/jaraco/zipp",
    "commit": "dc7de0b7207f8bd4321317c8900d22f36289f86b",
    "error": null,
-   "drafts": 37,
+   "drafts": 39,
    "outcomes": {
-    "verified": 34,
+    "verified": 36,
     "not_json": 3
    },
    "errors": {},
-   "seconds": 0.9
+   "seconds": 0.4
   },
   {
    "package": "tenacity",
@@ -727,7 +727,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.1
+   "seconds": 0.0
   },
   {
    "package": "importlib-metadata",
@@ -745,7 +745,7 @@
     "ModuleNotFoundError": 1,
     "Exception": 1
    },
-   "seconds": 2.0
+   "seconds": 0.9
   },
   {
    "package": "pyasn1-modules",
@@ -754,7 +754,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.2
+   "seconds": 0.3
   },
   {
    "package": "hatchling",
@@ -763,7 +763,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 0.5
+   "seconds": 0.3
   },
   {
    "package": "wheel",
@@ -775,17 +775,17 @@
     "verified": 5
    },
    "errors": {},
-   "seconds": 1.3
+   "seconds": 0.8
   },
   {
    "package": "pyparsing",
    "repo": "https://github.com/pyparsing/pyparsing",
    "commit": "810199f89bf916590426e1c5cb3d612584f11a2f",
    "error": null,
-   "drafts": 89,
+   "drafts": 88,
    "outcomes": {
     "error": 40,
-    "not_json": 34,
+    "not_json": 33,
     "verified": 12,
     "differs_from_docs": 3
    },
@@ -793,7 +793,7 @@
     "NameError": 37,
     "ParseException": 3
    },
-   "seconds": 1.7
+   "seconds": 1.3
   },
   {
    "package": "truststore",
@@ -811,7 +811,7 @@
    "error": null,
    "drafts": 0,
    "outcomes": {},
-   "seconds": 1.6
+   "seconds": 1.8
   },
   {
    "package": "soupsieve",
@@ -837,7 +837,7 @@
     "differs_from_docs": 3
    },
    "errors": {},
-   "seconds": 0.8
+   "seconds": 0.6
   },
   {
    "package": "shellingham",
@@ -851,7 +851,7 @@
    "errors": {
     "PermissionError": 1
    },
-   "seconds": 1.4
+   "seconds": 0.4
   },
   {
    "package": "sse-starlette",
@@ -877,7 +877,7 @@
     "NoCredentialsError": 1,
     "SyntaxError": 1
    },
-   "seconds": 31.1
+   "seconds": 31.3
   },
   {
    "package": "mypy-extensions",
@@ -907,7 +907,7 @@
     "verified": 24
    },
    "errors": {},
-   "seconds": 3.7
+   "seconds": 3.3
   },
   {
    "package": "colorama",
@@ -938,7 +938,7 @@
     "ValueError": 24,
     "NameError": 19
    },
-   "seconds": 629.9
+   "seconds": 799.7
   },
   {
    "package": "dnspython",
@@ -962,7 +962,7 @@
    "errors": {
     "ConnectionError": 12
    },
-   "seconds": 1.2
+   "seconds": 1.4
   },
   {
    "package": "pytest-asyncio",
@@ -1002,7 +1002,7 @@
    "errors": {
     "NameError": 2
    },
-   "seconds": 1.3
+   "seconds": 1.1
   },
   {
    "package": "editables",
@@ -1031,7 +1031,7 @@
     "ValueError": 1,
     "TypeError": 1
    },
-   "seconds": 0.8
+   "seconds": 0.6
   },
   {
    "package": "werkzeug",
@@ -1040,10 +1040,10 @@
    "error": null,
    "drafts": 70,
    "outcomes": {
-    "verified": 45,
+    "verified": 44,
     "not_json": 9,
     "error": 14,
-    "differs_from_docs": 2
+    "differs_from_docs": 3
    },
    "errors": {
     "NameError": 11,
@@ -1051,7 +1051,7 @@
     "FileNotFoundError": 1,
     "PackageNotFoundError": 1
    },
-   "seconds": 4.0
+   "seconds": 1.3
   },
   {
    "package": "more-itertools",
@@ -1062,14 +1062,14 @@
    "outcomes": {
     "verified": 342,
     "not_json": 6,
-    "differs_from_docs": 24,
-    "not_repeatable": 10,
+    "differs_from_docs": 23,
+    "not_repeatable": 11,
     "error": 1
    },
    "errors": {
     "SyntaxError": 1
    },
-   "seconds": 4.6
+   "seconds": 4.4
   },
   {
    "package": "defusedxml",
@@ -1083,7 +1083,7 @@
    "errors": {
     "NameError": 1
    },
-   "seconds": 2.4
+   "seconds": 0.3
   },
   {
    "package": "networkx",
@@ -1104,7 +1104,7 @@
     "KeyError": 2,
     "FileNotFoundError": 2
    },
-   "seconds": 5.8
+   "seconds": 6.0
   },
   {
    "package": "pytest-cov",
@@ -1133,7 +1133,7 @@
     "the result is too long": 1,
     "gaierror": 1
    },
-   "seconds": 0.8
+   "seconds": 1.1
   },
   {
    "package": "exceptiongroup",
@@ -1177,7 +1177,7 @@
    "errors": {
     "NameError": 1
    },
-   "seconds": 2.8
+   "seconds": 2.2
   },
   {
    "package": "requests-toolbelt",
@@ -1215,7 +1215,7 @@
     "not_json": 11
    },
    "errors": {},
-   "seconds": 1.3
+   "seconds": 1.4
   },
   {
    "package": "cloudpickle",
@@ -1243,7 +1243,7 @@
     "differs_from_docs": 6
    },
    "errors": {},
-   "seconds": 0.5
+   "seconds": 0.6
   },
   {
    "package": "isodate",

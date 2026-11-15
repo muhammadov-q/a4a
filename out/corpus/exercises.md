@@ -1,33 +1,33 @@
 # Exercises from documentation examples
 
-97 repositories. 2,989 examples in their documentation show a value; 1,523 of them are verified: run twice in the library's own environment and sandbox, a plain JSON value both times, and the value the documentation shows. 35 repositories have at least one.
+97 repositories. 3,023 examples in their documentation show a value; 1,545 of them are verified: run twice in the library's own environment and sandbox, a plain JSON value both times, and the value the documentation shows. 35 repositories have at least one.
 
 | What happened to an example | Number |
 | --- | --- |
-| verified | 1,523 |
-| the code raised an error (also: needs earlier context, the network or a file) | 922 |
-| the result is an object, not a plain value | 321 |
+| verified | 1,545 |
+| the code raised an error (also: needs earlier context, the network or a file) | 934 |
+| the result is an object, not a plain value | 320 |
 | the result is not what the documentation shows | 161 |
 | took longer than 5 s | 37 |
-| two runs gave different results | 25 |
+| two runs gave different results | 26 |
 
 | Package | Examples that show a value | Verified | Error | Object | Differs | Not scanned or run because |
 | --- | --- | --- | --- | --- | --- | --- |
 | `more-itertools` | 383 | 342 | 1 | 6 | 34 |  |
 | `networkx` | 400 | 259 | 63 | 71 | 7 |  |
-| `packaging` | 302 | 222 | 32 | 48 | 0 |  |
+| `packaging` | 311 | 231 | 32 | 48 | 0 |  |
 | `python-dateutil` | 236 | 175 | 12 | 12 | 37 |  |
-| `pip` | 252 | 145 | 79 | 26 | 2 |  |
+| `pip` | 251 | 144 | 79 | 26 | 2 |  |
 | `importlib-metadata` | 89 | 71 | 2 | 11 | 5 |  |
-| `werkzeug` | 70 | 45 | 14 | 9 | 2 |  |
 | `rsa` | 56 | 45 | 0 | 11 | 0 |  |
-| `zipp` | 37 | 34 | 0 | 3 | 0 |  |
+| `werkzeug` | 70 | 44 | 14 | 9 | 3 |  |
+| `pytz` | 128 | 36 | 90 | 2 | 0 |  |
+| `zipp` | 39 | 36 | 0 | 3 | 0 |  |
 | `mcp` | 24 | 24 | 0 | 0 | 0 |  |
-| `pytz` | 103 | 23 | 78 | 2 | 0 |  |
 | `jinja2` | 31 | 22 | 8 | 1 | 0 |  |
 | `attrs` | 90 | 21 | 17 | 40 | 12 |  |
 | `huggingface-hub` | 400 | 13 | 347 | 15 | 25 |  |
-| `pyparsing` | 89 | 12 | 40 | 34 | 3 |  |
+| `pyparsing` | 88 | 12 | 40 | 33 | 3 |  |
 | `requests` | 43 | 9 | 30 | 4 | 0 |  |
 | `tomlkit` | 22 | 9 | 1 | 10 | 2 |  |
 | `fsspec` | 17 | 7 | 5 | 3 | 2 |  |
