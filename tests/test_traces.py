@@ -335,3 +335,33 @@ def test_a_sentence_gets_one_reminder_and_a_huge_output_is_cut():
     once = Endpoint([completion(content="It is 42.")])
     result = asyncio.run(run_model.solve(EXERCISE, plain, once, None, []))
     assert not result["passed"] and not result["reminded"] and len(once.requests) == 1
+
+
+def test_a_tool_call_written_as_text_is_run_when_asked_and_text_results_can_be_shown_plain():
+    offered = [tool("add")]
+    written = json.dumps({"name": "add", "arguments": {"x": 41}})
+    assert run_model.call_in_text(written, offered) == {"name": "add", "arguments": {"x": 41}}
+    assert run_model.call_in_text(f"```json\n{written}\n```", offered) and run_model.call_in_text(f"<tool_call>\n{written}\n</tool_call>", offered)
+    for not_a_call in ('{"name": "other", "arguments": {}}', '{"name": "add"}', '{"name": "add", "arguments": {}, "more": 1}', '{"name": "add", "arguments": "x"}', "42", "add(41)", ""):
+        assert run_model.call_in_text(not_a_call, offered) is None
+
+    args = Namespace(mode="tools", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=5, repair_calls=True)
+    endpoint = Endpoint([completion(content=written), completion(content="42")])
+    result = asyncio.run(run_model.solve(EXERCISE, args, endpoint, Session(), TOOL_LIST))
+    assert result["passed"] and result["repaired_calls"] == 1 and result["tool_calls"] == 1 and result["tools_used"] == ["add"]
+    said, output = endpoint.requests[1]["messages"][-2:]
+    assert said == {"role": "assistant", "content": "", "tool_calls": [{"id": "repaired0", "type": "function", "function": {"name": "add", "arguments": '{"x": 41}'}}]}
+    assert output == {"role": "tool", "tool_call_id": "repaired0", "content": "42"}
+    # without the option the text is the final answer, as before
+    strict, _ = solve([completion(content=written)])
+    assert not strict["passed"] and strict["repaired_calls"] == 0 and strict["tool_calls"] == 0
+
+    class Terminal:
+        async def call_tool(self, name, arguments):
+            return SimpleNamespace(isError=False, structuredContent={"result": "a\n'42'"})
+
+    for plain_text, shown in ((True, "a\n'42'"), (False, json.dumps("a\n'42'"))):
+        args = Namespace(mode="tools", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=5, plain_text=plain_text)
+        endpoint = Endpoint([completion(calls=[("add", {"x": 41})]), completion(content="42")])
+        asyncio.run(run_model.solve(EXERCISE, args, endpoint, Terminal(), TOOL_LIST))
+        assert endpoint.requests[1]["messages"][-1]["content"] == shown

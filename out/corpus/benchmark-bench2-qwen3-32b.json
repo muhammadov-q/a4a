@@ -1,0 +1,699 @@
+{
+ "model": "qwen3-32b",
+ "tag": "bench2",
+ "strict": false,
+ "min_tasks": 8,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "questions": 11,
+   "tools_picked": 1,
+   "tools_accepted": 1,
+   "right": {
+    "none": [
+     5,
+     5,
+     5
+    ],
+    "tools": [
+     5,
+     5,
+     5
+    ],
+    "python": [
+     9,
+     9,
+     9
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      9,
+      9,
+      9
+     ],
+     "right_when_called": [
+      4,
+      4,
+      4
+     ],
+     "tool_calls": [
+      9,
+      9,
+      9
+     ],
+     "tool_errors": [
+      2,
+      2,
+      2
+     ],
+     "repaired_calls": [
+      1,
+      1,
+      1
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      11,
+      11,
+      11
+     ],
+     "right_when_called": [
+      9,
+      9,
+      9
+     ],
+     "tool_calls": [
+      11,
+      11,
+      11
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "questions": 15,
+   "tools_picked": 54,
+   "tools_accepted": 0,
+   "right": {
+    "none": [
+     12,
+     12,
+     12
+    ],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "more_itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "questions": 19,
+   "tools_picked": 59,
+   "tools_accepted": 25,
+   "right": {
+    "none": [
+     11,
+     11,
+     11
+    ],
+    "tools": [
+     10,
+     10,
+     10
+    ],
+    "python": [
+     11,
+     11,
+     11
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      14,
+      14,
+      14
+     ],
+     "right_when_called": [
+      7,
+      7,
+      7
+     ],
+     "tool_calls": [
+      20,
+      20,
+      20
+     ],
+     "tool_errors": [
+      4,
+      4,
+      4
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      19,
+      19,
+      19
+     ],
+     "right_when_called": [
+      11,
+      11,
+      11
+     ],
+     "tool_calls": [
+      21,
+      21,
+      21
+     ],
+     "tool_errors": [
+      5,
+      5,
+      5
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "questions": 20,
+   "tools_picked": 45,
+   "tools_accepted": 3,
+   "right": {
+    "none": [
+     6,
+     6,
+     6
+    ],
+    "tools": [
+     3,
+     3,
+     3
+    ],
+    "python": [
+     16,
+     16,
+     16
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      13,
+      13,
+      13
+     ],
+     "right_when_called": [
+      2,
+      2,
+      2
+     ],
+     "tool_calls": [
+      91,
+      91,
+      93
+     ],
+     "tool_errors": [
+      66,
+      66,
+      67
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      1
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      20,
+      20,
+      20
+     ],
+     "right_when_called": [
+      16,
+      16,
+      16
+     ],
+     "tool_calls": [
+      20,
+      20,
+      20
+     ],
+     "tool_errors": [
+      2,
+      2,
+      2
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "questions": 9,
+   "tools_picked": 58,
+   "tools_accepted": 11,
+   "right": {
+    "none": [
+     7,
+     7,
+     7
+    ],
+    "tools": [
+     6,
+     6,
+     6
+    ],
+    "python": [
+     3,
+     3,
+     3
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      3,
+      3,
+      3
+     ],
+     "right_when_called": [
+      2,
+      2,
+      2
+     ],
+     "tool_calls": [
+      4,
+      4,
+      4
+     ],
+     "tool_errors": [
+      0,
+      0,
+      0
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      1,
+      1,
+      1
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      9,
+      9,
+      9
+     ],
+     "right_when_called": [
+      3,
+      3,
+      3
+     ],
+     "tool_calls": [
+      9,
+      9,
+      9
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "questions": 16,
+   "tools_picked": 60,
+   "tools_accepted": 26,
+   "right": {
+    "none": [
+     14,
+     14,
+     14
+    ],
+    "tools": [
+     11,
+     11,
+     11
+    ],
+    "python": [
+     15,
+     15,
+     15
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      10,
+      10,
+      10
+     ],
+     "right_when_called": [
+      6,
+      6,
+      6
+     ],
+     "tool_calls": [
+      13,
+      13,
+      13
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      2,
+      2,
+      2
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      16,
+      16,
+      16
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      16,
+      16,
+      16
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "questions": 28,
+   "tools_picked": 60,
+   "tools_accepted": 41,
+   "right": {
+    "none": [
+     19,
+     19,
+     19
+    ],
+    "tools": [
+     19,
+     19,
+     19
+    ],
+    "python": [
+     15,
+     15,
+     15
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      24,
+      24,
+      24
+     ],
+     "right_when_called": [
+      18,
+      18,
+      18
+     ],
+     "tool_calls": [
+      39,
+      39,
+      39
+     ],
+     "tool_errors": [
+      10,
+      11,
+      11
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      28,
+      28,
+      28
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      31,
+      34,
+      34
+     ],
+     "tool_errors": [
+      13,
+      15,
+      15
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "questions": 17,
+   "tools_picked": 24,
+   "tools_accepted": 11,
+   "right": {
+    "none": [
+     8,
+     8,
+     8
+    ],
+    "tools": [
+     10,
+     9,
+     10
+    ],
+    "python": [
+     12,
+     12,
+     12
+    ]
+   },
+   "use": {
+    "tools": {
+     "called_a_tool": [
+      12,
+      12,
+      12
+     ],
+     "right_when_called": [
+      6,
+      5,
+      6
+     ],
+     "tool_calls": [
+      21,
+      21,
+      22
+     ],
+     "tool_errors": [
+      2,
+      1,
+      0
+     ],
+     "repaired_calls": [
+      4,
+      4,
+      5
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python": {
+     "called_a_tool": [
+      17,
+      17,
+      17
+     ],
+     "right_when_called": [
+      12,
+      12,
+      12
+     ],
+     "tool_calls": [
+      17,
+      17,
+      17
+     ],
+     "tool_errors": [
+      2,
+      2,
+      2
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  }
+ ],
+ "conditions": [
+  "none",
+  "tools",
+  "python"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 44,
+   "none": 33,
+   "tools": 29,
+   "python": 26
+  },
+  {
+   "answer": "another value",
+   "questions": 76,
+   "none": 37,
+   "tools": 35,
+   "python": 55
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "tools",
+   "only_a": 18,
+   "only_b": 12,
+   "p": 0.36
+  },
+  {
+   "a": "none",
+   "b": "python",
+   "only_a": 17,
+   "only_b": 28,
+   "p": 0.14
+  },
+  {
+   "a": "tools",
+   "b": "python",
+   "only_a": 19,
+   "only_b": 36,
+   "p": 0.03
+  }
+ ]
+}

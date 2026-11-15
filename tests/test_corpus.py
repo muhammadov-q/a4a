@@ -475,28 +475,57 @@ def test_the_benchmark_report_is_built_from_the_saved_runs(tmp_path, monkeypatch
     (tmp_path / "out" / "generated" / "shapes-t1").mkdir(parents=True)
     (tmp_path / "out" / "generated" / "shapes-t1" / "report.json").write_text(json.dumps({"tools": [{}, {}], "accepted": 1}))
 
-    def save(condition, run, records):
-        benchmark.run_file("m", condition, "t1", "me__shapes", run).write_text("".join(json.dumps(r) + "\n" for r in records))
+    def save(condition, run, records, strict=False):
+        benchmark.run_file("m", condition, "t1", "me__shapes", run, strict).write_text("".join(json.dumps(r) + "\n" for r in records))
 
     assert [benchmark.run_file("m", c, "t1", "me__shapes", k).name for c, k in (("none", 1), ("tools", 2), ("python", 1), ("python", 3))] == [
-        "m-none-t1-me__shapes.jsonl", "m-tools-t1-me__shapes-r2.jsonl", "m-tools-t1-me__shapes-python.jsonl", "m-tools-t1-me__shapes-python-r3.jsonl"]
+        "m-none-t1-me__shapes.jsonl", "m-tools-t1-me__shapes-repair-r2.jsonl", "m-tools-t1-me__shapes-python-repair.jsonl", "m-tools-t1-me__shapes-python-repair-r3.jsonl"]
+    assert [benchmark.run_file("m", c, "t1", "me__shapes", 2, strict=True).name for c in ("none", "tools", "python")] == [
+        "m-none-t1-me__shapes-r2.jsonl", "m-tools-t1-me__shapes-r2.jsonl", "m-tools-t1-me__shapes-python-r2.jsonl"]  # without tools there is one harness
     save("none", 1, [{"passed": p} for p in (True, True, False)])
     save("none", 2, [{"passed": p} for p in (True, False, False)])
     save("none", 4, [{"passed": True}] * 3)  # run 3 is missing, so this one is not counted
     for run in (1, 2):
-        save("tools", run, [{"passed": True, "tool_calls": 2, "tool_errors": 1}, {"passed": False, "tool_calls": 1, "tool_errors": 0}, {"passed": False, "tool_calls": 0, "tool_errors": 0}])
+        save("tools", run, [{"passed": True, "tool_calls": 2, "tool_errors": 1, "repaired_calls": 1}, {"passed": False, "tool_calls": 1, "tool_errors": 0}, {"passed": False, "tool_calls": 0, "tool_errors": 0}])
         save("python", run, [{"passed": True, "tool_calls": 1, "tool_errors": 0}] * 3)
+    save("tools", 1, [{"passed": False, "tool_calls": 1, "raw": '{"name": "area", "arguments": {"side": 2}}'}, {"passed": True, "tool_calls": 1, "raw": "4"}, {"passed": False, "raw": '{"a": 1}'}], strict=True)
     rows = benchmark.summarize(repos, "m", "t1")
     assert rows == [{"package": "shapes", "repo": "https://github.com/me/shapes", "questions": 3, "tools_picked": 2, "tools_accepted": 1,
                      "right": {"none": [2, 1], "tools": [1, 1], "python": [3, 3]},
-                     "use": {"tools": {"called_a_tool": [2, 2], "right_when_called": [1, 1], "tool_calls": [3, 3], "tool_errors": [1, 1]},
-                             "python": {"called_a_tool": [3, 3], "right_when_called": [3, 3], "tool_calls": [3, 3], "tool_errors": [0, 0]}}}]
+                     "use": {"tools": {"called_a_tool": [2, 2], "right_when_called": [1, 1], "tool_calls": [3, 3], "tool_errors": [1, 1], "repaired_calls": [1, 1], "ended_with_a_call_as_text": [0, 0]},
+                             "python": {"called_a_tool": [3, 3], "right_when_called": [3, 3], "tool_calls": [3, 3], "tool_errors": [0, 0], "repaired_calls": [0, 0], "ended_with_a_call_as_text": [0, 0]}}}]
     text = benchmark.report(rows, "m", "t1")
+    assert "wrote as text is run as a call" in text and "| Calls written as text, and run |" in text
     assert "1 repositories with every condition, 3 questions, 2 runs each. Right answers: no tools 1.5 (50%) (2, 1); generated tools 1.0 (33%) (1, 1); one python tool 3.0 (100%) (3, 3)." in text
-    assert "| `shapes` | 3 | 1 of 2 | 1.5 (2, 1) | 1.0 (1, 1) | 3.0 (3, 3) |" in text and "| `shapes` | generated tools | 2.0 of 3 | 1.0 | 3.0 | 1.0 |" in text
+    assert "| `shapes` | 3 | 1 of 2 | 1.5 (2, 1) | 1.0 (1, 1) | 3.0 (3, 3) |" in text and "| `shapes` | generated tools | 2.0 of 3 | 1.0 | 3.0 | 1.0 | 1.0 |" in text
+    strict = benchmark.summarize(repos, "m", "t1", strict=True)  # the same runs without tools; the tool runs under their own names
+    assert strict[0]["right"] == {"none": [2, 1], "tools": [1], "python": []} and strict[0]["use"]["tools"]["ended_with_a_call_as_text"] == [1]
+    text = benchmark.report(strict, "m", "t1", strict=True)
+    assert "(t1, strict harness)" in text and "| Ended with a call written as text |" in text and "| `shapes` | generated tools | 2.0 of 3 | 1.0 | 2.0 | 0.0 | 1.0 |" in text
     missing = benchmark.summarize(repos, "m", "missing")
     assert missing[0]["right"] == {"none": [], "tools": [], "python": []} and "0 repositories with every condition" in benchmark.report(missing, "m", "missing")
     assert benchmark.cell([4]) == "4" and benchmark.cell([4], 8) == "4 (50%)" and benchmark.cell([]) == "none"
+
+
+def test_the_benchmark_compares_conditions_question_by_question(tmp_path, monkeypatch):
+    monkeypatch.setattr(benchmark, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(benchmark, "OUT", tmp_path / "out" / "corpus")
+    (tmp_path / "out" / "corpus" / "tasks").mkdir(parents=True)
+    (tmp_path / "out" / "runs").mkdir()
+    tasks = [{**as_exercise(example(n, ["shapes.parse"]), f"Question {n}?"), "id": f"q{n}", "answer": answer} for n, answer in enumerate([True, False, 4, "x", [1], 2.5])]
+    (tmp_path / "out" / "corpus" / "tasks" / "me__shapes.jsonl").write_text("".join(json.dumps(t) + "\n" for t in tasks))
+    (tmp_path / "out" / "corpus" / "tasks" / "me__other.jsonl").write_text("".join(json.dumps(t) + "\n" for t in tasks))  # has no run with tools: left out
+    repos = benchmark.repositories(min_tasks=2)
+    for stem, condition, right in (("me__shapes", "none", "110000"), ("me__shapes", "python", "101111"), ("me__other", "none", "111111")):
+        benchmark.run_file("m", condition, "t1", stem).write_text("".join(json.dumps({"id": f"q{n}", "passed": flag == "1"}) + "\n" for n, flag in enumerate(right)))
+    details = benchmark.breakdown(repos, "m", "t1")
+    assert details == {"conditions": ["none", "python"],
+                       "by_answer": [{"answer": "true or false", "questions": 2, "none": 2, "python": 1}, {"answer": "another value", "questions": 4, "none": 0, "python": 4}],
+                       "pairs": [{"a": "none", "b": "python", "only_a": 1, "only_b": 4, "p": 0.38}]}
+    text = benchmark.report(benchmark.summarize(repos, "m", "t1"), "m", "t1", details=details)
+    assert "| true or false | 2 | 2 (100%) | 1 (50%) |" in text and "| another value | 4 | 0 (0%) | 4 (100%) |" in text and "| no tools | one python tool | 1 | 4 | 0.38 |" in text
+    assert benchmark.sign_test(0, 0) == 1.0 and benchmark.sign_test(5, 5) == 1.0 and benchmark.sign_test(0, 10) == 2 / 2**10
+    assert benchmark.breakdown(repos, "m", "missing") == {"conditions": [], "by_answer": [{"answer": "true or false", "questions": 0}, {"answer": "another value", "questions": 0}], "pairs": []}
 
 
 def test_the_python_tool_runs_code_like_a_notebook_cell_and_keeps_nothing():

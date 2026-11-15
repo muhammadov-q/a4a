@@ -21,6 +21,13 @@ The full trace of each run (every request, see `traces/format.py`) goes to out/t
     first   the first request must call a tool; after that the model decides
     always  every request must call a tool. A submit_answer tool is added to end the run, so the
             tool list is one tool longer, and the answer comes from that tool's argument.
+
+Two options keep the harness from deciding a result:
+    --repair-calls  a message that is nothing but {"name": <an offered tool>, "arguments": {...}} is a tool call
+                    that the model wrote as text (small models do this after a few calls). It is run as a call
+                    instead of being taken as the final answer.
+    --plain-text    a tool result that is text is shown as it is, not as a JSON string in quotes. For tools
+                    whose result is terminal output.
 """
 
 import argparse
@@ -31,6 +38,7 @@ import time
 from collections import defaultdict
 from contextlib import AsyncExitStack
 from pathlib import Path
+from types import SimpleNamespace
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -109,6 +117,20 @@ def is_json(text: str) -> bool:
     return True
 
 
+def call_in_text(text: str, offered: list) -> dict | None:
+    """The tool call a message consists of, if the model wrote one as text: {"name": an offered tool, "arguments": {...}}."""
+    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", (text or "").strip())
+    text = re.sub(r"^<tool_call>\s*|\s*</tool_call>$", "", text)
+    try:
+        value = json.loads(text)
+    except json.JSONDecodeError:
+        return None
+    names = {tool["function"]["name"] for tool in offered}
+    if isinstance(value, dict) and set(value) == {"name", "arguments"} and value["name"] in names and isinstance(value["arguments"], dict):
+        return value
+    return None
+
+
 def parse_answer(text: str):
     """The model's final answer as a JSON value, or None if it is not one."""
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", (text or "").strip())
@@ -141,7 +163,8 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
                            meta={"thinking": args.thinking, "tool_choice": args.tool_choice,
                                  "example_messages": len(getattr(args, "example_messages", []))})
     used, calls, errors, tokens, finish, raw, trace, answer = [], 0, 0, 0, "max_steps", None, [], None
-    reminded, limit = False, getattr(args, "max_output", None) or MAX_OUTPUT
+    reminded, repaired, limit = False, 0, getattr(args, "max_output", None) or MAX_OUTPUT
+    plain_text = getattr(args, "plain_text", False)
     for step in range(args.max_steps):
         tool_choice = None if not offered else "required" if always or (forced and step == 0) else "auto"
         started = time.monotonic()
@@ -154,9 +177,17 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
         msg = response.choices[0].message
         add_request(full_trace, messages, offered, tool_choice, msg.model_dump(exclude_none=True), response.choices[0].finish_reason,
                     response.usage.model_dump(exclude_none=True) if response.usage else None, time.monotonic() - started)
-        if not msg.tool_calls:
+        tool_calls, said = msg.tool_calls, msg.model_dump(exclude_none=True)
+        if not tool_calls:
             # without a reasoning parser on the server, a thinking model's reasoning stays in the content
             final = re.sub(r"<think>.*?</think>", "", msg.content or "", flags=re.S).strip()
+            written = call_in_text(final, offered) if getattr(args, "repair_calls", False) else None
+            if written:  # a tool call that came as text: run it like any other call
+                repaired += 1
+                call = {"id": f"repaired{step}", "type": "function", "function": {"name": written["name"], "arguments": json.dumps(written["arguments"])}}
+                tool_calls = [SimpleNamespace(id=call["id"], function=SimpleNamespace(**call["function"]))]
+                said = {"role": "assistant", "content": "", "tool_calls": [call]}
+        if not tool_calls:
             raw = final[:500]
             answer = parse_answer(final)
             if getattr(args, "remind", False) and not reminded and not is_json(final):
@@ -166,9 +197,9 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
                 continue
             finish = "answered"
             break
-        messages.append(msg.model_dump(exclude_none=True))
+        messages.append(said)
         submitted = False
-        for tc in msg.tool_calls:
+        for tc in tool_calls:
             if always and tc.function.name == "submit_answer":
                 try:
                     answer, submitted = json.loads(tc.function.arguments or "{}").get("answer"), True
@@ -182,7 +213,8 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
             used.append(tc.function.name)
             try:
                 result = await session.call_tool(tc.function.name, json.loads(tc.function.arguments or "{}"))
-                content = result.content[0].text if result.isError else json.dumps(output_value(result))
+                value = None if result.isError else output_value(result)
+                content = result.content[0].text if result.isError else value if plain_text and isinstance(value, str) else json.dumps(value)
                 errors += result.isError
             except Exception as e:  # noqa: BLE001  (bad JSON arguments or an unknown tool count as a tool error)
                 content, errors = f"Error: {e}", errors + 1
@@ -199,7 +231,7 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
     return {"id": ex["id"], "kind": ex["kind"], "horizon": ex["horizon"], "mode": args.mode, "model": args.model,
             "passed": passed, "answer": answer, "raw": raw, "finish": finish,
             "tool_calls": calls, "tool_errors": errors, "tools_used": sorted(set(used)),
-            "used_all_reference_tools": reference_tools <= set(used), "reference_call_count": ex["reference_call_count"], "reminded": reminded,
+            "used_all_reference_tools": reference_tools <= set(used), "reference_call_count": ex["reference_call_count"], "reminded": reminded, "repaired_calls": repaired,
             "tokens": tokens, "trace": trace, "full_trace": full_trace}
 
 
@@ -240,6 +272,8 @@ def main() -> None:
     parser.add_argument("--thinking", action="store_true", help="let Qwen3-style models think before answering")
     parser.add_argument("--topic", help=f"what the exercises are about, for the instruction to the model; default: {TOPIC!r}")
     parser.add_argument("--remind", action="store_true", help="if the final message is not a JSON value, ask once more for only the value")
+    parser.add_argument("--repair-calls", action="store_true", help="run a tool call that the model wrote as text, instead of taking it as the answer")
+    parser.add_argument("--plain-text", action="store_true", help="show a tool result that is text as it is, not as a JSON string")
     parser.add_argument("--max-output", type=int, default=MAX_OUTPUT, help="characters of one tool output shown to the model; the rest is cut")
     parser.add_argument("--tag", help="label for the output file name, e.g. the tool set's granularity")
     parser.add_argument("--tool-choice", choices=("auto", "first", "always"), default="auto",
