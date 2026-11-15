@@ -1,0 +1,1120 @@
+{
+  "repo": "https://github.com/pallets/itsdangerous",
+  "package": "itsdangerous",
+  "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+  "n_callables": 38,
+  "callables": [
+    {
+      "qualname": "base64_decode",
+      "module": "itsdangerous",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Base64 decode a URL-safe string of bytes or text. The result is bytes.",
+      "docstring": "Base64 decode a URL-safe string of bytes or text. The result is\nbytes.",
+      "file": "itsdangerous/encoding.py",
+      "line": 28,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "base64_encode",
+      "module": "itsdangerous",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Base64 encode a string of bytes or text. The resulting bytes are safe to use in URLs.",
+      "docstring": "Base64 encode a string of bytes or text. The resulting bytes are\nsafe to use in URLs.",
+      "file": "itsdangerous/encoding.py",
+      "line": 20,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "want_bytes",
+      "module": "itsdangerous",
+      "kind": "function",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "encoding",
+          "annotation": "str",
+          "default": "'utf-8'",
+          "kind": "positional"
+        },
+        {
+          "name": "errors",
+          "annotation": "str",
+          "default": "'strict'",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/encoding.py",
+      "line": 11,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.secret_key",
+      "module": "itsdangerous",
+      "kind": "property",
+      "params": [],
+      "returns": "bytes",
+      "summary": "The newest (last) entry in the :attr:`secret_keys` list. This is for compatibility from before key rotation support was added.",
+      "docstring": "The newest (last) entry in the :attr:`secret_keys` list. This\nis for compatibility from before key rotation support was added.",
+      "file": "itsdangerous/serializer.py",
+      "line": 237,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Serializer.load_payload",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "payload",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "serializer",
+          "annotation": "_PDataSerializer[t.Any] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "t.Any",
+      "summary": "Loads the encoded object. This function raises :class:`.BadPayload` if the payload is not valid. The ``serializer`` parameter can be used to override the serializer stored on the class. The encoded ``payload`` should always be bytes.",
+      "docstring": "Loads the encoded object. This function raises\n:class:`.BadPayload` if the payload is not valid. The\n``serializer`` parameter can be used to override the serializer\nstored on the class. The encoded ``payload`` should always be\nbytes.",
+      "file": "itsdangerous/serializer.py",
+      "line": 243,
+      "loc": 27,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.dump_payload",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "obj",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Dumps the encoded object. The return value is always bytes. If the internal serializer returns text, the value will be encoded as UTF-8.",
+      "docstring": "Dumps the encoded object. The return value is always bytes.\nIf the internal serializer returns text, the value will be\nencoded as UTF-8.",
+      "file": "itsdangerous/serializer.py",
+      "line": 271,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.make_signer",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Signer",
+      "summary": "Creates a new instance of the signer to be used. The default implementation uses the :class:`.Signer` base class.",
+      "docstring": "Creates a new instance of the signer to be used. The default\nimplementation uses the :class:`.Signer` base class.",
+      "file": "itsdangerous/serializer.py",
+      "line": 278,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.iter_unsigners",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "cabc.Iterator[Signer]",
+      "summary": "Iterates over all signers to be tried for unsigning. Starts with the configured signer, then constructs each signer specified in ``fallback_signers``.",
+      "docstring": "Iterates over all signers to be tried for unsigning. Starts\nwith the configured signer, then constructs each signer\nspecified in ``fallback_signers``.",
+      "file": "itsdangerous/serializer.py",
+      "line": 287,
+      "loc": 21,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.dumps",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "obj",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "_TSerialized",
+      "summary": "Returns a signed string serialized with the internal serializer. The return value can be either a byte or unicode string depending on the format of the internal serializer.",
+      "docstring": "Returns a signed string serialized with the internal\nserializer. The return value can be either a byte or unicode\nstring depending on the format of the internal serializer.",
+      "file": "itsdangerous/serializer.py",
+      "line": 309,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.dump",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "obj",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "f",
+          "annotation": "t.IO[t.Any]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Like :meth:`dumps` but dumps into a file. The file handle has to be compatible with what the internal serializer expects.",
+      "docstring": "Like :meth:`dumps` but dumps into a file. The file handle has\nto be compatible with what the internal serializer expects.",
+      "file": "itsdangerous/serializer.py",
+      "line": 322,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.loads",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "t.Any",
+      "summary": "Reverse of :meth:`dumps`. Raises :exc:`.BadSignature` if the signature validation fails.",
+      "docstring": "Reverse of :meth:`dumps`. Raises :exc:`.BadSignature` if the\nsignature validation fails.",
+      "file": "itsdangerous/serializer.py",
+      "line": 328,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.load",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "f",
+          "annotation": "t.IO[t.Any]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "t.Any",
+      "summary": "Like :meth:`loads` but loads from a file.",
+      "docstring": "Like :meth:`loads` but loads from a file.",
+      "file": "itsdangerous/serializer.py",
+      "line": 345,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.loads_unsafe",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[bool, t.Any]",
+      "summary": "Like :meth:`loads` but without verifying the signature. This is potentially very dangerous to use depending on how your serializer works. The return value is ``(signature_valid, payload)`` instead of just the payload. The first item will be a boolean that indicates if the signature is valid. This function never fails.",
+      "docstring": "Like :meth:`loads` but without verifying the signature. This\nis potentially very dangerous to use depending on how your\nserializer works. The return value is ``(signature_valid,\npayload)`` instead of just the payload. The first item will be a\nboolean that indicates if the signature is valid. This function\nnever fails.\n\nUse it for debugging only and if you know that your serializer\nmodule is not exploitable (for example, do not use it with a\npickle serializer).\n\n.. versionadded:: 0.15",
+      "file": "itsdangerous/serializer.py",
+      "line": 349,
+      "loc": 17,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Serializer.load_unsafe",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "f",
+          "annotation": "t.IO[t.Any]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[bool, t.Any]",
+      "summary": "Like :meth:`loads_unsafe` but loads from a file.",
+      "docstring": "Like :meth:`loads_unsafe` but loads from a file.\n\n.. versionadded:: 0.15",
+      "file": "itsdangerous/serializer.py",
+      "line": 397,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "HMACAlgorithm.get_signature",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/signer.py",
+      "line": 62,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "NoneAlgorithm.get_signature",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/signer.py",
+      "line": 36,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Signer.secret_key",
+      "module": "itsdangerous",
+      "kind": "property",
+      "params": [],
+      "returns": "bytes",
+      "summary": "The newest (last) entry in the :attr:`secret_keys` list. This is for compatibility from before key rotation support was added.",
+      "docstring": "The newest (last) entry in the :attr:`secret_keys` list. This\nis for compatibility from before key rotation support was added.",
+      "file": "itsdangerous/signer.py",
+      "line": 176,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Signer.derive_key",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "secret_key",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "This method is called to derive the key. The default key derivation choices can be overridden here. Key derivation is not intended to be used as a security method to make a complex key out of a short password. Instead you should use large random secret keys.",
+      "docstring": "This method is called to derive the key. The default key\nderivation choices can be overridden here. Key derivation is not\nintended to be used as a security method to make a complex key\nout of a short password. Instead you should use large random\nsecret keys.\n\n:param secret_key: A specific secret key to derive from.\n    Defaults to the last item in :attr:`secret_keys`.\n\n.. versionchanged:: 2.0\n    Added the ``secret_key`` parameter.",
+      "file": "itsdangerous/signer.py",
+      "line": 182,
+      "loc": 32,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Signer.get_signature",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Returns the signature for the given value.",
+      "docstring": "Returns the signature for the given value.",
+      "file": "itsdangerous/signer.py",
+      "line": 215,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Signer.sign",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Signs the given string.",
+      "docstring": "Signs the given string.",
+      "file": "itsdangerous/signer.py",
+      "line": 222,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Signer.verify_signature",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "sig",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Verifies the signature for the given value.",
+      "docstring": "Verifies the signature for the given value.",
+      "file": "itsdangerous/signer.py",
+      "line": 227,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Signer.unsign",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "signed_value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Unsigns the given string.",
+      "docstring": "Unsigns the given string.",
+      "file": "itsdangerous/signer.py",
+      "line": 244,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Signer.validate",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "signed_value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Only validates the given signed value. Returns ``True`` if the signature exists and is valid.",
+      "docstring": "Only validates the given signed value. Returns ``True`` if\nthe signature exists and is valid.",
+      "file": "itsdangerous/signer.py",
+      "line": 258,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimedSerializer.iter_unsigners",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "cabc.Iterator[TimestampSigner]",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/timed.py",
+      "line": 177,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimedSerializer.loads",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "max_age",
+          "annotation": "int | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "return_timestamp",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "t.Any",
+      "summary": "Reverse of :meth:`dumps`, raises :exc:`.BadSignature` if the signature validation fails. If a ``max_age`` is provided it will ensure the signature is not older than that time in seconds. In case the signature is outdated, :exc:`.SignatureExpired` is raised. All arguments are forwarded to the signer's :meth:`~TimestampSigner.unsign` method.",
+      "docstring": "Reverse of :meth:`dumps`, raises :exc:`.BadSignature` if the\nsignature validation fails. If a ``max_age`` is provided it will\nensure the signature is not older than that time in seconds. In\ncase the signature is outdated, :exc:`.SignatureExpired` is\nraised. All arguments are forwarded to the signer's\n:meth:`~TimestampSigner.unsign` method.",
+      "file": "itsdangerous/timed.py",
+      "line": 185,
+      "loc": 36,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimedSerializer.loads_unsafe",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "max_age",
+          "annotation": "int | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[bool, t.Any]",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/timed.py",
+      "line": 222,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimestampSigner.get_timestamp",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [],
+      "returns": "int",
+      "summary": "Returns the current timestamp. The function must return an integer.",
+      "docstring": "Returns the current timestamp. The function must return an\ninteger.",
+      "file": "itsdangerous/timed.py",
+      "line": 29,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimestampSigner.timestamp_to_datetime",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "ts",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "datetime",
+      "summary": "Convert the timestamp from :meth:`get_timestamp` into an aware :class`datetime.datetime` in UTC.",
+      "docstring": "Convert the timestamp from :meth:`get_timestamp` into an\naware :class`datetime.datetime` in UTC.\n\n.. versionchanged:: 2.0\n    The timestamp is returned as a timezone-aware ``datetime``\n    in UTC rather than a naive ``datetime`` assumed to be UTC.",
+      "file": "itsdangerous/timed.py",
+      "line": 35,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimestampSigner.sign",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Signs the given string and also attaches time information.",
+      "docstring": "Signs the given string and also attaches time information.",
+      "file": "itsdangerous/timed.py",
+      "line": 45,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TimestampSigner.unsign",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "signed_value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "max_age",
+          "annotation": "int | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "return_timestamp",
+          "annotation": "t.Literal[False]",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/timed.py",
+      "line": 57,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": [
+        "t.overload"
+      ]
+    },
+    {
+      "qualname": "TimestampSigner.validate",
+      "module": "itsdangerous",
+      "kind": "method",
+      "params": [
+        {
+          "name": "signed_value",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "max_age",
+          "annotation": "int | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Only validates the given signed value. Returns ``True`` if the signature exists and is valid.",
+      "docstring": "Only validates the given signed value. Returns ``True`` if\nthe signature exists and is valid.",
+      "file": "itsdangerous/timed.py",
+      "line": 160,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "int_to_bytes",
+      "module": "itsdangerous.encoding",
+      "kind": "function",
+      "params": [
+        {
+          "name": "num",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/encoding.py",
+      "line": 49,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "bytes_to_int",
+      "module": "itsdangerous.encoding",
+      "kind": "function",
+      "params": [
+        {
+          "name": "bytestr",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/encoding.py",
+      "line": 53,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "is_text_serializer",
+      "module": "itsdangerous.serializer",
+      "kind": "function",
+      "params": [
+        {
+          "name": "serializer",
+          "annotation": "_PDataSerializer[t.Any]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "te.TypeGuard[_PDataSerializer[str]]",
+      "summary": "Checks whether a serializer generates text or binary.",
+      "docstring": "Checks whether a serializer generates text or binary.",
+      "file": "itsdangerous/serializer.py",
+      "line": 33,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "SigningAlgorithm.get_signature",
+      "module": "itsdangerous.signer",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Returns the signature for the given key and value.",
+      "docstring": "Returns the signature for the given key and value.",
+      "file": "itsdangerous/signer.py",
+      "line": 20,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "SigningAlgorithm.verify_signature",
+      "module": "itsdangerous.signer",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "sig",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Verifies the given signature matches the expected signature.",
+      "docstring": "Verifies the given signature matches the expected\nsignature.",
+      "file": "itsdangerous/signer.py",
+      "line": 24,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "URLSafeSerializerMixin.load_payload",
+      "module": "itsdangerous.url_safe",
+      "kind": "method",
+      "params": [
+        {
+          "name": "payload",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "serializer",
+          "annotation": "t.Any | None",
+          "default": "None",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "t.Any",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/url_safe.py",
+      "line": 23,
+      "loc": 31,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "URLSafeSerializerMixin.dump_payload",
+      "module": "itsdangerous.url_safe",
+      "kind": "method",
+      "params": [
+        {
+          "name": "obj",
+          "annotation": "t.Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "",
+      "docstring": "",
+      "file": "itsdangerous/url_safe.py",
+      "line": 55,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": []
+    }
+  ],
+  "classes": {
+    "Serializer": {
+      "module": "itsdangerous",
+      "params": [
+        {
+          "name": "secret_key",
+          "annotation": "str | bytes | cabc.Iterable[str] | cabc.Iterable[bytes]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "b'itsdangerous'",
+          "kind": "positional"
+        },
+        {
+          "name": "serializer",
+          "annotation": "None | _PDataSerializer[str]",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "serializer_kwargs",
+          "annotation": "dict[str, t.Any] | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "signer",
+          "annotation": "type[Signer] | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "signer_kwargs",
+          "annotation": "dict[str, t.Any] | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "fallback_signers",
+          "annotation": "list[dict[str, t.Any] | tuple[type[Signer], dict[str, t.Any]] | type[Signer]] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A serializer wraps a :class:`~itsdangerous.signer.Signer` to enable serializing and securely signing data other than bytes. It can unsign to verify that the data hasn't been changed.",
+      "docstring": "A serializer wraps a :class:`~itsdangerous.signer.Signer` to\nenable serializing and securely signing data other than bytes. It\ncan unsign to verify that the data hasn't been changed.\n\nThe serializer provides :meth:`dumps` and :meth:`loads`, similar to\n:mod:`json`, and by default uses :mod:`json` internally to serialize\nthe data to bytes.\n\nThe secret key should be a random string of ``bytes`` and should not\nbe saved to code or version control. Different salts should be used\nto distinguish signing in different contexts. See :doc:`/concepts`\nfor information about the security of the secret key and salt.\n\n:param secret_key: The secret key to sign and verify with. Can be a\n    list of keys, oldest to newest, to support key rotation.\n:param salt: Extra key to combine with ``secret_key`` to distinguish\n    signatures in different contexts.\n:param serializer: An object that provides ``dumps`` and ``loads``\n    methods for serializing data to a string. Defaults to\n    :attr:`default_serializer`, which defaults to :mod:`json`.\n:param serializer_kwargs: Keyword arguments to pass when calling\n    ``serializer.dumps``.\n:param signer: A ``Signer`` class to instantiate when signing data.\n    Defaults to :attr:`default_signer`, which defaults to\n    :class:`~itsdangerous.signer.Signer`.\n:param signer_kwargs: Keyword arguments to pass when instantiating\n    the ``Signer`` class.\n:param fallback_signers: List of signer parameters to try when\n    unsigning with the default signer fails. Each item can be a dict\n    of ``signer_kwargs``, a ``Signer`` class, or a tuple of\n    ``(signer, signer_kwargs)``. Defaults to\n    :attr:`default_fallback_signers`.\n\n.. versionchanged:: 2.0\n    Added support for key rotation by passing a list to\n    ``secret_key``.\n\n.. versionchanged:: 2.0\n    Removed the default SHA-512 fallback signer from\n    ``default_fallback_signers``.\n\n.. versionchanged:: 1.1\n    Added support for ``fallback_signers`` and configured a default\n    SHA-512 fallback. This fallback is for users who used the yanked\n    1.0.0 release which defaulted to SHA-512.\n\n.. versionchanged:: 0.14\n    The ``signer`` and ``signer_kwargs`` parameters were added to\n    the constructor.",
+      "file": "itsdangerous/serializer.py",
+      "line": 40,
+      "loc": 365
+    },
+    "HMACAlgorithm": {
+      "module": "itsdangerous",
+      "params": [
+        {
+          "name": "digest_method",
+          "annotation": "t.Any",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "Provides signature generation using HMACs.",
+      "docstring": "Provides signature generation using HMACs.",
+      "file": "itsdangerous/signer.py",
+      "line": 48,
+      "loc": 17
+    },
+    "NoneAlgorithm": {
+      "module": "itsdangerous",
+      "params": null,
+      "summary": "Provides an algorithm that does not perform any signing and returns an empty signature.",
+      "docstring": "Provides an algorithm that does not perform any signing and\nreturns an empty signature.",
+      "file": "itsdangerous/signer.py",
+      "line": 31,
+      "loc": 7
+    },
+    "Signer": {
+      "module": "itsdangerous",
+      "params": [
+        {
+          "name": "secret_key",
+          "annotation": "str | bytes | cabc.Iterable[str] | cabc.Iterable[bytes]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "salt",
+          "annotation": "str | bytes | None",
+          "default": "b'itsdangerous.Signer'",
+          "kind": "positional"
+        },
+        {
+          "name": "sep",
+          "annotation": "str | bytes",
+          "default": "b'.'",
+          "kind": "positional"
+        },
+        {
+          "name": "key_derivation",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "digest_method",
+          "annotation": "t.Any | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "algorithm",
+          "annotation": "SigningAlgorithm | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A signer securely signs bytes, then unsigns them to verify that the value hasn't been changed.",
+      "docstring": "A signer securely signs bytes, then unsigns them to verify that\nthe value hasn't been changed.\n\nThe secret key should be a random string of ``bytes`` and should not\nbe saved to code or version control. Different salts should be used\nto distinguish signing in different contexts. See :doc:`/concepts`\nfor information about the security of the secret key and salt.\n\n:param secret_key: The secret key to sign and verify with. Can be a\n    list of keys, oldest to newest, to support key rotation.\n:param salt: Extra key to combine with ``secret_key`` to distinguish\n    signatures in different contexts.\n:param sep: Separator between the signature and value.\n:param key_derivation: How to derive the signing key from the secret\n    key and salt. Possible values are ``concat``, ``django-concat``,\n    or ``hmac``. Defaults to :attr:`default_key_derivation`, which\n    defaults to ``django-concat``.\n:param digest_method: Hash function to use when generating the HMAC\n    signature. Defaults to :attr:`default_digest_method`, which\n    defaults to :func:`hashlib.sha1`. Note that the security of the\n    hash alone doesn't apply when used intermediately in HMAC.\n:param algorithm: A :class:`SigningAlgorithm` instance to use\n    instead of building a default :class:`HMACAlgorithm` with the\n    ``digest_method``.\n\n.. versionchanged:: 2.0\n    Added support for key rotation by passing a list to\n    ``secret_key``.\n\n.. versionchanged:: 0.18\n    ``algorithm`` was added as an argument to the class constructor.\n\n.. versionchanged:: 0.14\n    ``key_derivation`` and ``digest_method`` were added as arguments\n    to the class constructor.",
+      "file": "itsdangerous/signer.py",
+      "line": 76,
+      "loc": 191
+    },
+    "TimedSerializer": {
+      "module": "itsdangerous",
+      "params": null,
+      "summary": "Uses :class:`TimestampSigner` instead of the default :class:`.Signer`.",
+      "docstring": "Uses :class:`TimestampSigner` instead of the default\n:class:`.Signer`.",
+      "file": "itsdangerous/timed.py",
+      "line": 170,
+      "loc": 59
+    },
+    "TimestampSigner": {
+      "module": "itsdangerous",
+      "params": null,
+      "summary": "Works like the regular :class:`.Signer` but also records the time of the signing and can be used to expire signatures. The :meth:`unsign` method can raise :exc:`.SignatureExpired` if the unsigning failed because the signature is expired.",
+      "docstring": "Works like the regular :class:`.Signer` but also records the time\nof the signing and can be used to expire signatures. The\n:meth:`unsign` method can raise :exc:`.SignatureExpired` if the\nunsigning failed because the signature is expired.",
+      "file": "itsdangerous/timed.py",
+      "line": 22,
+      "loc": 146
+    },
+    "SigningAlgorithm": {
+      "module": "itsdangerous.signer",
+      "params": null,
+      "summary": "Subclasses must implement :meth:`get_signature` to provide signature generation functionality.",
+      "docstring": "Subclasses must implement :meth:`get_signature` to provide\nsignature generation functionality.",
+      "file": "itsdangerous/signer.py",
+      "line": 15,
+      "loc": 14
+    },
+    "URLSafeSerializerMixin": {
+      "module": "itsdangerous.url_safe",
+      "params": null,
+      "summary": "Mixed in with a regular serializer it will attempt to zlib compress the string to make it shorter if necessary. It will also base64 encode the string so that it can safely be placed in a URL.",
+      "docstring": "Mixed in with a regular serializer it will attempt to zlib\ncompress the string to make it shorter if necessary. It will also\nbase64 encode the string so that it can safely be placed in a URL.",
+      "file": "itsdangerous/url_safe.py",
+      "line": 15,
+      "loc": 55
+    }
+  }
+}

@@ -1,0 +1,1632 @@
+{
+  "repo": "https://github.com/jmespath/jmespath.py",
+  "package": "jmespath",
+  "commit": "2812594e69d43098ef60f81f4efc404c071b0418",
+  "n_callables": 60,
+  "callables": [
+    {
+      "qualname": "compile",
+      "module": "jmespath",
+      "kind": "function",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/__init__.py",
+      "line": 7,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "search",
+      "module": "jmespath",
+      "kind": "function",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "data",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "options",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/__init__.py",
+      "line": 11,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "comparator",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "first",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "second",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 5,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "current_node",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 9,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "expref",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 13,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "function_expression",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 17,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "field",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 21,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "filter_projection",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "left",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "right",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "comparator",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 25,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "flatten",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 29,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "identity",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 33,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "index",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "index",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 37,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "index_expression",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "children",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 41,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "key_val_pair",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "key_name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 45,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "literal",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "literal_value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 49,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "multi_select_dict",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nodes",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 53,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "multi_select_list",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nodes",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 57,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "or_expression",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "left",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "right",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 61,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "and_expression",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "left",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "right",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 65,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "not_expression",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "expr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 69,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "pipe",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "left",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "right",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 73,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "projection",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "left",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "right",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 77,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "subexpression",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "children",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 81,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "slice",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "start",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "end",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "step",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 85,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "value_projection",
+      "module": "jmespath.ast",
+      "kind": "function",
+      "params": [
+        {
+          "name": "left",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "right",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/ast.py",
+      "line": 89,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "with_str_method",
+      "module": "jmespath.compat",
+      "kind": "function",
+      "params": [
+        {
+          "name": "cls",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/compat.py",
+      "line": 10,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "with_repr_method",
+      "module": "jmespath.compat",
+      "kind": "function",
+      "params": [
+        {
+          "name": "cls",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/compat.py",
+      "line": 14,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "get_methods",
+      "module": "jmespath.compat",
+      "kind": "function",
+      "params": [
+        {
+          "name": "cls",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/compat.py",
+      "line": 17,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncompleteExpressionError.set_expression",
+      "module": "jmespath.exceptions",
+      "kind": "method",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/exceptions.py",
+      "line": 33,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "signature",
+      "module": "jmespath.functions",
+      "kind": "function",
+      "params": [
+        {
+          "name": "arguments",
+          "annotation": null,
+          "default": null,
+          "kind": "var_positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/functions.py",
+      "line": 38,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Functions.call_function",
+      "module": "jmespath.functions",
+      "kind": "method",
+      "params": [
+        {
+          "name": "function_name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "resolved_args",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/functions.py",
+      "line": 72,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Lexer.tokenize",
+      "module": "jmespath.lexer",
+      "kind": "method",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/lexer.py",
+      "line": 26,
+      "loc": 86,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.parse",
+      "module": "jmespath.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/parser.py",
+      "line": 82,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.purge",
+      "module": "jmespath.parser",
+      "kind": "classmethod",
+      "params": [],
+      "returns": null,
+      "summary": "Clear the expression compilation cache.",
+      "docstring": "Clear the expression compilation cache.",
+      "file": "jmespath/parser.py",
+      "line": 503,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "classmethod"
+      ]
+    },
+    {
+      "qualname": "ParsedResult.search",
+      "module": "jmespath.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "options",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/parser.py",
+      "line": 514,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Visitor.visit",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": null,
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 87,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Visitor.default_visit",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": null,
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 96,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.default_visit",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": null,
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 125,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_subexpression",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 128,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_field",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 134,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_comparator",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 140,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_current",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 160,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_expref",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 163,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_function_expression",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 166,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_filter_projection",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 173,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_flatten",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 186,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_identity",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 199,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_index",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 202,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_index_expression",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 212,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_slice",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 218,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_key_val_pair",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 224,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_literal",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 227,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_multi_select_dict",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 230,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_multi_select_list",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 238,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_or_expression",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 246,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_and_expression",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 252,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_not_expression",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 258,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_pipe",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 266,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_projection",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 272,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TreeInterpreter.visit_value_projection",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 283,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "GraphvizVisitor.visit",
+      "module": "jmespath.visitor",
+      "kind": "method",
+      "params": [
+        {
+          "name": "node",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": null,
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 313,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    }
+  ],
+  "classes": {
+    "IncompleteExpressionError": {
+      "module": "jmespath.exceptions",
+      "params": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/exceptions.py",
+      "line": 32,
+      "loc": 13
+    },
+    "Functions": {
+      "module": "jmespath.functions",
+      "params": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/functions.py",
+      "line": 67,
+      "loc": 296
+    },
+    "Lexer": {
+      "module": "jmespath.lexer",
+      "params": null,
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/lexer.py",
+      "line": 8,
+      "loc": 201
+    },
+    "Parser": {
+      "module": "jmespath.parser",
+      "params": [
+        {
+          "name": "lookahead",
+          "annotation": null,
+          "default": "2",
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/parser.py",
+      "line": 35,
+      "loc": 471
+    },
+    "ParsedResult": {
+      "module": "jmespath.parser",
+      "params": [
+        {
+          "name": "expression",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "parsed",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/parser.py",
+      "line": 509,
+      "loc": 26
+    },
+    "Visitor": {
+      "module": "jmespath.visitor",
+      "params": [],
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 83,
+      "loc": 15
+    },
+    "TreeInterpreter": {
+      "module": "jmespath.visitor",
+      "params": [
+        {
+          "name": "options",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 100,
+      "loc": 205
+    },
+    "GraphvizVisitor": {
+      "module": "jmespath.visitor",
+      "params": [],
+      "summary": "",
+      "docstring": "",
+      "file": "jmespath/visitor.py",
+      "line": 307,
+      "loc": 22
+    }
+  }
+}

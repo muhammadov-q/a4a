@@ -1,0 +1,448 @@
+{
+ "url": "https://github.com/kjd/idna",
+ "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a",
+ "package": "idna",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "idna-sample",
+ "toolset": "toolsets/generated/idna-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "encode_domain_name",
+   "wraps": "idna.encode",
+   "description": "Convert a Unicode domain name into its ASCII (A-label) form using IDNA 2008 encoding. s: The domain name to encode. uts46: If True, apply UTS #46 mapping before encoding. Example: encode_domain_name('example.\u6d4b\u8bd5') -> 'example.xn--fsq.xn--fiqs8s'.",
+   "verified": true,
+   "direct_call": "idna.encode(s, strict=False, uts46=uts46, std3_rules=False, transitional=False)",
+   "samples": [
+    {
+     "s": "example.com",
+     "uts46": false
+    },
+    {
+     "s": "\u4f8b\u5b50.\u6d4b\u8bd5",
+     "uts46": true
+    },
+    {
+     "s": "caf\u00e9.com",
+     "uts46": true
+    },
+    {
+     "s": "",
+     "uts46": false
+    },
+    {
+     "s": "xn--fsq.xn--9zr",
+     "uts46": false
+    }
+   ]
+  },
+  {
+   "name": "decode_domain_name",
+   "wraps": "idna.decode",
+   "description": "Decode an A-label-encoded domain name back to Unicode using IDNA 2008 decoding.\n    \n    Args:\n        s: The domain name to decode.\n        uts46: If True, apply UTS #46 mapping before decoding.\n        display: If True, any 'xn--' label that fails IDNA validation is passed through unchanged.\n        \n    Returns:\n        The decoded domain as a Unicode string.\n        \n    Example:\n        decode_domain_name('xn--fsq.xn--fiqs8s') -> '\u4f8b\u5b50.\u6d4b\u8bd5'\n    ",
+   "verified": true,
+   "direct_call": "idna.decode(s, strict=False, uts46=uts46, std3_rules=False, display=display)",
+   "samples": [
+    {
+     "s": "example.com"
+    },
+    {
+     "s": "xn--fsq.xn--fiqs8s"
+    },
+    {
+     "s": "example.xn--fsq.xn--fiqs8s"
+    },
+    {
+     "s": "xn--fsq.xn--fiqs8s",
+     "uts46": true
+    },
+    {
+     "s": "xn--invalid",
+     "display": true
+    },
+    {
+     "s": ""
+    }
+   ]
+  },
+  {
+   "name": "convert_to_a_label",
+   "wraps": "idna.alabel",
+   "description": "Convert a single U-label into its A-label form. label: The label to convert, as a Unicode string, e.g. 'example' -> 'example'.",
+   "verified": true,
+   "direct_call": "idna.alabel(label)",
+   "samples": [
+    {
+     "label": "example"
+    },
+    {
+     "label": "ex\u00e4mple"
+    },
+    {
+     "label": "\u4f8b\u5b50"
+    },
+    {
+     "label": "test.label"
+    },
+    {
+     "label": ""
+    }
+   ]
+  },
+  {
+   "name": "convert_to_u_label",
+   "wraps": "idna.ulabel",
+   "description": "Convert a single A-label into its U-label form. label: The A-label to convert, e.g. 'xn--fsq.xn--fiqs8s' -> '\u4f8b\u5b50.\u6d4b\u8bd5'.",
+   "verified": true,
+   "direct_call": "idna.ulabel(label)",
+   "samples": [
+    {
+     "label": "xn--fsq.xn--fiqs8s"
+    },
+    {
+     "label": "example.com"
+    },
+    {
+     "label": "xn--bcher-kva"
+    },
+    {
+     "label": "xn--zckzah"
+    },
+    {
+     "label": "test.xn--fsq"
+    },
+    {
+     "label": "invalid-xn--"
+    }
+   ]
+  },
+  {
+   "name": "check_bidi_rule",
+   "wraps": "idna.check_bidi",
+   "description": "Validate the Bidi Rule from RFC 5893 for a single label. label: The label to validate as a Unicode string. check_ltr: If True, apply the rules even when the label contains no RTL characters. Example: check_bidi_rule('example.com') -> True.",
+   "verified": true,
+   "direct_call": "idna.check_bidi(label, check_ltr)",
+   "samples": [
+    {
+     "label": "example",
+     "check_ltr": false
+    },
+    {
+     "label": "\u0645\u062b\u0627\u0644",
+     "check_ltr": false
+    },
+    {
+     "label": "test123",
+     "check_ltr": true
+    },
+    {
+     "label": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+     "check_ltr": false
+    },
+    {
+     "label": "",
+     "check_ltr": false
+    }
+   ]
+  },
+  {
+   "name": "check_hyphen_usage",
+   "wraps": "idna.check_hyphen_ok",
+   "description": "Validate the hyphen restrictions for a label. label: The label to check, e.g. 'example' -> true.",
+   "verified": true,
+   "direct_call": "idna.check_hyphen_ok(label)",
+   "samples": [
+    {
+     "label": "example"
+    },
+    {
+     "label": "-invalid"
+    },
+    {
+     "label": "valid-"
+    },
+    {
+     "label": "ab--cd"
+    },
+    {
+     "label": "test-label"
+    },
+    {
+     "label": "a-b-c-d"
+    }
+   ]
+  },
+  {
+   "name": "check_initial_combiner",
+   "wraps": "idna.check_initial_combiner",
+   "description": "Reject labels that begin with a combining mark. label: The label to check, e.g. '\u03b1' -> True.",
+   "verified": true,
+   "direct_call": "idna.check_initial_combiner(label)",
+   "samples": [
+    {
+     "label": "example"
+    },
+    {
+     "label": "caf\u00e9"
+    },
+    {
+     "label": "test"
+    },
+    {
+     "label": "\u00e1cc\u00e9nt"
+    },
+    {
+     "label": "\u0301invalid"
+    }
+   ]
+  },
+  {
+   "name": "check_nfc_normalization",
+   "wraps": "idna.check_nfc",
+   "description": "Require that a label is in Unicode Normalization Form C. label: The label to check, e.g. 'caf\u00e9' -> None.",
+   "verified": true,
+   "direct_call": "idna.check_nfc(label)",
+   "samples": [
+    {
+     "label": "example"
+    },
+    {
+     "label": "caf\u00e9"
+    },
+    {
+     "label": "r\u00e9sum\u00e9"
+    },
+    {
+     "label": "a\u0301"
+    },
+    {
+     "label": ""
+    }
+   ]
+  },
+  {
+   "name": "apply_uts46_mapping",
+   "wraps": "idna.uts46_remap",
+   "description": "Apply the UTS #46 character mapping to a domain string for compatibility. domain: The full domain name to remap according to UTS #46, std3_rules: If True, apply UTS #46's UseSTD3ASCIIRules. Example: apply_uts46_mapping('example.com') -> 'example.com'.",
+   "verified": true,
+   "direct_call": "idna.uts46_remap(domain, std3_rules, False)",
+   "samples": [
+    {
+     "domain": "example.com"
+    },
+    {
+     "domain": "EXAMPLE.COM"
+    },
+    {
+     "domain": "fa\u00df.de"
+    },
+    {
+     "domain": "test\u2000example.com"
+    },
+    {
+     "domain": "invalid\u0000domain.com"
+    }
+   ]
+  },
+  {
+   "name": "validate_contextj_rule",
+   "wraps": "idna.valid_contextj",
+   "description": "Validate the CONTEXTJ rules from RFC 5892 Appendix A for joiner codepoints U+200C and U+200D. label: The label containing the codepoint, e.g. 'cafe\u200c' -> true. pos: Index of the joiner codepoint within label, e.g. 4.",
+   "verified": true,
+   "direct_call": "idna.valid_contextj(label, pos)",
+   "samples": [
+    {
+     "label": "cafe\u200c",
+     "pos": 4
+    },
+    {
+     "label": "test\u200d",
+     "pos": 4
+    },
+    {
+     "label": "\u200c",
+     "pos": 0
+    },
+    {
+     "label": "hello",
+     "pos": 2
+    },
+    {
+     "label": "a\u200c",
+     "pos": 1
+    }
+   ]
+  },
+  {
+   "name": "validate_contexto_rule",
+   "wraps": "idna.valid_contexto",
+   "description": "Validate the CONTEXTO rules from RFC 5892 Appendix A. label: The label containing the codepoint, e.g. 'cafe' -> true. pos: Index of the codepoint within the label, e.g. 3.",
+   "verified": true,
+   "direct_call": "idna.valid_contexto(label, pos)",
+   "samples": [
+    {
+     "label": "caf\u00e9",
+     "pos": 3
+    },
+    {
+     "label": "a\u00b7b",
+     "pos": 1
+    },
+    {
+     "label": "a\u00b7b",
+     "pos": 1
+    },
+    {
+     "label": "\u0375",
+     "pos": 0
+    },
+    {
+     "label": "\u05f3",
+     "pos": 0
+    },
+    {
+     "label": "1234567890",
+     "pos": 4
+    }
+   ]
+  },
+  {
+   "name": "create_idna_codec",
+   "wraps": "idna.codec.Codec",
+   "description": "Create a stateless IDNA 2008 codec for encoding and decoding. data: The string to encode or decode using IDNA 2008, operation: Either 'encode' or 'decode'. Returns a list [result, length] where result is either bytes or str and length is an int. Example: create_idna_codec('example.com', 'encode') -> ['example.com', 11].",
+   "verified": true,
+   "direct_call": "idna.codec.Codec().encode(data) if operation == 'encode' else idna.codec.Codec().decode(data)",
+   "samples": [
+    {
+     "data": "example.com",
+     "operation": "encode"
+    },
+    {
+     "data": "example.com",
+     "operation": "decode"
+    },
+    {
+     "data": "xn--fsq.xn--fiqs8s",
+     "operation": "decode"
+    },
+    {
+     "data": "",
+     "operation": "encode"
+    },
+    {
+     "data": "",
+     "operation": "decode"
+    },
+    {
+     "data": "example.com",
+     "operation": "invalid_operation"
+    }
+   ]
+  },
+  {
+   "name": "create_incremental_encoder",
+   "wraps": "idna.codec.IncrementalEncoder",
+   "description": "Create an incremental IDNA 2008 encoder for processing data in chunks.\n    \n    An incremental encoder processes input data incrementally, buffering\n    partial labels until complete labels are formed. This allows encoding\n    of domain names that are streamed in chunks while maintaining proper\n    IDNA 2008 compliance.\n    \n    Parameters:\n        errors (str, optional): Error handling strategy for encoding failures.\n            Only \"strict\" is supported. Defaults to \"strict\".\n    \n    Returns:\n        str: Empty string representing the encoder creation.\n    \n    Example:\n        >>> create_incremental_encoder()\n        ''\n    ",
+   "verified": true,
+   "direct_call": "idna.codec.IncrementalEncoder(errors).encode('')",
+   "samples": [
+    {
+     "errors": "strict"
+    },
+    {
+     "errors": "ignore"
+    },
+    {
+     "errors": "replace"
+    },
+    {
+     "errors": "strict"
+    },
+    {
+     "errors": "strict"
+    }
+   ]
+  },
+  {
+   "name": "create_incremental_decoder",
+   "wraps": "idna.codec.IncrementalDecoder",
+   "description": "Create an incremental IDNA 2008 decoder for processing data in chunks. errors: The error handling strategy for decoding, only 'strict' is supported. Example: create_incremental_decoder('strict') -> {'decoder': '<idna.codec.IncrementalDecoder object at 0x...>'}.",
+   "verified": false,
+   "direct_call": "idna.codec.IncrementalDecoder(errors)",
+   "samples": [
+    {
+     "errors": "strict"
+    },
+    {
+     "errors": "strict"
+    },
+    {
+     "errors": "strict"
+    },
+    {
+     "errors": "strict"
+    },
+    {
+     "errors": "strict"
+    }
+   ]
+  },
+  {
+   "name": "compat_to_ascii",
+   "wraps": "idna.compat.ToASCII",
+   "description": "Compatibility shim for RFC 3490 ToASCII.\n    \n    Delegates to idna.encode (IDNA 2008). Provided to ease porting\n    of code written against the legacy encodings.idna API; new code\n    should call idna.encode directly.\n    \n    Args:\n        label: The label or domain to encode.\n        \n    Returns:\n        The encoded form as ASCII bytes.\n        \n    Example:\n        >>> compat_to_ascii('example.com')\n        b'example.com'\n    ",
+   "verified": true,
+   "direct_call": "idna.compat.ToASCII(label)",
+   "samples": [
+    {
+     "label": "example.com"
+    },
+    {
+     "label": "xn--fsq.xn--fiqs8s"
+    },
+    {
+     "label": "caf\u00e9.com"
+    },
+    {
+     "label": ""
+    },
+    {
+     "label": "test"
+    }
+   ]
+  },
+  {
+   "name": "compat_to_unicode",
+   "wraps": "idna.compat.ToUnicode",
+   "description": "Compatibility shim for RFC 3490 ToUnicode. label: The label or domain to decode, e.g. 'example.com' -> 'example.com'.",
+   "verified": true,
+   "direct_call": "idna.compat.ToUnicode(label)",
+   "samples": [
+    {
+     "label": "example.com"
+    },
+    {
+     "label": "xn--fsq.xn--fiqs8s"
+    },
+    {
+     "label": "b\u00e4r.com"
+    },
+    {
+     "label": ""
+    },
+    {
+     "label": "test"
+    }
+   ]
+  }
+ ]
+}

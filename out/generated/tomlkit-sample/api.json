@@ -1,0 +1,4130 @@
+{
+  "repo": "https://github.com/python-poetry/tomlkit",
+  "package": "tomlkit",
+  "commit": "7bf7284dbd622557d9909f8fee017a4cb169a139",
+  "n_callables": 183,
+  "callables": [
+    {
+      "qualname": "aot",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [],
+      "returns": "AoT",
+      "summary": "Create an array of table.",
+      "docstring": "Create an array of table.\n\n:Example:\n\n>>> doc = document()\n>>> aot = aot()\n>>> aot.append(item({'x': 1}))\n>>> doc.append('foo', aot)\n>>> print(doc.as_string())\n[[foo]]\nx = 1",
+      "file": "tomlkit/api.py",
+      "line": 263,
+      "loc": 14,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "array",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": "'[]'",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Array",
+      "summary": "Create an array item for its string representation.",
+      "docstring": "Create an array item for its string representation.\n\n:Example:\n\n>>> array(\"[1, 2, 3]\")  # Create from a string\n[1, 2, 3]\n>>> a = array()\n>>> a.extend([1, 2, 3])  # Create from a list\n>>> a\n[1, 2, 3]",
+      "file": "tomlkit/api.py",
+      "line": 212,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "boolean",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str | bool",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Bool",
+      "summary": "Turn `true` or `false` into a boolean item.",
+      "docstring": "Turn `true` or `false` into a boolean item.",
+      "file": "tomlkit/api.py",
+      "line": 154,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "comment",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Comment",
+      "summary": "Create a comment item.",
+      "docstring": "Create a comment item.\n\nA multiline string produces one ``#``-prefixed line per line so that the\nresult is still valid TOML.",
+      "file": "tomlkit/api.py",
+      "line": 347,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "date",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Date",
+      "summary": "Create a TOML date.",
+      "docstring": "Create a TOML date.",
+      "file": "tomlkit/api.py",
+      "line": 185,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "datetime",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "DateTime",
+      "summary": "Create a TOML datetime.",
+      "docstring": "Create a TOML datetime.",
+      "file": "tomlkit/api.py",
+      "line": 203,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "document",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [],
+      "returns": "TOMLDocument",
+      "summary": "Returns a new TOMLDocument instance.",
+      "docstring": "Returns a new TOMLDocument instance.",
+      "file": "tomlkit/api.py",
+      "line": 111,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "dump",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "data",
+          "annotation": "Mapping[str, Any]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "fp",
+          "annotation": "IO[str]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "sort_keys",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "keyword_only"
+        }
+      ],
+      "returns": "None",
+      "summary": "Dump a TOMLDocument into a writable file stream.",
+      "docstring": "Dump a TOMLDocument into a writable file stream.\n\n:param data: a dict-like object to dump\n:param sort_keys: if true, sort the keys in alphabetic order\n\n:Example:\n\n>>> with open(\"output.toml\", \"w\") as fp:\n...     tomlkit.dump(data, fp)",
+      "file": "tomlkit/api.py",
+      "line": 89,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "dumps",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "data",
+          "annotation": "Mapping[str, Any]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "sort_keys",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Dumps a TOMLDocument into a string.",
+      "docstring": "Dumps a TOMLDocument into a string.",
+      "file": "tomlkit/api.py",
+      "line": 58,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "float_",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str | float",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Float",
+      "summary": "Create an float item from a number or string.",
+      "docstring": "Create an float item from a number or string.",
+      "file": "tomlkit/api.py",
+      "line": 149,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "inline_table",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [],
+      "returns": "InlineTable",
+      "summary": "Create an inline table.",
+      "docstring": "Create an inline table.\n\n:Example:\n\n>>> table = inline_table()\n>>> table.update({'x': 1, 'y': 2})\n>>> print(table.as_string())\n{x = 1, y = 2}",
+      "file": "tomlkit/api.py",
+      "line": 250,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "integer",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str | int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Integer",
+      "summary": "Create an integer item from a number or string.",
+      "docstring": "Create an integer item from a number or string.\n\nWhen ``raw`` is a string it must be a valid TOML v1.0.0 integer\nliteral; the original text is then preserved verbatim so grouping\nunderscores (e.g. ``\"1_000\"``) survive ``dumps()``. Anything else\nraises ``ValueError``.",
+      "file": "tomlkit/api.py",
+      "line": 134,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "item",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "_parent",
+          "annotation": "Item | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "_sort_keys",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Item",
+      "summary": "Create a TOML item from a Python object.",
+      "docstring": "Create a TOML item from a Python object.\n\n:Example:\n\n>>> item(42)\n42\n>>> item([1, 2, 3])\n[1, 2, 3]\n>>> item({'a': 1, 'b': 2})\na = 1\nb = 2",
+      "file": "tomlkit/items.py",
+      "line": 117,
+      "loc": 150,
+      "n_overloads": 13,
+      "decorators": []
+    },
+    {
+      "qualname": "key",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "k",
+          "annotation": "str | Iterable[str]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Key",
+      "summary": "Create a key from a string. When a list of string is given, it will create a dotted key.",
+      "docstring": "Create a key from a string. When a list of string is given,\nit will create a dotted key.\n\n:Example:\n\n>>> doc = document()\n>>> doc.append(key('foo'), 1)\n>>> doc.append(key(['bar', 'baz']), 2)\n>>> print(doc.as_string())\nfoo = 1\nbar.baz = 2",
+      "file": "tomlkit/api.py",
+      "line": 279,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "key_value",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "src",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[Key, _Item]",
+      "summary": "Parse a key-value pair from a string.",
+      "docstring": "Parse a key-value pair from a string.\n\nAnything other than whitespace or a comment after the pair is an error,\nas it is when the same text is given to :func:`parse`.\n\n:Example:\n\n>>> key_value(\"foo = 1\")\n(Key('foo'), 1)",
+      "file": "tomlkit/api.py",
+      "line": 319,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "load",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "fp",
+          "annotation": "IO[str] | IO[bytes]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "TOMLDocument",
+      "summary": "Load toml document from a file-like object.",
+      "docstring": "Load toml document from a file-like object.",
+      "file": "tomlkit/api.py",
+      "line": 82,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "loads",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "TOMLDocument",
+      "summary": "Parses a string into a TOMLDocument.",
+      "docstring": "Parses a string into a TOMLDocument.\n\nAlias for parse().",
+      "file": "tomlkit/api.py",
+      "line": 49,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "nl",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [],
+      "returns": "Whitespace",
+      "summary": "Create a newline item.",
+      "docstring": "Create a newline item.",
+      "file": "tomlkit/api.py",
+      "line": 342,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parse",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "TOMLDocument",
+      "summary": "Parses a string or bytes into a TOMLDocument.",
+      "docstring": "Parses a string or bytes into a TOMLDocument.",
+      "file": "tomlkit/api.py",
+      "line": 104,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "register_encoder",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "encoder",
+          "annotation": "E",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "E",
+      "summary": "Add a custom encoder, which should be a function that will be called if the value can't otherwise be converted.",
+      "docstring": "Add a custom encoder, which should be a function that will be called\nif the value can't otherwise be converted.\n\nThe encoder should return a TOMLKit item or raise a ``ConvertError``.\n\nExample::\n\n    @register_encoder\n    def encode_custom_dict(obj, _parent=None, _sort_keys=False):\n        if isinstance(obj, CustomDict):\n            tbl = table()\n            for key, value in obj.items():\n                # Pass along parameters when encoding nested values\n                tbl[key] = item(value, _parent=tbl, _sort_keys=_sort_keys)\n            return tbl\n        raise ConvertError(\"Not a CustomDict\")",
+      "file": "tomlkit/api.py",
+      "line": 359,
+      "loc": 20,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "string",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "literal",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "multiline",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "escape",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "keyword_only"
+        }
+      ],
+      "returns": "String",
+      "summary": "Create a string item.",
+      "docstring": "Create a string item.\n\nBy default, this function will create *single line basic* strings, but\nboolean flags (e.g. ``literal=True`` and/or ``multiline=True``)\ncan be used for personalization.\n\nFor more information, please check the spec: `<https://toml.io/en/v1.0.0#string>`__.\n\nDumping produces a TOML string that faithfully represents the given string.\nThis includes character escaping for basic strings.\nThis behaviour can be disabled by setting ``escape=False``.\nIn that case, the given string is used verbatim for the content of the TOML string.\nPlease note that this makes you responsible for ensuring the given string does not\ncontain any forbidden character or sequence.",
+      "file": "tomlkit/api.py",
+      "line": 159,
+      "loc": 24,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "table",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "is_super_table",
+          "annotation": "bool | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Table",
+      "summary": "Create an empty table.",
+      "docstring": "Create an empty table.\n\n:param is_super_table: if true, the table is a super table\n\n:Example:\n\n>>> doc = document()\n>>> foo = table(True)\n>>> bar = table()\n>>> bar.update({'x': 1})\n>>> foo.append('bar', bar)\n>>> doc.append('foo', foo)\n>>> print(doc.as_string())\n[foo.bar]\nx = 1",
+      "file": "tomlkit/api.py",
+      "line": 230,
+      "loc": 18,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "time",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Time",
+      "summary": "Create a TOML time.",
+      "docstring": "Create a TOML time.",
+      "file": "tomlkit/api.py",
+      "line": 194,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "unregister_encoder",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "encoder",
+          "annotation": "Encoder",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Unregister a custom encoder.",
+      "docstring": "Unregister a custom encoder.",
+      "file": "tomlkit/api.py",
+      "line": 381,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "value",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "_Item",
+      "summary": "Parse a simple value from a string.",
+      "docstring": "Parse a simple value from a string.\n\n:Example:\n\n>>> value(\"1\")\n1\n>>> value(\"true\")\nTrue\n>>> value(\"[1, 2, 3]\")\n[1, 2, 3]",
+      "file": "tomlkit/api.py",
+      "line": 300,
+      "loc": 17,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ws",
+      "module": "tomlkit",
+      "kind": "function",
+      "params": [
+        {
+          "name": "src",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Whitespace",
+      "summary": "Create a whitespace from a string.",
+      "docstring": "Create a whitespace from a string.",
+      "file": "tomlkit/api.py",
+      "line": 337,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parse_rfc3339",
+      "module": "tomlkit.api",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "datetime | date | time",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/_utils.py",
+      "line": 48,
+      "loc": 55,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "validate_comment",
+      "module": "tomlkit.api",
+      "kind": "function",
+      "params": [
+        {
+          "name": "comment",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "multiline",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "keyword_only"
+        }
+      ],
+      "returns": "None",
+      "summary": "Reject forbidden controls, optionally allowing LF and CRLF line endings.",
+      "docstring": "Reject forbidden controls, optionally allowing LF and CRLF line endings.",
+      "file": "tomlkit/_utils.py",
+      "line": 126,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.body",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "list[tuple[Key | None, Item]]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 128,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Container.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "dict[str, Any]",
+      "summary": "Returns as pure python object (ppo)",
+      "docstring": "Returns as pure python object (ppo)",
+      "file": "tomlkit/container.py",
+      "line": 131,
+      "loc": 23,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "dict[str, Any]",
+      "summary": "The wrapped dict value",
+      "docstring": "The wrapped dict value",
+      "file": "tomlkit/container.py",
+      "line": 156,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Container.parsing",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "parsing",
+          "annotation": "bool",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 176,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.add",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | Item | str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "item",
+          "annotation": "Any",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Container",
+      "summary": "Adds an item to the current Container.",
+      "docstring": "Adds an item to the current Container.\n\n:Example:\n\n>>> # add a key-value pair\n>>> doc.add('key', 'value')\n>>> # add a comment or whitespace or newline\n>>> doc.add(comment('# comment'))",
+      "file": "tomlkit/container.py",
+      "line": 187,
+      "loc": 21,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.append",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "item",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "validate",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Container",
+      "summary": "Similar to :meth:`add` but both key and value must be given.",
+      "docstring": "Similar to :meth:`add` but both key and value must be given.",
+      "file": "tomlkit/container.py",
+      "line": 299,
+      "loc": 194,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.remove",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Container",
+      "summary": "Remove a key from the container.",
+      "docstring": "Remove a key from the container.",
+      "file": "tomlkit/container.py",
+      "line": 572,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.item",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Item | OutOfOrderTableProxy",
+      "summary": "Get an item for the given key.",
+      "docstring": "Get an item for the given key.",
+      "file": "tomlkit/container.py",
+      "line": 639,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.last_item",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "Item | None",
+      "summary": "Get the last item.",
+      "docstring": "Get the last item.",
+      "file": "tomlkit/container.py",
+      "line": 656,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "Render as TOML string.",
+      "docstring": "Render as TOML string.",
+      "file": "tomlkit/container.py",
+      "line": 662,
+      "loc": 31,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.setdefault",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "default",
+          "annotation": "Any",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Any",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 900,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Container.copy",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "Self",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 1064,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AoT.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "list[dict[str, Any]]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2420,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AoT.body",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "list[Table]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2430,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "AoT.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2434,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "AoT.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "list[dict[str, Any]]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2438,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "AoT.insert",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "index",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "dict[str, Any]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2465,
+      "loc": 29,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AoT.invalidate_display_name",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "Call ``invalidate_display_name`` on the contained tables",
+      "docstring": "Call ``invalidate_display_name`` on the contained tables",
+      "file": "tomlkit/items.py",
+      "line": 2495,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AoT.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2501,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "list[Any]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1527,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1537,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Array.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "list[Item]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1541,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Array.multiline",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "multiline",
+          "annotation": "bool",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Array",
+      "summary": "Change the array to display in multiline or not.",
+      "docstring": "Change the array to display in multiline or not.\n\n:Example:\n\n>>> a = item([1, 2, 3])\n>>> print(a.as_string())\n[1, 2, 3]\n>>> print(a.multiline(True).as_string())\n[\n    1,\n    2,\n    3,\n]",
+      "file": "tomlkit/items.py",
+      "line": 1548,
+      "loc": 18,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1567,
+      "loc": 25,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.add_line",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "items",
+          "annotation": "Any",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "indent",
+          "annotation": "str",
+          "default": "'    '",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "comment",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "add_comma",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "newline",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "keyword_only"
+        }
+      ],
+      "returns": "None",
+      "summary": "Add multiple items in a line to control the format precisely. When add_comma is True, only accept actual values and \", \" will be added between values automatically.",
+      "docstring": "Add multiple items in a line to control the format precisely.\nWhen add_comma is True, only accept actual values and\n\", \" will be added between values automatically.\n\n:Example:\n\n>>> a = array()\n>>> a.add_line(1, 2, 3)\n>>> a.add_line(4, 5, 6)\n>>> a.add_line(indent=\"\")\n>>> print(a.as_string())\n[\n    1, 2, 3,\n    4, 5, 6,\n]",
+      "file": "tomlkit/items.py",
+      "line": 1602,
+      "loc": 77,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.clear",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "Clear the array.",
+      "docstring": "Clear the array.",
+      "file": "tomlkit/items.py",
+      "line": 1680,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.sort",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Callable[[Any], Any] | None",
+          "default": "None",
+          "kind": "keyword_only"
+        },
+        {
+          "name": "reverse",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "keyword_only"
+        }
+      ],
+      "returns": "None",
+      "summary": "Sort the array while preserving its formatting.",
+      "docstring": "Sort the array while preserving its formatting.",
+      "file": "tomlkit/items.py",
+      "line": 1686,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.item",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "index",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Item",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1696,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Array.insert",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "pos",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1711,
+      "loc": 66,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Bool.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1079,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Bool.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1083,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Bool.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "bool",
+      "summary": "The wrapped boolean value",
+      "docstring": "The wrapped boolean value",
+      "file": "tomlkit/items.py",
+      "line": 1087,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Bool.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1091,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Comment.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 670,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Comment.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 673,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Date.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "date",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1312,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Date.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1317,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Date.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "date",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1321,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Date.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1324,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Date.replace",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "args",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "Date",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1352,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "DateTime.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "datetime",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1170,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "DateTime.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1188,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "DateTime.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "datetime",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1192,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "DateTime.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1195,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "DateTime.replace",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "args",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "DateTime",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1242,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "DateTime.astimezone",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "tz",
+          "annotation": "tzinfo | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "DateTime",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1245,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Float.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "float",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 922,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Float.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 931,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Float.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "float",
+      "summary": "The wrapped float value",
+      "docstring": "The wrapped float value",
+      "file": "tomlkit/items.py",
+      "line": 935,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Float.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 939,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "InlineTable.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2146,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "InlineTable.append",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "_item",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "InlineTable",
+      "summary": "Appends a (key, item) to the table.",
+      "docstring": "Appends a (key, item) to the table.",
+      "file": "tomlkit/items.py",
+      "line": 2149,
+      "loc": 24,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "InlineTable.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2178,
+      "loc": 108,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Integer.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 699,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Integer.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 708,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Integer.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "The wrapped integer value",
+      "docstring": "The wrapped integer value",
+      "file": "tomlkit/items.py",
+      "line": 712,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Integer.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 716,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Key.is_dotted",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "If the key is followed by other keys",
+      "docstring": "If the key is followed by other keys",
+      "file": "tomlkit/items.py",
+      "line": 449,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Key.concat",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "other",
+          "annotation": "Key",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "DottedKey",
+      "summary": "Concatenate keys into a dotted key",
+      "docstring": "Concatenate keys into a dotted key",
+      "file": "tomlkit/items.py",
+      "line": 456,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Key.is_multi",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "Check if the key contains multiple keys",
+      "docstring": "Check if the key contains multiple keys",
+      "file": "tomlkit/items.py",
+      "line": 461,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Key.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "The TOML representation",
+      "docstring": "The TOML representation",
+      "file": "tomlkit/items.py",
+      "line": 465,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "SingleKey.delimiter",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "str",
+      "summary": "The delimiter: double quote/single quote/none",
+      "docstring": "The delimiter: double quote/single quote/none",
+      "file": "tomlkit/items.py",
+      "line": 510,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "SingleKey.is_bare",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "Check if the key is bare",
+      "docstring": "Check if the key is bare",
+      "file": "tomlkit/items.py",
+      "line": 514,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "String.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2340,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "String.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2344,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "String.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2348,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "String.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2351,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "String.type",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "StringType",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2355,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "String.from_raw",
+      "module": "tomlkit.api",
+      "kind": "classmethod",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "type_",
+          "annotation": "StringType",
+          "default": "StringType.SLB",
+          "kind": "positional"
+        },
+        {
+          "name": "escape",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "positional"
+        }
+      ],
+      "returns": "String",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2377,
+      "loc": 24,
+      "n_overloads": 0,
+      "decorators": [
+        "classmethod"
+      ]
+    },
+    {
+      "qualname": "Table.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2002,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Table.append",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "_item",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Table",
+      "summary": "Appends a (key, item) to the table.",
+      "docstring": "Appends a (key, item) to the table.",
+      "file": "tomlkit/items.py",
+      "line": 2015,
+      "loc": 32,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Table.raw_append",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "_item",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Table",
+      "summary": "Similar to :meth:`append` but does not copy indentation.",
+      "docstring": "Similar to :meth:`append` but does not copy indentation.",
+      "file": "tomlkit/items.py",
+      "line": 2048,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Table.is_aot_element",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "True if the table is the direct child of an AOT element.",
+      "docstring": "True if the table is the direct child of an AOT element.",
+      "file": "tomlkit/items.py",
+      "line": 2064,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Table.is_super_table",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "A super table is the intermediate parent of a nested table as in [a.b.c]. If true, it won't appear in the TOML representation.",
+      "docstring": "A super table is the intermediate parent of a nested table as in [a.b.c].\nIf true, it won't appear in the TOML representation.",
+      "file": "tomlkit/items.py",
+      "line": 2068,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Table.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2091,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Table.indent",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indent",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Table",
+      "summary": "Indent the table with given number of spaces.",
+      "docstring": "Indent the table with given number of spaces.",
+      "file": "tomlkit/items.py",
+      "line": 2096,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Table.invalidate_display_name",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "Call ``invalidate_display_name`` on the contained tables",
+      "docstring": "Call ``invalidate_display_name`` on the contained tables",
+      "file": "tomlkit/items.py",
+      "line": 2112,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Time.unwrap",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "time",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1397,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Time.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1402,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Time.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "time",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1406,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Time.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1409,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Time.replace",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "args",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "Time",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1412,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Trivia.copy",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "Trivia",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 415,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Whitespace.s",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 634,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Whitespace.value",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "str",
+      "summary": "The wrapped string of the whitespace",
+      "docstring": "The wrapped string of the whitespace",
+      "file": "tomlkit/items.py",
+      "line": 638,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Whitespace.trivia",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "Trivia",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 643,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Whitespace.discriminant",
+      "module": "tomlkit.api",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 647,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Whitespace.is_fixed",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "If the whitespace is fixed, it can't be merged or discarded from the output.",
+      "docstring": "If the whitespace is fixed, it can't be merged or discarded from the output.",
+      "file": "tomlkit/items.py",
+      "line": 650,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Whitespace.as_string",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 654,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.extract",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "Extracts the value between marker and index",
+      "docstring": "Extracts the value between marker and index",
+      "file": "tomlkit/parser.py",
+      "line": 126,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.inc",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "exception",
+          "annotation": "type[ParseError] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Increments the parser if the end of the input has not been reached. Returns whether or not it was able to advance.",
+      "docstring": "Increments the parser if the end of the input has not been reached.\nReturns whether or not it was able to advance.",
+      "file": "tomlkit/parser.py",
+      "line": 132,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.inc_n",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "n",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "exception",
+          "annotation": "type[ParseError] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Increments the parser by n characters if the end of the input has not been reached.",
+      "docstring": "Increments the parser by n characters\nif the end of the input has not been reached.",
+      "file": "tomlkit/parser.py",
+      "line": 139,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.consume",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "chars",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "min",
+          "annotation": "int",
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "max",
+          "annotation": "int",
+          "default": "-1",
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Consume chars until min/max is satisfied is valid.",
+      "docstring": "Consume chars until min/max is satisfied is valid.",
+      "file": "tomlkit/parser.py",
+      "line": 146,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.end",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "Returns True if the parser has reached the end of the input.",
+      "docstring": "Returns True if the parser has reached the end of the input.",
+      "file": "tomlkit/parser.py",
+      "line": 152,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.mark",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "Sets the marker to the index's current position",
+      "docstring": "Sets the marker to the index's current position",
+      "file": "tomlkit/parser.py",
+      "line": 158,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.parse_error",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [
+        {
+          "name": "exception",
+          "annotation": "type[ParseError]",
+          "default": "ParseError",
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": "Any",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "Any",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "ParseError",
+      "summary": "Creates a generic \"parse error\" at the current position.",
+      "docstring": "Creates a generic \"parse error\" at the current position.",
+      "file": "tomlkit/parser.py",
+      "line": 164,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Parser.parse",
+      "module": "tomlkit.api",
+      "kind": "method",
+      "params": [],
+      "returns": "TOMLDocument",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/parser.py",
+      "line": 175,
+      "loc": 39,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "decode",
+      "module": "tomlkit.container",
+      "kind": "function",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "encodings",
+          "annotation": "list[str] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/_compat.py",
+      "line": 10,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "merge_dicts",
+      "module": "tomlkit.container",
+      "kind": "function",
+      "params": [
+        {
+          "name": "d1",
+          "annotation": "dict[str, Any]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "d2",
+          "annotation": "dict[str, Any]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/_utils.py",
+      "line": 160,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.trivia",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "Trivia",
+      "summary": "The trivia element associated with this item",
+      "docstring": "The trivia element associated with this item",
+      "file": "tomlkit/items.py",
+      "line": 560,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Item.discriminant",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 565,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Item.as_string",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "The TOML representation",
+      "docstring": "The TOML representation",
+      "file": "tomlkit/items.py",
+      "line": 568,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.value",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "Any",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 573,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Item.unwrap",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "Any",
+      "summary": "Returns as pure python object (ppo)",
+      "docstring": "Returns as pure python object (ppo)",
+      "file": "tomlkit/items.py",
+      "line": 576,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.comment",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [
+        {
+          "name": "comment",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Item",
+      "summary": "Attach a comment to this item",
+      "docstring": "Attach a comment to this item",
+      "file": "tomlkit/items.py",
+      "line": 582,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.indent",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indent",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Item",
+      "summary": "Indent this item with given number of spaces",
+      "docstring": "Indent this item with given number of spaces",
+      "file": "tomlkit/items.py",
+      "line": 593,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.is_boolean",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 602,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.is_table",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 605,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.is_inline_table",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 608,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Item.is_aot",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 611,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Null.unwrap",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2523,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Null.discriminant",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2527,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Null.value",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2531,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Null.as_string",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 2534,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "StringType.select",
+      "module": "tomlkit.container",
+      "kind": "classmethod",
+      "params": [
+        {
+          "name": "literal",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "multiline",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "StringType",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 324,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": [
+        "classmethod"
+      ]
+    },
+    {
+      "qualname": "StringType.escaped_sequences",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "Collection[str]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 333,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "StringType.invalid_sequences",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "Collection[str]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 338,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "StringType.unit",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 345,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "StringType.is_basic",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 348,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "StringType.is_literal",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 351,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "StringType.is_singleline",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 354,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "StringType.is_multiline",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 357,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "StringType.toggle",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "StringType",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 360,
+      "loc": 7,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "OutOfOrderTableProxy.validate",
+      "module": "tomlkit.container",
+      "kind": "staticmethod",
+      "params": [
+        {
+          "name": "container",
+          "annotation": "Container",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "indices",
+          "annotation": "tuple[int, ...]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "temp_container",
+          "annotation": "Container | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Container",
+      "summary": "Validate out of order tables in the given container",
+      "docstring": "Validate out of order tables in the given container",
+      "file": "tomlkit/container.py",
+      "line": 1102,
+      "loc": 27,
+      "n_overloads": 0,
+      "decorators": [
+        "staticmethod"
+      ]
+    },
+    {
+      "qualname": "OutOfOrderTableProxy.unwrap",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [],
+      "returns": "dict[str, Any]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 1189,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "OutOfOrderTableProxy.value",
+      "module": "tomlkit.container",
+      "kind": "property",
+      "params": [],
+      "returns": "dict[str, Any]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 1193,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "OutOfOrderTableProxy.setdefault",
+      "module": "tomlkit.container",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "default",
+          "annotation": "Any",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "Any",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 1299,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ends_with_whitespace",
+      "module": "tomlkit.container",
+      "kind": "function",
+      "params": [
+        {
+          "name": "it",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Returns ``True`` if the given item ``it`` is a ``Table`` or ``AoT`` object ending with a ``Whitespace``.",
+      "docstring": "Returns ``True`` if the given item ``it`` is a ``Table`` or ``AoT`` object\nending with a ``Whitespace``.",
+      "file": "tomlkit/container.py",
+      "line": 1305,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ParseError.line",
+      "module": "tomlkit.exceptions",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/exceptions.py",
+      "line": 27,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "ParseError.col",
+      "module": "tomlkit.exceptions",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/exceptions.py",
+      "line": 31,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "escape_string",
+      "module": "tomlkit.items",
+      "kind": "function",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "escape_sequences",
+          "annotation": "Collection[str]",
+          "default": "_basic_escapes",
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/_utils.py",
+      "line": 144,
+      "loc": 14,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.unwrap",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [],
+      "returns": "dict[str, Any]",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1865,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.value",
+      "module": "tomlkit.items",
+      "kind": "property",
+      "params": [],
+      "returns": "container.Container",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1873,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "AbstractTable.append",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "AT",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1882,
+      "loc": 2,
+      "n_overloads": 2,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.add",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str | Comment | Whitespace",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "value",
+          "annotation": "Any | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "AT",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1891,
+      "loc": 14,
+      "n_overloads": 2,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.remove",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "AT",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1906,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.item",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Item | OutOfOrderTableProxy",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1917,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.setdefault",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [
+        {
+          "name": "key",
+          "annotation": "Key | str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "default",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "Any",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1920,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "AbstractTable.copy",
+      "module": "tomlkit.items",
+      "kind": "method",
+      "params": [],
+      "returns": "AT",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 1927,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.reset",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/source.py",
+      "line": 96,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.state",
+      "module": "tomlkit.parser",
+      "kind": "property",
+      "params": [],
+      "returns": "_StateHandler",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/source.py",
+      "line": 104,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Source.idx",
+      "module": "tomlkit.parser",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/source.py",
+      "line": 108,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Source.current",
+      "module": "tomlkit.parser",
+      "kind": "property",
+      "params": [],
+      "returns": "str",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/source.py",
+      "line": 112,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Source.marker",
+      "module": "tomlkit.parser",
+      "kind": "property",
+      "params": [],
+      "returns": "int",
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/source.py",
+      "line": 116,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "Source.extract",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [],
+      "returns": "str",
+      "summary": "Extracts the value between marker and index",
+      "docstring": "Extracts the value between marker and index",
+      "file": "tomlkit/source.py",
+      "line": 119,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.inc",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "exception",
+          "annotation": "type[ParseError] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Increments the parser if the end of the input has not been reached. Returns whether or not it was able to advance.",
+      "docstring": "Increments the parser if the end of the input has not been reached.\nReturns whether or not it was able to advance.",
+      "file": "tomlkit/source.py",
+      "line": 125,
+      "loc": 18,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.advance_while",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "charset",
+          "annotation": "frozenset",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Advance while the current character is in ``charset``.",
+      "docstring": "Advance while the current character is in ``charset``.\n\nEquivalent to ``while self.current in charset and self.inc(): pass`` but\nit scans the underlying string in a single pass and updates the index\nand current character only once, instead of paying a per-character\n``inc()`` call. On return ``current`` is the first character NOT in\n``charset`` (or EOF). Returns ``True`` if it stopped on a real\ncharacter, ``False`` at EOF \u2014 the same value contract as the loop.",
+      "file": "tomlkit/source.py",
+      "line": 144,
+      "loc": 21,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.advance_until",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "stopset",
+          "annotation": "frozenset",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Advance while the current character is NOT in ``stopset``.",
+      "docstring": "Advance while the current character is NOT in ``stopset``.\n\nThe mirror of :meth:`advance_while`: equivalent to\n``while self.current not in stopset and self.inc(): pass`` in a single\nscan. On return ``current`` is the first character IN ``stopset`` (or\nEOF), with the same return-value contract.",
+      "file": "tomlkit/source.py",
+      "line": 166,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.inc_n",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "n",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "exception",
+          "annotation": "type[ParseError] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Increments the parser by n characters if the end of the input has not been reached.",
+      "docstring": "Increments the parser by n characters\nif the end of the input has not been reached.",
+      "file": "tomlkit/source.py",
+      "line": 186,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.consume",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "chars",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "min",
+          "annotation": "int",
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "max",
+          "annotation": "int",
+          "default": "-1",
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Consume chars until min/max is satisfied is valid.",
+      "docstring": "Consume chars until min/max is satisfied is valid.",
+      "file": "tomlkit/source.py",
+      "line": 193,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.end",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [],
+      "returns": "bool",
+      "summary": "Returns True if the parser has reached the end of the input.",
+      "docstring": "Returns True if the parser has reached the end of the input.",
+      "file": "tomlkit/source.py",
+      "line": 207,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.mark",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "Sets the marker to the index's current position",
+      "docstring": "Sets the marker to the index's current position",
+      "file": "tomlkit/source.py",
+      "line": 213,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Source.parse_error",
+      "module": "tomlkit.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "exception",
+          "annotation": "type[ParseError]",
+          "default": "ParseError",
+          "kind": "positional"
+        },
+        {
+          "name": "args",
+          "annotation": "Any",
+          "default": null,
+          "kind": "var_positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "Any",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": "ParseError",
+      "summary": "Creates a generic \"parse error\" at the current position.",
+      "docstring": "Creates a generic \"parse error\" at the current position.",
+      "file": "tomlkit/source.py",
+      "line": 219,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TOMLFile.read",
+      "module": "tomlkit.toml_file",
+      "kind": "method",
+      "params": [],
+      "returns": "TOMLDocument",
+      "summary": "Read the file content as a :class:`tomlkit.toml_document.TOMLDocument`.",
+      "docstring": "Read the file content as a :class:`tomlkit.toml_document.TOMLDocument`.",
+      "file": "tomlkit/toml_file.py",
+      "line": 29,
+      "loc": 18,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "TOMLFile.write",
+      "module": "tomlkit.toml_file",
+      "kind": "method",
+      "params": [
+        {
+          "name": "data",
+          "annotation": "TOMLDocument",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Write the TOMLDocument to the file.",
+      "docstring": "Write the TOMLDocument to the file.",
+      "file": "tomlkit/toml_file.py",
+      "line": 48,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    }
+  ],
+  "classes": {
+    "Container": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "parsed",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A container for items within a TOMLDocument.",
+      "docstring": "A container for items within a TOMLDocument.\n\nThis class implements the `dict` interface with copy/deepcopy protocol.",
+      "file": "tomlkit/container.py",
+      "line": 105,
+      "loc": 993
+    },
+    "AoT": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "body",
+          "annotation": "list[Table]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "name",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "parsed",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "An array of table literal",
+      "docstring": "An array of table literal",
+      "file": "tomlkit/items.py",
+      "line": 2403,
+      "loc": 110
+    },
+    "Array": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "list[Item]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "multiline",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "An array literal",
+      "docstring": "An array literal",
+      "file": "tomlkit/items.py",
+      "line": 1479,
+      "loc": 372
+    },
+    "Bool": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "t",
+          "annotation": "int | BoolType",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "A boolean literal.",
+      "docstring": "A boolean literal.",
+      "file": "tomlkit/items.py",
+      "line": 1069,
+      "loc": 47
+    },
+    "Comment": {
+      "module": "tomlkit.api",
+      "params": null,
+      "summary": "A comment literal.",
+      "docstring": "A comment literal.",
+      "file": "tomlkit/items.py",
+      "line": 664,
+      "loc": 16
+    },
+    "Date": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "year",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "month",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "day",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": "''",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A date literal.",
+      "docstring": "A date literal.",
+      "file": "tomlkit/items.py",
+      "line": 1285,
+      "loc": 77
+    },
+    "DateTime": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "year",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "month",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "day",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "hour",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "minute",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "second",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "microsecond",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "tzinfo",
+          "annotation": "tzinfo | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "raw",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "fold",
+          "annotation": "int",
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": "object",
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "summary": "A datetime literal.",
+      "docstring": "A datetime literal.",
+      "file": "tomlkit/items.py",
+      "line": 1118,
+      "loc": 165
+    },
+    "Float": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "float",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "A float literal.",
+      "docstring": "A float literal.",
+      "file": "tomlkit/items.py",
+      "line": 905,
+      "loc": 162
+    },
+    "InlineTable": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "container.Container",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "new",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "An inline table literal.",
+      "docstring": "An inline table literal.",
+      "file": "tomlkit/items.py",
+      "line": 2133,
+      "loc": 189
+    },
+    "Integer": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "An integer literal.",
+      "docstring": "An integer literal.",
+      "file": "tomlkit/items.py",
+      "line": 682,
+      "loc": 221
+    },
+    "Key": {
+      "module": "tomlkit.api",
+      "params": null,
+      "summary": "Base class for a key",
+      "docstring": "Base class for a key",
+      "file": "tomlkit/items.py",
+      "line": 432,
+      "loc": 42
+    },
+    "SingleKey": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "k",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "t",
+          "annotation": "KeyType | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "sep",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "original",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A single key",
+      "docstring": "A single key",
+      "file": "tomlkit/items.py",
+      "line": 476,
+      "loc": 50
+    },
+    "String": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "t",
+          "annotation": "StringType",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "_",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "original",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "A string literal.",
+      "docstring": "A string literal.",
+      "file": "tomlkit/items.py",
+      "line": 2324,
+      "loc": 77
+    },
+    "Table": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "container.Container",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "is_aot_element",
+          "annotation": "bool",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "is_super_table",
+          "annotation": "bool | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "name",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "display_name",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A table literal.",
+      "docstring": "A table literal.",
+      "file": "tomlkit/items.py",
+      "line": 1980,
+      "loc": 151
+    },
+    "Time": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "hour",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "minute",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "second",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "microsecond",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "tzinfo",
+          "annotation": "tzinfo | None",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia | None",
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "raw",
+          "annotation": "str",
+          "default": "''",
+          "kind": "positional"
+        },
+        {
+          "name": "fold",
+          "annotation": "int",
+          "default": "0",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A time literal.",
+      "docstring": "A time literal.",
+      "file": "tomlkit/items.py",
+      "line": 1364,
+      "loc": 77
+    },
+    "Trivia": {
+      "module": "tomlkit.api",
+      "params": null,
+      "summary": "Trivia information (aka metadata).",
+      "docstring": "Trivia information (aka metadata).",
+      "file": "tomlkit/items.py",
+      "line": 401,
+      "loc": 16
+    },
+    "Whitespace": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "fixed",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "A whitespace literal.",
+      "docstring": "A whitespace literal.",
+      "file": "tomlkit/items.py",
+      "line": 624,
+      "loc": 38
+    },
+    "Parser": {
+      "module": "tomlkit.api",
+      "params": [
+        {
+          "name": "string",
+          "annotation": "str | bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "Parser for TOML documents.",
+      "docstring": "Parser for TOML documents.",
+      "file": "tomlkit/parser.py",
+      "line": 93,
+      "loc": 1209
+    },
+    "Item": {
+      "module": "tomlkit.container",
+      "params": [
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "An item within a TOML document.",
+      "docstring": "An item within a TOML document.",
+      "file": "tomlkit/items.py",
+      "line": 551,
+      "loc": 71
+    },
+    "Null": {
+      "module": "tomlkit.container",
+      "params": [],
+      "summary": "A null item.",
+      "docstring": "A null item.",
+      "file": "tomlkit/items.py",
+      "line": 2515,
+      "loc": 24
+    },
+    "StringType": {
+      "module": "tomlkit.container",
+      "params": null,
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/items.py",
+      "line": 313,
+      "loc": 54
+    },
+    "OutOfOrderTableProxy": {
+      "module": "tomlkit.container",
+      "params": [
+        {
+          "name": "container",
+          "annotation": "Container",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "indices",
+          "annotation": "tuple[int, ...]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/container.py",
+      "line": 1100,
+      "loc": 203
+    },
+    "ParseError": {
+      "module": "tomlkit.exceptions",
+      "params": [
+        {
+          "name": "line",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "col",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "message",
+          "annotation": "str | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "This error occurs when the parser encounters a syntax error in the TOML being parsed. The error references the line and location within the line where the error was encountered.",
+      "docstring": "This error occurs when the parser encounters a syntax error\nin the TOML being parsed. The error references the line and\nlocation within the line where the error was encountered.",
+      "file": "tomlkit/exceptions.py",
+      "line": 10,
+      "loc": 23
+    },
+    "AbstractTable": {
+      "module": "tomlkit.items",
+      "params": [
+        {
+          "name": "value",
+          "annotation": "container.Container",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trivia",
+          "annotation": "Trivia",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "Common behaviour of both :class:`Table` and :class:`InlineTable`",
+      "docstring": "Common behaviour of both :class:`Table` and :class:`InlineTable`",
+      "file": "tomlkit/items.py",
+      "line": 1853,
+      "loc": 125
+    },
+    "Source": {
+      "module": "tomlkit.parser",
+      "params": [
+        {
+          "name": "_",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "tomlkit/source.py",
+      "line": 76,
+      "loc": 170
+    },
+    "TOMLFile": {
+      "module": "tomlkit.toml_file",
+      "params": [
+        {
+          "name": "path",
+          "annotation": "_StrPath",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "Represents a TOML file.",
+      "docstring": "Represents a TOML file.\n\n:param path: path to the TOML file",
+      "file": "tomlkit/toml_file.py",
+      "line": 18,
+      "loc": 42
+    }
+  }
+}

@@ -1,0 +1,271 @@
+{
+ "url": "https://github.com/pallets/itsdangerous",
+ "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+ "package": "itsdangerous",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "itsdangerous-sample",
+ "toolset": "toolsets/generated/itsdangerous-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "create_serializer",
+   "wraps": "itsdangerous.Serializer",
+   "description": "Creates a new serializer instance with the given secret key and optional salt. secret_key: The secret key to sign and verify with. Can be a list of keys, oldest to newest, to support key rotation. salt: Extra key to combine with secret_key to distinguish signatures in different contexts. Example: create_serializer('my-secret-key', 'session-context') -> Serializer instance.",
+   "verified": false,
+   "direct_call": "itsdangerous.Serializer(secret_key=secret_key, salt=salt)",
+   "samples": [
+    {
+     "secret_key": "my_secret_key",
+     "salt": "my_salt"
+    },
+    {
+     "secret_key": "another_secret_key"
+    },
+    {
+     "secret_key": [
+      "key1",
+      "key2"
+     ],
+     "salt": "context_salt"
+    },
+    {
+     "secret_key": "test_key",
+     "salt": ""
+    },
+    {
+     "secret_key": "",
+     "salt": "empty_key_test"
+    }
+   ]
+  },
+  {
+   "name": "serialize_and_sign",
+   "wraps": "itsdangerous.Serializer.dumps",
+   "description": "Serialize an object and sign it with the provided secret key. secret_key: The secret key used for signing, obj: The object to serialize and sign, salt: A salt value to use when signing. Example: serialize_and_sign('secret', {'key': 'value'}) -> 'eyJrZXkiOiAidmFsdWUifQ.XYz123...'\"\n    \n    Args:\n        secret_key: The secret key used for signing the serialized data\n        obj: The object to serialize and sign\n        salt: A salt value to use when signing\n        \n    Returns:\n        A signed string serialized with the internal serializer\n        \n    Raises:\n        ValueError: If the serialization fails\n    ",
+   "verified": true,
+   "direct_call": "itsdangerous.Serializer(secret_key, salt=salt).dumps(obj)",
+   "samples": [
+    {
+     "secret_key": "my_secret_key",
+     "obj": {
+      "username": "john_doe",
+      "role": "admin"
+     },
+     "salt": "session"
+    },
+    {
+     "secret_key": "another_secret",
+     "obj": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "salt": "data"
+    },
+    {
+     "secret_key": "test_key",
+     "obj": "simple_string_value",
+     "salt": null
+    },
+    {
+     "secret_key": "key_with_special_chars_!@#",
+     "obj": {
+      "nested": {
+       "value": 42
+      }
+     },
+     "salt": "custom_salt"
+    },
+    {
+     "secret_key": "",
+     "obj": {},
+     "salt": ""
+    }
+   ]
+  },
+  {
+   "name": "deserialize_without_verification",
+   "wraps": "itsdangerous.Serializer.loads_unsafe",
+   "description": "Deserializes a signed string without verifying the signature. secret_key: The secret key used for signing and verification, signed_string: The signed string to deserialize without verification, salt: Salt to use for the serializer. Returns a dictionary with 'signature_valid' (bool) and 'payload' (str or None).",
+   "verified": true,
+   "direct_call": "itsdangerous.Serializer(secret_key=secret_key, salt=salt).loads_unsafe(signed_string)",
+   "samples": [
+    {
+     "secret_key": "my_secret_key",
+     "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+     "salt": "itsdangerous"
+    },
+    {
+     "secret_key": "another_secret",
+     "signed_string": "fake_signed_data",
+     "salt": "custom_salt"
+    },
+    {
+     "secret_key": "test_key",
+     "signed_string": "valid_signature_here",
+     "salt": null
+    },
+    {
+     "secret_key": "",
+     "signed_string": "empty_key_test",
+     "salt": "default"
+    }
+   ]
+  },
+  {
+   "name": "create_timed_serializer",
+   "wraps": "itsdangerous.TimedSerializer",
+   "description": "Create a timed serializer for signing and verifying data with expiration. secret_key: The secret key used for signing and verifying signatures. salt: A salt value to use for the signer. serializer: The serializer to wrap; defaults to JSONSerializer. Returns a dictionary with the serializer's representation.",
+   "verified": false,
+   "direct_call": "itsdangerous.TimedSerializer(secret_key, salt=salt, serializer=serializer)",
+   "samples": [
+    {
+     "secret_key": "my_secret_key",
+     "salt": "custom_salt"
+    },
+    {
+     "secret_key": "another_secret",
+     "salt": "default_salt"
+    },
+    {
+     "secret_key": "simple_key"
+    },
+    {
+     "secret_key": "key_with_special_chars_!@#",
+     "serializer": null
+    },
+    {
+     "secret_key": ""
+    }
+   ]
+  },
+  {
+   "name": "create_signer",
+   "wraps": "itsdangerous.Signer",
+   "description": "Creates a new signer instance with the given secret key and optional salt.\n    \n    Args:\n        secret_key (str | list[str]): The secret key to sign and verify with. Can be a \n                                     list of keys, oldest to newest, to support key rotation.\n        salt (str, optional): Extra key to combine with secret_key to distinguish \n                             signatures in different contexts.\n    \n    Returns:\n        str: String representation of the signer instance.\n        \n    Example:\n        >>> create_signer(\"my-secret-key\", \"context-salt\")\n        \"<itsdangerous.Signer object at 0x...>\"\n    ",
+   "verified": false,
+   "direct_call": "itsdangerous.Signer(secret_key=secret_key, salt=salt)",
+   "samples": [
+    {
+     "secret_key": "my_secret_key",
+     "salt": "custom_salt"
+    },
+    {
+     "secret_key": "another_secret",
+     "salt": "itsdangerous.Signer"
+    },
+    {
+     "secret_key": "key1",
+     "salt": "context1"
+    },
+    {
+     "secret_key": [
+      "key1",
+      "key2"
+     ],
+     "salt": "rotation_salt"
+    }
+   ]
+  },
+  {
+   "name": "sign_data",
+   "wraps": "itsdangerous.Signer.sign",
+   "description": "Signs the given string. secret_key: The secret key used for signing, e.g. 'my_secret_key' -> 'hello.world.signature'. value: The string or bytes value to sign, e.g. 'hello.world'.",
+   "verified": true,
+   "direct_call": "itsdangerous.Signer(secret_key).sign(value)",
+   "samples": [
+    {
+     "secret_key": "my_secret_key",
+     "value": "Hello, World!"
+    },
+    {
+     "secret_key": "another_secret",
+     "value": "Test message"
+    },
+    {
+     "secret_key": "key123",
+     "value": ""
+    },
+    {
+     "secret_key": "test_key",
+     "value": "Special chars: !@#$%^&*()"
+    },
+    {
+     "secret_key": "invalid_key",
+     "value": "Valid value"
+    }
+   ]
+  },
+  {
+   "name": "verify_signature_only",
+   "wraps": "itsdangerous.Signer.verify_signature",
+   "description": "Verifies the signature for the given value. value: the value to verify the signature for, signature: the signature to verify against the value, secret_key: the secret key used for signing. Example: verify_signature_only('hello', 'sig', 'key') -> True.",
+   "verified": true,
+   "direct_call": "itsdangerous.Signer(secret_key=secret_key).verify_signature(value, signature)",
+   "samples": [
+    {
+     "value": "hello world",
+     "signature": "SGVsbG8gV29ybGQ",
+     "secret_key": "my_secret"
+    },
+    {
+     "value": "test data",
+     "signature": "VGVzdCBEYXRh",
+     "secret_key": "another_key"
+    },
+    {
+     "value": "",
+     "signature": "AA",
+     "secret_key": "empty_value_key"
+    },
+    {
+     "value": "12345",
+     "signature": "MTIzNDU",
+     "secret_key": "numeric_key"
+    },
+    {
+     "value": "invalid signature test",
+     "signature": "invalid_signature",
+     "secret_key": "valid_key"
+    }
+   ]
+  },
+  {
+   "name": "base64_encode_url_safe",
+   "wraps": "itsdangerous.base64_encode",
+   "description": "Base64 encode a string of bytes or text. The resulting bytes are safe to use in URLs. string: The string or bytes to encode using URL-safe base64 encoding, e.g. 'hello' -> 'aGVsbG8'.",
+   "verified": true,
+   "direct_call": "itsdangerous.base64_encode(string)",
+   "samples": [
+    {
+     "string": "hello world"
+    },
+    {
+     "string": "Hello, World!"
+    },
+    {
+     "string": ""
+    },
+    {
+     "string": "a"
+    },
+    {
+     "string": "1234567890"
+    },
+    {
+     "string": "Special chars: !@#$%^&*()"
+    }
+   ]
+  }
+ ]
+}

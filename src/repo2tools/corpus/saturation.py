@@ -85,23 +85,35 @@ def exponent(candidates: list[int], groups: list[float]) -> float | None:
 
 
 def curve(by_repo: list, threshold: float, orders: int, seed: int = 0) -> dict:
-    """Groups after k repositories, over random orders of the repositories: mean, smallest and largest, and the exponent."""
+    """Groups after k repositories, over random orders of the repositories.
+
+    `seen_before`: of the distinct things the k-th repository has, the share that an earlier repository already
+    had. This is the part of the repetition that comes from other repositories; candidates that repeat each
+    other inside one repository are not counted in it.
+    """
     import numpy as np
 
     rng = random.Random(seed)
-    runs, sizes = [], []
+    own = [count_groups([v], threshold)[0] for v in by_repo]  # distinct things in each repository on its own
+    runs, sizes, seen = [], [], []
     for _ in range(orders):
         order = list(range(len(by_repo)))
         rng.shuffle(order)
-        runs.append(count_groups([by_repo[i] for i in order], threshold))
+        counts = count_groups([by_repo[i] for i in order], threshold)
+        new = np.diff([0, *counts])
+        runs.append(counts)
         sizes.append(np.cumsum([len(by_repo[i]) for i in order]).tolist())
-    runs_array, sizes_array = np.asarray(runs, dtype=float), np.asarray(sizes, dtype=float)
+        seen.append([1 - min(n / own[i], 1.0) if own[i] else np.nan for n, i in zip(new, order)])
+    runs_array, sizes_array, seen_array = np.asarray(runs, dtype=float), np.asarray(sizes, dtype=float), np.asarray(seen, dtype=float)
     mean, mean_size = runs_array.mean(axis=0), sizes_array.mean(axis=0)
-    tail = max(1, len(by_repo) // 10)  # the last tenth of the repositories
-    new_late = (runs_array[:, -1] - runs_array[:, -tail - 1]) / np.maximum(sizes_array[:, -1] - sizes_array[:, -tail - 1], 1) if len(by_repo) > tail else None
+    tenth = max(1, len(by_repo) // 10)
+    part = lambda block: round(float(np.nanmean(block)), 3) if block.size and not np.all(np.isnan(block)) else None  # noqa: E731
+    new_late = (runs_array[:, -1] - runs_array[:, -tenth - 1]) / np.maximum(sizes_array[:, -1] - sizes_array[:, -tenth - 1], 1) if len(by_repo) > tenth else None
     return {"groups": [round(v, 1) for v in mean.tolist()], "lowest": runs_array.min(axis=0).astype(int).tolist(), "highest": runs_array.max(axis=0).astype(int).tolist(),
-            "candidates": [round(v, 1) for v in mean_size.tolist()], "exponent": exponent(mean_size.tolist(), mean.tolist()),
-            "new_in_last_tenth": round(float(new_late.mean()), 3) if new_late is not None else None}
+            "candidates": [round(v, 1) for v in mean_size.tolist()], "distinct_within_repositories": int(sum(own)),
+            "exponent": exponent(mean_size.tolist(), mean.tolist()),
+            "new_in_last_tenth": round(float(new_late.mean()), 3) if new_late is not None else None,
+            "seen_before_second_tenth": part(seen_array[:, tenth:2 * tenth]), "seen_before_last_tenth": part(seen_array[:, -tenth:])}
 
 
 def similar_pairs(ids: list[str], texts: list[str], repos: list[str], vectors, per_band: int = 10, sample: int = 3000, seed: int = 0) -> dict[str, list[dict]]:
@@ -134,15 +146,18 @@ def report(result: dict) -> str:
              f"{result['repositories']} repositories, embedding model `{result['model']}`, {result['orders']} random orders of the repositories. "
              "A candidate joins a group if its similarity to the group's first member is at least the threshold.", "",
              "Exponent: b in groups = a * candidates^b. 1 means no repetition; smaller means later repositories repeat earlier ones. "
-             "New in the last tenth: of the candidates the last tenth of the repositories bring, the share that starts a new group.", ""]
+             "Distinct inside: the sum of the groups each repository has on its own, so the gap to Candidates is repetition inside repositories "
+             "and the gap to Groups is repetition between them. Seen before: of the distinct things a repository has, the share an earlier "
+             "repository already had, for repositories added early (second tenth) and late (last tenth).", ""]
     for subset, title in (("all", "All candidates"), ("used_in_docs", "Candidates the repository's own documentation uses")):
-        lines += [f"## {title}", "", "| Level | Threshold | Candidates | Groups | Groups per candidate | Exponent | New in the last tenth | " + " | ".join(f"k={k}" for k in marks) + " |",
-                  "| --- | --- | --- | --- | --- | --- | --- | " + " | ".join("---" for _ in marks) + " |"]
+        lines += [f"## {title}", "", "| Level | Threshold | Candidates | Distinct inside | Groups | Exponent | Seen before, early | Seen before, late | " + " | ".join(f"k={k}" for k in marks) + " |",
+                  "| --- | --- | --- | --- | --- | --- | --- | --- | " + " | ".join("---" for _ in marks) + " |"]
         for level in LEVELS:
             for threshold, c in sorted(result["curves"][subset][level].items()):
                 total, groups = c["candidates"][-1], c["groups"][-1]
-                lines.append(f"| {level} | {threshold} | {total:,.0f} | {groups:,.0f} | {groups / max(total, 1):.2f} | {c['exponent']} | "
-                             f"{c['new_in_last_tenth']:.0%} | " + " | ".join(f"{c['groups'][k - 1]:,.0f}" for k in marks) + " |")
+                share = lambda v: "n/a" if v is None else f"{v:.0%}"  # noqa: E731
+                lines.append(f"| {level} | {threshold} | {total:,.0f} | {c['distinct_within_repositories']:,} | {groups:,.0f} | {c['exponent']} | "
+                             f"{share(c['seen_before_second_tenth'])} | {share(c['seen_before_last_tenth'])} | " + " | ".join(f"{c['groups'][k - 1]:,.0f}" for k in marks) + " |")
         lines.append("")
     return "\n".join(lines)
 

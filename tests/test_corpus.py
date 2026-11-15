@@ -237,9 +237,13 @@ def test_the_exponent_tells_repetition_from_growth():
     same = [unit([1, 0, 0], [0, 1, 0])] * 12  # every repository repeats the first
     result = curve(same, threshold=0.9, orders=3)
     assert result["groups"] == [2.0] * 12 and result["candidates"][-1] == 24 and result["exponent"] == 0.0 and result["new_in_last_tenth"] == 0.0
+    assert result["distinct_within_repositories"] == 24 and result["seen_before_second_tenth"] == 1.0 and result["seen_before_last_tenth"] == 1.0
     different = [unit(*np.eye(24, dtype=np.float32)[2 * i:2 * i + 2]) for i in range(12)]  # every repository brings two new directions
     result = curve(different, threshold=0.9, orders=3)
     assert result["groups"][-1] == 24 and result["exponent"] == 1.0 and result["new_in_last_tenth"] == 1.0
+    assert result["seen_before_last_tenth"] == 0.0
+    inside = curve([unit([1, 0], [1, 0.001], [0, 1])] * 2 + [unit([0.6, 0.8])] * 10, threshold=0.9, orders=2)  # repetition inside a repository is kept apart
+    assert inside["candidates"][-1] == 16 and inside["distinct_within_repositories"] == 14 and inside["groups"][-1] == 3
     assert exponent([1, 2], [1, 2]) is None
 
 
@@ -251,7 +255,7 @@ def test_pairs_come_from_different_repositories_and_the_report_reads(tmp_path):
     assert not pairs["0.95 to 1.00"]  # the two nearly equal texts are in the same repository
     result = {"model": "m", "repositories": 12, "orders": 3, "curves": {s: {level: {"0.90": curve([unit([1, 0])] * 12, 0.9, 3)} for level in ("low", "medium", "high")} for s in ("all", "used_in_docs")}}
     text = saturation_report(result)
-    assert "| low | 0.90 | 12 | 1 | 0.08 | 0.0 | 0% | 1 | 1 | 1 | 1 |" in text and "k=12" in text
+    assert "| low | 0.90 | 12 | 12 | 1 | 0.0 | 100% | 100% | 1 | 1 | 1 | 1 |" in text and "k=12" in text
     assert "## low" in pairs_report({"low": pairs})
 
 

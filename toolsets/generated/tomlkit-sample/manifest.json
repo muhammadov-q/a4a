@@ -1,0 +1,757 @@
+{
+ "url": "https://github.com/python-poetry/tomlkit",
+ "commit": "7bf7284dbd622557d9909f8fee017a4cb169a139",
+ "package": "tomlkit",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "tomlkit-sample",
+ "toolset": "toolsets/generated/tomlkit-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "create_aot",
+   "wraps": "tomlkit.api.AoT",
+   "description": "Create an array of table literal. body: A list of table literals, name: The name of the AoT (optional), parsed: Whether the AoT was parsed from a TOML document (optional). Example: create_aot([{\"key\": \"value\"}], \"my_array\") -> [{\"key\": \"value\"}].",
+   "verified": true,
+   "direct_call": "tomlkit.api.AoT(body, name, parsed)",
+   "samples": [
+    {
+     "body": [
+      {
+       "key1": "value1"
+      },
+      {
+       "key2": "value2"
+      }
+     ],
+     "name": "my_array",
+     "parsed": false
+    },
+    {
+     "body": [
+      {
+       "name": "Alice",
+       "age": 30
+      },
+      {
+       "name": "Bob",
+       "age": 25
+      }
+     ],
+     "name": null,
+     "parsed": true
+    },
+    {
+     "body": [],
+     "name": "empty_array",
+     "parsed": false
+    },
+    {
+     "body": [
+      {
+       "single": "entry"
+      }
+     ],
+     "name": "single_entry",
+     "parsed": false
+    },
+    {
+     "body": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      },
+      {
+       "c": 3
+      }
+     ],
+     "name": "multi_entry",
+     "parsed": true
+    }
+   ]
+  },
+  {
+   "name": "create_datetime",
+   "wraps": "tomlkit.api.DateTime",
+   "description": "Create a datetime literal. year: The year component, e.g. 2023. month: The month component, e.g. 12. day: The day component, e.g. 25. hour: The hour component, e.g. 14. minute: The minute component, e.g. 30. second: The second component, e.g. 45. microsecond: The microsecond component, e.g. 123456. tzinfo: Timezone info, e.g. None.",
+   "verified": true,
+   "direct_call": "tomlkit.api.DateTime(year, month, day, hour, minute, second, microsecond, tzinfo)",
+   "samples": [
+    {
+     "year": 2023,
+     "month": 10,
+     "day": 15,
+     "hour": 14,
+     "minute": 30,
+     "second": 45,
+     "microsecond": 123456,
+     "tzinfo": null
+    },
+    {
+     "year": 2020,
+     "month": 2,
+     "day": 29,
+     "hour": 0,
+     "minute": 0,
+     "second": 0,
+     "microsecond": 0,
+     "tzinfo": null
+    },
+    {
+     "year": 1999,
+     "month": 12,
+     "day": 31,
+     "hour": 23,
+     "minute": 59,
+     "second": 59,
+     "microsecond": 999999,
+     "tzinfo": null
+    },
+    {
+     "year": 2023,
+     "month": 1,
+     "day": 1,
+     "hour": 0,
+     "minute": 0,
+     "second": 0,
+     "microsecond": 0,
+     "tzinfo": null
+    },
+    {
+     "year": 2023,
+     "month": 13,
+     "day": 1,
+     "hour": 0,
+     "minute": 0,
+     "second": 0,
+     "microsecond": 0,
+     "tzinfo": null
+    }
+   ]
+  },
+  {
+   "name": "create_integer",
+   "wraps": "tomlkit.api.Integer",
+   "description": "Create an integer literal. value: The integer value for the literal, e.g. 42 -> 42. trivia: Trivia information for the integer literal, e.g. {'comment': 'an integer'} -> str. raw: The raw string representation of the integer, e.g. '0x2A' -> '0x2A'.",
+   "verified": true,
+   "direct_call": "tomlkit.api.Integer(value, trivia, raw)",
+   "samples": [
+    {
+     "value": 42,
+     "trivia": null,
+     "raw": "42"
+    },
+    {
+     "value": -123,
+     "trivia": null,
+     "raw": "-123"
+    },
+    {
+     "value": 0,
+     "trivia": null,
+     "raw": "0"
+    },
+    {
+     "value": 999999,
+     "trivia": null,
+     "raw": "+999999"
+    },
+    {
+     "value": -456,
+     "trivia": null,
+     "raw": "-456"
+    }
+   ]
+  },
+  {
+   "name": "create_single_key",
+   "wraps": "tomlkit.api.SingleKey",
+   "description": "Create a single key. key: The key string for the SingleKey. key_type: The type of the key (Bare or Basic). separator: The separator between key and value. Example: create_single_key('name', 'Bare', ' = ') -> 'name'.",
+   "verified": true,
+   "direct_call": "tomlkit.api.SingleKey(key, key_type, separator, None)",
+   "samples": [
+    {
+     "key": "foo",
+     "key_type": null,
+     "separator": " = "
+    },
+    {
+     "key": "bar",
+     "key_type": null,
+     "separator": " = "
+    },
+    {
+     "key": "baz",
+     "key_type": null,
+     "separator": " = "
+    },
+    {
+     "key": "test-key",
+     "key_type": null,
+     "separator": " = "
+    },
+    {
+     "key": "key with spaces",
+     "key_type": null,
+     "separator": " => "
+    },
+    {
+     "key": "invalid_key",
+     "key_type": null,
+     "separator": " = "
+    }
+   ]
+  },
+  {
+   "name": "create_trivia",
+   "wraps": "tomlkit.api.Trivia",
+   "description": "Create trivia information (metadata). indent: whitespace before a value, e.g. '  ' -> {'indent': '  '}. comment_ws: whitespace after a value but before comment, e.g. '  ' -> {'comment_ws': '  '}. comment: comment starting with #, e.g. '# note' -> {'comment': '# note'}. trail: trailing newline, e.g. '\\n' -> {'trail': '\\n'}.",
+   "verified": true,
+   "direct_call": "tomlkit.api.Trivia(indent=indent, comment_ws=comment_ws, comment=comment, trail=trail)",
+   "samples": [
+    {
+     "indent": "  ",
+     "comment_ws": " ",
+     "comment": "# This is a comment",
+     "trail": "\n"
+    },
+    {
+     "indent": "",
+     "comment_ws": "",
+     "comment": "",
+     "trail": ""
+    },
+    {
+     "indent": "\t",
+     "comment_ws": "\t\t",
+     "comment": "# Another comment",
+     "trail": "\r\n"
+    },
+    {
+     "indent": "    ",
+     "comment_ws": "  ",
+     "comment": "# Final comment",
+     "trail": "\n"
+    },
+    {
+     "indent": "",
+     "comment_ws": "",
+     "comment": "",
+     "trail": "\n"
+    }
+   ]
+  },
+  {
+   "name": "create_whitespace",
+   "wraps": "tomlkit.api.Whitespace",
+   "description": "Create a whitespace literal. s: The whitespace string to wrap, fixed: Whether the whitespace is fixed and cannot be merged or discarded. Example: create_whitespace('   ', True) -> '<Whitespace '   '>'\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.api.Whitespace(s, fixed)",
+   "samples": [
+    {
+     "s": "   ",
+     "fixed": false
+    },
+    {
+     "s": "\t\t",
+     "fixed": true
+    },
+    {
+     "s": " \n ",
+     "fixed": false
+    },
+    {
+     "s": "",
+     "fixed": true
+    },
+    {
+     "s": "  ",
+     "fixed": false
+    }
+   ]
+  },
+  {
+   "name": "make_aot",
+   "wraps": "tomlkit.aot",
+   "description": "Create an array of table.\n    \n    :Example:\n    \n    >>> doc = document()\n    >>> aot = aot()\n    >>> aot.append(item({'x': 1}))\n    >>> doc.append('foo', aot)\n    >>> print(doc.as_string())\n    [[foo]]\n    x = 1\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.aot()",
+   "samples": [
+    {},
+    {},
+    {},
+    {}
+   ]
+  },
+  {
+   "name": "make_comment",
+   "wraps": "tomlkit.comment",
+   "description": "Create a comment item. string: The comment text to create, e.g. 'This is a comment' -> Comment object.",
+   "verified": true,
+   "direct_call": "tomlkit.comment(string)",
+   "samples": [
+    {
+     "string": "This is a single line comment"
+    },
+    {
+     "string": "Line 1\nLine 2\nLine 3"
+    },
+    {
+     "string": ""
+    },
+    {
+     "string": "Comment with # hash symbol"
+    },
+    {
+     "string": "Multi\nline\ncomment\nwith\nnewlines"
+    }
+   ]
+  },
+  {
+   "name": "make_date",
+   "wraps": "tomlkit.date",
+   "description": "Create a TOML date. raw: A date string in RFC 3339 format, e.g. '2023-01-01' -> '2023-01-01'.",
+   "verified": true,
+   "direct_call": "tomlkit.date(raw)",
+   "samples": [
+    {
+     "raw": "2023-01-01"
+    },
+    {
+     "raw": "1999-12-31"
+    },
+    {
+     "raw": "2000-02-29"
+    },
+    {
+     "raw": "2023-01-01T12:00:00Z"
+    },
+    {
+     "raw": "invalid-date"
+    }
+   ]
+  },
+  {
+   "name": "make_document",
+   "wraps": "tomlkit.document",
+   "description": "Returns a new TOMLDocument instance.",
+   "verified": true,
+   "direct_call": "tomlkit.document()",
+   "samples": [
+    {},
+    {}
+   ]
+  },
+  {
+   "name": "dump_to_string",
+   "wraps": "tomlkit.dumps",
+   "description": "\n    Dumps a TOMLDocument into a string.\n    \n    Args:\n        data: A TOML document or mapping to be dumped into a string\n        sort_keys: Whether to sort keys in the output\n    \n    Returns:\n        A string representation of the TOML document\n        \n    Example:\n        >>> dump_to_string({\"key\": \"value\"}, sort_keys=True)\n        'key = \"value\"'\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.dumps(data, sort_keys=sort_keys)",
+   "samples": [
+    {
+     "data": {
+      "key": "value"
+     },
+     "sort_keys": false
+    },
+    {
+     "data": {
+      "z": 1,
+      "a": 2
+     },
+     "sort_keys": true
+    },
+    {
+     "data": {
+      "nested": {
+       "inner": "value"
+      }
+     },
+     "sort_keys": false
+    },
+    {
+     "data": {
+      "table": {
+       "key": "value"
+      }
+     },
+     "sort_keys": true
+    },
+    {
+     "data": "invalid_input",
+     "sort_keys": false
+    }
+   ]
+  },
+  {
+   "name": "make_float_item",
+   "wraps": "tomlkit.float_",
+   "description": "Create an float item from a number or string. raw: A number or string to convert to a float item, e.g. '3.14' -> 3.14.",
+   "verified": true,
+   "direct_call": "tomlkit.float_(raw)",
+   "samples": [
+    {
+     "raw": "3.14"
+    },
+    {
+     "raw": "42"
+    },
+    {
+     "raw": "-17.5"
+    },
+    {
+     "raw": "0"
+    },
+    {
+     "raw": "not_a_number"
+    }
+   ]
+  },
+  {
+   "name": "make_key",
+   "wraps": "tomlkit.key",
+   "description": "Create a key from a string. When a list of string is given, it will create a dotted key.\n    \n    Args:\n        k: A string or list of strings to create a key from\n        \n    Returns:\n        A string representation of the key\n        \n    Example:\n        >>> make_key('foo')\n        'foo'\n        >>> make_key(['bar', 'baz'])\n        'bar.baz'\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.key(k)",
+   "samples": [
+    {
+     "k": "foo"
+    },
+    {
+     "k": [
+      "bar",
+      "baz"
+     ]
+    },
+    {
+     "k": [
+      "a",
+      "b",
+      "c"
+     ]
+    },
+    {
+     "k": [
+      "single"
+     ]
+    },
+    {
+     "k": []
+    }
+   ]
+  },
+  {
+   "name": "parse_string",
+   "wraps": "tomlkit.loads",
+   "description": "Parses a string into a TOMLDocument. string: A TOML-formatted string to parse, e.g. 'a = 1' -> {'a': 1}.",
+   "verified": true,
+   "direct_call": "tomlkit.loads(string)",
+   "samples": [
+    {
+     "string": "key = \"value\"\nnumber = 42"
+    },
+    {
+     "string": "[section]\nkey = \"value\""
+    },
+    {
+     "string": "array = [1, 2, 3]"
+    },
+    {
+     "string": ""
+    },
+    {
+     "string": "invalid = tomldoc"
+    }
+   ]
+  },
+  {
+   "name": "make_newline",
+   "wraps": "tomlkit.nl",
+   "description": "Create a newline item. -> a newline whitespace character",
+   "verified": true,
+   "direct_call": "tomlkit.nl()",
+   "samples": [
+    {},
+    {}
+   ]
+  },
+  {
+   "name": "parse_toml",
+   "wraps": "tomlkit.parse",
+   "description": "\n    Parses a string or bytes into a TOMLDocument.\n    \n    Args:\n        string: A string or bytes containing TOML data to parse, e.g. 'name = \"test\"' -> {\"name\": \"test\"}\n        \n    Returns:\n        A dictionary representation of the parsed TOML data\n        \n    Raises:\n        ValueError: If the input string is not valid TOML format\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.parse(string)",
+   "samples": [
+    {
+     "string": "name = \"test\"\nvalue = 42"
+    },
+    {
+     "string": "title = \"Example\"\n[database]\nserver = \"localhost\""
+    },
+    {
+     "string": ""
+    },
+    {
+     "string": "key = \"value\"\n\n# comment\nanother = 123"
+    },
+    {
+     "string": "invalid = [1, 2, 3"
+    }
+   ]
+  },
+  {
+   "name": "register_custom_encoder",
+   "wraps": "tomlkit.register_encoder",
+   "description": "Add a custom encoder, which should be a function that will be called if the value can't otherwise be converted.\n    \n    The encoder should return a TOMLKit item or raise a ``ConvertError``.\n    \n    Example::\n    \n        @register_custom_encoder\n        def encode_custom_dict(obj, _parent=None, _sort_keys=False):\n            if isinstance(obj, CustomDict):\n                tbl = table()\n                for key, value in obj.items():\n                    # Pass along parameters when encoding nested values\n                    tbl[key] = item(value, _parent=tbl, _sort_keys=_sort_keys)\n                return tbl\n            raise ConvertError(\"Not a CustomDict\")\n    \n    Args:\n        encoder_func: A custom encoder function that takes an object and returns a TOMLKit item or raises ConvertError\n    \n    Returns:\n        The encoder function unchanged\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.register_encoder(encoder_func)",
+   "samples": [
+    {
+     "encoder_func": {
+      "name": "encode_custom_dict",
+      "code": "def encode_custom_dict(obj, _parent=None, _sort_keys=False):\n    if isinstance(obj, dict) and 'custom' in obj:\n        tbl = table()\n        for key, value in obj.items():\n            tbl[key] = item(value, _parent=tbl, _sort_keys=_sort_keys)\n        return tbl\n    raise ConvertError('Not a custom dict')"
+     }
+    },
+    {
+     "encoder_func": {
+      "name": "encode_custom_list",
+      "code": "def encode_custom_list(obj, _parent=None, _sort_keys=False):\n    if isinstance(obj, list) and len(obj) > 0 and obj[0] == 'special':\n        arr = array()\n        for item in obj:\n            arr.append(item)\n        return arr\n    raise ConvertError('Not a special list')"
+     }
+    },
+    {
+     "encoder_func": {
+      "name": "encode_custom_string",
+      "code": "def encode_custom_string(obj, _parent=None, _sort_keys=False):\n    if isinstance(obj, str) and obj.startswith('custom_'):\n        return string(obj)\n    raise ConvertError('Not a custom string')"
+     }
+    },
+    {
+     "encoder_func": {
+      "name": "encode_custom_number",
+      "code": "def encode_custom_number(obj, _parent=None, _sort_keys=False):\n    if isinstance(obj, int) and obj % 2 == 0:\n        return integer(obj)\n    raise ConvertError('Not an even number')"
+     }
+    }
+   ]
+  },
+  {
+   "name": "make_string_item",
+   "wraps": "tomlkit.string",
+   "description": "Create a string item.\n    \n    Creates a TOML string item from the given raw string content.\n    - raw: The raw string content to wrap in a TOML string item\n    - literal: If true, creates a literal string (no escaping)\n    - multiline: If true, creates a multiline string\n    - escape: If false, disables escaping of special characters\n    \n    Example: make_string_item(\"hello world\") -> '\"hello world\"'\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.string(raw, literal=literal, multiline=multiline, escape=escape)",
+   "samples": [
+    {
+     "raw": "hello world"
+    },
+    {
+     "raw": "line1\nline2",
+     "multiline": true
+    },
+    {
+     "raw": "C:\\path\\to\\file",
+     "literal": true
+    },
+    {
+     "raw": "special chars: \"quotes\" and \\backslashes\\",
+     "escape": false
+    },
+    {
+     "raw": "simple"
+    },
+    {
+     "raw": "",
+     "multiline": true
+    }
+   ]
+  },
+  {
+   "name": "make_table",
+   "wraps": "tomlkit.table",
+   "description": "Create an empty table.\n    \n    :param is_super_table: if true, the table is a super table\n    \n    :Example:\n    \n    >>> doc = document()\n    >>> foo = table(True)\n    >>> bar = table()\n    >>> bar.update({'x': 1})\n    >>> foo.append('bar', bar)\n    >>> doc.append('foo', foo)\n    >>> print(doc.as_string())\n    [foo.bar]\n    x = 1\n    ",
+   "verified": true,
+   "direct_call": "tomlkit.table(is_super_table)",
+   "samples": [
+    {
+     "is_super_table": true
+    },
+    {
+     "is_super_table": false
+    },
+    {
+     "is_super_table": null
+    },
+    {
+     "is_super_table": true
+    },
+    {
+     "is_super_table": false
+    }
+   ]
+  },
+  {
+   "name": "unregister_encoder",
+   "wraps": "tomlkit.unregister_encoder",
+   "description": "Unregister a custom encoder. encoder: The custom encoder to unregister, e.g. a callable that was previously registered.",
+   "verified": true,
+   "direct_call": "tomlkit.unregister_encoder(encoder)",
+   "samples": [
+    {
+     "encoder": "custom_encoder_instance"
+    },
+    {
+     "encoder": "another_encoder"
+    },
+    {
+     "encoder": "encoder_with_no_match"
+    },
+    {
+     "encoder": null
+    }
+   ]
+  },
+  {
+   "name": "make_whitespace_from_string",
+   "wraps": "tomlkit.ws",
+   "description": "Create a whitespace from a string. src: the string to create whitespace from, e.g. '   ' -> '   '.",
+   "verified": true,
+   "direct_call": "tomlkit.ws(src)",
+   "samples": [
+    {
+     "src": "   "
+    },
+    {
+     "src": "\t\n\r"
+    },
+    {
+     "src": " \t \n "
+    },
+    {
+     "src": ""
+    },
+    {
+     "src": "hello world"
+    }
+   ]
+  },
+  {
+   "name": "merge_toml_dicts",
+   "wraps": "tomlkit.container.merge_dicts",
+   "description": "Merge two dictionaries, useful for combining TOML configuration data. dict1: The first dictionary to merge into. dict2: The second dictionary to merge from. Example: merge_toml_dicts({'a': 1}, {'b': 2}) -> None, modifies dict1 to {'a': 1, 'b': 2}.",
+   "verified": true,
+   "direct_call": "tomlkit.container.merge_dicts(dict1, dict2)",
+   "samples": [
+    {
+     "dict1": {
+      "a": 1,
+      "b": {
+       "c": 2
+      }
+     },
+     "dict2": {
+      "b": {
+       "d": 3
+      },
+      "e": 4
+     }
+    },
+    {
+     "dict1": {
+      "a": [
+       1,
+       2
+      ],
+      "b": {
+       "c": 2
+      }
+     },
+     "dict2": {
+      "a": [
+       3,
+       4
+      ],
+      "b": {
+       "d": 3
+      }
+     }
+    },
+    {
+     "dict1": {
+      "a": 1,
+      "b": 2
+     },
+     "dict2": {
+      "b": 3,
+      "c": 4
+     }
+    },
+    {
+     "dict1": {
+      "a": {
+       "x": 1
+      }
+     },
+     "dict2": {
+      "a": {
+       "y": 2
+      }
+     }
+    },
+    {
+     "dict1": {
+      "a": [
+       1,
+       2
+      ]
+     },
+     "dict2": {
+      "a": [
+       3,
+       4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "copy_table",
+   "wraps": "tomlkit.items.AbstractTable.copy",
+   "description": "Create a copy of a TOML table. table: A TOML table to copy, e.g. a table from a parsed TOML document -> a new table with same content.",
+   "verified": true,
+   "direct_call": "table.copy()",
+   "samples": [
+    {
+     "table": {
+      "key": "value"
+     }
+    },
+    {
+     "table": {
+      "nested": {
+       "key": "value"
+      }
+     }
+    },
+    {
+     "table": {}
+    },
+    {
+     "table": {
+      "a": 1,
+      "b": 2,
+      "c": 3
+     }
+    }
+   ]
+  }
+ ]
+}
