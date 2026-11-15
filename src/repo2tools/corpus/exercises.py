@@ -66,8 +66,9 @@ def names_of(source: str) -> tuple[set[str], set[str], set[str]]:
         return set(), set(), set()
 
     def root(node) -> str | None:
-        while isinstance(node, (ast.Attribute, ast.Subscript, ast.Call)):
-            node = node.func if isinstance(node, ast.Call) else node.value
+        """The name an attribute or item chain hangs on: `d` in `d.items[0].x`. A call in the chain (`Thing(1).method()`) makes a new object, so it has none."""
+        while isinstance(node, (ast.Attribute, ast.Subscript)):
+            node = node.value
         return node.id if isinstance(node, ast.Name) else None
 
     binds, changes, reads = set(), set(), set()

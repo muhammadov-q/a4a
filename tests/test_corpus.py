@@ -326,6 +326,9 @@ def test_an_example_becomes_a_draft_with_the_lines_it_needs():
     assert setup_for(["a = 1", "b = a + 1", "c = 5", "print(b)", "d = {}", "d['k'] = b"], "d") == ["a = 1", "b = a + 1", "d = {}", "d['k'] = b"]
     assert examples_of("no examples here") == [] and names_of("not python (") == (set(), set(), set())
     assert setup_for(["from shapes import *", "import os", "x = 1"], "parse('1')") == ["from shapes import *"]
+    # a method call on a new object changes nothing that a later line reads
+    assert setup_for(['Square("1").scaled(2)', 'big = Square("9")', "big.scaled(2)", "items = []", "items.append(big)"], 'Square("3").area') == []
+    assert setup_for(["items = []", 'Square("1").scaled(2)', "items.append(1)"], "items") == ["items = []", "items.append(1)"]
 
 
 def test_only_examples_that_run_and_match_the_documentation_are_kept(tmp_path, monkeypatch):
@@ -388,6 +391,9 @@ def test_examples_are_chosen_across_the_number_of_uses():
     assert len(chosen) == 4 and {len(e["uses"]) for e in chosen} == {1, 2, 3}  # one, two and three uses each take a turn; no uses, no answer and a huge input are left out
     assert all(e["id"] not in ("me__shapes-009", "me__shapes-010", "me__shapes-011") for e in choose(pool, per_repo=20)) and len(choose(pool, per_repo=20)) == 8
     assert literals_of('x = parse("2", scale=1.5)\nx.area') == ["2", "1.5"]
+    own_class = example(12, ["a"], steps=("class Mine:\n    pass",), expression="Mine()")
+    with_lambda = example(13, ["a"], expression='parse("2").scaled(lambda x: x)')
+    assert choose([own_class, with_lambda], per_repo=5) == []  # code written for the example cannot be said in plain words
 
 
 def test_a_request_must_carry_the_inputs_and_hide_the_code_and_the_answer():

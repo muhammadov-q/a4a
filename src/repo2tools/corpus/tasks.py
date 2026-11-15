@@ -14,7 +14,8 @@ value and does not see the code. The request must
 A request that fails a check goes back to the LLM with the reason, a few times; then the example is dropped.
 The answer itself is never the LLM's: it stays the verified value.
 
-Only examples that use the public API at least once are taken, and per repository at most `--per-repo`,
+Only examples that use the public API at least once and define no class or function of their own are taken,
+and per repository at most `--per-repo`,
 spread over the number of API elements an example uses (1, 2, 3, ...), because that number is how many tools
 a solution needs.
 
@@ -56,9 +57,13 @@ def choose(examples: list[dict], per_repo: int, seed: int = 0) -> list[dict]:
     by_uses: dict[int, list[dict]] = defaultdict(list)
     for example in examples:
         try:
-            values = literals_of("\n".join([*example["steps"], example["expression"]]))
+            code = "\n".join([*example["steps"], example["expression"]])
+            values = literals_of(code)
+            defines = any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)) for node in ast.walk(ast.parse(code)))
         except (SyntaxError, ValueError):
             continue
+        if defines:
+            continue  # a class or function written for the example cannot be given in plain words
         if example["uses"] and len(values) <= MAX_LITERALS and all(len(v) <= MAX_LITERAL for v in values) and example["answer"] is not None:
             by_uses[len(example["uses"])].append(example)
     rng = random.Random(seed)
