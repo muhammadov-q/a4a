@@ -41,6 +41,7 @@ from repo2tools.evaluation.reference_calls import output_value
 from repo2tools.paths import REPO_ROOT
 from repo2tools.traces.format import add_request, new_trace, read_traces, write_traces
 
+TOPIC = "Python package versions and dependencies"  # what the packaging exercises are about; --topic replaces it
 SYSTEM = {
     "tools": "You solve tasks about Python package versions and dependencies. Use the tools whenever they help; "
              "do not guess what a tool would return. When you are done, reply with only the final answer as a "
@@ -118,7 +119,10 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
     forced = args.mode == "tools" and args.tool_choice != "auto"
     always = args.mode == "tools" and args.tool_choice == "always"
     offered = [*tools, SUBMIT_TOOL] if always else tools
-    system = (getattr(args, "system", None) or SYSTEM[args.mode]) + (SUBMIT_HINT if always else "")  # `repo2tools usability` brings its own
+    system = getattr(args, "system", None) or SYSTEM[args.mode]
+    if getattr(args, "topic", None):  # exercises about another library than packaging
+        system = system.replace(TOPIC, args.topic)
+    system += SUBMIT_HINT if always else ""  # `repo2tools usability` brings its own
     messages = [{"role": "system", "content": system}, *getattr(args, "example_messages", []), {"role": "user", "content": ex["task"]}]
     full_trace = new_trace("model", ex["id"], ex["task"], offered, kind=ex["kind"], horizon=ex["horizon"], model=args.model,
                            tool_set=args.tag or ("none" if args.mode == "none" else "function"),
@@ -214,6 +218,7 @@ def main() -> None:
     parser.add_argument("--limit", type=int, help="only the first N exercises (for a smoke test)")
     parser.add_argument("--horizon", choices=("short", "long"), help="only exercises of this horizon")
     parser.add_argument("--thinking", action="store_true", help="let Qwen3-style models think before answering")
+    parser.add_argument("--topic", help=f"what the exercises are about, for the instruction to the model; default: {TOPIC!r}")
     parser.add_argument("--tag", help="label for the output file name, e.g. the tool set's granularity")
     parser.add_argument("--tool-choice", choices=("auto", "first", "always"), default="auto",
                         help="force tool use: see the top of this file")
