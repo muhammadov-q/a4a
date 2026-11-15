@@ -154,7 +154,7 @@ def collect(root: Path, package_dir: Path, package: str) -> list[dict]:
 
 def run_drafts(box, drafts: list[dict]) -> list[dict] | None:
     """What every draft gives, from one run of the sandboxed worker. None if the worker itself failed."""
-    request = {"items": [{"module": d["module"], "steps": d["steps"], "expression": d["expression"], "printed": d["printed"]} for d in drafts]}
+    request = {"items": [{"module": d["module"], "steps": d["steps"], "expression": d["expression"], "printed": d.get("printed", False)} for d in drafts]}
     try:
         process = subprocess.run(box.command(str(WORKER)), input=json.dumps(request), text=True, capture_output=True,
                                  timeout=BATCH_SECONDS, env=box.clean_env, cwd=box.scratch)
@@ -184,6 +184,22 @@ def dependencies_of(root: Path, package: str) -> list[str]:
         return [r for r in reply.json()["info"].get("requires_dist") or [] if "extra ==" not in r]
     except (httpx.HTTPError, KeyError, ValueError):
         return []
+
+
+def box_for(candidate: dict, set_name: str, clones: Path = CLONES):
+    """The sandboxed environment of a scanned repository: its package and what it needs, and this module's worker allowed to run in it."""
+    root = clones / folder_name(candidate["repo"])
+    base, package, single_file = locate(root, likely_names(candidate))
+    if not single_file and native_code(base / package):
+        raise RuntimeError("the package has compiled code")
+    return pipeline.make_box(set_name, base, package, dependencies_of(root, candidate["package"]), WORKER)
+
+
+def drop_box(set_name: str) -> None:
+    envs = pipeline.CACHE / "envs"  # read when used: tests point the cache at a temporary folder
+    for path in (envs / set_name, envs / f"{set_name}.tmp"):
+        shutil.rmtree(path, ignore_errors=True)
+    (envs / f"{set_name}.sb").unlink(missing_ok=True)
 
 
 def uses_of(draft: dict, api: dict, root: Path) -> list[str]:
@@ -221,7 +237,7 @@ def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = N
         record["drafts"] = len(drafts)
         if not drafts:
             return record | {"seconds": round(time.monotonic() - started, 1)}, []
-        box = pipeline.make_box(set_name, base, package, dependencies_of(root, candidate["package"]), WORKER)
+        box = box_for(candidate, set_name, clones)
         first, second = run_drafts(box, drafts), run_drafts(box, drafts)
         if first is None or second is None:
             raise RuntimeError("the sandboxed run did not finish")
@@ -247,10 +263,7 @@ def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = N
         verified = []
     finally:
         if not keep_environment:
-            envs = pipeline.CACHE / "envs"  # read when used: tests point the cache at a temporary folder
-            for path in (envs / set_name, envs / f"{set_name}.tmp"):
-                shutil.rmtree(path, ignore_errors=True)
-            (envs / f"{set_name}.sb").unlink(missing_ok=True)
+            drop_box(set_name)
     return record | {"seconds": round(time.monotonic() - started, 1)}, verified
 
 

@@ -15,7 +15,7 @@ from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, n
 from repo2tools.corpus.granularity import level_counts, tool_candidates
 from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from repo2tools.corpus.scan import likely_names, report, scan_one
-from repo2tools.corpus.tasks import answer_form, as_exercise, choose, literals_of, report as tasks_report, task_problem, write_tasks
+from repo2tools.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
 from repo2tools.evaluation.exercise_check import check as exercise_check
 from repo2tools.synthesis import pipeline
 from repo2tools.synthesis.scrape import public_api
@@ -425,10 +425,37 @@ def test_tasks_are_written_repaired_or_dropped_and_the_answer_stays_the_verified
     assert as_exercise(example(6, ["a"], answer=["b", "a"], kinds=["set"]), "t")["check"] == {"kind": "set_equal"}
     assert as_exercise(example(7, ["a"], answer=True), "t")["check"] == {"kind": "exact"}
     text = tasks_report([{"package": "shapes", "usable": 3, "chosen": 3, "written": 2, "by_tools": {1: 1, 2: 1}, "dropped": {}}])
-    assert "2 exercises from 1 repositories" in text and "1: 1, 2: 1" in text and "| `shapes` | 3 | 3 | 2 | 1 |" in text
+    assert "2 exercises from 1 repositories" in text and "1: 1, 2: 1" in text and "| `shapes` | 3 | 3 | 2 | 2 |" in text
 
 
 def test_a_number_answer_may_be_written_with_or_without_a_point():
     number = {"answer": 4.0, "check": {"kind": "number"}}
     assert exercise_check(number, 4) and exercise_check(number, 4.0) and not exercise_check(number, 4.1) and not exercise_check(number, "4") and not exercise_check(number, True)
     assert not exercise_check({"answer": 1, "check": {"kind": "number"}}, True) and exercise_check({"answer": 0.1 + 0.2, "check": {"kind": "number"}}, 0.3)
+
+
+def test_a_request_is_kept_only_if_code_written_from_it_gives_the_answer():
+    api = {"callables": [{"module": "shapes", "qualname": "parse", "kind": "function", "params": [{"name": "text"}], "docstring": "Read a square from text.", "summary": ""},
+                         {"module": "shapes", "qualname": "Square.area", "kind": "property", "params": [], "docstring": "The area.", "summary": ""}],
+           "classes": {"Square": {"module": "shapes", "params": [{"name": "text"}], "summary": "A square."}}}
+    reference = reference_of(["shapes.parse", "shapes.Square.area", "Square()", "Square <", "unknown.thing"], api)
+    assert reference.splitlines() == ["- shapes.parse(text) [function]: Read a square from text.", "- shapes.Square.area [property]: The area.",
+                                      "- shapes.Square(text) [class]: A square.", "- objects of shapes.Square can be used with the operator `<`"]
+    assert as_item("from shapes import parse\nsmall = parse('2')\nsmall.area") == {"module": None, "steps": ["from shapes import parse", "small = parse('2')"],
+                                                                                    "expression": "small.area", "printed": False}
+    assert as_item("x = 1") is None and as_item("not python (") is None and as_item(None) is None
+    exercises = [as_exercise(example(n, ["shapes.parse", "shapes.Square.area"]), f"What is the area of the square with side 2? Question {n}.") for n in (1, 2, 3, 4)]
+    llm = ScriptedLLM({("solve", "me__shapes-001"): [json.dumps({"code": "from shapes import parse\nparse('2').area"})],
+                       ("solve", "me__shapes-002"): [json.dumps({"code": "from shapes import parse\nparse('3').area"})],  # runs, but gives another value
+                       ("solve", "me__shapes-003"): [json.dumps({"code": "x = 1"})],  # no expression at the end
+                       ("solve", "me__shapes-004"): ["no json"]})
+    ran = []
+
+    def run_items(items):
+        ran.extend(items)
+        return [{"status": "ok", "value": 4.0 if "'2'" in item["expression"] else 9.0, "text": ""} for item in items]
+
+    kept, dropped = asyncio.run(solvable(exercises, api, llm, run_items))
+    assert [e["id"] for e in kept] == ["me__shapes-001"] and dropped == 3 and len(ran) == 2  # only code with an expression is run
+    prompt = llm.chats[0][2][1]["content"]
+    assert "Request: What is the area of the square with side 2? Question 1." in prompt and "- shapes.parse(text) [function]" in prompt and "4.0" not in prompt  # the solver never sees the answer
