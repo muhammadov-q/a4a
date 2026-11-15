@@ -265,6 +265,31 @@ uv run repo2tools corpus-candidates --scan 600 --want 100
 
 It reads the public list of the most downloaded PyPI packages and PyPI's description of each newest release. Nothing is cloned, and no package code is downloaded or run. A package is a candidate if its wheels are pure Python, its source archive is at most 5 MB and it names a GitHub repository; type stubs are left out, and a repository counts once. From the 600 most downloaded packages (list of 1 November 2026): 100 candidates kept, 281 more would qualify, 126 have compiled code, 33 name no GitHub repository, 27 share a repository with a kept one, 22 are too large, 10 are stubs. The list is in `out/corpus/candidates.md`.
 
+### The static pass
+
+```sh
+uv run repo2tools corpus-scan --jobs 6
+```
+
+For each approved repository it clones the default branch (hooks off, no LFS, no submodules), records the commit, and reads the files with `ast`: files and lines, the public API with re-exports followed, how the repository's own documentation and tests use that API, and each documentation example with what it uses. No repository code is run, and links that leave the checkout are not followed. It takes about two and a half minutes for 100 repositories once they are cloned.
+
+Tool candidates are counted at three levels of granularity:
+
+| Level | One tool is | Candidates in 97 repositories | Median per repository | Used in the repository's own docs |
+| --- | --- | --- | --- | --- |
+| low | one public function, method or property | 17,362 | 54 | 1,611 (9%) |
+| medium | one operation on an object: build it, read its properties, call one method, or one family of operators | 19,140 | 59 | 1,899 (10%) |
+| high | one documented example that uses two or more things of the API | 1,112 | 2 | all, by definition |
+
+Read on 15 November 2026: 97 of 100 repositories scanned, 1,248,695 lines of code. Three are monorepos where no package was found. 19 repositories have no documentation example that uses their API in a way the scan can read. The table per repository is in `out/corpus/static.md`.
+
+What these numbers are and are not:
+
+- They are counts of **candidates**, read from the code. No tool was generated, so nothing here says a candidate would pass the checks.
+- "Used in the docs" is a stand-in for useful. It misses what the docs never show (on packaging: the wheel parser) and what the scan cannot read (docs kept outside the repository, examples in other formats).
+- The same thing in two repositories counts twice. Counting distinct tools across repositories is the next step.
+- A static scan sees only what is written out: functions made at run time, lazy imports through `__getattr__`, and classes without public methods are missed.
+
 ## Usability: can a small model call the tools
 
 A tool that agrees with the library is still of no use if the model can't pick it or call it. `repo2tools usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
@@ -426,7 +451,7 @@ src/repo2tools/
 ├── synthesis/               repository -> checked tools
 │   ├── pipeline.py          generate           clone, propose, write, check, repair, serve
 │   ├── worker.py                               checks one tool; runs inside the tool set's own environment and sandbox
-│   ├── scrape.py            scrape             static `ast` scan of the public API; never imports the package
+│   ├── scrape.py            scrape             static `ast` scan of the public API, also following re-exports; never imports the package
 │   ├── usage.py             usage              how the repo's own docs and tests use its API, classes and operators
 │   ├── chain_repair.py      repair-chains      rewrite tools whose output no tool accepts, with three checks
 │   └── usability.py         usability          a small model tries each tool; unclear names and descriptions are rewritten
@@ -443,7 +468,8 @@ src/repo2tools/
 │   ├── reference.py         reference-traces   known-good solutions as traces
 │   └── analyze.py           analyze-traces     what repeats, and what compression would save
 ├── corpus/                  many repositories at once
-│   └── candidates.py        corpus-candidates  pure-Python PyPI packages with a GitHub repository, for a person to approve
+│   ├── candidates.py        corpus-candidates  pure-Python PyPI packages with a GitHub repository, for a person to approve
+│   └── scan.py              corpus-scan        clone the approved repositories and scan them; nothing is run
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server
@@ -456,7 +482,7 @@ src/repo2tools/
 
 | Path | What is there |
 | --- | --- |
-| `tests/` | 155 tests. `helpers.py` holds the scripted LLM they share. |
+| `tests/` | 162 tests. `helpers.py` holds the scripted LLM they share. |
 | `toolsets/pypa_packaging/` | The reference tool set (called "hand-made"), written in a chat session with an LLM before the pipeline existed: 21 tools over pypa/packaging (`tools.py`), a coarser cut (`coarse_tools.py`), the MCP server (`server.py`, stdio or `--http PORT`; `--level function\|feature\|workflow\|all`), and its ToolGym types. These files stay flat so that they can be handed to other harnesses as they are. |
 | `toolsets/generated/` | Generated tool sets, one folder per run and one file per tool, each with `server.py`, `run_server.sh` and `manifest.json`. Not reviewed by a person. |
 | `out/` | Results: `corpus/` (candidate repositories for the many-repo experiments), `baseline/` (ToolGym's catalog today), `packaging/` (API, exercises, tool check), `packaging_toolgym/` (ToolGym's view of our tools), `usage/` (usage scans), `runs/` (model runs), `traces/` (full traces and their analysis), `generated/` (reports and LLM logs of generated tool sets), `toolgym_exercises/` (ToolGym tasks as exercises), `toolgym_runs/` (summaries of ToolGym pipeline runs). |

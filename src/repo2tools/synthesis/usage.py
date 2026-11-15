@@ -25,7 +25,7 @@ import argparse
 import ast
 import json
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 SOURCES = ("docs", "tests")
@@ -84,6 +84,7 @@ class Usage:
         self.classes = {name: {"built": {"docs": 0, "tests": 0}, "operators": defaultdict(lambda: {"docs": 0, "tests": 0})} for name in api.classes}
         self.files = {"docs": 0, "tests": 0}
         self.unparsed = 0
+        self.examples: list[list[str]] = []  # per documentation example that uses the API: what it uses, see uses()
 
     def scan(self, code: str, source: str, names: dict | None = None) -> dict:
         """Count the uses in one piece of code. `names` carries imports and known values on to the next piece of the same file."""
@@ -171,6 +172,14 @@ class Usage:
                     self.classes[owner]["operators"][symbol][source] += 1
         return names
 
+    def uses(self, source: str) -> Counter:
+        """Every use counted so far in one source, under one name each: a function's path, `Class()` for building, `Class <` for an operator."""
+        found = Counter({path: row[source] + row["guessed_" + source] for path, row in self.callables.items()})
+        for name, row in self.classes.items():
+            found[f"{name}()"] = row["built"][source]
+            found.update({f"{name} {symbol}": n[source] for symbol, n in row["operators"].items()})
+        return +found
+
     def scan_python(self, path: Path, source: str) -> None:
         self.files[source] += 1
         self.scan(path.read_text(encoding="utf-8", errors="replace"), source)
@@ -185,8 +194,13 @@ class Usage:
         if own_names:
             names |= {name: ("function", path) for name, path in self.api.unique_functions.items()}
             names |= {name: ("class", name) for name in self.api.classes}
-        for block in example_blocks(text):
-            self.scan(block, source, names)
+        for group in example_groups(text):
+            before = self.uses(source)
+            for block in group:
+                self.scan(block, source, names)
+            used = sorted(self.uses(source) - before)
+            if used:
+                self.examples.append(used)
 
     def score(self, path: str, by: str) -> tuple:
         """Sort key, larger is more used. Docs and tests have very different sizes, so each is taken as a share of its total."""
@@ -204,49 +218,87 @@ class Usage:
     def as_json(self) -> dict:
         return {"package": self.api.package, "files": self.files, "unparsed_pieces": self.unparsed, "callables": self.callables,
                 "classes": {n: {"built": c["built"], "operators": dict(c["operators"])} for n, c in self.classes.items()},
-                "ranking": {by: self.ranking(by) for by in ("docs", "tests", "both")}}
+                "ranking": {by: self.ranking(by) for by in ("docs", "tests", "both")}, "examples": self.examples}
 
 
-def example_blocks(text: str) -> list[str]:
-    """Pieces of Python code in a documentation text, in order. A piece that does not parse is tried statement by statement."""
-    blocks, prompt, block, indent = [], [], None, 0
+def example_groups(text: str) -> list[list[str]]:
+    """The examples of a documentation text, in order; each is a list of pieces of Python code.
+
+    One example is one code block (rst directive, Markdown fence, or a plain `::` block that is Python as a
+    whole), or one doctest session: prompt lines with their outputs, across blank lines, until prose follows.
+    A doctest piece that does not parse is tried statement by statement.
+    """
+    groups: list[list[str]] = []
+    session: list[str] = []
+    prompt: list[str] = []
+    block, indent, literal, blank = None, 0, False, False
 
     def flush_prompt():
         if prompt:
-            blocks.extend(statements(prompt))
+            session.extend(statements(prompt))
             prompt.clear()
 
-    lines = text.splitlines()
-    for line in lines:
+    def close_session():
+        flush_prompt()
+        if session:
+            groups.append(list(session))
+            session.clear()
+
+    def close_block():
+        nonlocal block
+        code = ("\n".join(block) if indent < 0 else dedent(block)).strip("\n")
+        block = None
+        if literal:  # a plain `::` block may hold anything: keep it only if it is Python as a whole
+            try:
+                ast.parse(code)
+            except (SyntaxError, ValueError, RecursionError):
+                return
+        if code.strip():
+            groups.append([code])
+
+    for line in text.splitlines():
         stripped = line.strip()
         if stripped.startswith(">>>"):
             prompt.append(stripped[3:].removeprefix(" "))
+            blank = False
             continue
         if stripped.startswith("...") and prompt and not stripped.startswith("....") and block is None:
             prompt.append(stripped[3:].removeprefix(" "))
             continue
         flush_prompt()
-        if block is not None:  # inside an rst code block or a Markdown fence
+        if block is not None:  # inside a code block or a Markdown fence
             if indent < 0:
                 if stripped.startswith("```"):
-                    blocks.append("\n".join(block))
-                    block = None
+                    close_block()
                 else:
                     block.append(line)
-            elif not stripped or len(line) - len(line.lstrip()) > indent:
+                continue
+            if not stripped or len(line) - len(line.lstrip()) > indent:
                 block.append(line)
-            else:
-                blocks.append(dedent(block))
-                block = None
-        if block is None:
-            if re.match(r"\s*\.\. (code-block|code|sourcecode|ipython)::\s*(python|py|pycon|python3|ipython)?\s*$", line):
-                block, indent = [], len(line) - len(line.lstrip())
-            elif re.match(r"\s*```\s*(python|py|pycon|python3)\s*$", line):
-                block, indent = [], -1
-    flush_prompt()
-    if block:
-        blocks.append("\n".join(block) if indent < 0 else dedent(block))
-    return [b.strip("\n") for b in blocks if b.strip() and ">>>" not in b]
+                continue
+            close_block()
+        if re.match(r"\s*\.\. (code-block|code|sourcecode|ipython)::\s*(python|py|pycon|python3|ipython)?\s*$", line):
+            close_session()
+            block, indent, literal = [], len(line) - len(line.lstrip()), False
+        elif re.match(r"\s*```\s*(python|py|pycon|python3)\s*$", line):
+            close_session()
+            block, indent, literal = [], -1, False
+        elif stripped.endswith("::") and not stripped.startswith(".."):
+            close_session()
+            block, indent, literal = [], len(line) - len(line.lstrip()), True
+        elif not stripped:
+            blank = True
+        elif blank:  # prose after a blank line ends a doctest session; a line right after a prompt is its output
+            close_session()
+    close_session()
+    if block is not None:
+        close_block()
+    return [[b for b in group if b.strip() and ">>>" not in b] for group in groups if any(b.strip() and ">>>" not in b for b in group)]
+
+
+def example_blocks(text: str) -> list[str]:
+    """Pieces of Python code in a documentation text, in order: the examples of example_groups(), flattened."""
+    return [b.strip("\n") for group in example_groups(text) for b in group]
 
 
 def dedent(lines: list[str]) -> str:
@@ -281,9 +333,9 @@ def count_usage(api_json: dict, repo: Path, package_dir: Path | None = None) -> 
     usage = Usage(Api(api_json))
     package_dir = package_dir.resolve() if package_dir else None
     for path in sorted(repo.rglob("*")):
-        if not path.is_file() or SKIP_DIRS & set(path.relative_to(repo).parts):
-            continue
-        inside = package_dir is not None and package_dir in path.resolve().parents
+        if path.is_symlink() or not path.is_file() or SKIP_DIRS & set(path.relative_to(repo).parts):
+            continue  # a link may point outside the checkout; nothing outside it is read
+        inside = package_dir is not None and (package_dir in path.resolve().parents or path.resolve() == package_dir)  # a package, or a one-file module
         if path.suffix == ".py":
             if is_test_file(path, repo) and not inside:
                 usage.scan_python(path, "tests")

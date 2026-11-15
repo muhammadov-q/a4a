@@ -1,0 +1,4196 @@
+{
+ "repositories": [
+  {
+   "package": "boto3",
+   "repo": "https://github.com/boto/boto3",
+   "commit": "3755d3acd73da0fc52c079965e271724e0f68044",
+   "error": null,
+   "import_name": "boto3",
+   "layout": "top level",
+   "files": {
+    "python": 39,
+    "lines": 7127,
+    "tests": 63,
+    "docs": 90
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 154,
+    "classes": 34,
+    "function": 71,
+    "method": 64,
+    "property": 19,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 88,
+    "test_files": 63,
+    "unparsed_pieces": 7,
+    "callables_used_in_docs": 18,
+    "callables_used_in_tests": 98,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 154,
+    "low_used_in_docs": 18,
+    "medium": 177,
+    "medium_used_in_docs": 20,
+    "high": 13,
+    "examples": 166,
+    "examples_with_two_or_more": 28
+   },
+   "seconds": 1.3
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "commit": "5a7d3386d2777180a381eb947f21293124ce8df5",
+   "error": null,
+   "import_name": "packaging",
+   "layout": "src",
+   "files": {
+    "python": 22,
+    "lines": 11316,
+    "tests": 38,
+    "docs": 28
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 99,
+    "classes": 17,
+    "function": 27,
+    "method": 35,
+    "property": 28,
+    "classmethod": 9,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 28,
+    "test_files": 38,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 71,
+    "callables_used_in_tests": 94,
+    "classes_built_in_docs": 10,
+    "classes_with_operators": 7
+   },
+   "levels": {
+    "low": 99,
+    "low_used_in_docs": 71,
+    "medium": 118,
+    "medium_used_in_docs": 83,
+    "high": 82,
+    "examples": 109,
+    "examples_with_two_or_more": 88
+   },
+   "seconds": 1.2
+  },
+  {
+   "package": "typing-extensions",
+   "repo": "https://github.com/python/typing_extensions",
+   "commit": "a2024556ab75799fbd2f41d1c2d114dd6372de12",
+   "error": null,
+   "import_name": "typing_extensions",
+   "layout": "src, one file",
+   "files": {
+    "python": 1,
+    "lines": 3674,
+    "tests": 1,
+    "docs": 5
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 38,
+    "classes": 2,
+    "function": 36,
+    "method": 2,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 5,
+    "test_files": 1,
+    "unparsed_pieces": 4,
+    "callables_used_in_docs": 4,
+    "callables_used_in_tests": 32,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 38,
+    "low_used_in_docs": 4,
+    "medium": 40,
+    "medium_used_in_docs": 4,
+    "high": 0,
+    "examples": 5,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.8
+  },
+  {
+   "package": "certifi",
+   "repo": "https://github.com/certifi/python-certifi",
+   "commit": "ca446ca404ff3b962a0193f36e03d1eabb231968",
+   "error": null,
+   "import_name": "certifi",
+   "layout": "top level",
+   "files": {
+    "python": 5,
+    "lines": 93,
+    "tests": 0,
+    "docs": 2
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 3,
+    "classes": 0,
+    "function": 3,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 2,
+    "test_files": 0,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 3,
+    "low_used_in_docs": 1,
+    "medium": 3,
+    "medium_used_in_docs": 1,
+    "high": 0,
+    "examples": 1,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "idna",
+   "repo": "https://github.com/kjd/idna",
+   "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a",
+   "error": null,
+   "import_name": "idna",
+   "layout": "top level",
+   "files": {
+    "python": 10,
+    "lines": 20191,
+    "tests": 13,
+    "docs": 7
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 29,
+    "classes": 3,
+    "function": 21,
+    "method": 8,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 7,
+    "test_files": 13,
+    "unparsed_pieces": 1,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 20,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 29,
+    "low_used_in_docs": 2,
+    "medium": 32,
+    "medium_used_in_docs": 2,
+    "high": 1,
+    "examples": 2,
+    "examples_with_two_or_more": 2
+   },
+   "seconds": 1.5
+  },
+  {
+   "package": "urllib3",
+   "repo": "https://github.com/urllib3/urllib3",
+   "commit": "d9f9b0ad5b99247e06aa9a50b7a5747aa5c2e35d",
+   "error": null,
+   "import_name": "urllib3",
+   "layout": "src",
+   "files": {
+    "python": 35,
+    "lines": 10262,
+    "tests": 40,
+    "docs": 64
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 239,
+    "classes": 30,
+    "function": 53,
+    "method": 141,
+    "property": 41,
+    "classmethod": 3,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 64,
+    "test_files": 40,
+    "unparsed_pieces": 4,
+    "callables_used_in_docs": 17,
+    "callables_used_in_tests": 145,
+    "classes_built_in_docs": 8,
+    "classes_with_operators": 6
+   },
+   "levels": {
+    "low": 239,
+    "low_used_in_docs": 17,
+    "medium": 252,
+    "medium_used_in_docs": 25,
+    "high": 20,
+    "examples": 63,
+    "examples_with_two_or_more": 36
+   },
+   "seconds": 1.3
+  },
+  {
+   "package": "requests",
+   "repo": "https://github.com/psf/requests",
+   "commit": "3c7baaa05ab4aa49cc819ce3a819d260de19c157",
+   "error": null,
+   "import_name": "requests",
+   "layout": "src",
+   "files": {
+    "python": 19,
+    "lines": 5186,
+    "tests": 15,
+    "docs": 31
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 165,
+    "classes": 15,
+    "function": 65,
+    "method": 88,
+    "property": 12,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 28,
+    "test_files": 15,
+    "unparsed_pieces": 6,
+    "callables_used_in_docs": 28,
+    "callables_used_in_tests": 84,
+    "classes_built_in_docs": 5,
+    "classes_with_operators": 5
+   },
+   "levels": {
+    "low": 165,
+    "low_used_in_docs": 28,
+    "medium": 178,
+    "medium_used_in_docs": 31,
+    "high": 21,
+    "examples": 95,
+    "examples_with_two_or_more": 34
+   },
+   "seconds": 0.8
+  },
+  {
+   "package": "pluggy",
+   "repo": "https://github.com/pytest-dev/pluggy",
+   "commit": "46a80723004b2f6c3a57c387c3a1d50e17fb8c25",
+   "error": null,
+   "import_name": "pluggy",
+   "layout": "src",
+   "files": {
+    "python": 13,
+    "lines": 1755,
+    "tests": 11,
+    "docs": 18
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 35,
+    "classes": 3,
+    "function": 0,
+    "method": 32,
+    "property": 2,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 18,
+    "test_files": 11,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 25,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 35,
+    "low_used_in_docs": 3,
+    "medium": 37,
+    "medium_used_in_docs": 4,
+    "high": 4,
+    "examples": 10,
+    "examples_with_two_or_more": 8
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "pycparser",
+   "repo": "https://github.com/eliben/pycparser",
+   "commit": "c1f7fe5a5902d8d1d23bb9151f50712e885fd50e",
+   "error": null,
+   "import_name": "pycparser",
+   "layout": "top level",
+   "files": {
+    "python": 7,
+    "lines": 5882,
+    "tests": 9,
+    "docs": 6
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 131,
+    "classes": 65,
+    "function": 2,
+    "method": 128,
+    "property": 1,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 5,
+    "test_files": 9,
+    "unparsed_pieces": 3,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 8,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 131,
+    "low_used_in_docs": 2,
+    "medium": 196,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 3,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 1.1
+  },
+  {
+   "package": "python-dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+   "error": null,
+   "import_name": "dateutil",
+   "layout": "src",
+   "files": {
+    "python": 20,
+    "lines": 6998,
+    "tests": 23,
+    "docs": 21
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 66,
+    "classes": 14,
+    "function": 14,
+    "method": 50,
+    "property": 2,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 21,
+    "test_files": 23,
+    "unparsed_pieces": 4,
+    "callables_used_in_docs": 12,
+    "callables_used_in_tests": 46,
+    "classes_built_in_docs": 7,
+    "classes_with_operators": 7
+   },
+   "levels": {
+    "low": 66,
+    "low_used_in_docs": 12,
+    "medium": 89,
+    "medium_used_in_docs": 21,
+    "high": 9,
+    "examples": 24,
+    "examples_with_two_or_more": 10
+   },
+   "seconds": 0.9
+  },
+  {
+   "package": "six",
+   "repo": "https://github.com/benjaminp/six",
+   "commit": "c8e394065cd541a16c040515dc0afb85cf22a7c3",
+   "error": null,
+   "import_name": "six",
+   "layout": "top level, one file",
+   "files": {
+    "python": 1,
+    "lines": 813,
+    "tests": 1,
+    "docs": 2
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 31,
+    "classes": 1,
+    "function": 30,
+    "method": 1,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 2,
+    "test_files": 1,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 26,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 31,
+    "low_used_in_docs": 3,
+    "medium": 32,
+    "medium_used_in_docs": 3,
+    "high": 0,
+    "examples": 3,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "setuptools",
+   "repo": "https://github.com/pypa/setuptools",
+   "commit": "049ae8e3083514378aedb352a2017fbc306bd126",
+   "error": null,
+   "import_name": "setuptools",
+   "layout": "top level",
+   "files": {
+    "python": 329,
+    "lines": 72957,
+    "tests": 1,
+    "docs": 60
+   },
+   "native_files": 2,
+   "api": {
+    "callables": 326,
+    "classes": 40,
+    "function": 89,
+    "method": 180,
+    "property": 56,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 60,
+    "test_files": 1,
+    "unparsed_pieces": 12,
+    "callables_used_in_docs": 13,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 326,
+    "low_used_in_docs": 13,
+    "medium": 321,
+    "medium_used_in_docs": 15,
+    "high": 2,
+    "examples": 52,
+    "examples_with_two_or_more": 6
+   },
+   "seconds": 1.9
+  },
+  {
+   "package": "pydantic",
+   "repo": "https://github.com/pydantic/pydantic",
+   "commit": "cd1d8be820a8036818d6e82603a3ab07e0f855b5",
+   "error": null,
+   "import_name": "pydantic",
+   "layout": "top level",
+   "files": {
+    "python": 55,
+    "lines": 24385,
+    "tests": 3089,
+    "docs": 111
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 234,
+    "classes": 33,
+    "function": 40,
+    "method": 157,
+    "property": 11,
+    "classmethod": 17,
+    "staticmethod": 9
+   },
+   "usage": {
+    "doc_files": 103,
+    "test_files": 3089,
+    "unparsed_pieces": 66,
+    "callables_used_in_docs": 28,
+    "callables_used_in_tests": 86,
+    "classes_built_in_docs": 4,
+    "classes_with_operators": 3
+   },
+   "levels": {
+    "low": 234,
+    "low_used_in_docs": 28,
+    "medium": 268,
+    "medium_used_in_docs": 32,
+    "high": 40,
+    "examples": 229,
+    "examples_with_two_or_more": 81
+   },
+   "seconds": 5.7
+  },
+  {
+   "package": "click",
+   "repo": "https://github.com/pallets/click",
+   "commit": "e38188e9e205005d5af5f9e59df51904c984586a",
+   "error": null,
+   "import_name": "click",
+   "layout": "src",
+   "files": {
+    "python": 17,
+    "lines": 10398,
+    "tests": 59,
+    "docs": 44
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 240,
+    "classes": 34,
+    "function": 55,
+    "method": 169,
+    "property": 15,
+    "classmethod": 0,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 44,
+    "test_files": 59,
+    "unparsed_pieces": 13,
+    "callables_used_in_docs": 18,
+    "callables_used_in_tests": 98,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 240,
+    "low_used_in_docs": 18,
+    "medium": 268,
+    "medium_used_in_docs": 19,
+    "high": 9,
+    "examples": 32,
+    "examples_with_two_or_more": 10
+   },
+   "seconds": 1.5
+  },
+  {
+   "package": "anyio",
+   "repo": "https://github.com/agronholm/anyio",
+   "commit": "4d53ea15daec445b2bf368285f6ef60297b8f4ab",
+   "error": null,
+   "import_name": "anyio",
+   "layout": "src",
+   "files": {
+    "python": 46,
+    "lines": 13370,
+    "tests": 38,
+    "docs": 35
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 411,
+    "classes": 60,
+    "function": 107,
+    "method": 196,
+    "property": 49,
+    "classmethod": 58,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 35,
+    "test_files": 38,
+    "unparsed_pieces": 1,
+    "callables_used_in_docs": 4,
+    "callables_used_in_tests": 295,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 2
+   },
+   "levels": {
+    "low": 411,
+    "low_used_in_docs": 4,
+    "medium": 444,
+    "medium_used_in_docs": 6,
+    "high": 0,
+    "examples": 7,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 1.8
+  },
+  {
+   "package": "annotated-types",
+   "repo": "https://github.com/annotated-types/annotated-types",
+   "commit": "96eef3cb9a8f06804d2f61f465d20212af6ee90e",
+   "error": null,
+   "import_name": "annotated_types",
+   "layout": "top level",
+   "files": {
+    "python": 2,
+    "lines": 418,
+    "tests": 3,
+    "docs": 1
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 1,
+    "classes": 0,
+    "function": 1,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 1,
+    "test_files": 3,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 1,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 1,
+    "low_used_in_docs": 0,
+    "medium": 1,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "pytest",
+   "repo": "https://github.com/pytest-dev/pytest",
+   "commit": "fc9a7ef678f64d17f1c03b619f3842ea1d127e74",
+   "error": null,
+   "import_name": "pytest",
+   "layout": "src",
+   "files": {
+    "python": 2,
+    "lines": 193,
+    "tests": 175,
+    "docs": 292
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 342,
+    "classes": 43,
+    "function": 13,
+    "method": 251,
+    "property": 57,
+    "classmethod": 20,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 288,
+    "test_files": 175,
+    "unparsed_pieces": 6,
+    "callables_used_in_docs": 9,
+    "callables_used_in_tests": 23,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 342,
+    "low_used_in_docs": 9,
+    "medium": 346,
+    "medium_used_in_docs": 11,
+    "high": 5,
+    "examples": 117,
+    "examples_with_two_or_more": 8
+   },
+   "seconds": 2.3
+  },
+  {
+   "package": "iniconfig",
+   "repo": "https://github.com/pytest-dev/iniconfig",
+   "commit": "e0f1ee1ccd69634acf5d127ed2ea6e628f18da31",
+   "error": null,
+   "import_name": "iniconfig",
+   "layout": "src",
+   "files": {
+    "python": 3,
+    "lines": 376,
+    "tests": 4,
+    "docs": 1
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 4,
+    "classes": 1,
+    "function": 1,
+    "method": 2,
+    "property": 0,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 1,
+    "test_files": 4,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 4,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 4,
+    "low_used_in_docs": 2,
+    "medium": 6,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 1,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "typing-inspection",
+   "repo": "https://github.com/pydantic/typing-inspection",
+   "commit": "5bbf4550d7b6bde6c1fe5813bf0fe29ee2312579",
+   "error": null,
+   "import_name": "typing_inspection",
+   "layout": "src",
+   "files": {
+    "python": 3,
+    "lines": 1000,
+    "tests": 7,
+    "docs": 7
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 7,
+    "classes": 1,
+    "function": 6,
+    "method": 0,
+    "property": 1,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 7,
+    "test_files": 7,
+    "unparsed_pieces": 22,
+    "callables_used_in_docs": 4,
+    "callables_used_in_tests": 6,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 7,
+    "low_used_in_docs": 4,
+    "medium": 8,
+    "medium_used_in_docs": 4,
+    "high": 1,
+    "examples": 11,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "h11",
+   "repo": "https://github.com/python-hyper/h11",
+   "commit": "62c5068c971579d61fa1b55373390e12f25fd856",
+   "error": null,
+   "import_name": "h11",
+   "layout": "top level",
+   "files": {
+    "python": 22,
+    "lines": 4529,
+    "tests": 0,
+    "docs": 16
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 11,
+    "classes": 1,
+    "function": 0,
+    "method": 6,
+    "property": 5,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 16,
+    "test_files": 0,
+    "unparsed_pieces": 5,
+    "callables_used_in_docs": 6,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 11,
+    "low_used_in_docs": 6,
+    "medium": 8,
+    "medium_used_in_docs": 6,
+    "high": 4,
+    "examples": 14,
+    "examples_with_two_or_more": 6
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "attrs",
+   "repo": "https://github.com/python-attrs/attrs",
+   "commit": "2a1fb86d44816afcc60e86d57956ce3604820326",
+   "error": null,
+   "import_name": "attrs",
+   "layout": "src",
+   "files": {
+    "python": 6,
+    "lines": 79,
+    "tests": 32,
+    "docs": 34
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 47,
+    "classes": 2,
+    "function": 44,
+    "method": 1,
+    "property": 1,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 34,
+    "test_files": 32,
+    "unparsed_pieces": 6,
+    "callables_used_in_docs": 36,
+    "callables_used_in_tests": 12,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 47,
+    "low_used_in_docs": 36,
+    "medium": 49,
+    "medium_used_in_docs": 36,
+    "high": 31,
+    "examples": 99,
+    "examples_with_two_or_more": 46
+   },
+   "seconds": 0.8
+  },
+  {
+   "package": "httpx",
+   "repo": "https://github.com/encode/httpx",
+   "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "error": null,
+   "import_name": "httpx",
+   "layout": "top level",
+   "files": {
+    "python": 23,
+    "lines": 7448,
+    "tests": 37,
+    "docs": 30
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 151,
+    "classes": 26,
+    "function": 11,
+    "method": 92,
+    "property": 41,
+    "classmethod": 7,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 30,
+    "test_files": 37,
+    "unparsed_pieces": 56,
+    "callables_used_in_docs": 28,
+    "callables_used_in_tests": 114,
+    "classes_built_in_docs": 11,
+    "classes_with_operators": 10
+   },
+   "levels": {
+    "low": 151,
+    "low_used_in_docs": 28,
+    "medium": 155,
+    "medium_used_in_docs": 34,
+    "high": 28,
+    "examples": 94,
+    "examples_with_two_or_more": 46
+   },
+   "seconds": 0.9
+  },
+  {
+   "package": "httpcore",
+   "repo": "https://github.com/encode/httpcore",
+   "commit": "10a658221deb38a4c5b16db55ab554b0bf731707",
+   "error": null,
+   "import_name": "httpcore",
+   "layout": "top level",
+   "files": {
+    "python": 31,
+    "lines": 6085,
+    "tests": 23,
+    "docs": 19
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 101,
+    "classes": 21,
+    "function": 3,
+    "method": 94,
+    "property": 4,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 19,
+    "test_files": 23,
+    "unparsed_pieces": 9,
+    "callables_used_in_docs": 17,
+    "callables_used_in_tests": 42,
+    "classes_built_in_docs": 4,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 101,
+    "low_used_in_docs": 17,
+    "medium": 123,
+    "medium_used_in_docs": 21,
+    "high": 12,
+    "examples": 50,
+    "examples_with_two_or_more": 23
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "s3transfer",
+   "repo": "https://github.com/boto/s3transfer",
+   "commit": "87ca003a6044279c2e246687c5bcdea2a1d1a76d",
+   "error": null,
+   "import_name": "s3transfer",
+   "layout": "top level",
+   "files": {
+    "python": 16,
+    "lines": 7579,
+    "tests": 35,
+    "docs": 10
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 268,
+    "classes": 63,
+    "function": 24,
+    "method": 200,
+    "property": 33,
+    "classmethod": 11,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 10,
+    "test_files": 35,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 204,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 268,
+    "low_used_in_docs": 0,
+    "medium": 315,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 1.0
+  },
+  {
+   "package": "python-dotenv",
+   "repo": "https://github.com/theskumar/python-dotenv",
+   "commit": "4fbc6ff07215367ece731006855e732d1405992c",
+   "error": null,
+   "import_name": "dotenv",
+   "layout": "src",
+   "files": {
+    "python": 8,
+    "lines": 977,
+    "tests": 12,
+    "docs": 9
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 46,
+    "classes": 7,
+    "function": 29,
+    "method": 16,
+    "property": 0,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 9,
+    "test_files": 12,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 12,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 46,
+    "low_used_in_docs": 2,
+    "medium": 53,
+    "medium_used_in_docs": 2,
+    "high": 0,
+    "examples": 4,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "pyjwt",
+   "repo": "https://github.com/jpadilla/pyjwt",
+   "commit": "16231abfd1d8eab4953e8779b3017b859c88565e",
+   "error": null,
+   "import_name": "jwt",
+   "layout": "top level",
+   "files": {
+    "python": 12,
+    "lines": 2712,
+    "tests": 13,
+    "docs": 18
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 81,
+    "classes": 14,
+    "function": 15,
+    "method": 46,
+    "property": 3,
+    "classmethod": 0,
+    "staticmethod": 17
+   },
+   "usage": {
+    "doc_files": 18,
+    "test_files": 13,
+    "unparsed_pieces": 26,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 60,
+    "classes_built_in_docs": 3,
+    "classes_with_operators": 2
+   },
+   "levels": {
+    "low": 81,
+    "low_used_in_docs": 2,
+    "medium": 96,
+    "medium_used_in_docs": 5,
+    "high": 2,
+    "examples": 5,
+    "examples_with_two_or_more": 4
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+   "error": null,
+   "import_name": "jinja2",
+   "layout": "src",
+   "files": {
+    "python": 25,
+    "lines": 11616,
+    "tests": 26,
+    "docs": 20
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 489,
+    "classes": 71,
+    "function": 123,
+    "method": 338,
+    "property": 23,
+    "classmethod": 3,
+    "staticmethod": 2
+   },
+   "usage": {
+    "doc_files": 19,
+    "test_files": 26,
+    "unparsed_pieces": 1,
+    "callables_used_in_docs": 12,
+    "callables_used_in_tests": 69,
+    "classes_built_in_docs": 10,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 489,
+    "low_used_in_docs": 12,
+    "medium": 546,
+    "medium_used_in_docs": 22,
+    "high": 8,
+    "examples": 22,
+    "examples_with_two_or_more": 9
+   },
+   "seconds": 1.3
+  },
+  {
+   "package": "aiobotocore",
+   "repo": "https://github.com/aio-libs/aiobotocore",
+   "commit": "eb83cd94a72f8a0a9ee505548aa3646c493a0404",
+   "error": null,
+   "import_name": "aiobotocore",
+   "layout": "top level",
+   "files": {
+    "python": 38,
+    "lines": 7500,
+    "tests": 64,
+    "docs": 34
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 149,
+    "classes": 62,
+    "function": 36,
+    "method": 103,
+    "property": 10,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 34,
+    "test_files": 64,
+    "unparsed_pieces": 1,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 63,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 3
+   },
+   "levels": {
+    "low": 149,
+    "low_used_in_docs": 2,
+    "medium": 208,
+    "medium_used_in_docs": 3,
+    "high": 2,
+    "examples": 4,
+    "examples_with_two_or_more": 2
+   },
+   "seconds": 1.0
+  },
+  {
+   "package": "starlette",
+   "repo": "https://github.com/Kludex/starlette",
+   "commit": "271c277da0ff64e2048a4d46ecc812b9d61db5f6",
+   "error": null,
+   "import_name": "starlette",
+   "layout": "top level",
+   "files": {
+    "python": 36,
+    "lines": 5890,
+    "tests": 36,
+    "docs": 34
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 257,
+    "classes": 55,
+    "function": 21,
+    "method": 189,
+    "property": 45,
+    "classmethod": 0,
+    "staticmethod": 2
+   },
+   "usage": {
+    "doc_files": 33,
+    "test_files": 36,
+    "unparsed_pieces": 9,
+    "callables_used_in_docs": 29,
+    "callables_used_in_tests": 115,
+    "classes_built_in_docs": 20,
+    "classes_with_operators": 7
+   },
+   "levels": {
+    "low": 257,
+    "low_used_in_docs": 29,
+    "medium": 296,
+    "medium_used_in_docs": 48,
+    "high": 30,
+    "examples": 96,
+    "examples_with_two_or_more": 39
+   },
+   "seconds": 1.2
+  },
+  {
+   "package": "opentelemetry-api",
+   "repo": "https://github.com/open-telemetry/opentelemetry-python",
+   "commit": "b4dff8c663110a866a5f263016679da25bd02f33",
+   "error": "SystemExit: no Python package  found in open-telemetry__opentelemetry-python (looked in src/ and the top level)",
+   "seconds": 0.4
+  },
+  {
+   "package": "platformdirs",
+   "repo": "https://github.com/tox-dev/platformdirs",
+   "commit": "2f915d83f8822a017b839ed270da701c4048db4c",
+   "error": null,
+   "import_name": "platformdirs",
+   "layout": "src",
+   "files": {
+    "python": 13,
+    "lines": 3175,
+    "tests": 11,
+    "docs": 14
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 237,
+    "classes": 5,
+    "function": 55,
+    "method": 31,
+    "property": 151,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 14,
+    "test_files": 11,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 13,
+    "callables_used_in_tests": 15,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 237,
+    "low_used_in_docs": 13,
+    "medium": 97,
+    "medium_used_in_docs": 13,
+    "high": 4,
+    "examples": 35,
+    "examples_with_two_or_more": 5
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "uvicorn",
+   "repo": "https://github.com/Kludex/uvicorn",
+   "commit": "a99c1b76ee9caea67ff98e2ccc457bd372db193f",
+   "error": null,
+   "import_name": "uvicorn",
+   "layout": "top level",
+   "files": {
+    "python": 45,
+    "lines": 6395,
+    "tests": 39,
+    "docs": 19
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 251,
+    "classes": 25,
+    "function": 22,
+    "method": 222,
+    "property": 7,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 19,
+    "test_files": 39,
+    "unparsed_pieces": 3,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 96,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 251,
+    "low_used_in_docs": 1,
+    "medium": 272,
+    "medium_used_in_docs": 1,
+    "high": 0,
+    "examples": 3,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.9
+  },
+  {
+   "package": "pathspec",
+   "repo": "https://github.com/cpburnz/python-pathspec",
+   "commit": "3dfbd9192ae36b0058b0e306ea44da132a5a025c",
+   "error": null,
+   "import_name": "pathspec",
+   "layout": "top level",
+   "files": {
+    "python": 31,
+    "lines": 4710,
+    "tests": 14,
+    "docs": 17
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 46,
+    "classes": 10,
+    "function": 17,
+    "method": 16,
+    "property": 7,
+    "classmethod": 6,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 17,
+    "test_files": 14,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 5,
+    "callables_used_in_tests": 23,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 46,
+    "low_used_in_docs": 5,
+    "medium": 52,
+    "medium_used_in_docs": 6,
+    "high": 1,
+    "examples": 16,
+    "examples_with_two_or_more": 2
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "fsspec",
+   "repo": "https://github.com/fsspec/filesystem_spec",
+   "commit": "12c823bc90e237b063b12d313c2c5b87dd4803ac",
+   "error": null,
+   "import_name": "fsspec",
+   "layout": "top level",
+   "files": {
+    "python": 123,
+    "lines": 41714,
+    "tests": 0,
+    "docs": 12
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 625,
+    "classes": 77,
+    "function": 94,
+    "method": 467,
+    "property": 52,
+    "classmethod": 7,
+    "staticmethod": 5
+   },
+   "usage": {
+    "doc_files": 12,
+    "test_files": 0,
+    "unparsed_pieces": 8,
+    "callables_used_in_docs": 26,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 3,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 625,
+    "low_used_in_docs": 26,
+    "medium": 678,
+    "medium_used_in_docs": 29,
+    "high": 5,
+    "examples": 20,
+    "examples_with_two_or_more": 5
+   },
+   "seconds": 1.3
+  },
+  {
+   "package": "jsonschema",
+   "repo": "https://github.com/python-jsonschema/jsonschema",
+   "commit": "59954eb83d0b98088c6cd0c25b82baea15c70d01",
+   "error": null,
+   "import_name": "jsonschema",
+   "layout": "top level",
+   "files": {
+    "python": 37,
+    "lines": 9616,
+    "tests": 0,
+    "docs": 20
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 36,
+    "classes": 6,
+    "function": 14,
+    "method": 19,
+    "property": 1,
+    "classmethod": 2,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 19,
+    "test_files": 0,
+    "unparsed_pieces": 3,
+    "callables_used_in_docs": 6,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 36,
+    "low_used_in_docs": 6,
+    "medium": 42,
+    "medium_used_in_docs": 6,
+    "high": 0,
+    "examples": 8,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "filelock",
+   "repo": "https://github.com/tox-dev/filelock",
+   "commit": "1f7cd7397354a0cb2c999baa5fc6838a8062dda9",
+   "error": null,
+   "import_name": "filelock",
+   "layout": "src",
+   "files": {
+    "python": 22,
+    "lines": 11196,
+    "tests": 57,
+    "docs": 15
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 82,
+    "classes": 12,
+    "function": 2,
+    "method": 32,
+    "property": 46,
+    "classmethod": 2,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 15,
+    "test_files": 57,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 30,
+    "callables_used_in_tests": 81,
+    "classes_built_in_docs": 8,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 82,
+    "low_used_in_docs": 30,
+    "medium": 60,
+    "medium_used_in_docs": 36,
+    "high": 25,
+    "examples": 41,
+    "examples_with_two_or_more": 28
+   },
+   "seconds": 1.3
+  },
+  {
+   "package": "jmespath",
+   "repo": "https://github.com/jmespath/jmespath.py",
+   "commit": "2812594e69d43098ef60f81f4efc404c071b0418",
+   "error": null,
+   "import_name": "jmespath",
+   "layout": "top level",
+   "files": {
+    "python": 8,
+    "lines": 1422,
+    "tests": 8,
+    "docs": 3
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 60,
+    "classes": 8,
+    "function": 28,
+    "method": 31,
+    "property": 0,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 8,
+    "unparsed_pieces": 3,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 11,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 60,
+    "low_used_in_docs": 3,
+    "medium": 68,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 4,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "tzdata",
+   "repo": "https://github.com/python/tzdata",
+   "commit": "0d4342c29e1f64211181cf8ad2276cfa59c094ce",
+   "error": null,
+   "import_name": "tzdata",
+   "layout": "src",
+   "files": {
+    "python": 22,
+    "lines": 5,
+    "tests": 2,
+    "docs": 39
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 0,
+    "classes": 0,
+    "function": 0,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 39,
+    "test_files": 2,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 0,
+    "low_used_in_docs": 0,
+    "medium": 0,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "referencing",
+   "repo": "https://github.com/python-jsonschema/referencing",
+   "commit": "84089b993ece43300e7320d03627c9192524de39",
+   "error": null,
+   "import_name": "referencing",
+   "layout": "top level",
+   "files": {
+    "python": 13,
+    "lines": 2804,
+    "tests": 0,
+    "docs": 9
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 30,
+    "classes": 7,
+    "function": 4,
+    "method": 23,
+    "property": 1,
+    "classmethod": 2,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 9,
+    "test_files": 0,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 4,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 30,
+    "low_used_in_docs": 4,
+    "medium": 37,
+    "medium_used_in_docs": 5,
+    "high": 2,
+    "examples": 2,
+    "examples_with_two_or_more": 2
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "tomlkit",
+   "repo": "https://github.com/python-poetry/tomlkit",
+   "commit": "7bf7284dbd622557d9909f8fee017a4cb169a139",
+   "error": null,
+   "import_name": "tomlkit",
+   "layout": "top level",
+   "files": {
+    "python": 12,
+    "lines": 5230,
+    "tests": 15,
+    "docs": 8
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 183,
+    "classes": 26,
+    "function": 32,
+    "method": 102,
+    "property": 46,
+    "classmethod": 2,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 8,
+    "test_files": 15,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 36,
+    "callables_used_in_tests": 83,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 11
+   },
+   "levels": {
+    "low": 183,
+    "low_used_in_docs": 36,
+    "medium": 201,
+    "medium_used_in_docs": 36,
+    "high": 10,
+    "examples": 15,
+    "examples_with_two_or_more": 11
+   },
+   "seconds": 0.9
+  },
+  {
+   "package": "jsonschema-specifications",
+   "repo": "https://github.com/python-jsonschema/jsonschema-specifications",
+   "commit": "05ddbbbabcb9ceb6526012a5a05dbdf3a4935d2b",
+   "error": null,
+   "import_name": "jsonschema_specifications",
+   "layout": "top level",
+   "files": {
+    "python": 4,
+    "lines": 70,
+    "tests": 0,
+    "docs": 6
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 0,
+    "classes": 0,
+    "function": 0,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 6,
+    "test_files": 0,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 0,
+    "low_used_in_docs": 0,
+    "medium": 0,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.4
+  },
+  {
+   "package": "markdown-it-py",
+   "repo": "https://github.com/executablebooks/markdown-it-py",
+   "commit": "d504583a458edfa399ee800074244fceec288862",
+   "error": null,
+   "import_name": "markdown_it",
+   "layout": "top level",
+   "files": {
+    "python": 66,
+    "lines": 6082,
+    "tests": 24,
+    "docs": 58
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 193,
+    "classes": 15,
+    "function": 84,
+    "method": 76,
+    "property": 29,
+    "classmethod": 1,
+    "staticmethod": 3
+   },
+   "usage": {
+    "doc_files": 39,
+    "test_files": 24,
+    "unparsed_pieces": 11,
+    "callables_used_in_docs": 8,
+    "callables_used_in_tests": 48,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 2
+   },
+   "levels": {
+    "low": 193,
+    "low_used_in_docs": 8,
+    "medium": 185,
+    "medium_used_in_docs": 9,
+    "high": 9,
+    "examples": 14,
+    "examples_with_two_or_more": 13
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "rich",
+   "repo": "https://github.com/Textualize/rich",
+   "commit": "3a109ccdffe5b2d0e30684a304fbd388e99ce57b",
+   "error": null,
+   "import_name": "rich",
+   "layout": "top level",
+   "files": {
+    "python": 100,
+    "lines": 35025,
+    "tests": 67,
+    "docs": 110
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 458,
+    "classes": 90,
+    "function": 59,
+    "method": 258,
+    "property": 67,
+    "classmethod": 73,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 110,
+    "test_files": 67,
+    "unparsed_pieces": 20,
+    "callables_used_in_docs": 63,
+    "callables_used_in_tests": 292,
+    "classes_built_in_docs": 19,
+    "classes_with_operators": 11
+   },
+   "levels": {
+    "low": 458,
+    "low_used_in_docs": 63,
+    "medium": 521,
+    "medium_used_in_docs": 81,
+    "high": 56,
+    "examples": 394,
+    "examples_with_two_or_more": 174
+   },
+   "seconds": 2.3
+  },
+  {
+   "package": "mdurl",
+   "repo": "https://github.com/executablebooks/mdurl",
+   "commit": "524d2edbbcb8bb48301ba716c7482827bcabb281",
+   "error": null,
+   "import_name": "mdurl",
+   "layout": "src",
+   "files": {
+    "python": 6,
+    "lines": 478,
+    "tests": 7,
+    "docs": 2
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 4,
+    "classes": 0,
+    "function": 4,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 1,
+    "test_files": 7,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 4,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 4,
+    "low_used_in_docs": 0,
+    "medium": 4,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.4
+  },
+  {
+   "package": "pip",
+   "repo": "https://github.com/pypa/pip",
+   "commit": "4b71f36fb4dfbc87ce65ac4710eeccf81d379f55",
+   "error": null,
+   "import_name": "pip",
+   "layout": "src",
+   "files": {
+    "python": 435,
+    "lines": 132808,
+    "tests": 250,
+    "docs": 130
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 1,
+    "classes": 0,
+    "function": 1,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 122,
+    "test_files": 250,
+    "unparsed_pieces": 4,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 1,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 1,
+    "low_used_in_docs": 0,
+    "medium": 1,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 2.5
+  },
+  {
+   "package": "annotated-doc",
+   "repo": "https://github.com/fastapi/annotated-doc",
+   "commit": "d4b3d0d034c1a23c0d728451f0e68746548d3947",
+   "error": null,
+   "import_name": "annotated_doc",
+   "layout": "src",
+   "files": {
+    "python": 2,
+    "lines": 28,
+    "tests": 3,
+    "docs": 2
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 0,
+    "classes": 0,
+    "function": 0,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 2,
+    "test_files": 3,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 0,
+    "low_used_in_docs": 0,
+    "medium": 0,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.4
+  },
+  {
+   "package": "fastapi",
+   "repo": "https://github.com/fastapi/fastapi",
+   "commit": "a3260d49e97b0072c4c0c161d9f63cc3826584b5",
+   "error": null,
+   "import_name": "fastapi",
+   "layout": "top level",
+   "files": {
+    "python": 52,
+    "lines": 20346,
+    "tests": 670,
+    "docs": 1700
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 162,
+    "classes": 18,
+    "function": 83,
+    "method": 68,
+    "property": 10,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 1673,
+    "test_files": 670,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 7,
+    "callables_used_in_tests": 75,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 162,
+    "low_used_in_docs": 7,
+    "medium": 172,
+    "medium_used_in_docs": 8,
+    "high": 5,
+    "examples": 22,
+    "examples_with_two_or_more": 8
+   },
+   "seconds": 3.3
+  },
+  {
+   "package": "googleapis-common-protos",
+   "repo": "https://github.com/googleapis/google-cloud-python",
+   "commit": "900ba57cf4142a045d75634c837727052e9839eb",
+   "error": "SystemExit: no Python package  found in googleapis__google-cloud-python (looked in src/ and the top level)",
+   "seconds": 0.8
+  },
+  {
+   "package": "pytz",
+   "repo": "https://github.com/stub42/pytz",
+   "commit": "e3c6fe223abf0ad1c1c4e40a9bd319a87bb3b829",
+   "error": null,
+   "import_name": "pytz",
+   "layout": "src",
+   "files": {
+    "python": 9,
+    "lines": 2262,
+    "tests": 1,
+    "docs": 6
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 34,
+    "classes": 7,
+    "function": 6,
+    "method": 28,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 6,
+    "test_files": 1,
+    "unparsed_pieces": 1,
+    "callables_used_in_docs": 25,
+    "callables_used_in_tests": 1,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 34,
+    "low_used_in_docs": 25,
+    "medium": 41,
+    "medium_used_in_docs": 26,
+    "high": 9,
+    "examples": 28,
+    "examples_with_two_or_more": 14
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "tqdm",
+   "repo": "https://github.com/tqdm/tqdm",
+   "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+   "error": null,
+   "import_name": "tqdm",
+   "layout": "top level",
+   "files": {
+    "python": 31,
+    "lines": 4025,
+    "tests": 21,
+    "docs": 13
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 109,
+    "classes": 18,
+    "function": 31,
+    "method": 58,
+    "property": 4,
+    "classmethod": 8,
+    "staticmethod": 8
+   },
+   "usage": {
+    "doc_files": 13,
+    "test_files": 21,
+    "unparsed_pieces": 14,
+    "callables_used_in_docs": 17,
+    "callables_used_in_tests": 43,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 109,
+    "low_used_in_docs": 17,
+    "medium": 129,
+    "medium_used_in_docs": 19,
+    "high": 15,
+    "examples": 73,
+    "examples_with_two_or_more": 32
+   },
+   "seconds": 0.8
+  },
+  {
+   "package": "pyasn1",
+   "repo": "https://github.com/pyasn1/pyasn1",
+   "commit": "e24fa719428229db5efeb8aee74ce6d03329df5d",
+   "error": null,
+   "import_name": "pyasn1",
+   "layout": "top level",
+   "files": {
+    "python": 32,
+    "lines": 8852,
+    "tests": 35,
+    "docs": 88
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 177,
+    "classes": 25,
+    "function": 7,
+    "method": 122,
+    "property": 41,
+    "classmethod": 4,
+    "staticmethod": 3
+   },
+   "usage": {
+    "doc_files": 88,
+    "test_files": 35,
+    "unparsed_pieces": 17,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 45,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 13
+   },
+   "levels": {
+    "low": 177,
+    "low_used_in_docs": 0,
+    "medium": 206,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 4,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 1.1
+  },
+  {
+   "package": "aiosignal",
+   "repo": "https://github.com/aio-libs/aiosignal",
+   "commit": "21a4df05b659d9db18d346e0b28afc00197eb8ac",
+   "error": null,
+   "import_name": "aiosignal",
+   "layout": "top level",
+   "files": {
+    "python": 1,
+    "lines": 43,
+    "tests": 2,
+    "docs": 17
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 1,
+    "classes": 1,
+    "function": 0,
+    "method": 1,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 17,
+    "test_files": 2,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 1,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 1,
+    "low_used_in_docs": 0,
+    "medium": 2,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "aiohappyeyeballs",
+   "repo": "https://github.com/aio-libs/aiohappyeyeballs",
+   "commit": "2cf4fe106bf7e0acbd517fb69c208461197ab3be",
+   "error": null,
+   "import_name": "aiohappyeyeballs",
+   "layout": "src",
+   "files": {
+    "python": 5,
+    "lines": 476,
+    "tests": 12,
+    "docs": 10
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 4,
+    "classes": 0,
+    "function": 4,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 10,
+    "test_files": 12,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 4,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 4,
+    "low_used_in_docs": 0,
+    "medium": 4,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "sniffio",
+   "repo": "https://github.com/python-trio/sniffio",
+   "commit": "6996e05d9b9debe32f42f709c8041e744f850478",
+   "error": null,
+   "import_name": "sniffio",
+   "layout": "top level",
+   "files": {
+    "python": 5,
+    "lines": 149,
+    "tests": 0,
+    "docs": 7
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 1,
+    "classes": 0,
+    "function": 1,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 7,
+    "test_files": 0,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 1,
+    "low_used_in_docs": 1,
+    "medium": 1,
+    "medium_used_in_docs": 1,
+    "high": 0,
+    "examples": 1,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.4
+  },
+  {
+   "package": "pydantic-settings",
+   "repo": "https://github.com/pydantic/pydantic-settings",
+   "commit": "4af040bf35186ef4cdd9f949b71ce9242c4527b0",
+   "error": null,
+   "import_name": "pydantic_settings",
+   "layout": "top level",
+   "files": {
+    "python": 22,
+    "lines": 5956,
+    "tests": 15,
+    "docs": 3
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 56,
+    "classes": 11,
+    "function": 28,
+    "method": 14,
+    "property": 4,
+    "classmethod": 5,
+    "staticmethod": 5
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 15,
+    "unparsed_pieces": 4,
+    "callables_used_in_docs": 15,
+    "callables_used_in_tests": 21,
+    "classes_built_in_docs": 4,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 56,
+    "low_used_in_docs": 15,
+    "medium": 66,
+    "medium_used_in_docs": 18,
+    "high": 6,
+    "examples": 24,
+    "examples_with_two_or_more": 7
+   },
+   "seconds": 1.0
+  },
+  {
+   "package": "python-multipart",
+   "repo": "https://github.com/Kludex/python-multipart",
+   "commit": "9bd038eb9ff714b99615c4b8b7f4d39a1e80276b",
+   "error": null,
+   "import_name": "python_multipart",
+   "layout": "top level",
+   "files": {
+    "python": 4,
+    "lines": 1897,
+    "tests": 5,
+    "docs": 9
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 47,
+    "classes": 11,
+    "function": 3,
+    "method": 33,
+    "property": 10,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 9,
+    "test_files": 5,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 4,
+    "callables_used_in_tests": 40,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 4
+   },
+   "levels": {
+    "low": 47,
+    "low_used_in_docs": 4,
+    "medium": 54,
+    "medium_used_in_docs": 5,
+    "high": 2,
+    "examples": 4,
+    "examples_with_two_or_more": 2
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "trove-classifiers",
+   "repo": "https://github.com/pypa/trove-classifiers",
+   "commit": "bc832553ebe6114e7682f09bc59bda6552da37cd",
+   "error": null,
+   "import_name": "trove_classifiers",
+   "layout": "src",
+   "files": {
+    "python": 2,
+    "lines": 929,
+    "tests": 5,
+    "docs": 4
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 0,
+    "classes": 0,
+    "function": 0,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 4,
+    "test_files": 5,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 0,
+    "low_used_in_docs": 0,
+    "medium": 0,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.4
+  },
+  {
+   "package": "zipp",
+   "repo": "https://github.com/jaraco/zipp",
+   "commit": "dc7de0b7207f8bd4321317c8900d22f36289f86b",
+   "error": null,
+   "import_name": "zipp",
+   "layout": "top level",
+   "files": {
+    "python": 6,
+    "lines": 539,
+    "tests": 8,
+    "docs": 9
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 31,
+    "classes": 2,
+    "function": 5,
+    "method": 20,
+    "property": 6,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 9,
+    "test_files": 8,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 11,
+    "callables_used_in_tests": 18,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 31,
+    "low_used_in_docs": 11,
+    "medium": 30,
+    "medium_used_in_docs": 12,
+    "high": 5,
+    "examples": 16,
+    "examples_with_two_or_more": 6
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "tenacity",
+   "repo": "https://github.com/jd/tenacity",
+   "commit": "aac059c906170ee7b6ce1aa086a226f3aded5c99",
+   "error": null,
+   "import_name": "tenacity",
+   "layout": "top level",
+   "files": {
+    "python": 12,
+    "lines": 1962,
+    "tests": 7,
+    "docs": 3
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 25,
+    "classes": 5,
+    "function": 9,
+    "method": 11,
+    "property": 4,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 7,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 11,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 25,
+    "low_used_in_docs": 0,
+    "medium": 29,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "importlib-metadata",
+   "repo": "https://github.com/python/importlib_metadata",
+   "commit": "7e35ac1e6f23e92c66279837b17ce3847434c846",
+   "error": null,
+   "import_name": "importlib_metadata",
+   "layout": "top level",
+   "files": {
+    "python": 16,
+    "lines": 2016,
+    "tests": 20,
+    "docs": 11
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 54,
+    "classes": 8,
+    "function": 15,
+    "method": 15,
+    "property": 18,
+    "classmethod": 4,
+    "staticmethod": 2
+   },
+   "usage": {
+    "doc_files": 11,
+    "test_files": 20,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 8,
+    "callables_used_in_tests": 25,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 54,
+    "low_used_in_docs": 8,
+    "medium": 51,
+    "medium_used_in_docs": 7,
+    "high": 3,
+    "examples": 8,
+    "examples_with_two_or_more": 5
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "pyasn1-modules",
+   "repo": "https://github.com/pyasn1/pyasn1-modules",
+   "commit": "02f9c577bcd0ad9fedfb0fd5dc598d323f7984bf",
+   "error": null,
+   "import_name": "pyasn1_modules",
+   "layout": "top level",
+   "files": {
+    "python": 132,
+    "lines": 16514,
+    "tests": 125,
+    "docs": 4
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 4,
+    "classes": 0,
+    "function": 4,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 4,
+    "test_files": 125,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 1,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 4,
+    "low_used_in_docs": 0,
+    "medium": 4,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 1.5
+  },
+  {
+   "package": "hatchling",
+   "repo": "https://github.com/pypa/hatch",
+   "commit": "893fa13ccd6129550194a4964c22c1cc6b63bc0d",
+   "error": null,
+   "import_name": "hatch",
+   "layout": "src",
+   "files": {
+    "python": 135,
+    "lines": 12834,
+    "tests": 179,
+    "docs": 91
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 605,
+    "classes": 63,
+    "function": 167,
+    "method": 303,
+    "property": 106,
+    "classmethod": 18,
+    "staticmethod": 11
+   },
+   "usage": {
+    "doc_files": 89,
+    "test_files": 179,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 118,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 4
+   },
+   "levels": {
+    "low": 605,
+    "low_used_in_docs": 0,
+    "medium": 592,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 1.9
+  },
+  {
+   "package": "wheel",
+   "repo": "https://github.com/pypa/wheel",
+   "commit": "bfb01fb441d579c289556c305280e08168e23c5f",
+   "error": null,
+   "import_name": "wheel",
+   "layout": "src",
+   "files": {
+    "python": 15,
+    "lines": 2168,
+    "tests": 11,
+    "docs": 17
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 27,
+    "classes": 2,
+    "function": 14,
+    "method": 11,
+    "property": 2,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 16,
+    "test_files": 11,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 6,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 27,
+    "low_used_in_docs": 0,
+    "medium": 28,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "pyparsing",
+   "repo": "https://github.com/pyparsing/pyparsing",
+   "commit": "810199f89bf916590426e1c5cb3d612584f11a2f",
+   "error": null,
+   "import_name": "pyparsing",
+   "layout": "top level",
+   "files": {
+    "python": 17,
+    "lines": 10661,
+    "tests": 18,
+    "docs": 28
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 220,
+    "classes": 52,
+    "function": 42,
+    "method": 148,
+    "property": 9,
+    "classmethod": 4,
+    "staticmethod": 17
+   },
+   "usage": {
+    "doc_files": 25,
+    "test_files": 18,
+    "unparsed_pieces": 13,
+    "callables_used_in_docs": 44,
+    "callables_used_in_tests": 102,
+    "classes_built_in_docs": 15,
+    "classes_with_operators": 33
+   },
+   "levels": {
+    "low": 220,
+    "low_used_in_docs": 44,
+    "medium": 366,
+    "medium_used_in_docs": 71,
+    "high": 35,
+    "examples": 74,
+    "examples_with_two_or_more": 45
+   },
+   "seconds": 2.4
+  },
+  {
+   "package": "truststore",
+   "repo": "https://github.com/sethmlarson/truststore",
+   "commit": "187fb20e410ee14d9911fc9ce879603674fc6879",
+   "error": null,
+   "import_name": "truststore",
+   "layout": "src",
+   "files": {
+    "python": 6,
+    "lines": 1417,
+    "tests": 11,
+    "docs": 5
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 26,
+    "classes": 1,
+    "function": 2,
+    "method": 13,
+    "property": 11,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 5,
+    "test_files": 11,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 10,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 26,
+    "low_used_in_docs": 1,
+    "medium": 17,
+    "medium_used_in_docs": 2,
+    "high": 0,
+    "examples": 4,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "openai",
+   "repo": "https://github.com/openai/openai-python",
+   "commit": "3dae6090cc31cc64a437fe0bcee740b6d81ed2cc",
+   "error": null,
+   "import_name": "openai",
+   "layout": "src",
+   "files": {
+    "python": 2077,
+    "lines": 192425,
+    "tests": 392,
+    "docs": 31
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 2301,
+    "classes": 423,
+    "function": 22,
+    "method": 2236,
+    "property": 39,
+    "classmethod": 4,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 27,
+    "test_files": 392,
+    "unparsed_pieces": 12,
+    "callables_used_in_docs": 48,
+    "callables_used_in_tests": 199,
+    "classes_built_in_docs": 10,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 2301,
+    "low_used_in_docs": 48,
+    "medium": 2702,
+    "medium_used_in_docs": 57,
+    "high": 50,
+    "examples": 96,
+    "examples_with_two_or_more": 79
+   },
+   "seconds": 17.7
+  },
+  {
+   "package": "httpx2",
+   "repo": "https://github.com/pydantic/httpx2",
+   "commit": "f4f65c1ba4517a864b33770a92dee05ea74f9072",
+   "error": "SystemExit: no Python package  found in pydantic__httpx2 (looked in src/ and the top level)",
+   "seconds": 0.6
+  },
+  {
+   "package": "soupsieve",
+   "repo": "https://github.com/facelessuser/soupsieve",
+   "commit": "7d028fdebbb7261849ee0c2a352b602ef70b7b14",
+   "error": null,
+   "import_name": "soupsieve",
+   "layout": "top level",
+   "files": {
+    "python": 8,
+    "lines": 4387,
+    "tests": 95,
+    "docs": 22
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 84,
+    "classes": 3,
+    "function": 13,
+    "method": 61,
+    "property": 0,
+    "classmethod": 1,
+    "staticmethod": 9
+   },
+   "usage": {
+    "doc_files": 22,
+    "test_files": 95,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 8,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 84,
+    "low_used_in_docs": 1,
+    "medium": 88,
+    "medium_used_in_docs": 1,
+    "high": 0,
+    "examples": 2,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "distro",
+   "repo": "https://github.com/python-distro/distro",
+   "commit": "6060eedc8fd432773a1dcfaff3f07b7a27edbe9a",
+   "error": null,
+   "import_name": "distro",
+   "layout": "src",
+   "files": {
+    "python": 3,
+    "lines": 1269,
+    "tests": 2,
+    "docs": 6
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 40,
+    "classes": 1,
+    "function": 20,
+    "method": 20,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 6,
+    "test_files": 2,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 16,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 40,
+    "low_used_in_docs": 3,
+    "medium": 41,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 1,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "shellingham",
+   "repo": "https://github.com/sarugaku/shellingham",
+   "commit": "926401c4543b84f9f579932d30fb52a104639398",
+   "error": null,
+   "import_name": "shellingham",
+   "layout": "src",
+   "files": {
+    "python": 7,
+    "lines": 360,
+    "tests": 1,
+    "docs": 2
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 6,
+    "classes": 0,
+    "function": 6,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 2,
+    "test_files": 1,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 1,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 6,
+    "low_used_in_docs": 1,
+    "medium": 6,
+    "medium_used_in_docs": 1,
+    "high": 0,
+    "examples": 2,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "sse-starlette",
+   "repo": "https://github.com/sysid/sse-starlette",
+   "commit": "e023a93774b100ccd614aedb1251f60d70b6ec29",
+   "error": null,
+   "import_name": "sse_starlette",
+   "layout": "top level",
+   "files": {
+    "python": 4,
+    "lines": 623,
+    "tests": 20,
+    "docs": 5
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 8,
+    "classes": 3,
+    "function": 2,
+    "method": 2,
+    "property": 1,
+    "classmethod": 0,
+    "staticmethod": 3
+   },
+   "usage": {
+    "doc_files": 4,
+    "test_files": 20,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 6,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 8,
+    "low_used_in_docs": 0,
+    "medium": 11,
+    "medium_used_in_docs": 2,
+    "high": 1,
+    "examples": 10,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "s3fs",
+   "repo": "https://github.com/fsspec/s3fs",
+   "commit": "dd194a3e4c46f424d51ef222af64b4e6d32b0184",
+   "error": null,
+   "import_name": "s3fs",
+   "layout": "top level",
+   "files": {
+    "python": 16,
+    "lines": 7456,
+    "tests": 0,
+    "docs": 12
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 33,
+    "classes": 6,
+    "function": 10,
+    "method": 21,
+    "property": 1,
+    "classmethod": 0,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 11,
+    "test_files": 0,
+    "unparsed_pieces": 22,
+    "callables_used_in_docs": 6,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 33,
+    "low_used_in_docs": 6,
+    "medium": 39,
+    "medium_used_in_docs": 7,
+    "high": 2,
+    "examples": 18,
+    "examples_with_two_or_more": 2
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "mypy-extensions",
+   "repo": "https://github.com/python/mypy_extensions",
+   "commit": "df7b7054e3e978cc62717871f16659e51ea8171d",
+   "error": null,
+   "import_name": "mypy_extensions",
+   "layout": "top level, one file",
+   "files": {
+    "python": 1,
+    "lines": 209,
+    "tests": 1,
+    "docs": 1
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 8,
+    "classes": 0,
+    "function": 8,
+    "method": 0,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 1,
+    "test_files": 1,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 8,
+    "low_used_in_docs": 0,
+    "medium": 8,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "typer",
+   "repo": "https://github.com/fastapi/typer",
+   "commit": "73500169e87b4e31717d687818c5ed955b584c18",
+   "error": null,
+   "import_name": "typer",
+   "layout": "top level",
+   "files": {
+    "python": 34,
+    "lines": 11361,
+    "tests": 313,
+    "docs": 82
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 128,
+    "classes": 11,
+    "function": 62,
+    "method": 53,
+    "property": 13,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 78,
+    "test_files": 313,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 5,
+    "callables_used_in_tests": 21,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 128,
+    "low_used_in_docs": 5,
+    "medium": 127,
+    "medium_used_in_docs": 7,
+    "high": 4,
+    "examples": 5,
+    "examples_with_two_or_more": 5
+   },
+   "seconds": 1.2
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "commit": "77001c96f9507be0f4d009b83210a384a5e08bda",
+   "error": null,
+   "import_name": "mcp",
+   "layout": "src",
+   "files": {
+    "python": 128,
+    "lines": 24148,
+    "tests": 285,
+    "docs": 773
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 513,
+    "classes": 85,
+    "function": 131,
+    "method": 298,
+    "property": 66,
+    "classmethod": 17,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 772,
+    "test_files": 285,
+    "unparsed_pieces": 27,
+    "callables_used_in_docs": 56,
+    "callables_used_in_tests": 373,
+    "classes_built_in_docs": 12,
+    "classes_with_operators": 9
+   },
+   "levels": {
+    "low": 513,
+    "low_used_in_docs": 56,
+    "medium": 556,
+    "medium_used_in_docs": 58,
+    "high": 40,
+    "examples": 167,
+    "examples_with_two_or_more": 83
+   },
+   "seconds": 3.9
+  },
+  {
+   "package": "colorama",
+   "repo": "https://github.com/tartley/colorama",
+   "commit": "841634ed2a0da5d5ac2d867db533da8131266cb2",
+   "error": null,
+   "import_name": "colorama",
+   "layout": "top level",
+   "files": {
+    "python": 13,
+    "lines": 1377,
+    "tests": 0,
+    "docs": 8
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 54,
+    "classes": 4,
+    "function": 22,
+    "method": 31,
+    "property": 1,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 8,
+    "test_files": 0,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 54,
+    "low_used_in_docs": 2,
+    "medium": 58,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 5,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "huggingface-hub",
+   "repo": "https://github.com/huggingface/huggingface_hub",
+   "commit": "2c61ae8c11eedb1b79e262dd9eb5e68962cac063",
+   "error": null,
+   "import_name": "huggingface_hub",
+   "layout": "src",
+   "files": {
+    "python": 182,
+    "lines": 69275,
+    "tests": 83,
+    "docs": 85
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 747,
+    "classes": 52,
+    "function": 358,
+    "method": 326,
+    "property": 39,
+    "classmethod": 24,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 74,
+    "test_files": 83,
+    "unparsed_pieces": 1169,
+    "callables_used_in_docs": 184,
+    "callables_used_in_tests": 371,
+    "classes_built_in_docs": 11,
+    "classes_with_operators": 7
+   },
+   "levels": {
+    "low": 747,
+    "low_used_in_docs": 184,
+    "medium": 786,
+    "medium_used_in_docs": 195,
+    "high": 118,
+    "examples": 287,
+    "examples_with_two_or_more": 141
+   },
+   "seconds": 4.9
+  },
+  {
+   "package": "dnspython",
+   "repo": "https://github.com/rthalley/dnspython",
+   "commit": "aaf79b283345d169c692b5659609093c5a6f45b1",
+   "error": null,
+   "import_name": "dns",
+   "layout": "top level",
+   "files": {
+    "python": 162,
+    "lines": 29285,
+    "tests": 72,
+    "docs": 63
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 924,
+    "classes": 170,
+    "function": 171,
+    "method": 556,
+    "property": 28,
+    "classmethod": 168,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 63,
+    "test_files": 72,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 4,
+    "callables_used_in_tests": 387,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 16
+   },
+   "levels": {
+    "low": 924,
+    "low_used_in_docs": 4,
+    "medium": 1102,
+    "medium_used_in_docs": 5,
+    "high": 1,
+    "examples": 2,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 1.9
+  },
+  {
+   "package": "requests-oauthlib",
+   "repo": "https://github.com/requests/requests-oauthlib",
+   "commit": "f33dac32bd065b835b34e7f0a48025700aae1e31",
+   "error": null,
+   "import_name": "requests_oauthlib",
+   "layout": "top level",
+   "files": {
+    "python": 15,
+    "lines": 1174,
+    "tests": 9,
+    "docs": 26
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 30,
+    "classes": 3,
+    "function": 10,
+    "method": 12,
+    "property": 8,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 26,
+    "test_files": 9,
+    "unparsed_pieces": 44,
+    "callables_used_in_docs": 9,
+    "callables_used_in_tests": 24,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 30,
+    "low_used_in_docs": 9,
+    "medium": 28,
+    "medium_used_in_docs": 11,
+    "high": 12,
+    "examples": 27,
+    "examples_with_two_or_more": 21
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "pytest-asyncio",
+   "repo": "https://github.com/pytest-dev/pytest-asyncio",
+   "commit": "00eeb9122134a386af122cf687ebf29b83ae7e71",
+   "error": null,
+   "import_name": "pytest_asyncio",
+   "layout": "top level",
+   "files": {
+    "python": 2,
+    "lines": 935,
+    "tests": 43,
+    "docs": 41
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 18,
+    "classes": 3,
+    "function": 13,
+    "method": 4,
+    "property": 0,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 40,
+    "test_files": 43,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 2,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 18,
+    "low_used_in_docs": 0,
+    "medium": 21,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "cachetools",
+   "repo": "https://github.com/tkem/cachetools",
+   "commit": "1ce79efa552d1bdda70d144d401ef9105d999184",
+   "error": null,
+   "import_name": "cachetools",
+   "layout": "src",
+   "files": {
+    "python": 7,
+    "lines": 1274,
+    "tests": 13,
+    "docs": 10
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 35,
+    "classes": 7,
+    "function": 11,
+    "method": 18,
+    "property": 5,
+    "classmethod": 0,
+    "staticmethod": 1
+   },
+   "usage": {
+    "doc_files": 10,
+    "test_files": 13,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 24,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 35,
+    "low_used_in_docs": 2,
+    "medium": 41,
+    "medium_used_in_docs": 4,
+    "high": 1,
+    "examples": 2,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "docstring-parser",
+   "repo": "https://github.com/rr-/docstring_parser",
+   "commit": "a8e2a3ba5a4cdd906830735cb41a6a22c9346bf4",
+   "error": null,
+   "import_name": "docstring_parser",
+   "layout": "top level",
+   "files": {
+    "python": 34,
+    "lines": 7673,
+    "tests": 0,
+    "docs": 3
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 95,
+    "classes": 6,
+    "function": 62,
+    "method": 19,
+    "property": 14,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 0,
+    "unparsed_pieces": 7,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 95,
+    "low_used_in_docs": 3,
+    "medium": 88,
+    "medium_used_in_docs": 4,
+    "high": 1,
+    "examples": 2,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.9
+  },
+  {
+   "package": "editables",
+   "repo": "https://github.com/pfmoore/editables",
+   "commit": "e5017008352b4114c01b01d1a552c7d8a0103174",
+   "error": null,
+   "import_name": "editables",
+   "layout": "src",
+   "files": {
+    "python": 2,
+    "lines": 151,
+    "tests": 2,
+    "docs": 9
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 16,
+    "classes": 2,
+    "function": 0,
+    "method": 11,
+    "property": 1,
+    "classmethod": 4,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 8,
+    "test_files": 2,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 11,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 16,
+    "low_used_in_docs": 3,
+    "medium": 18,
+    "medium_used_in_docs": 4,
+    "high": 1,
+    "examples": 1,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "oauthlib",
+   "repo": "https://github.com/oauthlib/oauthlib",
+   "commit": "179287a5f9067aac7b1c0d71c4c5e083ccbf58f2",
+   "error": null,
+   "import_name": "oauthlib",
+   "layout": "top level",
+   "files": {
+    "python": 75,
+    "lines": 10367,
+    "tests": 78,
+    "docs": 76
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 327,
+    "classes": 41,
+    "function": 87,
+    "method": 190,
+    "property": 49,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 76,
+    "test_files": 78,
+    "unparsed_pieces": 21,
+    "callables_used_in_docs": 14,
+    "callables_used_in_tests": 182,
+    "classes_built_in_docs": 13,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 327,
+    "low_used_in_docs": 14,
+    "medium": 331,
+    "medium_used_in_docs": 26,
+    "high": 11,
+    "examples": 20,
+    "examples_with_two_or_more": 11
+   },
+   "seconds": 1.1
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "commit": "0f43c6ebd426039e4b99ec22535c2c8a2ec2f69f",
+   "error": null,
+   "import_name": "werkzeug",
+   "layout": "src",
+   "files": {
+    "python": 54,
+    "lines": 19082,
+    "tests": 34,
+    "docs": 50
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 436,
+    "classes": 71,
+    "function": 52,
+    "method": 328,
+    "property": 38,
+    "classmethod": 15,
+    "staticmethod": 3
+   },
+   "usage": {
+    "doc_files": 44,
+    "test_files": 34,
+    "unparsed_pieces": 8,
+    "callables_used_in_docs": 43,
+    "callables_used_in_tests": 185,
+    "classes_built_in_docs": 10,
+    "classes_with_operators": 13
+   },
+   "levels": {
+    "low": 436,
+    "low_used_in_docs": 43,
+    "medium": 506,
+    "medium_used_in_docs": 49,
+    "high": 27,
+    "examples": 59,
+    "examples_with_two_or_more": 33
+   },
+   "seconds": 1.4
+  },
+  {
+   "package": "more-itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "commit": "ceafee8ce96f4bc1eb74c528bc247c91d648a0bb",
+   "error": null,
+   "import_name": "more_itertools",
+   "layout": "top level",
+   "files": {
+    "python": 3,
+    "lines": 5628,
+    "tests": 3,
+    "docs": 15
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 176,
+    "classes": 6,
+    "function": 161,
+    "method": 11,
+    "property": 2,
+    "classmethod": 0,
+    "staticmethod": 2
+   },
+   "usage": {
+    "doc_files": 15,
+    "test_files": 3,
+    "unparsed_pieces": 3,
+    "callables_used_in_docs": 163,
+    "callables_used_in_tests": 173,
+    "classes_built_in_docs": 4,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 176,
+    "low_used_in_docs": 163,
+    "medium": 183,
+    "medium_used_in_docs": 166,
+    "high": 21,
+    "examples": 282,
+    "examples_with_two_or_more": 23
+   },
+   "seconds": 1.1
+  },
+  {
+   "package": "defusedxml",
+   "repo": "https://github.com/tiran/defusedxml",
+   "commit": "c7445887f5e1bcea470a16f61369d29870cfcfe1",
+   "error": null,
+   "import_name": "defusedxml",
+   "layout": "top level",
+   "files": {
+    "python": 11,
+    "lines": 818,
+    "tests": 0,
+    "docs": 5
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 52,
+    "classes": 7,
+    "function": 21,
+    "method": 31,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 5,
+    "test_files": 0,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 52,
+    "low_used_in_docs": 2,
+    "medium": 59,
+    "medium_used_in_docs": 2,
+    "high": 0,
+    "examples": 4,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "commit": "ada19dd8000ec550fd45cf72841c416319dc568d",
+   "error": null,
+   "import_name": "networkx",
+   "layout": "top level",
+   "files": {
+    "python": 585,
+    "lines": 167870,
+    "tests": 0,
+    "docs": 212
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 1180,
+    "classes": 37,
+    "function": 935,
+    "method": 242,
+    "property": 1,
+    "classmethod": 2,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 212,
+    "test_files": 0,
+    "unparsed_pieces": 43,
+    "callables_used_in_docs": 247,
+    "callables_used_in_tests": 0,
+    "classes_built_in_docs": 11,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 1180,
+    "low_used_in_docs": 247,
+    "medium": 1217,
+    "medium_used_in_docs": 258,
+    "high": 209,
+    "examples": 746,
+    "examples_with_two_or_more": 603
+   },
+   "seconds": 18.1
+  },
+  {
+   "package": "pytest-cov",
+   "repo": "https://github.com/pytest-dev/pytest-cov",
+   "commit": "a8cb1260170754f2aff9022cfd252c488098e813",
+   "error": null,
+   "import_name": "pytest_cov",
+   "layout": "src",
+   "files": {
+    "python": 3,
+    "lines": 815,
+    "tests": 6,
+    "docs": 27
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 38,
+    "classes": 6,
+    "function": 8,
+    "method": 28,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 2
+   },
+   "usage": {
+    "doc_files": 27,
+    "test_files": 6,
+    "unparsed_pieces": 2,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 2,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 38,
+    "low_used_in_docs": 0,
+    "medium": 44,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "distlib",
+   "repo": "https://github.com/pypa/distlib",
+   "commit": "c2d6d6462fac26b8df36d5bdf0fe78ed0699fcff",
+   "error": null,
+   "import_name": "distlib",
+   "layout": "top level",
+   "files": {
+    "python": 13,
+    "lines": 9268,
+    "tests": 38,
+    "docs": 29
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 286,
+    "classes": 52,
+    "function": 55,
+    "method": 201,
+    "property": 27,
+    "classmethod": 3,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 15,
+    "test_files": 38,
+    "unparsed_pieces": 5,
+    "callables_used_in_docs": 32,
+    "callables_used_in_tests": 130,
+    "classes_built_in_docs": 16,
+    "classes_with_operators": 3
+   },
+   "levels": {
+    "low": 286,
+    "low_used_in_docs": 32,
+    "medium": 325,
+    "medium_used_in_docs": 49,
+    "high": 13,
+    "examples": 58,
+    "examples_with_two_or_more": 14
+   },
+   "seconds": 1.2
+  },
+  {
+   "package": "exceptiongroup",
+   "repo": "https://github.com/agronholm/exceptiongroup",
+   "commit": "62edd3a5728caa22b668a982a6682983fe3076ba",
+   "error": null,
+   "import_name": "exceptiongroup",
+   "layout": "src",
+   "files": {
+    "python": 5,
+    "lines": 996,
+    "tests": 11,
+    "docs": 3
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 11,
+    "classes": 1,
+    "function": 5,
+    "method": 4,
+    "property": 2,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 11,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 2,
+    "callables_used_in_tests": 11,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 11,
+    "low_used_in_docs": 2,
+    "medium": 11,
+    "medium_used_in_docs": 2,
+    "high": 1,
+    "examples": 1,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "itsdangerous",
+   "repo": "https://github.com/pallets/itsdangerous",
+   "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+   "error": null,
+   "import_name": "itsdangerous",
+   "layout": "src",
+   "files": {
+    "python": 8,
+    "lines": 951,
+    "tests": 6,
+    "docs": 16
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 38,
+    "classes": 8,
+    "function": 6,
+    "method": 30,
+    "property": 2,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 16,
+    "test_files": 6,
+    "unparsed_pieces": 3,
+    "callables_used_in_docs": 7,
+    "callables_used_in_tests": 23,
+    "classes_built_in_docs": 3,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 38,
+    "low_used_in_docs": 7,
+    "medium": 46,
+    "medium_used_in_docs": 10,
+    "high": 6,
+    "examples": 12,
+    "examples_with_two_or_more": 6
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "mako",
+   "repo": "https://github.com/sqlalchemy/mako",
+   "commit": "14889bc0feacd12102ee61f0769677be2fddbc1b",
+   "error": null,
+   "import_name": "mako",
+   "layout": "top level",
+   "files": {
+    "python": 33,
+    "lines": 7024,
+    "tests": 32,
+    "docs": 6
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 191,
+    "classes": 45,
+    "function": 30,
+    "method": 130,
+    "property": 30,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 6,
+    "test_files": 32,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 44,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 191,
+    "low_used_in_docs": 0,
+    "medium": 220,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.8
+  },
+  {
+   "package": "alembic",
+   "repo": "https://github.com/sqlalchemy/alembic",
+   "commit": "1bcba93ea0473c69b48e704f842ca96e9e5348f5",
+   "error": null,
+   "import_name": "alembic",
+   "layout": "top level",
+   "files": {
+    "python": 77,
+    "lines": 24225,
+    "tests": 36,
+    "docs": 8
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 510,
+    "classes": 57,
+    "function": 136,
+    "method": 264,
+    "property": 48,
+    "classmethod": 62,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 8,
+    "test_files": 36,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 1,
+    "callables_used_in_tests": 159,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 510,
+    "low_used_in_docs": 1,
+    "medium": 532,
+    "medium_used_in_docs": 1,
+    "high": 0,
+    "examples": 1,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 2.0
+  },
+  {
+   "package": "requests-toolbelt",
+   "repo": "https://github.com/requests/toolbelt",
+   "commit": "bcd5f7be229e14089052be7e3b527ebcea0ae7b8",
+   "error": null,
+   "import_name": "requests_toolbelt",
+   "layout": "top level",
+   "files": {
+    "python": 34,
+    "lines": 2797,
+    "tests": 26,
+    "docs": 23
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 74,
+    "classes": 24,
+    "function": 21,
+    "method": 41,
+    "property": 7,
+    "classmethod": 5,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 23,
+    "test_files": 26,
+    "unparsed_pieces": 12,
+    "callables_used_in_docs": 13,
+    "callables_used_in_tests": 34,
+    "classes_built_in_docs": 13,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 74,
+    "low_used_in_docs": 13,
+    "medium": 97,
+    "medium_used_in_docs": 26,
+    "high": 8,
+    "examples": 31,
+    "examples_with_two_or_more": 10
+   },
+   "seconds": 0.7
+  },
+  {
+   "package": "prompt-toolkit",
+   "repo": "https://github.com/prompt-toolkit/python-prompt-toolkit",
+   "commit": "6c7fbc1080dd331a031a2be1f96d4ebc0421f7ea",
+   "error": null,
+   "import_name": "prompt_toolkit",
+   "layout": "src",
+   "files": {
+    "python": 145,
+    "lines": 34386,
+    "tests": 21,
+    "docs": 31
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 964,
+    "classes": 167,
+    "function": 164,
+    "method": 677,
+    "property": 110,
+    "classmethod": 13,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 31,
+    "test_files": 21,
+    "unparsed_pieces": 5,
+    "callables_used_in_docs": 35,
+    "callables_used_in_tests": 81,
+    "classes_built_in_docs": 25,
+    "classes_with_operators": 2
+   },
+   "levels": {
+    "low": 964,
+    "low_used_in_docs": 35,
+    "medium": 1061,
+    "medium_used_in_docs": 60,
+    "high": 54,
+    "examples": 117,
+    "examples_with_two_or_more": 68
+   },
+   "seconds": 1.7
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+   "error": null,
+   "import_name": "rsa",
+   "layout": "top level",
+   "files": {
+    "python": 14,
+    "lines": 2241,
+    "tests": 14,
+    "docs": 12
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 44,
+    "classes": 7,
+    "function": 32,
+    "method": 10,
+    "property": 0,
+    "classmethod": 2,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 12,
+    "test_files": 14,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 16,
+    "callables_used_in_tests": 21,
+    "classes_built_in_docs": 2,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 44,
+    "low_used_in_docs": 16,
+    "medium": 51,
+    "medium_used_in_docs": 18,
+    "high": 5,
+    "examples": 36,
+    "examples_with_two_or_more": 9
+   },
+   "seconds": 0.5
+  },
+  {
+   "package": "cloudpickle",
+   "repo": "https://github.com/cloudpipe/cloudpickle",
+   "commit": "4af5936c328de0b33fa9c636e210d9a9e1e97dd3",
+   "error": null,
+   "import_name": "cloudpickle",
+   "layout": "top level",
+   "files": {
+    "python": 3,
+    "lines": 1312,
+    "tests": 12,
+    "docs": 7
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 10,
+    "classes": 1,
+    "function": 9,
+    "method": 1,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 12,
+    "unparsed_pieces": 5,
+    "callables_used_in_docs": 3,
+    "callables_used_in_tests": 6,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 10,
+    "low_used_in_docs": 3,
+    "medium": 11,
+    "medium_used_in_docs": 3,
+    "high": 1,
+    "examples": 3,
+    "examples_with_two_or_more": 1
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "threadpoolctl",
+   "repo": "https://github.com/joblib/threadpoolctl",
+   "commit": "13b1a129901f353ee4820a3fb7e9a6f7d5fcf4f4",
+   "error": null,
+   "import_name": "threadpoolctl",
+   "layout": "top level, one file",
+   "files": {
+    "python": 1,
+    "lines": 1736,
+    "tests": 16,
+    "docs": 4
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 15,
+    "classes": 3,
+    "function": 4,
+    "method": 9,
+    "property": 1,
+    "classmethod": 1,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 4,
+    "test_files": 16,
+    "unparsed_pieces": 6,
+    "callables_used_in_docs": 5,
+    "callables_used_in_tests": 13,
+    "classes_built_in_docs": 1,
+    "classes_with_operators": 0
+   },
+   "levels": {
+    "low": 15,
+    "low_used_in_docs": 5,
+    "medium": 18,
+    "medium_used_in_docs": 6,
+    "high": 3,
+    "examples": 11,
+    "examples_with_two_or_more": 6
+   },
+   "seconds": 0.6
+  },
+  {
+   "package": "isodate",
+   "repo": "https://github.com/gweis/isodate",
+   "commit": "17cb25eb7bc3556a68f3f7b241313e9bb8b23760",
+   "error": null,
+   "import_name": "isodate",
+   "layout": "src",
+   "files": {
+    "python": 10,
+    "lines": 1184,
+    "tests": 6,
+    "docs": 3
+   },
+   "native_files": 0,
+   "api": {
+    "callables": 26,
+    "classes": 4,
+    "function": 16,
+    "method": 10,
+    "property": 0,
+    "classmethod": 0,
+    "staticmethod": 0
+   },
+   "usage": {
+    "doc_files": 3,
+    "test_files": 6,
+    "unparsed_pieces": 0,
+    "callables_used_in_docs": 0,
+    "callables_used_in_tests": 10,
+    "classes_built_in_docs": 0,
+    "classes_with_operators": 1
+   },
+   "levels": {
+    "low": 26,
+    "low_used_in_docs": 0,
+    "medium": 33,
+    "medium_used_in_docs": 0,
+    "high": 0,
+    "examples": 0,
+    "examples_with_two_or_more": 0
+   },
+   "seconds": 0.6
+  }
+ ]
+}

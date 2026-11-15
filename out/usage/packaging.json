@@ -1069,5 +1069,498 @@
    "packaging.pylock.PackageWheel.filename",
    "packaging.pylock.PackageSdist.filename"
   ]
- }
+ },
+ "examples": [
+  [
+   "DependencyGroupResolver()",
+   "packaging.dependency_groups.DependencyGroupResolver.lookup",
+   "packaging.dependency_groups.DependencyGroupResolver.resolve"
+  ],
+  [
+   "packaging.dependency_groups.resolve_dependency_groups"
+  ],
+  [
+   "DirectUrl()",
+   "packaging.direct_url.DirectUrl.from_dict",
+   "packaging.direct_url.DirectUrl.to_dict",
+   "packaging.direct_url.DirectUrl.validate"
+  ],
+  [
+   "Marker ==",
+   "Marker()",
+   "packaging.markers.Marker.evaluate"
+  ],
+  [
+   "Marker &",
+   "Marker |",
+   "Marker()"
+  ],
+  [
+   "packaging.metadata.Metadata.from_raw",
+   "packaging.metadata.parse_email"
+  ],
+  [
+   "Package()",
+   "PackageWheel()",
+   "Pylock()",
+   "Version()",
+   "packaging.pylock.Pylock.from_dict",
+   "packaging.pylock.Pylock.select",
+   "packaging.pylock.Pylock.to_dict",
+   "packaging.pylock.Pylock.validate",
+   "packaging.pylock.is_valid_pylock_path"
+  ],
+  [
+   "SpecifierSet()",
+   "Version in",
+   "Version()",
+   "VersionRange &",
+   "VersionRange ==",
+   "VersionRange in",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.ranges.VersionRange.is_empty",
+   "packaging.ranges.VersionRange.to_specifier_set",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange &",
+   "VersionRange -",
+   "VersionRange ==",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange &",
+   "VersionRange ==",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.ranges.VersionRange.is_disjoint",
+   "packaging.ranges.VersionRange.is_subset",
+   "packaging.ranges.VersionRange.is_superset",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange &",
+   "VersionRange ==",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.full",
+   "packaging.ranges.VersionRange.singleton",
+   "packaging.ranges.VersionRange.to_specifier_set",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.to_specifier_set",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.specifiers.SpecifierSet.filter",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "VersionRange &",
+   "packaging.ranges.VersionRange.is_empty"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange &",
+   "VersionRange ==",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.full",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange &",
+   "VersionRange -",
+   "VersionRange ==",
+   "VersionRange in",
+   "VersionRange |",
+   "packaging.ranges.VersionRange.empty",
+   "packaging.ranges.VersionRange.full",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "Specifier()",
+   "SpecifierSet &",
+   "SpecifierSet in",
+   "SpecifierSet()",
+   "Version in",
+   "Version()",
+   "packaging.specifiers.SpecifierSet.filter",
+   "packaging.specifiers.SpecifierSet.is_disjoint",
+   "packaging.specifiers.SpecifierSet.is_subset",
+   "packaging.specifiers.SpecifierSet.is_superset",
+   "packaging.specifiers.SpecifierSet.is_unsatisfiable",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "Tag ==",
+   "Tag in",
+   "Tag()",
+   "packaging.tags.sys_tags"
+  ],
+  [
+   "Version <",
+   "Version()",
+   "packaging.version.Version.epoch",
+   "packaging.version.Version.is_postrelease",
+   "packaging.version.Version.is_prerelease",
+   "packaging.version.Version.post",
+   "packaging.version.Version.pre",
+   "packaging.version.Version.release",
+   "packaging.version.parse"
+  ],
+  [
+   "packaging.licenses.canonicalize_license_expression"
+  ],
+  [
+   "packaging.licenses.canonicalize_license_expression"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange in",
+   "packaging.ranges.VersionRange.is_empty",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "VersionRange in",
+   "packaging.ranges.VersionRange.empty",
+   "packaging.ranges.VersionRange.is_empty"
+  ],
+  [
+   "VersionRange in",
+   "packaging.ranges.VersionRange.full"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange in",
+   "packaging.ranges.VersionRange.singleton",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "packaging.ranges.VersionRange.intersection",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "VersionRange in",
+   "packaging.ranges.VersionRange.singleton",
+   "packaging.ranges.VersionRange.union"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "VersionRange in",
+   "packaging.ranges.VersionRange.complement",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "VersionRange in",
+   "packaging.ranges.VersionRange.difference",
+   "packaging.ranges.VersionRange.empty",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.empty",
+   "packaging.ranges.VersionRange.is_subset",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.is_superset",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.is_disjoint",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.filter",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.singleton",
+   "packaging.ranges.VersionRange.to_specifier_set",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.is_empty",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.ranges.VersionRange.contains",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange in",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "VersionRange ==",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "Specifier()"
+  ],
+  [
+   "Specifier()",
+   "packaging.specifiers.Specifier.operator"
+  ],
+  [
+   "Specifier()",
+   "packaging.specifiers.Specifier.version"
+  ],
+  [
+   "Specifier()"
+  ],
+  [
+   "Specifier()"
+  ],
+  [
+   "Specifier ==",
+   "Specifier()"
+  ],
+  [
+   "Specifier in",
+   "Specifier()",
+   "Version in",
+   "Version()"
+  ],
+  [
+   "Specifier()",
+   "Version()",
+   "packaging.specifiers.Specifier.contains"
+  ],
+  [
+   "Specifier()",
+   "Version()",
+   "packaging.specifiers.Specifier.filter"
+  ],
+  [
+   "SpecifierSet()"
+  ],
+  [
+   "SpecifierSet()"
+  ],
+  [
+   "SpecifierSet &",
+   "SpecifierSet()"
+  ],
+  [
+   "SpecifierSet ==",
+   "SpecifierSet()"
+  ],
+  [
+   "SpecifierSet()"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.is_unsatisfiable"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.to_range"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.is_subset"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.is_superset"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.is_disjoint"
+  ],
+  [
+   "SpecifierSet in",
+   "SpecifierSet()",
+   "Version in",
+   "Version()"
+  ],
+  [
+   "SpecifierSet()",
+   "Version()",
+   "packaging.specifiers.SpecifierSet.contains"
+  ],
+  [
+   "SpecifierSet()",
+   "Version()",
+   "packaging.specifiers.SpecifierSet.filter"
+  ],
+  [
+   "SpecifierSet()",
+   "packaging.specifiers.SpecifierSet.filter"
+  ],
+  [
+   "packaging.tags.create_compatible_tags_selector",
+   "packaging.tags.sys_tags",
+   "packaging.utils.parse_wheel_filename"
+  ],
+  [
+   "packaging.utils.canonicalize_name"
+  ],
+  [
+   "packaging.utils.canonicalize_name",
+   "packaging.utils.is_normalized_name"
+  ],
+  [
+   "packaging.utils.canonicalize_version"
+  ],
+  [
+   "packaging.utils.canonicalize_version"
+  ],
+  [
+   "packaging.utils.canonicalize_version"
+  ],
+  [
+   "Tag()",
+   "Version ==",
+   "Version()",
+   "packaging.utils.parse_wheel_filename"
+  ],
+  [
+   "Version ==",
+   "Version()",
+   "packaging.utils.parse_sdist_filename"
+  ],
+  [
+   "packaging.version.normalize_pre"
+  ],
+  [
+   "packaging.version.parse"
+  ],
+  [
+   "Version()"
+  ],
+  [
+   "Version <",
+   "Version <=",
+   "Version ==",
+   "Version >",
+   "Version >=",
+   "Version()"
+  ],
+  [
+   "packaging.version.Version.from_parts"
+  ],
+  [
+   "Version()"
+  ],
+  [
+   "Version()"
+  ],
+  [
+   "Version()"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.epoch"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.release"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.pre"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.post"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.dev"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.local"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.public"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.base_version"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.is_prerelease"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.is_postrelease"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.is_devrelease"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.major"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.minor"
+  ],
+  [
+   "Version()",
+   "packaging.version.Version.micro"
+  ],
+  [
+   "packaging.version.Version.release"
+  ]
+ ]
 }

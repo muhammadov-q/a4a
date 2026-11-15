@@ -12,6 +12,7 @@ __pycache__/
 out/packaging/test_cases.jsonl
 out/handover/
 out/traces/reference-*.jsonl
+out/corpus/scans/
 
 # clones and environments of repositories we generate tools from
 .cache/
