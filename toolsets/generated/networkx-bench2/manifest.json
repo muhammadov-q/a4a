@@ -1,0 +1,227 @@
+{
+ "url": "https://github.com/networkx/networkx",
+ "commit": "ada19dd8000ec550fd45cf72841c416319dc568d",
+ "package": "networkx",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "networkx-bench2",
+ "toolset": "toolsets/generated/networkx-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 12,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "create_undirected_graph",
+   "wraps": "networkx.Graph",
+   "description": "Creates an undirected graph object that can store nodes and edges with optional attributes. incoming_graph_data: Data to initialize graph, attr: Attributes to add to graph as key=value pairs. >>> G = nx.Graph()",
+   "verified": true,
+   "direct_call": "networkx.Graph(incoming_graph_data, **attr)",
+   "samples": [
+    {
+     "incoming_graph_data": null,
+     "attr": {}
+    },
+    {
+     "incoming_graph_data": [
+      [
+       1,
+       2
+      ],
+      [
+       2,
+       3
+      ]
+     ],
+     "attr": {}
+    },
+    {
+     "incoming_graph_data": null,
+     "attr": {
+      "name": "my_graph",
+      "author": "test_user"
+     }
+    },
+    {
+     "incoming_graph_data": {
+      "nodes": [
+       1,
+       2,
+       3
+      ],
+      "edges": [
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ]
+      ]
+     },
+     "attr": {}
+    },
+    {
+     "incoming_graph_data": null,
+     "attr": {
+      "weighted": true,
+      "directed": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_directed_graph",
+   "wraps": "networkx.DiGraph",
+   "description": "Creates a directed graph object that can store nodes and directed edges with optional attributes. incoming_graph_data: Data to initialize graph, e.g. edge list or dict of dicts. -> String representation of the created DiGraph object.",
+   "verified": true,
+   "direct_call": "networkx.DiGraph(incoming_graph_data)",
+   "samples": [
+    {
+     "incoming_graph_data": null
+    },
+    {
+     "incoming_graph_data": [
+      [
+       1,
+       2
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       3,
+       4
+      ]
+     ]
+    },
+    {
+     "incoming_graph_data": {
+      "1": [
+       "2"
+      ],
+      "2": [
+       "3"
+      ],
+      "3": [
+       "4"
+      ]
+     }
+    },
+    {
+     "incoming_graph_data": {
+      "nodes": [
+       1,
+       2,
+       3,
+       4
+      ],
+      "edges": [
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        3
+       ],
+       [
+        3,
+        4
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "compute_degree_centrality",
+   "wraps": "networkx.degree_centrality",
+   "description": "Compute the degree centrality for all nodes in a graph, measuring how connected each node is.\n    \n    The degree centrality for a node v is the fraction of nodes it is connected to.\n    For directed graphs it is the average number of in and out edges per node.\n    \n    Parameters\n    ----------\n    graph : object\n      A networkx graph\n    \n    Returns\n    -------\n    dict[str, float]\n       Dictionary of nodes with degree centrality as the value.\n    \n    Examples\n    --------\n    >>> import networkx as nx\n    >>> G = nx.Graph([(0, 1), (0, 2), (0, 3), (1, 2), (1, 3)])\n    >>> compute_degree_centrality(G)\n    {'0': 1.0, '1': 1.0, '2': 0.6666666666666666, '3': 0.6666666666666666}\n    ",
+   "verified": true,
+   "direct_call": "networkx.degree_centrality(graph)",
+   "samples": [
+    {
+     "graph": {
+      "edges": [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        0,
+        3
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        1,
+        3
+       ]
+      ]
+     }
+    },
+    {
+     "graph": {
+      "edges": [
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        2
+       ],
+       [
+        1,
+        2
+       ],
+       [
+        2,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "graph": {
+      "edges": [
+       [
+        0,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "graph": {
+      "edges": []
+     }
+    },
+    {
+     "graph": {
+      "edges": [
+       [
+        0,
+        0
+       ]
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

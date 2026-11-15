@@ -1071,496 +1071,790 @@
   ]
  },
  "examples": [
-  [
-   "DependencyGroupResolver()",
-   "packaging.dependency_groups.DependencyGroupResolver.lookup",
-   "packaging.dependency_groups.DependencyGroupResolver.resolve"
-  ],
-  [
-   "packaging.dependency_groups.resolve_dependency_groups"
-  ],
-  [
-   "DirectUrl()",
-   "packaging.direct_url.DirectUrl.from_dict",
-   "packaging.direct_url.DirectUrl.to_dict",
-   "packaging.direct_url.DirectUrl.validate"
-  ],
-  [
-   "Marker ==",
-   "Marker()",
-   "packaging.markers.Marker.evaluate"
-  ],
-  [
-   "Marker &",
-   "Marker |",
-   "Marker()"
-  ],
-  [
-   "packaging.metadata.Metadata.from_raw",
-   "packaging.metadata.parse_email"
-  ],
-  [
-   "Package()",
-   "PackageWheel()",
-   "Pylock()",
-   "Version()",
-   "packaging.pylock.Pylock.from_dict",
-   "packaging.pylock.Pylock.select",
-   "packaging.pylock.Pylock.to_dict",
-   "packaging.pylock.Pylock.validate",
-   "packaging.pylock.is_valid_pylock_path"
-  ],
-  [
-   "SpecifierSet()",
-   "Version in",
-   "Version()",
-   "VersionRange &",
-   "VersionRange ==",
-   "VersionRange in",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.ranges.VersionRange.is_empty",
-   "packaging.ranges.VersionRange.to_specifier_set",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange &",
-   "VersionRange -",
-   "VersionRange ==",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange &",
-   "VersionRange ==",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.ranges.VersionRange.is_disjoint",
-   "packaging.ranges.VersionRange.is_subset",
-   "packaging.ranges.VersionRange.is_superset",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange &",
-   "VersionRange ==",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.full",
-   "packaging.ranges.VersionRange.singleton",
-   "packaging.ranges.VersionRange.to_specifier_set",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.to_specifier_set",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.specifiers.SpecifierSet.filter",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "VersionRange &",
-   "packaging.ranges.VersionRange.is_empty"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange &",
-   "VersionRange ==",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.full",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange &",
-   "VersionRange -",
-   "VersionRange ==",
-   "VersionRange in",
-   "VersionRange |",
-   "packaging.ranges.VersionRange.empty",
-   "packaging.ranges.VersionRange.full",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "Specifier()",
-   "SpecifierSet &",
-   "SpecifierSet in",
-   "SpecifierSet()",
-   "Version in",
-   "Version()",
-   "packaging.specifiers.SpecifierSet.filter",
-   "packaging.specifiers.SpecifierSet.is_disjoint",
-   "packaging.specifiers.SpecifierSet.is_subset",
-   "packaging.specifiers.SpecifierSet.is_superset",
-   "packaging.specifiers.SpecifierSet.is_unsatisfiable",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "Tag ==",
-   "Tag in",
-   "Tag()",
-   "packaging.tags.sys_tags"
-  ],
-  [
-   "Version <",
-   "Version()",
-   "packaging.version.Version.epoch",
-   "packaging.version.Version.is_postrelease",
-   "packaging.version.Version.is_prerelease",
-   "packaging.version.Version.post",
-   "packaging.version.Version.pre",
-   "packaging.version.Version.release",
-   "packaging.version.parse"
-  ],
-  [
-   "packaging.licenses.canonicalize_license_expression"
-  ],
-  [
-   "packaging.licenses.canonicalize_license_expression"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange in",
-   "packaging.ranges.VersionRange.is_empty",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "VersionRange in",
-   "packaging.ranges.VersionRange.empty",
-   "packaging.ranges.VersionRange.is_empty"
-  ],
-  [
-   "VersionRange in",
-   "packaging.ranges.VersionRange.full"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange in",
-   "packaging.ranges.VersionRange.singleton",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "packaging.ranges.VersionRange.intersection",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "VersionRange in",
-   "packaging.ranges.VersionRange.singleton",
-   "packaging.ranges.VersionRange.union"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "VersionRange in",
-   "packaging.ranges.VersionRange.complement",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "VersionRange in",
-   "packaging.ranges.VersionRange.difference",
-   "packaging.ranges.VersionRange.empty",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.empty",
-   "packaging.ranges.VersionRange.is_subset",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.is_superset",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.is_disjoint",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.filter",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.singleton",
-   "packaging.ranges.VersionRange.to_specifier_set",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.is_empty",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.ranges.VersionRange.contains",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange in",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "VersionRange ==",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "Specifier()"
-  ],
-  [
-   "Specifier()",
-   "packaging.specifiers.Specifier.operator"
-  ],
-  [
-   "Specifier()",
-   "packaging.specifiers.Specifier.version"
-  ],
-  [
-   "Specifier()"
-  ],
-  [
-   "Specifier()"
-  ],
-  [
-   "Specifier ==",
-   "Specifier()"
-  ],
-  [
-   "Specifier in",
-   "Specifier()",
-   "Version in",
-   "Version()"
-  ],
-  [
-   "Specifier()",
-   "Version()",
-   "packaging.specifiers.Specifier.contains"
-  ],
-  [
-   "Specifier()",
-   "Version()",
-   "packaging.specifiers.Specifier.filter"
-  ],
-  [
-   "SpecifierSet()"
-  ],
-  [
-   "SpecifierSet()"
-  ],
-  [
-   "SpecifierSet &",
-   "SpecifierSet()"
-  ],
-  [
-   "SpecifierSet ==",
-   "SpecifierSet()"
-  ],
-  [
-   "SpecifierSet()"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.is_unsatisfiable"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.to_range"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.is_subset"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.is_superset"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.is_disjoint"
-  ],
-  [
-   "SpecifierSet in",
-   "SpecifierSet()",
-   "Version in",
-   "Version()"
-  ],
-  [
-   "SpecifierSet()",
-   "Version()",
-   "packaging.specifiers.SpecifierSet.contains"
-  ],
-  [
-   "SpecifierSet()",
-   "Version()",
-   "packaging.specifiers.SpecifierSet.filter"
-  ],
-  [
-   "SpecifierSet()",
-   "packaging.specifiers.SpecifierSet.filter"
-  ],
-  [
-   "packaging.tags.create_compatible_tags_selector",
-   "packaging.tags.sys_tags",
-   "packaging.utils.parse_wheel_filename"
-  ],
-  [
-   "packaging.utils.canonicalize_name"
-  ],
-  [
-   "packaging.utils.canonicalize_name",
-   "packaging.utils.is_normalized_name"
-  ],
-  [
-   "packaging.utils.canonicalize_version"
-  ],
-  [
-   "packaging.utils.canonicalize_version"
-  ],
-  [
-   "packaging.utils.canonicalize_version"
-  ],
-  [
-   "Tag()",
-   "Version ==",
-   "Version()",
-   "packaging.utils.parse_wheel_filename"
-  ],
-  [
-   "Version ==",
-   "Version()",
-   "packaging.utils.parse_sdist_filename"
-  ],
-  [
-   "packaging.version.normalize_pre"
-  ],
-  [
-   "packaging.version.parse"
-  ],
-  [
-   "Version()"
-  ],
-  [
-   "Version <",
-   "Version <=",
-   "Version ==",
-   "Version >",
-   "Version >=",
-   "Version()"
-  ],
-  [
-   "packaging.version.Version.from_parts"
-  ],
-  [
-   "Version()"
-  ],
-  [
-   "Version()"
-  ],
-  [
-   "Version()"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.epoch"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.release"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.pre"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.post"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.dev"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.local"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.public"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.base_version"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.is_prerelease"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.is_postrelease"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.is_devrelease"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.major"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.minor"
-  ],
-  [
-   "Version()",
-   "packaging.version.Version.micro"
-  ],
-  [
-   "packaging.version.Version.release"
-  ]
+  {
+   "uses": [
+    "DependencyGroupResolver()",
+    "packaging.dependency_groups.DependencyGroupResolver.lookup",
+    "packaging.dependency_groups.DependencyGroupResolver.resolve"
+   ],
+   "code": "from packaging.dependency_groups import DependencyGroupResolver\ncoverage = [\"coverage\"]\ntest = [\"pytest\", {\"include-group\": \"coverage\"}]\n# A resolver is defined on a mapping of group names to group data, as\n# you might get by loading the [dependency-groups] TOML table.\nresolver = DependencyGroupResolver({\"test\": test, \"coverage\": coverage})\n# resolvers support expanding group names to Requirements\nresolver.resolve(\"coverage\")\nresolver.resolve(\"test\")\n# resolvers can also be used to lookup the dependency groups without\n# expanding includes\nresolver.lookup(\"test\")"
+  },
+  {
+   "uses": [
+    "packaging.dependency_groups.resolve_dependency_groups"
+   ],
+   "code": "from packaging.dependency_groups import resolve_dependency_groups\ncoverage = [\"coverage\"]\ntest = [\"pytest\", {\"include-group\": \"coverage\"}]\ngroups = {\"test\": test, \"coverage\": coverage}\nresolve_dependency_groups(groups, \"test\")"
+  },
+  {
+   "uses": [
+    "DirectUrl()",
+    "packaging.direct_url.DirectUrl.from_dict",
+    "packaging.direct_url.DirectUrl.to_dict",
+    "packaging.direct_url.DirectUrl.validate"
+   ],
+   "code": "import json\nfrom pathlib import Path\n\nfrom packaging.direct_url import ArchiveInfo, DirectUrl, DirInfo, VcsInfo\n\n# A VCS direct URL\nvcs_direct_url = DirectUrl(\n    url=\"https://git.example.com/repo.git\",\n    vcs_info=VcsInfo(\n        vcs=\"git\",\n        commit_id=\"2df7bdd8dfef7b879390b9fc4016f02af2f118d4\",\n        requested_revision=\"1.1.0\",\n    ),\n)\n\n# An archive direct URL\narchive_direct_url = DirectUrl(\n    url=\"https://example.com/archive.tar.gz\",\n    archive_info=ArchiveInfo(\n        hashes={\n            \"sha256\": \"dc321a1c18a37b5438424ef3714524229dab5f4f78b297671359426fef51be6c\"\n        }\n    ),\n)\n\n# A local editable direct URL\narchive_direct_url = DirectUrl(\n    url=\"file:///home/project/example\",\n    dir_info=DirInfo(\n        editable=True,\n    ),\n)\n\n# Serialization to JSON\nPath(\"/tmp/direct_url.json\").write_text(\n    json.dumps(vcs_direct_url.to_dict()), encoding=\"utf-8\"\n)\n\n# Load from JSON. The resulting DirectUrl object is validated against the\n# specification, else a DirectUrlValidationError is raised\ndirect_url = DirectUrl.from_dict(\n    json.loads(Path(\"/tmp/direct_url.json\").read_text(encoding=\"utf-8\"))\n)\n\n# You can validate a manually constructed DirectUrl class\nvcs_direct_url.validate()"
+  },
+  {
+   "uses": [
+    "Marker ==",
+    "Marker()",
+    "packaging.markers.Marker.evaluate"
+   ],
+   "code": "from packaging.markers import Marker, UndefinedEnvironmentName\nmarker = Marker(\"python_version>'2'\")\nmarker\n# We can evaluate the marker to see if it is satisfied\nmarker.evaluate()\n# We can also override the environment\nenv = {'python_version': '1.5'}\nmarker.evaluate(environment=env)\n# Multiple markers can be ANDed\nand_marker = Marker(\"os_name=='a' and os_name=='b'\")\nand_marker\n# Multiple markers can be ORed\nor_marker = Marker(\"os_name=='a' or os_name=='b'\")\nor_marker\n# Markers can be also used with extras, to pull in dependencies if\n# a certain extra is being installed\nextra = Marker('extra == \"bar\"')\n# You can do simple comparisons between marker objects:\nMarker(\"python_version > '3.6'\") == Marker(\"python_version > '3.6'\")\n# You can also perform simple comparisons between sets of markers:\nmarkers1 = {Marker(\"python_version > '3.6'\"), Marker('os_name == \"unix\"')}\nmarkers2 = {Marker('os_name == \"unix\"'), Marker(\"python_version > '3.6'\")}\nmarkers1 == markers2"
+  },
+  {
+   "uses": [
+    "Marker &",
+    "Marker |",
+    "Marker()"
+   ],
+   "code": "from packaging.markers import Marker\npy3 = Marker(\"python_version >= '3'\")\nlinux = Marker(\"sys_platform == 'linux'\")\ncombined = py3 & linux\nstr(combined)\neither = py3 | linux\nstr(either)"
+  },
+  {
+   "uses": [
+    "packaging.metadata.Metadata.from_raw",
+    "packaging.metadata.parse_email"
+   ],
+   "code": "from packaging.metadata import parse_email\nmetadata = \"Metadata-Version: 2.6\\nName: packaging\\nVersion: 24.0\"\nraw, unparsed = parse_email(metadata)\nraw[\"metadata_version\"]\nraw[\"name\"]\nraw[\"version\"]\nfrom packaging.metadata import Metadata\nparsed = Metadata.from_raw(raw)\nparsed.name\nparsed.version"
+  },
+  {
+   "uses": [
+    "Package()",
+    "PackageWheel()",
+    "Pylock()",
+    "Version()",
+    "packaging.pylock.Pylock.from_dict",
+    "packaging.pylock.Pylock.select",
+    "packaging.pylock.Pylock.to_dict",
+    "packaging.pylock.Pylock.validate",
+    "packaging.pylock.is_valid_pylock_path"
+   ],
+   "code": "import tomllib\nfrom pathlib import Path\n\nfrom packaging.pylock import Package, PackageWheel, Pylock, is_valid_pylock_path\nfrom packaging.utils import NormalizedName\nfrom packaging.version import Version\n\n# validate a pylock file name\nassert is_valid_pylock_path(Path(\"pylock.example.toml\"))\n\n# parse and validate pylock file\ntoml_dict = tomllib.loads(Path(\"pylock.toml\").read_text(encoding=\"utf-8\"))\npylock = Pylock.from_dict(toml_dict)\n# the resulting pylock object is validated against the specification,\n# else a PylockValidationError is raised\n\n# generate a pylock file\npylock = Pylock(\n    lock_version=Version(\"1.0\"),\n    created_by=\"some_tool\",\n    packages=[\n        Package(\n            name=NormalizedName(\"example-package\"),\n            version=Version(\"1.0.0\"),\n            wheels=[\n                PackageWheel(\n                    url=\"https://example.com/example_package-1.0.0-py3-none-any.whl\",\n                    hashes={\"sha256\": \"0fd..\"},\n                )\n            ],\n        )\n    ],\n)\ntoml_dict = pylock.to_dict()\n# use a third-party library to serialize to TOML\n\n# you can validate a manually constructed Pylock class\npylock.validate()\n\n# select packages to install for the current environment\nfor package, artifact in pylock.select():\n    print(f\"Install {package.name} from {artifact}\")"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "Version in",
+    "Version()",
+    "VersionRange &",
+    "VersionRange ==",
+    "VersionRange in",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.ranges.VersionRange.is_empty",
+    "packaging.ranges.VersionRange.to_specifier_set",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "from packaging.ranges import VersionRange\nfrom packaging.specifiers import SpecifierSet\nfrom packaging.version import Version\n# Build a range from a specifier set\nr = SpecifierSet(\">=1.0,<2.0\").to_range()\nr\nVersion(\"1.5\") in r\nVersion(\"2.0\") in r\n# Combine ranges with set algebra\na = SpecifierSet(\">=1.0\").to_range()\nb = SpecifierSet(\"<2.0\").to_range()\na & b == r\n# The union covers either side, leaving any gap between them\nu = SpecifierSet(\"<1.0\").to_range() | SpecifierSet(\">=2.0\").to_range()\nVersion(\"0.5\") in u\nVersion(\"1.5\") in u\n# The complement is every other version\nVersion(\"0.5\") in ~r\n# Filter an iterable of versions\nlist(r.filter([\"0.9\", \"1.5\", \"2.0\"]))\n# An unsatisfiable set produces the empty range\nSpecifierSet(\">=2.0,<1.0\").to_range().is_empty\n# Convert back to a SpecifierSet when possible\nstr(r.to_specifier_set())"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "a = SpecifierSet(\">=1.0\").to_range()\nb = SpecifierSet(\">=2.0b1\").to_range()\nlist((a | b).filter([\"1.5b1\", \"2.0b1\", \"2.5\"]))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "capped = SpecifierSet(\">=2.0b1,<3\").to_range()\nother = SpecifierSet(\">=3.5,<4\").to_range()\nlist((capped | other).filter([\"3.6b1\", \"3.7\"]))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange &",
+    "VersionRange -",
+    "VersionRange ==",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "base = SpecifierSet(\">=1.0\").to_range()\nexcluded = SpecifierSet(\">=2.0b1\").to_range()\nlist((base - excluded).filter([\"1.9\", \"2.0a1\"]))\n(base - excluded) == (base & ~excluded)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange &",
+    "VersionRange ==",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.ranges.VersionRange.is_disjoint",
+    "packaging.ranges.VersionRange.is_subset",
+    "packaging.ranges.VersionRange.is_superset",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "from packaging.specifiers import SpecifierSet\na = SpecifierSet(\">=1.0\").to_range()\nb = SpecifierSet(\">=1.0a1\").to_range()\n# Every version >=1.0 is also >=1.0a1, so a is a subset of b. But b\n# opts pre-releases in, so ``a & b`` and ``a`` differ in the opt-in region:\na & b == a\na.is_subset(b)\nb.is_superset(a)\na.is_disjoint(b)\n# The opt-in difference is observable: a & b force-admits pre-releases\n# in b's region that plain a filters out\nlist(a.filter([\"2.0a1\", \"2.5\"]))\nlist((a & b).filter([\"2.0a1\", \"2.5\"]))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange &",
+    "VersionRange ==",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "r1 = SpecifierSet(\">1.0a1\").to_range()\nr2 = SpecifierSet(\">=1.0a2.dev0\").to_range()\nr1 == r2\nthird = SpecifierSet(\"<2.0\").to_range()\n(r1 & third) == (r2 & third)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "SpecifierSet(\"<1.0.post0.dev0\").to_range() == SpecifierSet(\"<=1.0\").to_range()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.full",
+    "packaging.ranges.VersionRange.singleton",
+    "packaging.ranges.VersionRange.to_specifier_set",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "str(SpecifierSet(\">=1.0,<2.0\").to_range().to_specifier_set())\n# A disjoint union usually has no single-set spelling\na = SpecifierSet(\"<1\").to_range()\nb = SpecifierSet(\">=2\").to_range()\n(a | b).to_specifier_set() is None\n# unless the gap between the pieces is expressible as exclusions\nu = SpecifierSet(\"==1.*\").to_range() | SpecifierSet(\"==3.*\").to_range()\nstr(u.to_specifier_set())\n# The strict singleton has no spelling: ==1.5 would also match 1.5+local\nVersionRange.singleton(\"1.5\").to_specifier_set() is None\n# Neither does the full range built by algebra: it opts no pre-release\n# in, while its only spelling, >=0.dev0, opts them all in\nr = SpecifierSet(\">=2\").to_range()\n(r | ~r).to_specifier_set() is None\n# full() itself admits arbitrary strings, which the empty set spells\nstr(VersionRange.full().to_specifier_set())"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.to_specifier_set",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "far = SpecifierSet(\"==1.*\").to_range() | SpecifierSet(\"==1000000.*\").to_range()\nfar.to_specifier_set() is None"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.specifiers.SpecifierSet.filter",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "b = SpecifierSet(\">=2.0b1\").to_range()\nlist(b.filter([\"2.0b1\", \"2.5\"]))\nlist((~~b).filter([\"2.0b1\", \"2.5\"]))\n~~b == b"
+  },
+  {
+   "uses": [
+    "VersionRange &",
+    "packaging.ranges.VersionRange.is_empty"
+   ],
+   "code": "~~~b == ~b\n(b & ~b).is_empty"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange &",
+    "VersionRange ==",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.full",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "a = SpecifierSet(\">=1.0\").to_range()\nb | VersionRange.full() == VersionRange.full()\na & (a | b) == a"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange &",
+    "VersionRange -",
+    "VersionRange ==",
+    "VersionRange in",
+    "VersionRange |",
+    "packaging.ranges.VersionRange.empty",
+    "packaging.ranges.VersionRange.full",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "f = VersionRange.full()\n\"wat\" in f\n\"wat\" in VersionRange.full(admit_arbitrary=False)\n~~f == f\n(~f | ~f) == ~f\n(f & ~f) == VersionRange.empty()\n(f & ~f) == ~f\nd = f - SpecifierSet(\">=1.0\").to_range()\n\"wat\" in (d | SpecifierSet(\">=0.5\").to_range())\nd == f & ~SpecifierSet(\">=1.0\").to_range()"
+  },
+  {
+   "uses": [
+    "Specifier()",
+    "SpecifierSet &",
+    "SpecifierSet in",
+    "SpecifierSet()",
+    "Version in",
+    "Version()",
+    "packaging.specifiers.SpecifierSet.filter",
+    "packaging.specifiers.SpecifierSet.is_disjoint",
+    "packaging.specifiers.SpecifierSet.is_subset",
+    "packaging.specifiers.SpecifierSet.is_superset",
+    "packaging.specifiers.SpecifierSet.is_unsatisfiable",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "from packaging.specifiers import Specifier, SpecifierSet\nfrom packaging.version import Version\nspec1 = SpecifierSet(\"~=1.0\")\nspec1\nspec2 = SpecifierSet(\">=1.0\")\nspec2\n# We can combine specifiers\ncombined_spec = spec1 & spec2\ncombined_spec\n# We can also implicitly combine a string specifier\ncombined_spec &= \"!=1.1\"\ncombined_spec\n# We can iterate over the SpecifierSet to recover the\n# individual specifiers\nsorted(combined_spec, key=str)\n# Create a few versions to check for contains.\nv1 = Version(\"1.0a5\")\nv2 = Version(\"1.0\")\n# We can check a version object to see if it falls within a specifier\nv1 in combined_spec\nv2 in combined_spec\n# We can even do the same with a string based version\n\"1.4\" in combined_spec\n# Finally we can filter a list of versions to get only those which are\n# contained within our specifier.\nlist(combined_spec.filter([v1, v2, \"1.4\"]))\nSpecifier(\">=1.0\").__replace__(version=\"2.0\")\ncombined_spec.__replace__(specifiers=\">=2.0,<3.0\")\n# We can check if a specifier set can never be satisfied\nSpecifierSet(\">=2.0,<1.0\").is_unsatisfiable()\nSpecifierSet(\">=1.0,<2.0\").is_unsatisfiable()\n# Compound sets built with ``&`` may also become unsatisfiable\n(SpecifierSet(\">=3.9,<4.0\") & SpecifierSet(\"==3.12.*\")).is_unsatisfiable()\n(SpecifierSet(\">=3.13,<4.0\") & SpecifierSet(\"==3.12.*\")).is_unsatisfiable()\n# We can convert a specifier set into a set-algebra VersionRange\nSpecifierSet(\">=1.0,<2.0\").to_range()\n# Or ask set-relation questions directly\nSpecifierSet(\">=3.12,<3.13\").is_"
+  },
+  {
+   "uses": [
+    "Tag ==",
+    "Tag in",
+    "Tag()",
+    "packaging.tags.sys_tags"
+   ],
+   "code": "from packaging.tags import Tag, sys_tags\nimport sys\nlooking_for = Tag(\"py{major}\".format(major=sys.version_info.major), \"none\", \"any\")\nsupported_tags = list(sys_tags())\nlooking_for in supported_tags\nreally_old = Tag(\"py1\", \"none\", \"any\")\nwheels = {really_old, looking_for}\nbest_wheel = None\nfor supported_tag in supported_tags:\n    for wheel_tag in wheels:\n        if supported_tag == wheel_tag:\n            best_wheel = wheel_tag\n            break\nbest_wheel == looking_for"
+  },
+  {
+   "uses": [
+    "Version <",
+    "Version()",
+    "packaging.version.Version.epoch",
+    "packaging.version.Version.is_postrelease",
+    "packaging.version.Version.is_prerelease",
+    "packaging.version.Version.post",
+    "packaging.version.Version.pre",
+    "packaging.version.Version.release",
+    "packaging.version.parse"
+   ],
+   "code": "from packaging.version import Version, parse\nv1 = parse(\"1.0a5\")\nv2 = Version(\"1.0\")\nv1\nv2\nv1 < v2\nv1.epoch\nv1.release\nv1.pre\nv1.is_prerelease\nv2.is_prerelease\nVersion(\"french toast\")\nVersion(\"1.0\").post\nVersion(\"1.0\").is_postrelease\nVersion(\"1.0.post0\").post\nVersion(\"1.0.post0\").is_postrelease"
+  },
+  {
+   "uses": [
+    "packaging.licenses.canonicalize_license_expression"
+   ],
+   "code": "from packaging.licenses import canonicalize_license_expression\ncanonicalize_license_expression(\"invalid\")"
+  },
+  {
+   "uses": [
+    "packaging.licenses.canonicalize_license_expression"
+   ],
+   "code": "from packaging.licenses import canonicalize_license_expression\ncanonicalize_license_expression(\"mit\")\ncanonicalize_license_expression(\"mit and (apache-2.0 or bsd-2-clause)\")\ncanonicalize_license_expression(\"(mit\")\ncanonicalize_license_expression(\"Use-it-after-midnight\")"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange in",
+    "packaging.ranges.VersionRange.is_empty",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "r = SpecifierSet(\">=1.0,<2.0\").to_range()\n\"1.5\" in r\n\"2.0\" in r\nSpecifierSet(\">=2.0,<1.0\").to_range().is_empty"
+  },
+  {
+   "uses": [
+    "VersionRange in",
+    "packaging.ranges.VersionRange.empty",
+    "packaging.ranges.VersionRange.is_empty"
+   ],
+   "code": "VersionRange.empty().is_empty\n\"1.0\" in VersionRange.empty()"
+  },
+  {
+   "uses": [
+    "VersionRange in",
+    "packaging.ranges.VersionRange.full"
+   ],
+   "code": "\"1.0\" in VersionRange.full()\n\"wat\" in VersionRange.full()\n\"wat\" in VersionRange.full(admit_arbitrary=False)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange in",
+    "packaging.ranges.VersionRange.singleton",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "\"1.0+local\" in VersionRange.singleton(\"1.0\")\n\"1.0+local\" in SpecifierSet(\"==1.0\").to_range()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "packaging.ranges.VersionRange.intersection",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "a = SpecifierSet(\">=1.0\").to_range()\nb = SpecifierSet(\"<2.0\").to_range()\na.intersection(b) == SpecifierSet(\">=1.0,<2.0\").to_range()"
+  },
+  {
+   "uses": [
+    "VersionRange in",
+    "packaging.ranges.VersionRange.singleton",
+    "packaging.ranges.VersionRange.union"
+   ],
+   "code": "a = VersionRange.singleton(\"1.0\")\nb = VersionRange.singleton(\"2.0\")\n\"1.0\" in a.union(b) and \"2.0\" in a.union(b)\n\"1.5\" in a.union(b)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "VersionRange in",
+    "packaging.ranges.VersionRange.complement",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "r = SpecifierSet(\">=1.0\").to_range()\n\"0.5\" in r.complement()\n\"1.5\" in r.complement()\nr.complement().complement() == r"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "VersionRange in",
+    "packaging.ranges.VersionRange.difference",
+    "packaging.ranges.VersionRange.empty",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "a = SpecifierSet(\">=1.0\").to_range()\nb = SpecifierSet(\">=2.0\").to_range()\n\"1.5\" in a.difference(b)\n\"2.0\" in a.difference(b)\na.difference(VersionRange.empty()) == a"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.empty",
+    "packaging.ranges.VersionRange.is_subset",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "inner = SpecifierSet(\">=1.5,<1.8\").to_range()\nouter = SpecifierSet(\">=1.0,<2.0\").to_range()\ninner.is_subset(outer)\nouter.is_subset(inner)\nVersionRange.empty().is_subset(outer)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.is_superset",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "outer = SpecifierSet(\">=1.0,<2.0\").to_range()\nouter.is_superset(SpecifierSet(\">=1.5,<1.8\").to_range())"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.is_disjoint",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "a = SpecifierSet(\">=1.0,<2.0\").to_range()\na.is_disjoint(SpecifierSet(\">=2.0,<3.0\").to_range())\na.is_disjoint(SpecifierSet(\">=1.5,<2.5\").to_range())"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.filter",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "r = SpecifierSet(\">=1.0,<2.0\").to_range()\nlist(r.filter([\"0.9\", \"1.5\", \"2.0\"]))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.singleton",
+    "packaging.ranges.VersionRange.to_specifier_set",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "str(SpecifierSet(\">=1.0,<2.0\").to_range().to_specifier_set())\nstr(SpecifierSet(\"==1.0\").to_range().to_specifier_set())\nVersionRange.singleton(\"1.5\").to_specifier_set() is None"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.is_empty",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "SpecifierSet(\">=2,<1\").to_range().is_empty\nSpecifierSet(\">=1,<2\").to_range().is_empty\nSpecifierSet(\"==1.0a1\", prereleases=False).to_range().is_empty"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.ranges.VersionRange.contains",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "r = SpecifierSet(\">=1.0,<2.0\").to_range()\nr.contains(\"1.5\")\nr.contains(\"2.0\")"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange in",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "\"1.5\" in SpecifierSet(\">=1.0,<2.0\").to_range()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "SpecifierSet(\">1.0a1\").to_range() == SpecifierSet(\">=1.0a2.dev0\").to_range()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "VersionRange ==",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "le, lt = SpecifierSet(\"<=1.0\"), SpecifierSet(\"<1.0.post0.dev0\")\nle.to_range() == lt.to_range()\nr = SpecifierSet(\">=1.0,<2.0\").to_range()\nr == SpecifierSet(\">=1.0,<2.0\").to_range()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "SpecifierSet(\">=1.0,<2.0\").to_range()\nSpecifierSet(\"\").to_range()\nSpecifierSet(\">=2.0,<1.0\").to_range()"
+  },
+  {
+   "uses": [
+    "Specifier()"
+   ],
+   "code": "Specifier(\"lolwat\")"
+  },
+  {
+   "uses": [
+    "Specifier()",
+    "packaging.specifiers.Specifier.operator"
+   ],
+   "code": "Specifier(\"==1.2.3\").operator"
+  },
+  {
+   "uses": [
+    "Specifier()",
+    "packaging.specifiers.Specifier.version"
+   ],
+   "code": "Specifier(\"==1.2.3\").version"
+  },
+  {
+   "uses": [
+    "Specifier()"
+   ],
+   "code": "Specifier('>=1.0.0')\nSpecifier('>=1.0.0', prereleases=False)\nSpecifier('>=1.0.0', prereleases=True)"
+  },
+  {
+   "uses": [
+    "Specifier()"
+   ],
+   "code": "str(Specifier('>=1.0.0'))\nstr(Specifier('>=1.0.0', prereleases=False))"
+  },
+  {
+   "uses": [
+    "Specifier ==",
+    "Specifier()"
+   ],
+   "code": "Specifier(\"==1.2.3\") == Specifier(\"== 1.2.3.0\")\n(Specifier(\"==1.2.3\", prereleases=False) ==\n Specifier(\"==1.2.3\", prereleases=True))\nSpecifier(\"==1.2.3\") == \"==1.2.3\"\nSpecifier(\"==1.2.3\") == Specifier(\"==1.2.4\")\nSpecifier(\"==1.2.3\") == Specifier(\"~=1.2.3\")"
+  },
+  {
+   "uses": [
+    "Specifier in",
+    "Specifier()",
+    "Version in",
+    "Version()"
+   ],
+   "code": "\"1.2.3\" in Specifier(\">=1.2.3\")\nVersion(\"1.2.3\") in Specifier(\">=1.2.3\")\n\"1.0.0\" in Specifier(\">=1.2.3\")\n\"1.3.0a1\" in Specifier(\">=1.2.3\")\n\"1.3.0a1\" in Specifier(\">=1.2.3\", prereleases=True)"
+  },
+  {
+   "uses": [
+    "Specifier()",
+    "Version()",
+    "packaging.specifiers.Specifier.contains"
+   ],
+   "code": "Specifier(\">=1.2.3\").contains(\"1.2.3\")\nSpecifier(\">=1.2.3\").contains(Version(\"1.2.3\"))\nSpecifier(\">=1.2.3\").contains(\"1.0.0\")\nSpecifier(\">=1.2.3\").contains(\"1.3.0a1\")\nSpecifier(\">=1.2.3\", prereleases=False).contains(\"1.3.0a1\")\nSpecifier(\">=1.2.3\").contains(\"1.3.0a1\")"
+  },
+  {
+   "uses": [
+    "Specifier()",
+    "Version()",
+    "packaging.specifiers.Specifier.filter"
+   ],
+   "code": "list(Specifier(\">=1.2.3\").filter([\"1.2\", \"1.3\", \"1.5a1\"]))\nlist(Specifier(\">=1.2.3\").filter([\"1.2\", \"1.2.3\", \"1.3\", Version(\"1.4\")]))\nlist(Specifier(\">=1.2.3\").filter([\"1.2\", \"1.5a1\"]))\nlist(Specifier(\">=1.2.3\").filter([\"1.3\", \"1.5a1\"], prereleases=True))\nlist(Specifier(\">=1.2.3\", prereleases=True).filter([\"1.3\", \"1.5a1\"]))\nlist(Specifier(\">=1.2.3\").filter(\n[{\"ver\": \"1.2\"}, {\"ver\": \"1.3\"}],\nkey=lambda x: x[\"ver\"]))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()"
+   ],
+   "code": "SpecifierSet('>=1.0.0,!=2.0.0')\nSpecifierSet('>=1.0.0,!=2.0.0', prereleases=False)\nSpecifierSet('>=1.0.0,!=2.0.0', prereleases=True)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()"
+   ],
+   "code": "str(SpecifierSet(\">=1.0.0,!=1.0.1\"))\nstr(SpecifierSet(\">=1.0.0,!=1.0.1\", prereleases=False))"
+  },
+  {
+   "uses": [
+    "SpecifierSet &",
+    "SpecifierSet()"
+   ],
+   "code": "SpecifierSet(\">=1.0.0,!=1.0.1\") & '<=2.0.0,!=2.0.1'\nSpecifierSet(\">=1.0.0,!=1.0.1\") & SpecifierSet('<=2.0.0,!=2.0.1')"
+  },
+  {
+   "uses": [
+    "SpecifierSet ==",
+    "SpecifierSet()"
+   ],
+   "code": "SpecifierSet(\">=1.0.0,!=1.0.1\") == SpecifierSet(\">=1.0.0,!=1.0.1\")\n(SpecifierSet(\">=1.0.0,!=1.0.1\", prereleases=False) ==\n SpecifierSet(\">=1.0.0,!=1.0.1\", prereleases=True))\nSpecifierSet(\">=1.0.0,!=1.0.1\") == \">=1.0.0,!=1.0.1\"\nSpecifierSet(\">=1.0.0,!=1.0.1\") == SpecifierSet(\">=1.0.0\")\nSpecifierSet(\">=1.0.0,!=1.0.1\") == SpecifierSet(\">=1.0.0,!=1.0.2\")"
+  },
+  {
+   "uses": [
+    "SpecifierSet()"
+   ],
+   "code": "sorted(SpecifierSet(\">=1.0.0,!=1.0.1\"), key=str)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.is_unsatisfiable"
+   ],
+   "code": "SpecifierSet(\">=2.0,<1.0\").is_unsatisfiable()\nSpecifierSet(\">=1.0,<2.0\").is_unsatisfiable()\nSpecifierSet(\"\").is_unsatisfiable()\nSpecifierSet(\"==1.0,!=1.0\").is_unsatisfiable()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.to_range"
+   ],
+   "code": "SpecifierSet(\">=1.0,<2.0\").to_range()"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.is_subset"
+   ],
+   "code": "SpecifierSet(\">=3.12,<3.13\").is_subset(SpecifierSet(\">=3.12\"))\nSpecifierSet(\">=3.12\").is_subset(SpecifierSet(\">=3.12,<3.13\"))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.is_superset"
+   ],
+   "code": "SpecifierSet(\">=3.12\").is_superset(SpecifierSet(\">=3.12,<3.13\"))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.is_disjoint"
+   ],
+   "code": "SpecifierSet(\"<3.12\").is_disjoint(SpecifierSet(\">=3.12\"))\nSpecifierSet(\"<3.12\").is_disjoint(SpecifierSet(\">=3.11\"))"
+  },
+  {
+   "uses": [
+    "SpecifierSet in",
+    "SpecifierSet()",
+    "Version in",
+    "Version()"
+   ],
+   "code": "\"1.2.3\" in SpecifierSet(\">=1.0.0,!=1.0.1\")\nVersion(\"1.2.3\") in SpecifierSet(\">=1.0.0,!=1.0.1\")\n\"1.0.1\" in SpecifierSet(\">=1.0.0,!=1.0.1\")\n\"1.3.0a1\" in SpecifierSet(\">=1.0.0,!=1.0.1\")\n\"1.3.0a1\" in SpecifierSet(\">=1.0.0,!=1.0.1\", prereleases=True)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "Version()",
+    "packaging.specifiers.SpecifierSet.contains"
+   ],
+   "code": "SpecifierSet(\">=1.0.0,!=1.0.1\").contains(\"1.2.3\")\nSpecifierSet(\">=1.0.0,!=1.0.1\").contains(Version(\"1.2.3\"))\nSpecifierSet(\">=1.0.0,!=1.0.1\").contains(\"1.0.1\")\nSpecifierSet(\">=1.0.0,!=1.0.1\").contains(\"1.3.0a1\")\nSpecifierSet(\">=1.0.0,!=1.0.1\", prereleases=False).contains(\"1.3.0a1\")\nSpecifierSet(\">=1.0.0,!=1.0.1\").contains(\"1.3.0a1\", prereleases=True)"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "Version()",
+    "packaging.specifiers.SpecifierSet.filter"
+   ],
+   "code": "list(SpecifierSet(\">=1.2.3\").filter([\"1.2\", \"1.3\", \"1.5a1\"]))\nlist(SpecifierSet(\">=1.2.3\").filter([\"1.2\", \"1.3\", Version(\"1.4\")]))\nlist(SpecifierSet(\">=1.2.3\").filter([\"1.2\", \"1.5a1\"]))\nlist(SpecifierSet(\">=1.2.3\").filter([\"1.3\", \"1.5a1\"], prereleases=True))\nlist(SpecifierSet(\">=1.2.3\", prereleases=True).filter([\"1.3\", \"1.5a1\"]))\nlist(SpecifierSet(\">=1.2.3\").filter(\n[{\"ver\": \"1.2\"}, {\"ver\": \"1.3\"}],\nkey=lambda x: x[\"ver\"]))"
+  },
+  {
+   "uses": [
+    "SpecifierSet()",
+    "packaging.specifiers.SpecifierSet.filter"
+   ],
+   "code": "list(SpecifierSet(\"\").filter([\"1.3\", \"1.5a1\"]))\nlist(SpecifierSet(\"\").filter([\"1.5a1\"]))\nlist(SpecifierSet(\"\", prereleases=True).filter([\"1.3\", \"1.5a1\"]))\nlist(SpecifierSet(\"\").filter([\"1.3\", \"1.5a1\"], prereleases=True))"
+  },
+  {
+   "uses": [
+    "packaging.tags.create_compatible_tags_selector",
+    "packaging.tags.sys_tags",
+    "packaging.utils.parse_wheel_filename"
+   ],
+   "code": "from packaging import tags\nfrom packaging.utils import parse_wheel_filename\nselector = tags.create_compatible_tags_selector(tags.sys_tags())\nfilenames = [\"foo-1.0-py3-none-any.whl\", \"foo-1.0-py2-none-any.whl\"]\nlist(selector([\n    (filename, parse_wheel_filename(filename)[-1]) for filename in filenames\n]))"
+  },
+  {
+   "uses": [
+    "packaging.utils.canonicalize_name"
+   ],
+   "code": "from packaging.utils import canonicalize_name\ncanonicalize_name(\"Django\")\ncanonicalize_name(\"oslo.concurrency\")\ncanonicalize_name(\"requests\")"
+  },
+  {
+   "uses": [
+    "packaging.utils.canonicalize_name",
+    "packaging.utils.is_normalized_name"
+   ],
+   "code": "from packaging.utils import canonicalize_name, is_normalized_name\nis_normalized_name(\"requests\")\nis_normalized_name(\"Django\")\ncanonicalize_name(\"_not_legal\")\nis_normalized_name(\"-not-legal\")  # roundtrips, but not a valid name"
+  },
+  {
+   "uses": [
+    "packaging.utils.canonicalize_version"
+   ],
+   "code": "from packaging.utils import canonicalize_version\ncanonicalize_version('1.0.1')"
+  },
+  {
+   "uses": [
+    "packaging.utils.canonicalize_version"
+   ],
+   "code": "canonicalize_version('1.0.0')\ncanonicalize_version('1.0.0', strip_trailing_zero=False)"
+  },
+  {
+   "uses": [
+    "packaging.utils.canonicalize_version"
+   ],
+   "code": "canonicalize_version('foo bar baz')\ncanonicalize_version('1.4.0.0.0')"
+  },
+  {
+   "uses": [
+    "Tag()",
+    "Version ==",
+    "Version()",
+    "packaging.utils.parse_wheel_filename"
+   ],
+   "code": "from packaging.utils import parse_wheel_filename\nfrom packaging.tags import Tag\nfrom packaging.version import Version\nname, ver, build, tags = parse_wheel_filename(\"foo-1.0-py3-none-any.whl\")\nname\nver == Version('1.0')\ntags == {Tag(\"py3\", \"none\", \"any\")}\nnot build"
+  },
+  {
+   "uses": [
+    "Version ==",
+    "Version()",
+    "packaging.utils.parse_sdist_filename"
+   ],
+   "code": "from packaging.utils import parse_sdist_filename\nfrom packaging.version import Version\nname, ver = parse_sdist_filename(\"foo-1.0.tar.gz\")\nname\nver == Version('1.0')"
+  },
+  {
+   "uses": [
+    "packaging.version.normalize_pre"
+   ],
+   "code": "normalize_pre('alpha')\nnormalize_pre('BETA')\nnormalize_pre('rc')"
+  },
+  {
+   "uses": [
+    "packaging.version.parse"
+   ],
+   "code": "parse('1.0.dev1')"
+  },
+  {
+   "uses": [
+    "Version()"
+   ],
+   "code": "Version(\"invalid\")"
+  },
+  {
+   "uses": [
+    "Version <",
+    "Version <=",
+    "Version ==",
+    "Version >",
+    "Version >=",
+    "Version()"
+   ],
+   "code": "v1 = Version(\"1.0a5\")\nv2 = Version(\"1.0\")\nv1\nv2\nv1 < v2\nv1 == v2\nv1 > v2\nv1 >= v2\nv1 <= v2"
+  },
+  {
+   "uses": [
+    "packaging.version.Version.from_parts"
+   ],
+   "code": "Version.from_parts(release=(1,2,3))\nVersion.from_parts(release=(0,1,0), pre=(\"b\", 1))"
+  },
+  {
+   "uses": [
+    "Version()"
+   ],
+   "code": "v = Version(\"1.2.3\")\nv.__replace__(pre=(\"a\", 1))"
+  },
+  {
+   "uses": [
+    "Version()"
+   ],
+   "code": "Version('1.0.0')"
+  },
+  {
+   "uses": [
+    "Version()"
+   ],
+   "code": "str(Version(\"1.0a5\"))"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.epoch"
+   ],
+   "code": "Version(\"2.0.0\").epoch\nVersion(\"1!2.0.0\").epoch"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.release"
+   ],
+   "code": "Version(\"1.2.3\").release\nVersion(\"2.0.0\").release\nVersion(\"1!2.0.0.post0\").release"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.pre"
+   ],
+   "code": "print(Version(\"1.2.3\").pre)\nVersion(\"1.2.3a1\").pre\nVersion(\"1.2.3b1\").pre\nVersion(\"1.2.3rc1\").pre"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.post"
+   ],
+   "code": "print(Version(\"1.2.3\").post)\nVersion(\"1.2.3.post1\").post"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.dev"
+   ],
+   "code": "print(Version(\"1.2.3\").dev)\nVersion(\"1.2.3.dev1\").dev"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.local"
+   ],
+   "code": "print(Version(\"1.2.3\").local)\nVersion(\"1.2.3+abc\").local"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.public"
+   ],
+   "code": "Version(\"1.2.3\").public\nVersion(\"1.2.3+abc\").public\nVersion(\"1!1.2.3dev1+abc\").public"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.base_version"
+   ],
+   "code": "Version(\"1.2.3\").base_version\nVersion(\"1.2.3+abc\").base_version\nVersion(\"1!1.2.3dev1+abc\").base_version"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.is_prerelease"
+   ],
+   "code": "Version(\"1.2.3\").is_prerelease\nVersion(\"1.2.3a1\").is_prerelease\nVersion(\"1.2.3b1\").is_prerelease\nVersion(\"1.2.3rc1\").is_prerelease\nVersion(\"1.2.3dev1\").is_prerelease"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.is_postrelease"
+   ],
+   "code": "Version(\"1.2.3\").is_postrelease\nVersion(\"1.2.3.post1\").is_postrelease"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.is_devrelease"
+   ],
+   "code": "Version(\"1.2.3\").is_devrelease\nVersion(\"1.2.3.dev1\").is_devrelease"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.major"
+   ],
+   "code": "Version(\"1.2.3\").major"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.minor"
+   ],
+   "code": "Version(\"1.2.3\").minor\nVersion(\"1\").minor"
+  },
+  {
+   "uses": [
+    "Version()",
+    "packaging.version.Version.micro"
+   ],
+   "code": "Version(\"1.2.3\").micro\nVersion(\"1\").micro"
+  },
+  {
+   "uses": [
+    "packaging.version.Version.release"
+   ],
+   "code": "_TrimmedRelease('1.0.0').release\n_TrimmedRelease('0.0').release"
+  }
  ]
 }

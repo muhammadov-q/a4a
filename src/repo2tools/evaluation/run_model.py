@@ -41,6 +41,7 @@ from repo2tools.evaluation.reference_calls import output_value
 from repo2tools.paths import REPO_ROOT
 from repo2tools.traces.format import add_request, new_trace, read_traces, write_traces
 
+TOPIC = "Python package versions and dependencies"  # what the packaging exercises are about; --topic replaces it
 SYSTEM = {
     "tools": "You solve tasks about Python package versions and dependencies. Use the tools whenever they help; "
              "do not guess what a tool would return. When you are done, reply with only the final answer as a "
@@ -53,6 +54,8 @@ SUBMIT_TOOL = {"type": "function", "function": {
     "description": "Give your final answer and end the task. Call this once you know the answer.",
     "parameters": {"type": "object", "properties": {"answer": {"description": "The final answer as a JSON value"}},
                    "required": ["answer"]}}}
+REMINDER = "Reply with only the final answer as a JSON value (true or false, a number, a string, a list or an object) and nothing else."
+MAX_OUTPUT = 20_000  # characters of one tool output that the model is shown
 SUBMIT_HINT = " When you are done, give the final answer by calling submit_answer, not as text."
 
 
@@ -96,6 +99,16 @@ async def list_tools(session: ClientSession) -> list[dict]:
             for t in (await session.list_tools()).tools]
 
 
+def is_json(text: str) -> bool:
+    """Whether a reply is a JSON value and nothing else (a ``` fence around it is fine)."""
+    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", (text or "").strip())
+    try:
+        json.loads(text)
+    except json.JSONDecodeError:
+        return text.lower() in ("true", "false")
+    return True
+
+
 def parse_answer(text: str):
     """The model's final answer as a JSON value, or None if it is not one."""
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", (text or "").strip())
@@ -118,13 +131,17 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
     forced = args.mode == "tools" and args.tool_choice != "auto"
     always = args.mode == "tools" and args.tool_choice == "always"
     offered = [*tools, SUBMIT_TOOL] if always else tools
-    system = (getattr(args, "system", None) or SYSTEM[args.mode]) + (SUBMIT_HINT if always else "")  # `repo2tools usability` brings its own
+    system = getattr(args, "system", None) or SYSTEM[args.mode]
+    if getattr(args, "topic", None):  # exercises about another library than packaging
+        system = system.replace(TOPIC, args.topic)
+    system += SUBMIT_HINT if always else ""  # `repo2tools usability` brings its own
     messages = [{"role": "system", "content": system}, *getattr(args, "example_messages", []), {"role": "user", "content": ex["task"]}]
     full_trace = new_trace("model", ex["id"], ex["task"], offered, kind=ex["kind"], horizon=ex["horizon"], model=args.model,
                            tool_set=args.tag or ("none" if args.mode == "none" else "function"),
                            meta={"thinking": args.thinking, "tool_choice": args.tool_choice,
                                  "example_messages": len(getattr(args, "example_messages", []))})
     used, calls, errors, tokens, finish, raw, trace, answer = [], 0, 0, 0, "max_steps", None, [], None
+    reminded, limit = False, getattr(args, "max_output", None) or MAX_OUTPUT
     for step in range(args.max_steps):
         tool_choice = None if not offered else "required" if always or (forced and step == 0) else "auto"
         started = time.monotonic()
@@ -142,6 +159,11 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
             final = re.sub(r"<think>.*?</think>", "", msg.content or "", flags=re.S).strip()
             raw = final[:500]
             answer = parse_answer(final)
+            if getattr(args, "remind", False) and not reminded and not is_json(final):
+                # a sentence where a value was asked for: say once more what the answer must look like, in every mode alike
+                reminded = True
+                messages += [msg.model_dump(exclude_none=True), {"role": "user", "content": REMINDER}]
+                continue
             finish = "answered"
             break
         messages.append(msg.model_dump(exclude_none=True))
@@ -164,6 +186,8 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
                 errors += result.isError
             except Exception as e:  # noqa: BLE001  (bad JSON arguments or an unknown tool count as a tool error)
                 content, errors = f"Error: {e}", errors + 1
+            if len(content) > limit:  # one huge output must not fill the model's context
+                content = content[:limit] + f"\n[output cut: {len(content):,} characters in all]"
             messages.append({"role": "tool", "tool_call_id": tc.id, "content": content})
             trace.append({"tool": tc.function.name, "arguments": tc.function.arguments, "output": content[:500]})
         if submitted:
@@ -175,7 +199,7 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
     return {"id": ex["id"], "kind": ex["kind"], "horizon": ex["horizon"], "mode": args.mode, "model": args.model,
             "passed": passed, "answer": answer, "raw": raw, "finish": finish,
             "tool_calls": calls, "tool_errors": errors, "tools_used": sorted(set(used)),
-            "used_all_reference_tools": reference_tools <= set(used), "reference_call_count": ex["reference_call_count"],
+            "used_all_reference_tools": reference_tools <= set(used), "reference_call_count": ex["reference_call_count"], "reminded": reminded,
             "tokens": tokens, "trace": trace, "full_trace": full_trace}
 
 
@@ -214,6 +238,9 @@ def main() -> None:
     parser.add_argument("--limit", type=int, help="only the first N exercises (for a smoke test)")
     parser.add_argument("--horizon", choices=("short", "long"), help="only exercises of this horizon")
     parser.add_argument("--thinking", action="store_true", help="let Qwen3-style models think before answering")
+    parser.add_argument("--topic", help=f"what the exercises are about, for the instruction to the model; default: {TOPIC!r}")
+    parser.add_argument("--remind", action="store_true", help="if the final message is not a JSON value, ask once more for only the value")
+    parser.add_argument("--max-output", type=int, default=MAX_OUTPUT, help="characters of one tool output shown to the model; the rest is cut")
     parser.add_argument("--tag", help="label for the output file name, e.g. the tool set's granularity")
     parser.add_argument("--tool-choice", choices=("auto", "first", "always"), default="auto",
                         help="force tool use: see the top of this file")

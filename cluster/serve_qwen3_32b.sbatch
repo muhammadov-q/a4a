@@ -18,7 +18,8 @@
 #SBATCH --output=%x-%j.out
 
 set -euo pipefail
-echo "node=$(hostname) port=8000 start=$(date -Is)"
+PORT="${PORT:-8000}"  # two servers on one node need different ports: sbatch --export=ALL,PORT=8001 ...
+echo "node=$(hostname) port=$PORT start=$(date -Is)"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv
 export HF_HOME="${HF_HOME:-/storage/scratch/users/$USER/hf}"
 export HF_HUB_OFFLINE=1  # weights were downloaded on the login node
@@ -40,7 +41,7 @@ PY
 
 exec vllm serve "$MODEL" \
   --served-model-name "$NAME" \
-  --host 0.0.0.0 --port 8000 \
+  --host 0.0.0.0 --port "$PORT" \
   --api-key "$(cat "$HOME/.vllm_api_key")" \
   --max-model-len "$MAXLEN" \
   --gpu-memory-utilization 0.92 \

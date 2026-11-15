@@ -1,0 +1,47 @@
+{
+ "url": "https://github.com/dateutil/dateutil",
+ "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+ "package": "dateutil",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "dateutil-bench2",
+ "toolset": "toolsets/generated/dateutil-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [
+  "tzdata"
+ ],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "parse_date_string",
+   "wraps": "dateutil.parser.parse",
+   "description": "Parse a string representation of a date and time into a datetime object using various supported formats.\n    \n    Args:\n        timestr: A string containing a date/time stamp.\n        ignoretz: If set True, time zones in parsed strings are ignored and a naive datetime object is returned.\n        \n    Returns:\n        A string representation of the parsed datetime object in ISO format.\n        \n    Example:\n        >>> parse_date_string(\"2023-10-15 14:30:00\")\n        '2023-10-15T14:30:00'\n    ",
+   "verified": true,
+   "direct_call": "dateutil.parser.parse(timestr, ignoretz=ignoretz)",
+   "samples": [
+    {
+     "timestr": "2023-10-15 14:30:00"
+    },
+    {
+     "timestr": "October 15, 2023 2:30 PM"
+    },
+    {
+     "timestr": "2023-10-15T14:30:00Z",
+     "ignoretz": true
+    },
+    {
+     "timestr": "15/10/2023 14:30:00"
+    },
+    {
+     "timestr": "Invalid Date String"
+    }
+   ]
+  }
+ ]
+}

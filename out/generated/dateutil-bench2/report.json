@@ -1,0 +1,166 @@
+{
+ "url": "https://github.com/dateutil/dateutil",
+ "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+ "package": "dateutil",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "dateutil-bench2",
+ "toolset": "toolsets/generated/dateutil-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [
+  "tzdata"
+ ],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "n_callables": 66,
+ "picked": 1,
+ "accepted": 1,
+ "verified": 1,
+ "rejected": 0,
+ "ok_on_first_try": 1,
+ "first_try_results": {
+  "ok": 1
+ },
+ "all_check_results": {
+  "ok": 1
+ },
+ "sample_results": {
+  "same": 4,
+  "both_error": 1
+ },
+ "llm_tokens": {
+  "propose": 2905,
+  "spec": 1943,
+  "code": 2070
+ },
+ "llm_requests": {
+  "propose": 1,
+  "spec": 1,
+  "code": 1
+ },
+ "seconds": 5,
+ "tools": [
+  {
+   "name": "parse_date_string",
+   "wraps": "dateutil.parser.parse",
+   "description": "Parse a string representation of a date and time into a datetime object using various supported formats.",
+   "accepted": true,
+   "code": "from dateutil.parser import parse\nfrom datetime import datetime\n\n\ndef parse_date_string(timestr: str, ignoretz: bool = False) -> str:\n    \"\"\"Parse a string representation of a date and time into a datetime object using various supported formats.\n    \n    Args:\n        timestr: A string containing a date/time stamp.\n        ignoretz: If set True, time zones in parsed strings are ignored and a naive datetime object is returned.\n        \n    Returns:\n        A string representation of the parsed datetime object in ISO format.\n        \n    Example:\n        >>> parse_date_string(\"2023-10-15 14:30:00\")\n        '2023-10-15T14:30:00'\n    \"\"\"\n    try:\n        kwargs = {\"ignoretz\": ignoretz}\n        dt = parse(timestr, **kwargs)\n        return dt.isoformat()\n    except Exception as e:\n        raise ValueError(f\"Failed to parse date string '{timestr}': {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "timestr",
+      "type": "string",
+      "description": "A string containing a date/time stamp.",
+      "required": true
+     },
+     {
+      "name": "ignoretz",
+      "type": "boolean",
+      "description": "If set True, time zones in parsed strings are ignored and a naive datetime object is returned.",
+      "required": false,
+      "default": false
+     }
+    ],
+    "direct_call": "dateutil.parser.parse(timestr, ignoretz=ignoretz)",
+    "samples": [
+     {
+      "timestr": "2023-10-15 14:30:00"
+     },
+     {
+      "timestr": "October 15, 2023 2:30 PM"
+     },
+     {
+      "timestr": "2023-10-15T14:30:00Z",
+      "ignoretz": true
+     },
+     {
+      "timestr": "15/10/2023 14:30:00"
+     },
+     {
+      "timestr": "Invalid Date String"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "timestr": "2023-10-15 14:30:00"
+      },
+      "tool": "2023-10-15T14:30:00",
+      "direct": "\"2023-10-15T14:30:00\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "timestr": "October 15, 2023 2:30 PM"
+      },
+      "tool": "2023-10-15T14:30:00",
+      "direct": "\"2023-10-15T14:30:00\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "timestr": "2023-10-15T14:30:00Z",
+       "ignoretz": true
+      },
+      "tool": "2023-10-15T14:30:00",
+      "direct": "\"2023-10-15T14:30:00\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "timestr": "15/10/2023 14:30:00"
+      },
+      "tool": "2023-10-15T14:30:00",
+      "direct": "\"2023-10-15T14:30:00\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "timestr": "Invalid Date String"
+      },
+      "tool": "ValueError: Failed to parse date string 'Invalid Date String': Unknown string format: Invalid Date String",
+      "direct": "ParserError: Unknown string format: Invalid Date String",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Parse a string representation of a date and time into a datetime object using various supported formats.\n    \n    Args:\n        timestr: A string containing a date/time stamp.\n        ignoretz: If set True, time zones in parsed strings are ignored and a naive datetime object is returned.\n        \n    Returns:\n        A string representation of the parsed datetime object in ISO format.\n        \n    Example:\n        >>> parse_date_string(\"2023-10-15 14:30:00\")\n        '2023-10-15T14:30:00'\n    ",
+    "input_schema": {
+     "properties": {
+      "timestr": {
+       "title": "Timestr",
+       "type": "string"
+      },
+      "ignoretz": {
+       "default": false,
+       "title": "Ignoretz",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "timestr"
+     ],
+     "title": "parse_date_stringArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  }
+ ]
+}

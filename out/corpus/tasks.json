@@ -1,0 +1,460 @@
+{
+ "model": "qwen3-32b",
+ "solver": "qwen3-coder",
+ "per_repo": 40,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "usable": 172,
+   "chosen": 40,
+   "phrased": 39,
+   "written": 11,
+   "by_tools": {
+    "5": 3,
+    "2": 6,
+    "1": 1,
+    "6": 1
+   },
+   "dropped": {
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 28
+   }
+  },
+  {
+   "package": "fastapi",
+   "usable": 2,
+   "chosen": 2,
+   "phrased": 2,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {
+    "not solvable from the request": 2
+   }
+  },
+  {
+   "package": "fsspec",
+   "usable": 7,
+   "chosen": 7,
+   "phrased": 7,
+   "written": 5,
+   "by_tools": {
+    "1": 5
+   },
+   "dropped": {
+    "not solvable from the request": 2
+   }
+  },
+  {
+   "package": "huggingface_hub",
+   "usable": 11,
+   "chosen": 6,
+   "phrased": 3,
+   "written": 2,
+   "by_tools": {
+    "4": 1,
+    "2": 1
+   },
+   "dropped": {
+    "these input values must appear exactly": 3,
+    "not solvable from the request": 1
+   }
+  },
+  {
+   "package": "zipp",
+   "usable": 19,
+   "chosen": 14,
+   "phrased": 12,
+   "written": 3,
+   "by_tools": {
+    "4": 1,
+    "2": 1,
+    "3": 1
+   },
+   "dropped": {
+    "the request gives away the answer": 1,
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 9
+   }
+  },
+  {
+   "package": "jmespath",
+   "usable": 2,
+   "chosen": 2,
+   "phrased": 2,
+   "written": 2,
+   "by_tools": {
+    "1": 2
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "jwt",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "mcp",
+   "usable": 24,
+   "chosen": 19,
+   "phrased": 18,
+   "written": 15,
+   "by_tools": {
+    "1": 9,
+    "2": 6
+   },
+   "dropped": {
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 3
+   }
+  },
+  {
+   "package": "more_itertools",
+   "usable": 319,
+   "chosen": 40,
+   "phrased": 39,
+   "written": 19,
+   "by_tools": {
+    "2": 6,
+    "1": 13
+   },
+   "dropped": {
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 20
+   }
+  },
+  {
+   "package": "networkx",
+   "usable": 258,
+   "chosen": 40,
+   "phrased": 40,
+   "written": 20,
+   "by_tools": {
+    "5": 1,
+    "6": 1,
+    "7": 3,
+    "4": 2,
+    "10": 2,
+    "2": 4,
+    "1": 2,
+    "8": 3,
+    "13": 2
+   },
+   "dropped": {
+    "not solvable from the request": 20
+   }
+  },
+  {
+   "package": "oauthlib",
+   "usable": 1,
+   "chosen": 1,
+   "phrased": 1,
+   "written": 1,
+   "by_tools": {
+    "2": 1
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "jinja2",
+   "usable": 17,
+   "chosen": 16,
+   "phrased": 11,
+   "written": 9,
+   "by_tools": {
+    "2": 3,
+    "3": 1,
+    "1": 5
+   },
+   "dropped": {
+    "no code": 3,
+    "reply with {\"task\"": 1,
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 2
+   }
+  },
+  {
+   "package": "werkzeug",
+   "usable": 41,
+   "chosen": 26,
+   "phrased": 24,
+   "written": 16,
+   "by_tools": {
+    "1": 5,
+    "2": 4,
+    "3": 4,
+    "4": 3
+   },
+   "dropped": {
+    "the request gives away the answer": 2,
+    "not solvable from the request": 8
+   }
+  },
+  {
+   "package": "requests",
+   "usable": 6,
+   "chosen": 6,
+   "phrased": 6,
+   "written": 4,
+   "by_tools": {
+    "1": 3,
+    "2": 1
+   },
+   "dropped": {
+    "not solvable from the request": 2
+   }
+  },
+  {
+   "package": "pyasn1",
+   "usable": 2,
+   "chosen": 2,
+   "phrased": 2,
+   "written": 1,
+   "by_tools": {
+    "1": 1
+   },
+   "dropped": {
+    "not solvable from the request": 1
+   }
+  },
+  {
+   "package": "pydantic",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "typing_inspection",
+   "usable": 3,
+   "chosen": 3,
+   "phrased": 3,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {
+    "not solvable from the request": 3
+   }
+  },
+  {
+   "package": "distlib",
+   "usable": 3,
+   "chosen": 3,
+   "phrased": 3,
+   "written": 3,
+   "by_tools": {
+    "1": 2,
+    "2": 1
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "packaging",
+   "usable": 215,
+   "chosen": 40,
+   "phrased": 39,
+   "written": 28,
+   "by_tools": {
+    "5": 6,
+    "4": 5,
+    "3": 5,
+    "6": 2,
+    "2": 6,
+    "1": 4
+   },
+   "dropped": {
+    "reply with {\"task\"": 1,
+    "not solvable from the request": 11
+   }
+  },
+  {
+   "package": "pip",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "trove_classifiers",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "wheel",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "pyparsing",
+   "usable": 12,
+   "chosen": 12,
+   "phrased": 9,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {
+    "the request gives away the answer": 3,
+    "not solvable from the request": 9
+   }
+  },
+  {
+   "package": "pytest",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "attrs",
+   "usable": 14,
+   "chosen": 1,
+   "phrased": 1,
+   "written": 1,
+   "by_tools": {
+    "1": 1
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "jsonschema",
+   "usable": 1,
+   "chosen": 1,
+   "phrased": 1,
+   "written": 1,
+   "by_tools": {
+    "1": 1
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "tomlkit",
+   "usable": 9,
+   "chosen": 6,
+   "phrased": 6,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {
+    "not solvable from the request": 6
+   }
+  },
+  {
+   "package": "importlib_metadata",
+   "usable": 12,
+   "chosen": 11,
+   "phrased": 11,
+   "written": 4,
+   "by_tools": {
+    "1": 4
+   },
+   "dropped": {
+    "not solvable from the request": 7
+   }
+  },
+  {
+   "package": "typing_extensions",
+   "usable": 3,
+   "chosen": 1,
+   "phrased": 1,
+   "written": 1,
+   "by_tools": {
+    "1": 1
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "requests_toolbelt",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "docstring_parser",
+   "usable": 3,
+   "chosen": 1,
+   "phrased": 1,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {
+    "not solvable from the request": 1
+   }
+  },
+  {
+   "package": "pytz",
+   "usable": 11,
+   "chosen": 11,
+   "phrased": 11,
+   "written": 2,
+   "by_tools": {
+    "1": 1,
+    "2": 1
+   },
+   "dropped": {
+    "not solvable from the request": 9
+   }
+  },
+  {
+   "package": "rsa",
+   "usable": 32,
+   "chosen": 32,
+   "phrased": 32,
+   "written": 17,
+   "by_tools": {
+    "3": 2,
+    "1": 15
+   },
+   "dropped": {
+    "not solvable from the request": 15
+   }
+  },
+  {
+   "package": "tqdm",
+   "usable": 0,
+   "chosen": 0,
+   "phrased": 0,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {}
+  },
+  {
+   "package": "urllib3",
+   "usable": 5,
+   "chosen": 5,
+   "phrased": 5,
+   "written": 0,
+   "by_tools": {},
+   "dropped": {
+    "not solvable from the request": 5
+   }
+  }
+ ]
+}

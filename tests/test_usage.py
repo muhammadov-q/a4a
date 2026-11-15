@@ -296,3 +296,13 @@ def test_generate_with_operators_builds_a_comparison_tool(repo, tmp_path, monkey
     prompt = llm.chats[0][2][1]["content"]
     assert "operator money.Amount.__lt__ (written `<`)" in prompt and "used 2 times" not in prompt  # no counts without --usage
     assert "It is an operator, not a function" in llm.chats[1][2][1]["content"] and "class Amount:" in llm.chats[1][2][1]["content"]
+
+
+def test_star_imports_and_module_aliases_are_followed(repo):
+    usage = Usage(Api(api_of(repo)))
+    usage.scan_examples(">>> from money import *\n>>> parse('1 EUR') < Amount('2 EUR')\nTrue\n")
+    assert usage.callables["money.parse"]["docs"] == 1 and usage.classes["Amount"]["built"]["docs"] == 1 and usage.classes["Amount"]["operators"]["<"]["docs"] == 1
+    # a docstring example may use a name its module imports, like `nx` in networkx
+    usage = Usage(Api(api_of(repo)))
+    usage.scan_examples(">>> m.parse('1 EUR')\n", own_names=True, preamble="import money as m\nimport os")
+    assert usage.callables["money.parse"]["docs"] == 1 and usage.examples == [{"uses": ["money.parse"], "code": "m.parse('1 EUR')"}]

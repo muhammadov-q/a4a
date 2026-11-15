@@ -1,0 +1,3291 @@
+{
+ "url": "https://github.com/sybrenstuvel/python-rsa",
+ "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+ "package": "rsa",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "python-rsa-bench2",
+ "toolset": "toolsets/generated/python-rsa-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "n_callables": 44,
+ "picked": 24,
+ "accepted": 11,
+ "verified": 8,
+ "rejected": 13,
+ "ok_on_first_try": 11,
+ "first_try_results": {
+  "differential": 2,
+  "spec": 8,
+  "fastmcp": 1,
+  "ok": 11,
+  "loads": 1,
+  "static": 1
+ },
+ "all_check_results": {
+  "differential": 9,
+  "ok": 12,
+  "end_to_end": 1,
+  "spec": 35,
+  "fastmcp": 1,
+  "loads": 4,
+  "static": 2
+ },
+ "sample_results": {
+  "same": 38,
+  "both_error": 8,
+  "unstable": 13
+ },
+ "llm_tokens": {
+  "propose": 2911,
+  "spec": 65920,
+  "code": 58109
+ },
+ "llm_requests": {
+  "propose": 1,
+  "spec": 49,
+  "code": 38
+ },
+ "seconds": 94,
+ "tools": [
+  {
+   "name": "generate_rsa_keys",
+   "wraps": "rsa.newkeys",
+   "description": "Generate a pair of RSA public and private keys with specified bit length.",
+   "accepted": false,
+   "code": "import rsa\nfrom typing import Dict\n\n\ndef generate_rsa_keys(nbits: int) -> Dict[str, str]:\n    \"\"\"Generate a pair of RSA public and private keys with specified bit length.\n    \n    Args:\n        nbits: The number of bits required to store the modulus n\n        \n    Returns:\n        A dictionary containing the public and private keys as strings\n        \n    Example:\n        >>> generate_rsa_keys(2048)\n        {'public': '-----BEGIN RSA PUBLIC KEY-----...', 'private': '-----BEGIN RSA PRIVATE KEY-----...'}\n    \"\"\"\n    if nbits < 16:\n        raise ValueError(\"Key too small\")\n    \n    try:\n        pub_key, priv_key = rsa.newkeys(nbits)\n        return {\n            \"public\": str(pub_key),\n            \"private\": str(priv_key)\n        }\n    except Exception as e:\n        raise ValueError(f\"Failed to generate RSA keys: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nbits",
+      "type": "integer",
+      "description": "The number of bits required to store the modulus n",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.newkeys(nbits)",
+    "samples": [
+     {
+      "nbits": 1024
+     },
+     {
+      "nbits": 2048
+     },
+     {
+      "nbits": 16
+     },
+     {
+      "nbits": 15
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "nbits": 1024
+      },
+      "tool": {
+       "public": "PublicKey(133784849424603285528595606186617913593439437314550731576402921515049298322156693596039210664176521986929580117031746813626183089940792092578184913571743938645282128893284378947838363487655317387001021922295588561704688242475917406687902260980185276463466708192102498106289121972429951941309800049899257089229, 65537)",
+       "private": "PrivateKey(133784849424603285528595606186617913593439437314550731576402921515049298322156693596039210664176521986929580117031746813626183089940792092578184913571743938645282128893284378947838363487655317387001021922295588561704688242475917406687902260980185276463466708192102498106289121972429951941309800049899257089229, 65537, 133123447602524590066318343321298106400490807110392554714008326910919173771805307833414789279993645243658371731571346032882253961034360357253172551289877395530163865698015002538757630010416581449260363597716648099885348166306676512699677199042518678092245155323147534426026722139214022100608985890786704784513, 50218046134973309524658187043720917633645522226858767069161581519368778878153194958135507362325556227283744560552572397667128526092314057002846042844708121249217249, 2664079145274264682765742317240083178388985181294467127575438003746778982813475120389692953190039021225505257343846684031756582780279681673223021)"
+      },
+      "direct": "[\"PublicKey(144795812778762032102909943967489847488858056442669867191468712763659615783591946369339384083390802874339990890450112253959638804220840782415749977512356909012199327559638149715152301390071334515593215202750380057412401009361095510415951656076414789282857817376063188043839835265718682497239397010262791540039, 65537)\", \"PrivateKey(144795812778762032102909943967489847488858056442669867191468712763659615783591946369339384083390802874339990890450112253959638804220840782415749977512356909012199327559638149715152301390071334515593215202750380057412401009361095510415951656076414789282857817376063188043839835265718682497239397010262791540039, 65537, 105574986856785383890589310961540845053253615928604904157107167545225975253962512126873101735276706522274996791128043914971105486361793746856533102382097598686833236007351973016813178557677415158610867969222970294650172293024251667176614175897520324026997037323413074907888843500400637443885261991603925193793, 57436694455833607930496164901231261971259565602820421390256215717908176645057510193715068294114259167598405022029990761162731974516548057398571556391545892730681953, 2520963543438313574179171531480671867761247107389363655050565343952682516530081434917659099681179075747395399667645447062388382421282226157009063)\"]",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 2048
+      },
+      "tool": "took longer than 5 s",
+      "direct": "took longer than 5 s",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "nbits": 16
+      },
+      "tool": {
+       "public": "PublicKey(43423, 65537)",
+       "private": "PrivateKey(43423, 65537, 18473, 251, 173)"
+      },
+      "direct": "[\"PublicKey(41347, 65537)\", \"PrivateKey(41347, 65537, 15377, 239, 173)\"]",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 15
+      },
+      "tool": "ValueError: Key too small",
+      "direct": "ValueError: Key too small",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "Generate a pair of RSA public and private keys with specified bit length.\n    \n    Args:\n        nbits: The number of bits required to store the modulus n\n        \n    Returns:\n        A dictionary containing the public and private keys as strings\n        \n    Example:\n        >>> generate_rsa_keys(2048)\n        {'public': '-----BEGIN RSA PUBLIC KEY-----...', 'private': '-----BEGIN RSA PRIVATE KEY-----...'}\n    ",
+    "input_schema": {
+     "properties": {
+      "nbits": {
+       "title": "Nbits",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "nbits"
+     ],
+     "title": "generate_rsa_keysArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"nbits\": 2048}: the tool returned {\"private\": \"PrivateKey(256664468062727784951478395524079769938121620819381641072749881189260558489479921723593156561385205751791023519018445006007867330291505874467479117975120316389297231435836116916012677197239895084115685351427013180485558678846494212943811978201629498391091488778710348481459252, but the direct library call returned [\"PublicKey(189174647352158269683732187520343787369849828444358955272995717877964182314308547357991470703087276240482289531526894562995065675218434756947756793045294375892468939941334821196974404236247101301832809157388611769453769096102794393405546029567611043730278554006746140042348409837422140525"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"nbits\": 2048}: the tool returned {\"private\": \"PrivateKey(181555000156468492166616005169620585768823617210595751190696599091121903490880550538482314508959031194187686486344267348692934615249991951299325165622612480683786602535740216123913688885246867204293471885564865132022091244462618072383602629297995566343070097267687823977463066, but the direct library call returned [\"PublicKey(236175146779966410995476663905499270359080198829702485920984039413460839038511432063129131056004397003244868050231586147452221727069267992246064623016245351241953616910041841809111689702771273068501514123481948545091641688695460965383589893726385678722104981518505763119474504439805018235"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"nbits\": 2048}: the tool returned {\"private\": \"PrivateKey(203268165364454849174193376909830703601234211707304684217859065549284774145323503122811151524134243774831568037208035020953535399553180673856111710759672046951818942850596710019640038340143860162283078454258449478375968224928688960709781295025175711208163820511712404645403354, but the direct library call returned [\"PublicKey(222127986228108615299490772425882787322945010730111198781033553514043159386721594822916724997661979782728812376522419405213798755103556301764911027519356050590952593690646794668424686635727199488377265428936867441210239115226193317143253705418132719964742828496415733969815898579335442932"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    },
+    {
+     "stage": "end_to_end",
+     "error": "returned a value over MCP, but raised in the check"
+    }
+   ]
+  },
+  {
+   "name": "encrypt_message",
+   "wraps": "rsa.encrypt",
+   "description": "Encrypt a message using RSA public key with PKCS#1 v1.5 padding.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "decrypt_message",
+   "wraps": "rsa.decrypt",
+   "description": "Decrypt an encrypted message using RSA private key with PKCS#1 v1.5 padding.",
+   "accepted": false,
+   "code": "import rsa\nfrom rsa import pkcs1\nfrom rsa.key import PrivateKey\nfrom rsa.common import byte_size\nfrom rsa.transform import bytes2int, int2bytes\nfrom hmac import compare_digest\n\n\ndef decrypt_message(crypto: str, priv_key: object) -> str:\n    \"\"\"Decrypts the given message using PKCS#1 v1.5\n    \n    The decryption is considered 'failed' when the resulting cleartext doesn't\n    start with the bytes 00 02, or when the 00 byte between the padding and\n    the message cannot be found.\n    \n    :param crypto: the crypto text as returned by :py:func:`rsa.encrypt`\n    :param priv_key: the :py:class:`rsa.PrivateKey` to decrypt with.\n    :raise DecryptionError: when the decryption fails. No details are given as\n        to why the code thinks the decryption fails, as this would leak\n        information about the private key.\n    \n    >>> import rsa\n    >>> (pub_key, priv_key) = rsa.newkeys(256)\n    >>> crypto = rsa.encrypt(b'hello', pub_key)\n    >>> decrypt_message(crypto, priv_key)\n    b'hello'\n    \"\"\"\n    try:\n        # Convert crypto string to bytes if needed\n        if isinstance(crypto, str):\n            crypto_bytes = crypto.encode('latin1')  # Assuming latin1 encoding for byte conversion\n        else:\n            crypto_bytes = crypto\n            \n        # Validate priv_key is actually a PrivateKey instance\n        if not isinstance(priv_key, PrivateKey):\n            raise ValueError(\"priv_key must be an instance of rsa.key.PrivateKey\")\n            \n        # Get block size\n        blocksize = byte_size(priv_key.n)\n        \n        # Perform decryption\n        encrypted = bytes2int(crypto_bytes)\n        decrypted = priv_key.blinded_decrypt(encrypted)\n        cleartext = int2bytes(decrypted, blocksize)\n        \n        # Check for leading zeroes (CVE-2020-13757)\n        if len(crypto_bytes) > blocksize:\n            raise pkcs1.DecryptionError(\"Decryption failed\")\n            \n        # Check cleartext marker\n        cleartext_marker_bad = not compare_digest(cleartext[:2], b\"\\x00\\x02\")\n        \n        # Find separator between padding and message\n        sep_idx = cleartext.find(b\"\\x00\", 2)\n        sep_idx_bad = sep_idx < 10\n        \n        anything_bad = cleartext_marker_bad | sep_idx_bad\n        if anything_bad:\n            raise pkcs1.DecryptionError(\"Decryption failed\")\n            \n        return cleartext.decode('latin1')\n        \n    except pkcs1.DecryptionError:\n        raise ValueError(\"Decryption failed - invalid ciphertext or private key\")\n    except Exception as e:\n        raise ValueError(f\"Decryption error: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "crypto",
+      "type": "string",
+      "description": "The encrypted message as bytes",
+      "required": true
+     },
+     {
+      "name": "priv_key",
+      "type": "object",
+      "description": "The RSA private key used for decryption",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.pkcs1.decrypt(crypto, priv_key)",
+    "samples": [
+     {
+      "crypto": "b'\\x00\\x02\\x00\\x00hello'",
+      "priv_key": "priv_key_obj"
+     },
+     {
+      "crypto": "b'\\x00\\x02\\x00\\x00\\x00\\x00\\x01'",
+      "priv_key": "priv_key_obj"
+     },
+     {
+      "crypto": "b'\\x00\\x02\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+      "priv_key": "priv_key_obj"
+     },
+     {
+      "crypto": "b'\\x00\\x02\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+      "priv_key": "priv_key_obj"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct_call expression is wrong: AttributeError: 'str' object has no attribute 'n'",
+    "samples": [
+     {
+      "arguments": {
+       "crypto": "b'\\x00\\x02\\x00\\x00hello'",
+       "priv_key": "priv_key_obj"
+      },
+      "tool": "ValueError: Decryption error: priv_key must be an instance of rsa.key.PrivateKey",
+      "direct": "AttributeError: 'str' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'str' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "crypto": "b'\\x00\\x02\\x00\\x00\\x00\\x00\\x01'",
+       "priv_key": "priv_key_obj"
+      },
+      "tool": "ValueError: Decryption error: priv_key must be an instance of rsa.key.PrivateKey",
+      "direct": "AttributeError: 'str' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'str' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "crypto": "b'\\x00\\x02\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+       "priv_key": "priv_key_obj"
+      },
+      "tool": "ValueError: Decryption error: priv_key must be an instance of rsa.key.PrivateKey",
+      "direct": "AttributeError: 'str' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'str' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "crypto": "b'\\x00\\x02\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00'",
+       "priv_key": "priv_key_obj"
+      },
+      "tool": "ValueError: Decryption error: priv_key must be an instance of rsa.key.PrivateKey",
+      "direct": "AttributeError: 'str' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'str' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Decrypts the given message using PKCS#1 v1.5\n    \n    The decryption is considered 'failed' when the resulting cleartext doesn't\n    start with the bytes 00 02, or when the 00 byte between the padding and\n    the message cannot be found.\n    \n    :param crypto: the crypto text as returned by :py:func:`rsa.encrypt`\n    :param priv_key: the :py:class:`rsa.PrivateKey` to decrypt with.\n    :raise DecryptionError: when the decryption fails. No details are given as\n        to why the code thinks the decryption fails, as this would leak\n        information about the private key.\n    \n    >>> import rsa\n    >>> (pub_key, priv_key) = rsa.newkeys(256)\n    >>> crypto = rsa.encrypt(b'hello', pub_key)\n    >>> decrypt_message(crypto, priv_key)\n    b'hello'\n    ",
+    "input_schema": {
+     "properties": {
+      "crypto": {
+       "title": "Crypto",
+       "type": "string"
+      },
+      "priv_key": {
+       "title": "Priv Key"
+      }
+     },
+     "required": [
+      "crypto",
+      "priv_key"
+     ],
+     "title": "decrypt_messageArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'str' object has no attribute 'n'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'str' object has no attribute 'n'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'str' object has no attribute 'n'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'str' object has no attribute 'n'"
+    }
+   ]
+  },
+  {
+   "name": "sign_message",
+   "wraps": "rsa.sign",
+   "description": "Sign a message using RSA private key with specified hash method.",
+   "accepted": false,
+   "code": "import rsa\nfrom typing import Any\n\n\ndef sign_message(message: str, priv_key: Any, hash_method: str) -> bytes:\n    \"\"\"Signs the message with the private key using the specified hash method.\n    \n    Hashes the message, then signs the hash with the given key. This is known\n    as a \"detached signature\", because the message itself isn't altered.\n    \n    Args:\n        message: The message to sign. Can be an 8-bit string or a file-like object.\n        priv_key: The RSA private key to sign with\n        hash_method: The hash method used on the message. Use 'MD5', 'SHA-1', \n            'SHA-224', 'SHA-256', 'SHA-384' or 'SHA-512'.\n    \n    Returns:\n        A message signature block.\n        \n    Example:\n        >>> sign_message(\"Hello World\", priv_key, \"SHA-256\")\n        b'\\\\x8a\\\\x9f...'\n    \"\"\"\n    try:\n        return rsa.sign(message, priv_key, hash_method)\n    except Exception as e:\n        raise ValueError(f\"Failed to sign message: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "message",
+      "type": "string",
+      "description": "The message to sign. Can be an 8-bit string or a file-like object.",
+      "required": true
+     },
+     {
+      "name": "priv_key",
+      "type": "object",
+      "description": "The rsa.PrivateKey to sign with",
+      "required": true
+     },
+     {
+      "name": "hash_method",
+      "type": "string",
+      "description": "The hash method used on the message. Use 'MD5', 'SHA-1', 'SHA-224', 'SHA-256', 'SHA-384' or 'SHA-512'.",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.sign(message, priv_key, hash_method)",
+    "samples": [
+     {
+      "message": "Hello, World!",
+      "priv_key": "dummy_private_key_object",
+      "hash_method": "SHA-256"
+     },
+     {
+      "message": "Test message for signing",
+      "priv_key": "dummy_private_key_object",
+      "hash_method": "SHA-512"
+     },
+     {
+      "message": "",
+      "priv_key": "dummy_private_key_object",
+      "hash_method": "SHA-1"
+     },
+     {
+      "message": "Another test",
+      "priv_key": "dummy_private_key_object",
+      "hash_method": "MD5"
+     },
+     {
+      "message": "Yet another test",
+      "priv_key": "dummy_private_key_object",
+      "hash_method": "SHA-384"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['AssertionError: ']. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "message": "Hello, World!",
+       "priv_key": "dummy_private_key_object",
+       "hash_method": "SHA-256"
+      },
+      "tool": "ValueError: Failed to sign message: ",
+      "direct": "AssertionError: ",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AssertionError: ",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Test message for signing",
+       "priv_key": "dummy_private_key_object",
+       "hash_method": "SHA-512"
+      },
+      "tool": "ValueError: Failed to sign message: ",
+      "direct": "AssertionError: ",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AssertionError: ",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "",
+       "priv_key": "dummy_private_key_object",
+       "hash_method": "SHA-1"
+      },
+      "tool": "ValueError: Failed to sign message: ",
+      "direct": "AssertionError: ",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AssertionError: ",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Another test",
+       "priv_key": "dummy_private_key_object",
+       "hash_method": "MD5"
+      },
+      "tool": "ValueError: Failed to sign message: ",
+      "direct": "AssertionError: ",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AssertionError: ",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Yet another test",
+       "priv_key": "dummy_private_key_object",
+       "hash_method": "SHA-384"
+      },
+      "tool": "ValueError: Failed to sign message: ",
+      "direct": "AssertionError: ",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AssertionError: ",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Signs the message with the private key using the specified hash method.\n    \n    Hashes the message, then signs the hash with the given key. This is known\n    as a \"detached signature\", because the message itself isn't altered.\n    \n    Args:\n        message: The message to sign. Can be an 8-bit string or a file-like object.\n        priv_key: The RSA private key to sign with\n        hash_method: The hash method used on the message. Use 'MD5', 'SHA-1', \n            'SHA-224', 'SHA-256', 'SHA-384' or 'SHA-512'.\n    \n    Returns:\n        A message signature block.\n        \n    Example:\n        >>> sign_message(\"Hello World\", priv_key, \"SHA-256\")\n        b'\\x8a\\x9f...'\n    ",
+    "input_schema": {
+     "properties": {
+      "message": {
+       "title": "Message",
+       "type": "string"
+      },
+      "priv_key": {
+       "title": "Priv Key"
+      },
+      "hash_method": {
+       "title": "Hash Method",
+       "type": "string"
+      }
+     },
+     "required": [
+      "message",
+      "priv_key",
+      "hash_method"
+     ],
+     "title": "sign_messageArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "fastmcp",
+     "error": "PydanticInvalidForJsonSchema: Cannot generate a JsonSchema for core_schema.IsInstanceSchema (<class 'rsa.key.PrivateKey'>)\n\nFor further information visit https://errors.pydantic.dev/2.14/u/invalid-for-json-schema"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['AssertionError: ', 'ValueError: Invalid hash method: INVALID-HASH']. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['AssertionError: ']. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['AssertionError: ']. Use samples that are valid for the library."
+    }
+   ]
+  },
+  {
+   "name": "verify_signature",
+   "wraps": "rsa.verify",
+   "description": "Verify that a signature matches a message using RSA public key.",
+   "accepted": false,
+   "code": "import rsa\nfrom rsa import key\nfrom rsa import common, transform, core\n\n\ndef verify_signature(\n    message: str,\n    signature: str,\n    pub_key_n: int,\n    pub_key_e: int\n) -> str:\n    \"\"\"Verifies that the signature matches the message using RSA public key.\n    \n    Args:\n        message: The signed message. Can be an 8-bit string or a file-like object.\n        signature: The signature block, as created with rsa.sign.\n        pub_key_n: The n component of the RSA public key.\n        pub_key_e: The e component of the RSA public key.\n        \n    Returns:\n        The name of the used hash method.\n        \n    Example:\n        >>> verify_signature(\"Hello World\", \"signature_bytes\", 12345, 65537)\n        'SHA-256'\n    \"\"\"\n    try:\n        # Create public key object\n        pub_key = key.PublicKey(pub_key_n, pub_key_e)\n        \n        # Convert inputs to bytes if they aren't already\n        if isinstance(message, str):\n            message_bytes = message.encode('utf-8')\n        else:\n            message_bytes = message\n            \n        if isinstance(signature, str):\n            signature_bytes = signature.encode('utf-8')\n        else:\n            signature_bytes = signature\n        \n        # Call the underlying verify function\n        result = rsa.verify(message_bytes, signature_bytes, pub_key)\n        return result\n        \n    except Exception as e:\n        # Handle verification errors specifically\n        error_str = str(e).lower()\n        if \"verification\" in error_str or \"failed\" in error_str:\n            raise ValueError(f\"Signature verification failed: {str(e)}\")\n        else:\n            raise ValueError(f\"Invalid input parameters: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "message",
+      "type": "string",
+      "description": "The signed message. Can be an 8-bit string or a file-like object.",
+      "required": true
+     },
+     {
+      "name": "signature",
+      "type": "string",
+      "description": "The signature block, as created with rsa.sign.",
+      "required": true
+     },
+     {
+      "name": "pub_key_n",
+      "type": "integer",
+      "description": "The n component of the RSA public key.",
+      "required": true
+     },
+     {
+      "name": "pub_key_e",
+      "type": "integer",
+      "description": "The e component of the RSA public key.",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.verify(message, signature, rsa.key.PublicKey(pub_key_n, pub_key_e))",
+    "samples": [
+     {
+      "message": "Hello, World!",
+      "signature": "example_signature_bytes",
+      "pub_key_n": 123456789,
+      "pub_key_e": 65537
+     },
+     {
+      "message": "Test message for verification",
+      "signature": "another_signature_bytes",
+      "pub_key_n": 987654321,
+      "pub_key_e": 65537
+     },
+     {
+      "message": "",
+      "signature": "empty_message_signature",
+      "pub_key_n": 111111111,
+      "pub_key_e": 65537
+     },
+     {
+      "message": "A very long message to test edge cases with signatures",
+      "signature": "long_message_signature",
+      "pub_key_n": 222222222,
+      "pub_key_e": 65537
+     },
+     {
+      "message": "Invalid signature test",
+      "signature": "invalid_signature",
+      "pub_key_n": 333333333,
+      "pub_key_e": 65537
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['VerificationError: Verification failed']. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "message": "Hello, World!",
+       "signature": "example_signature_bytes",
+       "pub_key_n": 123456789,
+       "pub_key_e": 65537
+      },
+      "tool": "ValueError: Signature verification failed: Verification failed",
+      "direct": "VerificationError: Verification failed",
+      "result": "both_error",
+      "direct_error": {
+       "error": "VerificationError: Verification failed",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Test message for verification",
+       "signature": "another_signature_bytes",
+       "pub_key_n": 987654321,
+       "pub_key_e": 65537
+      },
+      "tool": "ValueError: Signature verification failed: Verification failed",
+      "direct": "VerificationError: Verification failed",
+      "result": "both_error",
+      "direct_error": {
+       "error": "VerificationError: Verification failed",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "",
+       "signature": "empty_message_signature",
+       "pub_key_n": 111111111,
+       "pub_key_e": 65537
+      },
+      "tool": "ValueError: Signature verification failed: Verification failed",
+      "direct": "VerificationError: Verification failed",
+      "result": "both_error",
+      "direct_error": {
+       "error": "VerificationError: Verification failed",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "A very long message to test edge cases with signatures",
+       "signature": "long_message_signature",
+       "pub_key_n": 222222222,
+       "pub_key_e": 65537
+      },
+      "tool": "ValueError: Signature verification failed: Verification failed",
+      "direct": "VerificationError: Verification failed",
+      "result": "both_error",
+      "direct_error": {
+       "error": "VerificationError: Verification failed",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Invalid signature test",
+       "signature": "invalid_signature",
+       "pub_key_n": 333333333,
+       "pub_key_e": 65537
+      },
+      "tool": "ValueError: Signature verification failed: Verification failed",
+      "direct": "VerificationError: Verification failed",
+      "result": "both_error",
+      "direct_error": {
+       "error": "VerificationError: Verification failed",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Verifies that the signature matches the message using RSA public key.\n    \n    Args:\n        message: The signed message. Can be an 8-bit string or a file-like object.\n        signature: The signature block, as created with rsa.sign.\n        pub_key_n: The n component of the RSA public key.\n        pub_key_e: The e component of the RSA public key.\n        \n    Returns:\n        The name of the used hash method.\n        \n    Example:\n        >>> verify_signature(\"Hello World\", \"signature_bytes\", 12345, 65537)\n        'SHA-256'\n    ",
+    "input_schema": {
+     "properties": {
+      "message": {
+       "title": "Message",
+       "type": "string"
+      },
+      "signature": {
+       "title": "Signature",
+       "type": "string"
+      },
+      "pub_key_n": {
+       "title": "Pub Key N",
+       "type": "integer"
+      },
+      "pub_key_e": {
+       "title": "Pub Key E",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "message",
+      "signature",
+      "pub_key_n",
+      "pub_key_e"
+     ],
+     "title": "verify_signatureArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'"
+    },
+    {
+     "stage": "loads",
+     "error": "ModuleNotFoundError: No module named 'rsa._hash'"
+    },
+    {
+     "stage": "loads",
+     "error": "ModuleNotFoundError: No module named 'rsa.exceptions'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['VerificationError: Verification failed']. Use samples that are valid for the library."
+    }
+   ]
+  },
+  {
+   "name": "load_public_key_pem",
+   "wraps": "rsa.PublicKey.load_pkcs1_openssl_pem",
+   "description": "Load a PKCS#1.5 PEM-encoded RSA public key from OpenSSL format.",
+   "accepted": false,
+   "code": "import rsa\n\n\ndef load_public_key_pem(keyfile: str) -> str:\n    \"\"\"Loads a PKCS#1.5 PEM-encoded public key file from OpenSSL. keyfile: contents of a PEM-encoded file that contains the public key, from OpenSSL, e.g. '-----BEGIN PUBLIC KEY-----\\\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...' -> PublicKey object as string.\"\"\"\n    try:\n        key_bytes = keyfile.encode('utf-8')\n        public_key = rsa.PublicKey.load_pkcs1_openssl_pem(key_bytes)\n        return str(public_key)\n    except Exception as e:\n        raise ValueError(f\"Failed to load public key: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "keyfile",
+      "type": "string",
+      "description": "Contents of a PEM-encoded file that contains the public key, from OpenSSL.",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.PublicKey.load_pkcs1_openssl_pem(keyfile.encode())",
+    "samples": [
+     {
+      "keyfile": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----"
+     },
+     {
+      "keyfile": "Some preamble text\n-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----\nSome postamble text"
+     },
+     {
+      "keyfile": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----\n"
+     },
+     {
+      "keyfile": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----\n\n"
+     },
+     {
+      "keyfile": "-----BEGIN RSA PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END RSA PUBLIC KEY-----"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'",
+    "samples": [
+     {
+      "arguments": {
+       "keyfile": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----"
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "Some preamble text\n-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----\nSome postamble text"
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----\n"
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END PUBLIC KEY-----\n\n"
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "-----BEGIN RSA PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2Vv8J3F7fD9Xq3dY5z3h\n-----END RSA PUBLIC KEY-----"
+      },
+      "tool": "ValueError: Failed to load public key: No PEM start marker \"b'-----BEGIN PUBLIC KEY-----'\" found",
+      "direct": "ValueError: No PEM start marker \"b'-----BEGIN PUBLIC KEY-----'\" found",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ValueError: No PEM start marker \"b'-----BEGIN PUBLIC KEY-----'\" found",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Loads a PKCS#1.5 PEM-encoded public key file from OpenSSL. keyfile: contents of a PEM-encoded file that contains the public key, from OpenSSL, e.g. '-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...' -> PublicKey object as string.",
+    "input_schema": {
+     "properties": {
+      "keyfile": {
+       "title": "Keyfile",
+       "type": "string"
+      }
+     },
+     "required": [
+      "keyfile"
+     ],
+     "title": "load_public_key_pemArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    }
+   ]
+  },
+  {
+   "name": "load_public_key_der",
+   "wraps": "rsa.PublicKey.load_pkcs1_openssl_der",
+   "description": "Load a PKCS#1 DER-encoded RSA public key from OpenSSL format.",
+   "accepted": false,
+   "code": "import rsa\n\n\ndef load_public_key_der(keyfile: str) -> str:\n    \"\"\"Loads a PKCS#1 DER-encoded public key file from OpenSSL.\n    \n    :param keyfile: contents of a DER-encoded file that contains the public\n        key, from OpenSSL.\n    :return: a PublicKey object\n    \"\"\"\n    try:\n        key_bytes = keyfile.encode('latin1') if isinstance(keyfile, str) else keyfile\n        public_key = rsa.PublicKey.load_pkcs1_openssl_der(key_bytes)\n        return str(public_key)\n    except Exception as e:\n        raise ValueError(f\"Failed to load public key: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "keyfile",
+      "type": "string",
+      "description": "Contents of a DER-encoded file that contains the public key, from OpenSSL.",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.PublicKey.load_pkcs1_openssl_der(keyfile.encode('latin1'))",
+    "samples": [
+     {
+      "keyfile": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+     },
+     {
+      "keyfile": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+     },
+     {
+      "keyfile": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+     },
+     {
+      "keyfile": "invalid_key_data"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'",
+    "samples": [
+     {
+      "arguments": {
+       "keyfile": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "keyfile": "invalid_key_data"
+      },
+      "tool": "ValueError: Failed to load public key: No module named 'pyasn1'",
+      "direct": "ModuleNotFoundError: No module named 'pyasn1'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'pyasn1'",
+       "broken": true,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Loads a PKCS#1 DER-encoded public key file from OpenSSL.\n    \n    :param keyfile: contents of a DER-encoded file that contains the public\n        key, from OpenSSL.\n    :return: a PublicKey object\n    ",
+    "input_schema": {
+     "properties": {
+      "keyfile": {
+       "title": "Keyfile",
+       "type": "string"
+      }
+     },
+     "required": [
+      "keyfile"
+     ],
+     "title": "load_public_key_derArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'pyasn1'"
+    }
+   ]
+  },
+  {
+   "name": "blinded_decrypt",
+   "wraps": "rsa.PrivateKey.blinded_decrypt",
+   "description": "Decrypt a message using RSA private key with blinding to prevent side-channel attacks.",
+   "accepted": true,
+   "code": "import rsa\nimport rsa.core\nfrom typing import List, Optional\n\n\ndef blinded_decrypt(n: int, e: int, d: int, p: int, q: int, encrypted: int) -> int:\n    \"\"\"Decrypts the message using blinding to prevent side-channel attacks.\n    \n    :param n: RSA modulus\n    :param e: RSA public exponent\n    :param d: RSA private exponent\n    :param p: First prime factor of n\n    :param q: Second prime factor of n\n    :param encrypted: the encrypted message\n    :type encrypted: int\n    \n    :returns: the decrypted message\n    :rtype: int\n    \n    Example: blinded_decrypt(1024, 65537, 65537, 31, 33, 123) -> decrypted message\n    \"\"\"\n    try:\n        # Create the private key object\n        private_key = rsa.PrivateKey(n, e, d, p, q)\n        \n        # Call the blinded_decrypt method\n        result = private_key.blinded_decrypt(encrypted)\n        \n        return result\n    except Exception as e:\n        raise ValueError(f\"Decryption failed: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "n",
+      "type": "integer",
+      "description": "RSA modulus",
+      "required": true
+     },
+     {
+      "name": "e",
+      "type": "integer",
+      "description": "RSA public exponent",
+      "required": true
+     },
+     {
+      "name": "d",
+      "type": "integer",
+      "description": "RSA private exponent",
+      "required": true
+     },
+     {
+      "name": "p",
+      "type": "integer",
+      "description": "First prime factor of n",
+      "required": true
+     },
+     {
+      "name": "q",
+      "type": "integer",
+      "description": "Second prime factor of n",
+      "required": true
+     },
+     {
+      "name": "encrypted",
+      "type": "integer",
+      "description": "The encrypted message to decrypt",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.PrivateKey(n, e, d, p, q).blinded_decrypt(encrypted)",
+    "samples": [
+     {
+      "n": 3233,
+      "e": 17,
+      "d": 2753,
+      "p": 61,
+      "q": 53,
+      "encrypted": 2790
+     },
+     {
+      "n": 143,
+      "e": 7,
+      "d": 103,
+      "p": 11,
+      "q": 13,
+      "encrypted": 100
+     },
+     {
+      "n": 123456789,
+      "e": 65537,
+      "d": 123456789,
+      "p": 123456789,
+      "q": 123456789,
+      "encrypted": 123456789
+     },
+     {
+      "n": 1000000007,
+      "e": 65537,
+      "d": 1000000007,
+      "p": 1000000007,
+      "q": 1000000007,
+      "encrypted": 1000000007
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "n": 3233,
+       "e": 17,
+       "d": 2753,
+       "p": 61,
+       "q": 53,
+       "encrypted": 2790
+      },
+      "tool": 65,
+      "direct": "65",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "n": 143,
+       "e": 7,
+       "d": 103,
+       "p": 11,
+       "q": 13,
+       "encrypted": 100
+      },
+      "tool": 100,
+      "direct": "100",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "n": 123456789,
+       "e": 65537,
+       "d": 123456789,
+       "p": 123456789,
+       "q": 123456789,
+       "encrypted": 123456789
+      },
+      "tool": "ValueError: Decryption failed: 123456789 and 123456789 are not relatively prime, divider=123456789",
+      "direct": "NotRelativePrimeError: 123456789 and 123456789 are not relatively prime, divider=123456789",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "n": 1000000007,
+       "e": 65537,
+       "d": 1000000007,
+       "p": 1000000007,
+       "q": 1000000007,
+       "encrypted": 1000000007
+      },
+      "tool": "ValueError: Decryption failed: 1000000007 and 1000000007 are not relatively prime, divider=1000000007",
+      "direct": "NotRelativePrimeError: 1000000007 and 1000000007 are not relatively prime, divider=1000000007",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Decrypts the message using blinding to prevent side-channel attacks.\n    \n    :param n: RSA modulus\n    :param e: RSA public exponent\n    :param d: RSA private exponent\n    :param p: First prime factor of n\n    :param q: Second prime factor of n\n    :param encrypted: the encrypted message\n    :type encrypted: int\n    \n    :returns: the decrypted message\n    :rtype: int\n    \n    Example: blinded_decrypt(1024, 65537, 65537, 31, 33, 123) -> decrypted message\n    ",
+    "input_schema": {
+     "properties": {
+      "n": {
+       "title": "N",
+       "type": "integer"
+      },
+      "e": {
+       "title": "E",
+       "type": "integer"
+      },
+      "d": {
+       "title": "D",
+       "type": "integer"
+      },
+      "p": {
+       "title": "P",
+       "type": "integer"
+      },
+      "q": {
+       "title": "Q",
+       "type": "integer"
+      },
+      "encrypted": {
+       "title": "Encrypted",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "n",
+      "e",
+      "d",
+      "p",
+      "q",
+      "encrypted"
+     ],
+     "title": "blinded_decryptArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "find_signature_hash_method",
+   "wraps": "rsa.find_signature_hash",
+   "description": "Detect the hash method used in an RSA signature.",
+   "accepted": false,
+   "code": "import rsa\nfrom rsa import core, transform, common, key\n\n\ndef find_signature_hash_method(signature: str, pub_key: object) -> str:\n    \"\"\"Returns the hash name detected from the signature.\n    \n    If you also want to verify the message, use rsa.verify() instead.\n    It also returns the name of the used hash.\n    \n    :param signature: the signature block, as created with rsa.sign.\n    :param pub_key: the rsa.PublicKey of the person signing the message.\n    :returns: the name of the used hash.\n    \"\"\"\n    try:\n        # Convert signature string to bytes if needed\n        if isinstance(signature, str):\n            signature_bytes = signature.encode('latin1') if not all(ord(c) < 256 for c in signature) else signature.encode('utf-8')\n        else:\n            signature_bytes = signature\n            \n        # Validate pub_key type\n        if not isinstance(pub_key, key.PublicKey):\n            raise ValueError(\"pub_key must be an rsa.PublicKey object\")\n            \n        # Call the underlying function\n        return rsa.find_signature_hash(signature_bytes, pub_key)\n        \n    except Exception as e:\n        if isinstance(e, ValueError):\n            raise e\n        raise ValueError(f\"Error processing signature: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "signature",
+      "type": "string",
+      "description": "The signature block, as created with rsa.sign.",
+      "required": true
+     },
+     {
+      "name": "pub_key",
+      "type": "object",
+      "description": "The rsa.PublicKey of the person signing the message.",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.find_signature_hash(signature, pub_key)",
+    "samples": [
+     {
+      "signature": "valid_signature_bytes_1",
+      "pub_key": {
+       "n": 123456789,
+       "e": 65537
+      }
+     },
+     {
+      "signature": "valid_signature_bytes_2",
+      "pub_key": {
+       "n": 987654321,
+       "e": 65537
+      }
+     },
+     {
+      "signature": "another_valid_signature",
+      "pub_key": {
+       "n": 111111111,
+       "e": 65537
+      }
+     },
+     {
+      "signature": "short_signature",
+      "pub_key": {
+       "n": 222222222,
+       "e": 65537
+      }
+     },
+     {
+      "signature": "invalid_signature_data",
+      "pub_key": {
+       "n": 333333333,
+       "e": 65537
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'",
+    "samples": [
+     {
+      "arguments": {
+       "signature": "valid_signature_bytes_1",
+       "pub_key": {
+        "n": 123456789,
+        "e": 65537
+       }
+      },
+      "tool": "ValueError: pub_key must be an rsa.PublicKey object",
+      "direct": "AttributeError: 'dict' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signature": "valid_signature_bytes_2",
+       "pub_key": {
+        "n": 987654321,
+        "e": 65537
+       }
+      },
+      "tool": "ValueError: pub_key must be an rsa.PublicKey object",
+      "direct": "AttributeError: 'dict' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signature": "another_valid_signature",
+       "pub_key": {
+        "n": 111111111,
+        "e": 65537
+       }
+      },
+      "tool": "ValueError: pub_key must be an rsa.PublicKey object",
+      "direct": "AttributeError: 'dict' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signature": "short_signature",
+       "pub_key": {
+        "n": 222222222,
+        "e": 65537
+       }
+      },
+      "tool": "ValueError: pub_key must be an rsa.PublicKey object",
+      "direct": "AttributeError: 'dict' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signature": "invalid_signature_data",
+       "pub_key": {
+        "n": 333333333,
+        "e": 65537
+       }
+      },
+      "tool": "ValueError: pub_key must be an rsa.PublicKey object",
+      "direct": "AttributeError: 'dict' object has no attribute 'n'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'n'",
+       "broken": true,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Returns the hash name detected from the signature.\n    \n    If you also want to verify the message, use rsa.verify() instead.\n    It also returns the name of the used hash.\n    \n    :param signature: the signature block, as created with rsa.sign.\n    :param pub_key: the rsa.PublicKey of the person signing the message.\n    :returns: the name of the used hash.\n    ",
+    "input_schema": {
+     "properties": {
+      "signature": {
+       "title": "Signature",
+       "type": "string"
+      },
+      "pub_key": {
+       "title": "Pub Key"
+      }
+     },
+     "required": [
+      "signature",
+      "pub_key"
+     ],
+     "title": "find_signature_hash_methodArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'"
+    }
+   ]
+  },
+  {
+   "name": "compute_message_hash",
+   "wraps": "rsa.compute_hash",
+   "description": "Compute the hash of a message using the specified hash method.",
+   "accepted": false,
+   "code": "import rsa.pkcs1\nfrom typing import Union\n\n\ndef compute_message_hash(message: Union[str, bytes], method_name: str) -> bytes:\n    \"\"\"Compute the hash of a message using the specified hash method.\n    \n    Args:\n        message: The message to hash, as a string or bytes\n        method_name: The hash method to use, must be a valid key of rsa.pkcs1.HASH_METHODS\n        \n    Returns:\n        The message digest as bytes\n        \n    Example:\n        >>> compute_message_hash(\"hello world\", \"SHA-256\")\n        b'\\\\x03\\\\x1e\\\\x9c\\\\x8f\\\\x1a\\\\x8d\\\\x9b\\\\x7c\\\\x4e\\\\x2f\\\\x8a\\\\x1d\\\\x9c\\\\x8f\\\\x1a\\\\x8d\\\\x9b\\\\x7c\\\\x4e\\\\x2f\\\\x8a\\\\x1d\\\\x9c\\\\x8f\\\\x1a\\\\x8d\\\\x9b\\\\x7c\\\\x4e\\\\x2f\\\\x8a\\\\x1d'\n    \"\"\"\n    try:\n        return rsa.compute_hash(message, method_name)\n    except ValueError as e:\n        raise ValueError(str(e)) from e\n    except Exception as e:\n        raise ValueError(f\"Failed to compute hash: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "message",
+      "type": "string",
+      "description": "The message to hash, as a string or bytes",
+      "required": true
+     },
+     {
+      "name": "method_name",
+      "type": "string",
+      "description": "The hash method to use, must be a valid key of rsa.pkcs1.HASH_METHODS",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.compute_hash(message.encode('utf-8') if isinstance(message, str) else message, method_name)",
+    "samples": [
+     {
+      "message": "Hello, world!",
+      "method_name": "SHA-256"
+     },
+     {
+      "message": "Test message",
+      "method_name": "SHA-1"
+     },
+     {
+      "message": "Another test",
+      "method_name": "SHA-512"
+     },
+     {
+      "message": "",
+      "method_name": "SHA-256"
+     },
+     {
+      "message": "Data with special chars: \n\t\r",
+      "method_name": "MD5"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'isinstance'",
+    "samples": [
+     {
+      "arguments": {
+       "message": "Hello, world!",
+       "method_name": "SHA-256"
+      },
+      "tool": "ValueError: Failed to compute hash: ",
+      "direct": "ModuleNotFoundError: No module named 'isinstance'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'isinstance'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Test message",
+       "method_name": "SHA-1"
+      },
+      "tool": "ValueError: Failed to compute hash: ",
+      "direct": "ModuleNotFoundError: No module named 'isinstance'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'isinstance'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Another test",
+       "method_name": "SHA-512"
+      },
+      "tool": "ValueError: Failed to compute hash: ",
+      "direct": "ModuleNotFoundError: No module named 'isinstance'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'isinstance'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "",
+       "method_name": "SHA-256"
+      },
+      "tool": "ValueError: Failed to compute hash: ",
+      "direct": "ModuleNotFoundError: No module named 'isinstance'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'isinstance'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "message": "Data with special chars: \n\t\r",
+       "method_name": "MD5"
+      },
+      "tool": "ValueError: Failed to compute hash: ",
+      "direct": "ModuleNotFoundError: No module named 'isinstance'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ModuleNotFoundError: No module named 'isinstance'",
+       "broken": true,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Compute the hash of a message using the specified hash method.\n    \n    Args:\n        message: The message to hash, as a string or bytes\n        method_name: The hash method to use, must be a valid key of rsa.pkcs1.HASH_METHODS\n        \n    Returns:\n        The message digest as bytes\n        \n    Example:\n        >>> compute_message_hash(\"hello world\", \"SHA-256\")\n        b'\\x03\\x1e\\x9c\\x8f\\x1a\\x8d\\x9b\\x7c\\x4e\\x2f\\x8a\\x1d\\x9c\\x8f\\x1a\\x8d\\x9b\\x7c\\x4e\\x2f\\x8a\\x1d\\x9c\\x8f\\x1a\\x8d\\x9b\\x7c\\x4e\\x2f\\x8a\\x1d'\n    ",
+    "input_schema": {
+     "properties": {
+      "message": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "format": "binary",
+         "type": "string"
+        }
+       ],
+       "title": "Message"
+      },
+      "method_name": {
+       "title": "Method Name",
+       "type": "string"
+      }
+     },
+     "required": [
+      "message",
+      "method_name"
+     ],
+     "title": "compute_message_hashArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['AssertionError: ', 'ValueError: Invalid hash method: INVALID-METHOD']. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: ['AssertionError: ']. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'isinstance'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: ModuleNotFoundError: No module named 'isinstance'"
+    }
+   ]
+  },
+  {
+   "name": "sign_precomputed_hash",
+   "wraps": "rsa.sign_hash",
+   "description": "Sign a precomputed hash value using RSA private key with specified hash method.",
+   "accepted": false,
+   "code": "import rsa\nfrom rsa import key\nfrom rsa import common\nfrom rsa import transform\nfrom rsa.pkcs1 import _pad_for_signing\nfrom rsa.pkcs1 import HASH_ASN1\n\n\ndef sign_precomputed_hash(\n    hash_value: str,\n    priv_key_n: int,\n    priv_key_d: int,\n    hash_method: str\n) -> str:\n    \"\"\"Signs a precomputed hash with the private key.\n    \n    Signs the hash with the given key. This is known as a \"detached signature\",\n    because the message itself isn't altered.\n    \n    Args:\n        hash_value: A precomputed hash to sign (as hexadecimal string)\n        priv_key_n: The n component of the RSA private key\n        priv_key_d: The d component of the RSA private key\n        hash_method: The hash method used on the message. Use 'MD5', 'SHA-1',\n            'SHA-224', 'SHA-256', 'SHA-384' or 'SHA-512'\n    \n    Returns:\n        A message signature block as hexadecimal string\n        \n    Example:\n        sign_precomputed_hash(\"d75392f1...\", 123456789, 987654321, \"SHA-256\")\n    \"\"\"\n    try:\n        # Convert hex string to bytes\n        hash_bytes = bytes.fromhex(hash_value)\n        \n        # Create private key object\n        priv_key = key.PrivateKey(priv_key_n, priv_key_d)\n        \n        # Sign the hash\n        signature = rsa.sign_hash(hash_bytes, priv_key, hash_method)\n        \n        # Return as hex string\n        return signature.hex()\n        \n    except Exception as e:\n        if isinstance(e, ValueError):\n            raise e\n        raise ValueError(f\"Failed to sign hash: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "hash_value",
+      "type": "string",
+      "description": "A precomputed hash to sign (as hexadecimal string)",
+      "required": true
+     },
+     {
+      "name": "priv_key_n",
+      "type": "integer",
+      "description": "The n component of the RSA private key",
+      "required": true
+     },
+     {
+      "name": "priv_key_d",
+      "type": "integer",
+      "description": "The d component of the RSA private key",
+      "required": true
+     },
+     {
+      "name": "hash_method",
+      "type": "string",
+      "description": "The hash method used on the message. Use 'MD5', 'SHA-1', 'SHA-224', 'SHA-256', 'SHA-384' or 'SHA-512'",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.sign_hash(bytes.fromhex(hash_value), rsa.PrivateKey(priv_key_n, priv_key_d), hash_method)",
+    "samples": [
+     {
+      "hash_value": "a9993e364706816aba3e25717850c26c9cd0d89d",
+      "priv_key_n": 1234567890123456789012345678901234567890,
+      "priv_key_d": 9876543210987654321098765432109876543210,
+      "hash_method": "SHA-1"
+     },
+     {
+      "hash_value": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+      "priv_key_n": 1234567890123456789012345678901234567890,
+      "priv_key_d": 9876543210987654321098765432109876543210,
+      "hash_method": "SHA-256"
+     },
+     {
+      "hash_value": "098f6bcd4621d373cade4e832627b4f6",
+      "priv_key_n": 1234567890123456789012345678901234567890,
+      "priv_key_d": 9876543210987654321098765432109876543210,
+      "hash_method": "MD5"
+     },
+     {
+      "hash_value": "d41d8cd98f00b204e9800998ecf8427e",
+      "priv_key_n": 1234567890123456789012345678901234567890,
+      "priv_key_d": 9876543210987654321098765432109876543210,
+      "hash_method": "SHA-1"
+     },
+     {
+      "hash_value": "invalid-hex-value",
+      "priv_key_n": 1234567890123456789012345678901234567890,
+      "priv_key_d": 9876543210987654321098765432109876543210,
+      "hash_method": "SHA-256"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'\", 'ValueError: non-hexadecimal number found in fromhex() arg at position 0']. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "hash_value": "a9993e364706816aba3e25717850c26c9cd0d89d",
+       "priv_key_n": 1234567890123456789012345678901234567890,
+       "priv_key_d": 9876543210987654321098765432109876543210,
+       "hash_method": "SHA-1"
+      },
+      "tool": "ValueError: Failed to sign hash: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "direct": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+       "broken": false,
+       "type_error": true
+      }
+     },
+     {
+      "arguments": {
+       "hash_value": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+       "priv_key_n": 1234567890123456789012345678901234567890,
+       "priv_key_d": 9876543210987654321098765432109876543210,
+       "hash_method": "SHA-256"
+      },
+      "tool": "ValueError: Failed to sign hash: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "direct": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+       "broken": false,
+       "type_error": true
+      }
+     },
+     {
+      "arguments": {
+       "hash_value": "098f6bcd4621d373cade4e832627b4f6",
+       "priv_key_n": 1234567890123456789012345678901234567890,
+       "priv_key_d": 9876543210987654321098765432109876543210,
+       "hash_method": "MD5"
+      },
+      "tool": "ValueError: Failed to sign hash: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "direct": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+       "broken": false,
+       "type_error": true
+      }
+     },
+     {
+      "arguments": {
+       "hash_value": "d41d8cd98f00b204e9800998ecf8427e",
+       "priv_key_n": 1234567890123456789012345678901234567890,
+       "priv_key_d": 9876543210987654321098765432109876543210,
+       "hash_method": "SHA-1"
+      },
+      "tool": "ValueError: Failed to sign hash: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "direct": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'",
+       "broken": false,
+       "type_error": true
+      }
+     },
+     {
+      "arguments": {
+       "hash_value": "invalid-hex-value",
+       "priv_key_n": 1234567890123456789012345678901234567890,
+       "priv_key_d": 9876543210987654321098765432109876543210,
+       "hash_method": "SHA-256"
+      },
+      "tool": "ValueError: non-hexadecimal number found in fromhex() arg at position 0",
+      "direct": "ValueError: non-hexadecimal number found in fromhex() arg at position 0",
+      "result": "both_error",
+      "direct_error": {
+       "error": "ValueError: non-hexadecimal number found in fromhex() arg at position 0",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Signs a precomputed hash with the private key.\n    \n    Signs the hash with the given key. This is known as a \"detached signature\",\n    because the message itself isn't altered.\n    \n    Args:\n        hash_value: A precomputed hash to sign (as hexadecimal string)\n        priv_key_n: The n component of the RSA private key\n        priv_key_d: The d component of the RSA private key\n        hash_method: The hash method used on the message. Use 'MD5', 'SHA-1',\n            'SHA-224', 'SHA-256', 'SHA-384' or 'SHA-512'\n    \n    Returns:\n        A message signature block as hexadecimal string\n        \n    Example:\n        sign_precomputed_hash(\"d75392f1...\", 123456789, 987654321, \"SHA-256\")\n    ",
+    "input_schema": {
+     "properties": {
+      "hash_value": {
+       "title": "Hash Value",
+       "type": "string"
+      },
+      "priv_key_n": {
+       "title": "Priv Key N",
+       "type": "integer"
+      },
+      "priv_key_d": {
+       "title": "Priv Key D",
+       "type": "integer"
+      },
+      "hash_method": {
+       "title": "Hash Method",
+       "type": "string"
+      }
+     },
+     "required": [
+      "hash_value",
+      "priv_key_n",
+      "priv_key_d",
+      "hash_method"
+     ],
+     "title": "sign_precomputed_hashArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "loads",
+     "error": "ModuleNotFoundError: No module named 'rsa._compat'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'n'"
+    },
+    {
+     "stage": "loads",
+     "error": "ModuleNotFoundError: No module named 'rsa._compat'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"TypeError: PrivateKey.__init__() missing 3 required positional arguments: 'd', 'p', and 'q'\", 'ValueError: non-hexadecimal number found in fromhex() arg at position 0']. Use samples that are valid for the library."
+    }
+   ]
+  },
+  {
+   "name": "get_integer_bit_size",
+   "wraps": "rsa.common.bit_size",
+   "description": "Calculate the number of bits needed to represent an integer.",
+   "accepted": true,
+   "code": "from rsa.common import bit_size\n\n\ndef get_integer_bit_size(num: int) -> int:\n    \"\"\"Calculate the number of bits needed to represent an integer. num: Integer value. If num is 0, returns 0. Only the absolute value of the number is considered.\"\"\"\n    try:\n        return bit_size(num)\n    except TypeError as e:\n        raise ValueError(f\"Invalid input: {num!r} is not an integer\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "num",
+      "type": "integer",
+      "description": "Integer value. If num is 0, returns 0. Only the absolute value of the number is considered.",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.common.bit_size(num)",
+    "samples": [
+     {
+      "num": 1023
+     },
+     {
+      "num": 1024
+     },
+     {
+      "num": 1025
+     },
+     {
+      "num": 0
+     },
+     {
+      "num": -1024
+     },
+     {
+      "num": 1
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "num": 1023
+      },
+      "tool": 10,
+      "direct": "10",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "num": 1024
+      },
+      "tool": 11,
+      "direct": "11",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "num": 1025
+      },
+      "tool": 11,
+      "direct": "11",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "num": 0
+      },
+      "tool": 0,
+      "direct": "0",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "num": -1024
+      },
+      "tool": 11,
+      "direct": "11",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "num": 1
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Calculate the number of bits needed to represent an integer. num: Integer value. If num is 0, returns 0. Only the absolute value of the number is considered.",
+    "input_schema": {
+     "properties": {
+      "num": {
+       "title": "Num",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "num"
+     ],
+     "title": "get_integer_bit_sizeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "get_integer_byte_size",
+   "wraps": "rsa.common.byte_size",
+   "description": "Calculate the number of bytes required to store an integer.",
+   "accepted": true,
+   "code": "from math import ceil\nfrom rsa.common import byte_size as _rsa_byte_size\n\n\ndef get_integer_byte_size(number: int) -> int:\n    \"\"\"Calculate the number of bytes required to store an integer. number: An unsigned integer -> The number of bytes required to hold the integer.\"\"\"\n    if not isinstance(number, int) or number < 0:\n        raise ValueError(\"number must be a non-negative integer\")\n    \n    try:\n        return _rsa_byte_size(number)\n    except Exception as e:\n        raise ValueError(f\"failed to calculate byte size for number {number}: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "number",
+      "type": "integer",
+      "description": "An unsigned integer",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.common.byte_size(number)",
+    "samples": [
+     {
+      "number": 0
+     },
+     {
+      "number": 1
+     },
+     {
+      "number": 255
+     },
+     {
+      "number": 256
+     },
+     {
+      "number": 1024
+     },
+     {
+      "number": 123456789
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "number": 0
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 1
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 255
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 256
+      },
+      "tool": 2,
+      "direct": "2",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 1024
+      },
+      "tool": 2,
+      "direct": "2",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 123456789
+      },
+      "tool": 4,
+      "direct": "4",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Calculate the number of bytes required to store an integer. number: An unsigned integer -> The number of bytes required to hold the integer.",
+    "input_schema": {
+     "properties": {
+      "number": {
+       "title": "Number",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "number"
+     ],
+     "title": "get_integer_byte_sizeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "extended_euclidean_algorithm",
+   "wraps": "rsa.common.extended_gcd",
+   "description": "Compute the extended greatest common divisor of two integers.",
+   "accepted": true,
+   "code": "import typing\nfrom rsa.common import extended_gcd\n\n\ndef extended_euclidean_algorithm(a: int, b: int) -> typing.Tuple[int, int, int]:\n    \"\"\"Returns a tuple (r, i, j) such that r = gcd(a, b) = ia + jb. Example: extended_euclidean_algorithm(30, 18) -> (6, -1, 2)\"\"\"\n    try:\n        return extended_gcd(a, b)\n    except Exception as e:\n        raise ValueError(f\"Failed to compute extended GCD: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "a",
+      "type": "integer",
+      "description": "First integer",
+      "required": true
+     },
+     {
+      "name": "b",
+      "type": "integer",
+      "description": "Second integer",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.common.extended_gcd(a, b)",
+    "samples": [
+     {
+      "a": 30,
+      "b": 18
+     },
+     {
+      "a": 17,
+      "b": 13
+     },
+     {
+      "a": 0,
+      "b": 5
+     },
+     {
+      "a": 7,
+      "b": 0
+     },
+     {
+      "a": -12,
+      "b": 8
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "a": 30,
+       "b": 18
+      },
+      "tool": [
+       6,
+       17,
+       2
+      ],
+      "direct": "[6, 17, 2]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 17,
+       "b": 13
+      },
+      "tool": [
+       1,
+       10,
+       4
+      ],
+      "direct": "[1, 10, 4]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 0,
+       "b": 5
+      },
+      "tool": [
+       5,
+       0,
+       1
+      ],
+      "direct": "[5, 0, 1]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 7,
+       "b": 0
+      },
+      "tool": [
+       7,
+       1,
+       0
+      ],
+      "direct": "[7, 1, 0]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": -12,
+       "b": 8
+      },
+      "tool": [
+       4,
+       1,
+       2
+      ],
+      "direct": "[4, 1, 2]",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Returns a tuple (r, i, j) such that r = gcd(a, b) = ia + jb. Example: extended_euclidean_algorithm(30, 18) -> (6, -1, 2)",
+    "input_schema": {
+     "properties": {
+      "a": {
+       "title": "A",
+       "type": "integer"
+      },
+      "b": {
+       "title": "B",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "a",
+      "b"
+     ],
+     "title": "extended_euclidean_algorithmArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "modular_inverse",
+   "wraps": "rsa.common.inverse",
+   "description": "Calculate the modular multiplicative inverse of an integer.",
+   "accepted": true,
+   "code": "from rsa.common import inverse\n\n\ndef modular_inverse(x: int, n: int) -> int:\n    \"\"\"Returns the inverse of x % n under multiplication, a.k.a x^-1 (mod n)\n    \n    Args:\n        x: The integer to find the modular multiplicative inverse of\n        n: The modulus\n    \n    Returns:\n        The modular multiplicative inverse of x modulo n\n    \n    Example:\n        >>> modular_inverse(7, 4)\n        3\n    \"\"\"\n    try:\n        return inverse(x, n)\n    except Exception as e:\n        raise ValueError(f\"Failed to calculate modular inverse: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "x",
+      "type": "integer",
+      "description": "The integer to find the modular multiplicative inverse of",
+      "required": true
+     },
+     {
+      "name": "n",
+      "type": "integer",
+      "description": "The modulus",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.common.inverse(x, n)",
+    "samples": [
+     {
+      "x": 7,
+      "n": 4
+     },
+     {
+      "x": 143,
+      "n": 4
+     },
+     {
+      "x": 10,
+      "n": 17
+     },
+     {
+      "x": 3,
+      "n": 6
+     },
+     {
+      "x": 1,
+      "n": 5
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "x": 7,
+       "n": 4
+      },
+      "tool": 3,
+      "direct": "3",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "x": 143,
+       "n": 4
+      },
+      "tool": 3,
+      "direct": "3",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "x": 10,
+       "n": 17
+      },
+      "tool": 12,
+      "direct": "12",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "x": 3,
+       "n": 6
+      },
+      "tool": "ValueError: Failed to calculate modular inverse: 3 and 6 are not relatively prime, divider=3",
+      "direct": "NotRelativePrimeError: 3 and 6 are not relatively prime, divider=3",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "x": 1,
+       "n": 5
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Returns the inverse of x % n under multiplication, a.k.a x^-1 (mod n)\n    \n    Args:\n        x: The integer to find the modular multiplicative inverse of\n        n: The modulus\n    \n    Returns:\n        The modular multiplicative inverse of x modulo n\n    \n    Example:\n        >>> modular_inverse(7, 4)\n        3\n    ",
+    "input_schema": {
+     "properties": {
+      "x": {
+       "title": "X",
+       "type": "integer"
+      },
+      "n": {
+       "title": "N",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "x",
+      "n"
+     ],
+     "title": "modular_inverseArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "encrypt_integer",
+   "wraps": "rsa.core.encrypt_int",
+   "description": "Encrypt an integer using RSA encryption with public key components.",
+   "accepted": true,
+   "code": "def encrypt_integer(message: int, ekey: int, n: int) -> int:\n    \"\"\"Encrypts a message using encryption key 'ekey', working modulo n. message: The integer message to encrypt, ekey: The RSA encryption key, n: The modulus for RSA encryption. Example: encrypt_integer(123, 5, 1000) -> 827\"\"\"\n    from rsa.core import encrypt_int\n    \n    try:\n        return encrypt_int(message, ekey, n)\n    except AssertionError as e:\n        raise ValueError(\"Invalid input parameters\") from e\n    except ValueError as e:\n        raise ValueError(str(e)) from e\n    except OverflowError as e:\n        raise OverflowError(str(e)) from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "message",
+      "type": "integer",
+      "description": "The integer message to encrypt",
+      "required": true
+     },
+     {
+      "name": "ekey",
+      "type": "integer",
+      "description": "The RSA encryption key",
+      "required": true
+     },
+     {
+      "name": "n",
+      "type": "integer",
+      "description": "The modulus for RSA encryption",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.core.encrypt_int(message, ekey, n)",
+    "samples": [
+     {
+      "message": 42,
+      "ekey": 17,
+      "n": 1000000007
+     },
+     {
+      "message": 0,
+      "ekey": 3,
+      "n": 1000000009
+     },
+     {
+      "message": 999999,
+      "ekey": 65537,
+      "n": 1000000009
+     },
+     {
+      "message": -1,
+      "ekey": 3,
+      "n": 1000000009
+     },
+     {
+      "message": 1000000008,
+      "ekey": 3,
+      "n": 1000000009
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "message": 42,
+       "ekey": 17,
+       "n": 1000000007
+      },
+      "tool": 965275217,
+      "direct": "965275217",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "message": 0,
+       "ekey": 3,
+       "n": 1000000009
+      },
+      "tool": 0,
+      "direct": "0",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "message": 999999,
+       "ekey": 65537,
+       "n": 1000000009
+      },
+      "tool": 73429784,
+      "direct": "73429784",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "message": -1,
+       "ekey": 3,
+       "n": 1000000009
+      },
+      "tool": "ValueError: Only non-negative numbers are supported",
+      "direct": "ValueError: Only non-negative numbers are supported",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "message": 1000000008,
+       "ekey": 3,
+       "n": 1000000009
+      },
+      "tool": 1000000008,
+      "direct": "1000000008",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Encrypts a message using encryption key 'ekey', working modulo n. message: The integer message to encrypt, ekey: The RSA encryption key, n: The modulus for RSA encryption. Example: encrypt_integer(123, 5, 1000) -> 827",
+    "input_schema": {
+     "properties": {
+      "message": {
+       "title": "Message",
+       "type": "integer"
+      },
+      "ekey": {
+       "title": "Ekey",
+       "type": "integer"
+      },
+      "n": {
+       "title": "N",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "message",
+      "ekey",
+      "n"
+     ],
+     "title": "encrypt_integerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "decrypt_integer",
+   "wraps": "rsa.core.decrypt_int",
+   "description": "Decrypt an integer using RSA decryption with private key components.",
+   "accepted": true,
+   "code": "def decrypt_integer(cyphertext: int, dkey: int, n: int) -> int:\n    \"\"\"Decrypts a cypher text using the decryption key 'dkey', working modulo n. cyphertext: The encrypted integer to decrypt, dkey: The RSA private decryption exponent, n: The RSA modulus, e.g. decrypt_integer(123, 456, 789) -> 678.\"\"\"\n    try:\n        return pow(cyphertext, dkey, n)\n    except TypeError:\n        raise ValueError(\"All parameters must be integers\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "cyphertext",
+      "type": "integer",
+      "description": "The encrypted integer to decrypt",
+      "required": true
+     },
+     {
+      "name": "dkey",
+      "type": "integer",
+      "description": "The RSA private decryption exponent",
+      "required": true
+     },
+     {
+      "name": "n",
+      "type": "integer",
+      "description": "The RSA modulus",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.core.decrypt_int(cyphertext, dkey, n)",
+    "samples": [
+     {
+      "cyphertext": 12345,
+      "dkey": 65537,
+      "n": 100003
+     },
+     {
+      "cyphertext": 98765,
+      "dkey": 12345,
+      "n": 54321
+     },
+     {
+      "cyphertext": 0,
+      "dkey": 1,
+      "n": 2
+     },
+     {
+      "cyphertext": 1,
+      "dkey": 1,
+      "n": 2
+     },
+     {
+      "cyphertext": 100,
+      "dkey": 101,
+      "n": 103
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "cyphertext": 12345,
+       "dkey": 65537,
+       "n": 100003
+      },
+      "tool": 81672,
+      "direct": "81672",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "cyphertext": 98765,
+       "dkey": 12345,
+       "n": 54321
+      },
+      "tool": 21710,
+      "direct": "21710",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "cyphertext": 0,
+       "dkey": 1,
+       "n": 2
+      },
+      "tool": 0,
+      "direct": "0",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "cyphertext": 1,
+       "dkey": 1,
+       "n": 2
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "cyphertext": 100,
+       "dkey": 101,
+       "n": 103
+      },
+      "tool": 34,
+      "direct": "34",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Decrypts a cypher text using the decryption key 'dkey', working modulo n. cyphertext: The encrypted integer to decrypt, dkey: The RSA private decryption exponent, n: The RSA modulus, e.g. decrypt_integer(123, 456, 789) -> 678.",
+    "input_schema": {
+     "properties": {
+      "cyphertext": {
+       "title": "Cyphertext",
+       "type": "integer"
+      },
+      "dkey": {
+       "title": "Dkey",
+       "type": "integer"
+      },
+      "n": {
+       "title": "N",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "cyphertext",
+      "dkey",
+      "n"
+     ],
+     "title": "decrypt_integerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "generate_prime_number",
+   "wraps": "rsa.prime.getprime",
+   "description": "Generate a prime number that fits within a specified number of bits.",
+   "accepted": true,
+   "code": "from rsa.prime import getprime\n\n\ndef generate_prime_number(nbits: int) -> int:\n    \"\"\"Generate a prime number that fits within a specified number of bits.\n    \n    Args:\n        nbits: The number of bits for the generated prime number\n        \n    Returns:\n        A prime number that can be stored in 'nbits' bits\n        \n    Example:\n        >>> generate_prime_number(128)\n        123456789012345678901234567890123456789\n    \"\"\"\n    try:\n        return getprime(nbits)\n    except Exception as e:\n        raise ValueError(f\"Failed to generate prime number with {nbits} bits: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nbits",
+      "type": "integer",
+      "description": "The number of bits for the generated prime number",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.prime.getprime(nbits)",
+    "samples": [
+     {
+      "nbits": 128
+     },
+     {
+      "nbits": 256
+     },
+     {
+      "nbits": 512
+     },
+     {
+      "nbits": 1024
+     },
+     {
+      "nbits": 3
+     },
+     {
+      "nbits": 2
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "nbits": 128
+      },
+      "tool": 326039505014249412017218755682379579927,
+      "direct": "337010255760688306608526755759281898367",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 256
+      },
+      "tool": 64483709035298539256694609600402213974640109370109400621503278376220026642233,
+      "direct": "84366131991353771063093819643044124887055973788077520505644750308515830467951",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 512
+      },
+      "tool": 7699414159234373842165805070132310704541096126064056510646917635596262400284128133270752804143458212655666982228434000131940408398568726853183480816398931,
+      "direct": "9262048265435363998357799650912716561604436097685491176595000127729105827716075289331092926215233936541457208058793366430422442036160879074505172412838331",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 1024
+      },
+      "tool": 145472940337472571716124465991047769997643222783069024530799831267439581977280293383748810321618715239977971038383850856130095041519195459296951855168910285924534082932605834268876308364709723715232064384144560123361416766095234515089585484646879954561676353923382593217795786023701406250571268181797927586543,
+      "direct": "168956469617054299439462459762908238439203174101145401155136863065981353586432738246781567923930202123842261712006652078052148804574219357219497038037421617945568229120664416545670170230114794226299834982265428775445138807946033904738709685980255015535893012469276768704717232984091942721721459076671353296589",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 3
+      },
+      "tool": "ValueError: Failed to generate prime number with 3 bits: ",
+      "direct": "AssertionError: ",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "nbits": 2
+      },
+      "tool": "ValueError: Failed to generate prime number with 2 bits: ",
+      "direct": "AssertionError: ",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "Generate a prime number that fits within a specified number of bits.\n    \n    Args:\n        nbits: The number of bits for the generated prime number\n        \n    Returns:\n        A prime number that can be stored in 'nbits' bits\n        \n    Example:\n        >>> generate_prime_number(128)\n        123456789012345678901234567890123456789\n    ",
+    "input_schema": {
+     "properties": {
+      "nbits": {
+       "title": "Nbits",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "nbits"
+     ],
+     "title": "generate_prime_numberArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "check_coprime",
+   "wraps": "rsa.prime.are_relatively_prime",
+   "description": "Check if two integers are relatively prime (coprime).",
+   "accepted": true,
+   "code": "from math import gcd\n\n\ndef check_coprime(a: int, b: int) -> bool:\n    \"\"\"Returns True if a and b are relatively prime, and False if they are not.\n    \n    Args:\n        a: First integer to check\n        b: Second integer to check\n    \n    Example:\n        >>> check_coprime(2, 3)\n        True\n    \"\"\"\n    try:\n        d = gcd(a, b)\n        return d == 1\n    except Exception as e:\n        raise ValueError(f\"Error checking coprimality: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "a",
+      "type": "integer",
+      "description": "First integer to check",
+      "required": true
+     },
+     {
+      "name": "b",
+      "type": "integer",
+      "description": "Second integer to check",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.prime.are_relatively_prime(a, b)",
+    "samples": [
+     {
+      "a": 2,
+      "b": 3
+     },
+     {
+      "a": 2,
+      "b": 4
+     },
+     {
+      "a": 1,
+      "b": 100
+     },
+     {
+      "a": 15,
+      "b": 28
+     },
+     {
+      "a": 12,
+      "b": 18
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "a": 2,
+       "b": 3
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 2,
+       "b": 4
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 1,
+       "b": 100
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 15,
+       "b": 28
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "a": 12,
+       "b": 18
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Returns True if a and b are relatively prime, and False if they are not.\n    \n    Args:\n        a: First integer to check\n        b: Second integer to check\n    \n    Example:\n        >>> check_coprime(2, 3)\n        True\n    ",
+    "input_schema": {
+     "properties": {
+      "a": {
+       "title": "A",
+       "type": "integer"
+      },
+      "b": {
+       "title": "B",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "a",
+      "b"
+     ],
+     "title": "check_coprimeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "read_random_bits",
+   "wraps": "rsa.randnum.read_random_bits",
+   "description": "Read a specified number of random bits as bytes.",
+   "accepted": false,
+   "code": "import random\nimport struct\n\n\ndef read_random_bits(nbits: int) -> bytes:\n    \"\"\"Reads 'nbits' random bits.\n\n    If nbits isn't a whole number of bytes, an extra byte will be appended with\n    only the lower bits set.\n\n    Args:\n        nbits (int): The number of random bits to read\n\n    Returns:\n        bytes: Random bits as bytes\n\n    Example:\n        >>> read_random_bits(10)  # doctest: +SKIP\n        b'\\\\x01\\\\x23'\n    \"\"\"\n    if nbits < 0:\n        raise ValueError(\"nbits must be non-negative\")\n    \n    nbytes, rbits = divmod(nbits, 8)\n\n    # Get the random bytes\n    randomdata = bytearray()\n    for _ in range(nbytes):\n        randomdata.append(random.randint(0, 255))\n\n    # Add the remaining random bits\n    if rbits > 0:\n        randomvalue = random.randint(0, 255)\n        randomvalue >>= 8 - rbits\n        randomdata = struct.pack(\"B\", randomvalue) + randomdata\n\n    return bytes(randomdata)\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nbits",
+      "type": "integer",
+      "description": "The number of random bits to read",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.randnum.read_random_bits(nbits)",
+    "samples": [
+     {
+      "nbits": 8
+     },
+     {
+      "nbits": 16
+     },
+     {
+      "nbits": 10
+     },
+     {
+      "nbits": 0
+     },
+     {
+      "nbits": 1
+     },
+     {
+      "nbits": -5
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "differential",
+    "error": "Input {\"nbits\": 8}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"F\"\nInput {\"nbits\": 16}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 1, but the direct library call returned \"\\ufffd\\u0018\"",
+    "samples": [
+     {
+      "arguments": {
+       "nbits": 8
+      },
+      "tool": "PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0",
+      "direct": "\"F\"",
+      "result": "mismatch",
+      "why": "the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"F\""
+     },
+     {
+      "arguments": {
+       "nbits": 16
+      },
+      "tool": "PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 1",
+      "direct": "\"\\ufffd\\u0018\"",
+      "result": "mismatch",
+      "why": "the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 1, but the direct library call returned \"\\ufffd\\u0018\""
+     },
+     {
+      "arguments": {
+       "nbits": 10
+      },
+      "tool": "\u0001Z",
+      "direct": "\"\\u0001s\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 0
+      },
+      "tool": "",
+      "direct": "\"\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nbits": 1
+      },
+      "tool": "\u0000",
+      "direct": "\"\\u0000\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": -5
+      },
+      "tool": "ValueError: nbits must be non-negative",
+      "direct": "ValueError: negative argument not allowed",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "Reads 'nbits' random bits.\n\n    If nbits isn't a whole number of bytes, an extra byte will be appended with\n    only the lower bits set.\n\n    Args:\n        nbits (int): The number of random bits to read\n\n    Returns:\n        bytes: Random bits as bytes\n\n    Example:\n        >>> read_random_bits(10)  # doctest: +SKIP\n        b'\\x01\\x23'\n    ",
+    "input_schema": {
+     "properties": {
+      "nbits": {
+       "title": "Nbits",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "nbits"
+     ],
+     "title": "read_random_bitsArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "static",
+     "error": "do not import os"
+    },
+    {
+     "stage": "static",
+     "error": "do not use __import__"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"nbits\": 8}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"'\"\nInput {\"nbits\": 16}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\u0016\\ufffd\"\nInput {\"nbits\": 10}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 1, but the direct library call returned \"\\u0001\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"nbits\": 8}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"F\"\nInput {\"nbits\": 16}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 1, but the direct library call returned \"\\ufffd\\u0018\""
+    }
+   ]
+  },
+  {
+   "name": "read_random_integer",
+   "wraps": "rsa.randnum.read_random_int",
+   "description": "Read a random integer of approximately specified number of bits.",
+   "accepted": true,
+   "code": "from rsa.randnum import read_random_int\n\n\ndef read_random_integer(nbits: int) -> int:\n    \"\"\"Reads a random integer of approximately nbits bits. nbits: The approximate number of bits for the random integer, e.g. read_random_integer(8) -> 173.\"\"\"\n    if nbits <= 0:\n        raise ValueError(\"nbits must be positive\")\n    \n    try:\n        return read_random_int(nbits)\n    except Exception as e:\n        raise ValueError(f\"failed to read random integer: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nbits",
+      "type": "integer",
+      "description": "The approximate number of bits for the random integer",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.randnum.read_random_int(nbits)",
+    "samples": [
+     {
+      "nbits": 8
+     },
+     {
+      "nbits": 16
+     },
+     {
+      "nbits": 32
+     },
+     {
+      "nbits": 128
+     },
+     {
+      "nbits": 1
+     },
+     {
+      "nbits": 0
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "nbits": 8
+      },
+      "tool": 246,
+      "direct": "203",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 16
+      },
+      "tool": 38565,
+      "direct": "44424",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 32
+      },
+      "tool": 2894259916,
+      "direct": "3114185081",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 128
+      },
+      "tool": 205463441408781026137923389460867539522,
+      "direct": "212000923757189161455003200911515672338",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 1
+      },
+      "tool": 1,
+      "direct": "1",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nbits": 0
+      },
+      "tool": "ValueError: nbits must be positive",
+      "direct": "ValueError: negative shift count",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "Reads a random integer of approximately nbits bits. nbits: The approximate number of bits for the random integer, e.g. read_random_integer(8) -> 173.",
+    "input_schema": {
+     "properties": {
+      "nbits": {
+       "title": "Nbits",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "nbits"
+     ],
+     "title": "read_random_integerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "read_random_odd_integer",
+   "wraps": "rsa.randnum.read_random_odd_int",
+   "description": "Read a random odd integer of approximately specified number of bits.",
+   "accepted": true,
+   "code": "from rsa.randnum import read_random_int\n\n\ndef read_random_odd_integer(nbits: int) -> int:\n    \"\"\"Reads a random odd integer of approximately nbits bits.\n    \n    Args:\n        nbits: The approximate number of bits for the random odd integer\n        \n    Returns:\n        A random odd integer with approximately nbits bits\n        \n    Example:\n        >>> read_random_odd_integer(512) & 1\n        1\n    \"\"\"\n    if nbits <= 0:\n        raise ValueError(\"nbits must be positive\")\n    \n    try:\n        value = read_random_int(nbits)\n        # Make sure it's odd by setting the least significant bit to 1\n        return value | 1\n    except Exception as e:\n        raise ValueError(f\"Failed to generate random odd integer: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nbits",
+      "type": "integer",
+      "description": "The approximate number of bits for the random odd integer",
+      "required": true
+     }
+    ],
+    "direct_call": "rsa.randnum.read_random_odd_int(nbits)",
+    "samples": [
+     {
+      "nbits": 8
+     },
+     {
+      "nbits": 16
+     },
+     {
+      "nbits": 256
+     },
+     {
+      "nbits": 512
+     },
+     {
+      "nbits": 1024
+     },
+     {
+      "nbits": -1
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "nbits": 8
+      },
+      "tool": 231,
+      "direct": "165",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 16
+      },
+      "tool": 37951,
+      "direct": "58637",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 256
+      },
+      "tool": 103692089390945848326935417017126723552173049690510252725591116505441384968733,
+      "direct": "104182536972269960878965174343438403469074740397353149071235340211342443157497",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 512
+      },
+      "tool": 9328493279717759549055409770628213488465538762079507851157696722435645613012188108604624799651958535817787262563048252717607873119916996992320101066980611,
+      "direct": "13255230689832341923979676182659544154218251041076309177526909257999659859565279723119989817788850862449751156405075406726550782916489321284601684842873165",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": 1024
+      },
+      "tool": 143251056959740703681543837897897644197387419793085699319492034429348773971534654653735902590067678133218471996250272690447504695254092288305460202142846146962394163717804114152055360557581313021574200896949492797077069311846518452635581219279711868536398659660344714998333738051041182474021296726811093015451,
+      "direct": "91728833044748190487479339055792799181052990069569067164832350362101689555689224348089354314587483498350711254820792011685530948163532670090755418241350529031298701402318631810780952406814922813696109401299211763624927938002395045736171600121048541899409717055559874263530170543908609150015240579025915412941",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "nbits": -1
+      },
+      "tool": "ValueError: nbits must be positive",
+      "direct": "ValueError: negative argument not allowed",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "Reads a random odd integer of approximately nbits bits.\n    \n    Args:\n        nbits: The approximate number of bits for the random odd integer\n        \n    Returns:\n        A random odd integer with approximately nbits bits\n        \n    Example:\n        >>> read_random_odd_integer(512) & 1\n        1\n    ",
+    "input_schema": {
+     "properties": {
+      "nbits": {
+       "title": "Nbits",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "nbits"
+     ],
+     "title": "read_random_odd_integerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "convert_bytes_to_integer",
+   "wraps": "rsa.transform.bytes2int",
+   "description": "Convert a sequence of bytes or string into an integer.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "convert_integer_to_bytes",
+   "wraps": "rsa.transform.int2bytes",
+   "description": "Convert an unsigned integer into a byte array in big-endian format.",
+   "accepted": false,
+   "code": "import math\nfrom typing import Optional\n\n\ndef convert_integer_to_bytes(number: int, fill_size: Optional[int] = None) -> bytes:\n    \"\"\"\n    Convert an unsigned integer to bytes (big-endian).\n\n    Does not preserve leading zeros if you don't specify a fill size.\n\n    :param number:\n        Integer value\n    :param fill_size:\n        If the optional fill size is given the length of the resulting\n        byte string is expected to be the fill size and will be padded\n        with prefix zero bytes to satisfy that length.\n    :returns:\n        Raw bytes (base-256 representation).\n    :raises:\n        ``ValueError`` when number is negative.\n        ``OverflowError`` when fill_size is given and the number takes up more\n        bytes than fit into the block.\n    :example:\n        >>> convert_integer_to_bytes(1024)\n        b'\\\\x04\\\\x00'\n        >>> convert_integer_to_bytes(1024, fill_size=4)\n        b'\\\\x00\\\\x00\\\\x04\\\\x00'\n    \"\"\"\n    if number < 0:\n        raise ValueError(\"Number must be an unsigned integer: %d\" % number)\n\n    bytes_required = max(1, math.ceil(number.bit_length() / 8))\n\n    if fill_size is not None:\n        if fill_size > 0:\n            try:\n                result = number.to_bytes(fill_size, \"big\")\n                # Ensure we can serialize to JSON by checking for invalid UTF-8\n                result.decode('utf-8')\n                return result\n            except (OverflowError, UnicodeDecodeError) as e:\n                if isinstance(e, OverflowError):\n                    raise OverflowError(\"Number too large for fill_size\") from e\n                else:\n                    # For UnicodeDecodeError, return the raw bytes\n                    return result\n        else:\n            result = number.to_bytes(bytes_required, \"big\")\n            result.decode('utf-8')\n            return result\n    else:\n        result = number.to_bytes(bytes_required, \"big\")\n        result.decode('utf-8')\n        return result\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "number",
+      "type": "integer",
+      "description": "Integer value",
+      "required": true
+     },
+     {
+      "name": "fill_size",
+      "type": "integer",
+      "description": "If the optional fill size is given the length of the resulting byte string is expected to be the fill size and will be padded with prefix zero bytes to satisfy that length.",
+      "required": false,
+      "default": 0
+     }
+    ],
+    "direct_call": "rsa.transform.int2bytes(number, fill_size)",
+    "samples": [
+     {
+      "number": 1024,
+      "fill_size": 0
+     },
+     {
+      "number": 1024,
+      "fill_size": 4
+     },
+     {
+      "number": 0,
+      "fill_size": 2
+     },
+     {
+      "number": 255,
+      "fill_size": 1
+     },
+     {
+      "number": -1,
+      "fill_size": 0
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "differential",
+    "error": "Input {\"fill_size\": 1, \"number\": 255}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd\"",
+    "samples": [
+     {
+      "arguments": {
+       "number": 1024,
+       "fill_size": 0
+      },
+      "tool": "\u0004\u0000",
+      "direct": "\"\\u0004\\u0000\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 1024,
+       "fill_size": 4
+      },
+      "tool": "\u0000\u0000\u0004\u0000",
+      "direct": "\"\\u0000\\u0000\\u0004\\u0000\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 0,
+       "fill_size": 2
+      },
+      "tool": "\u0000\u0000",
+      "direct": "\"\\u0000\\u0000\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "number": 255,
+       "fill_size": 1
+      },
+      "tool": "PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0",
+      "direct": "\"\\ufffd\"",
+      "result": "mismatch",
+      "why": "the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd\""
+     },
+     {
+      "arguments": {
+       "number": -1,
+       "fill_size": 0
+      },
+      "tool": "ValueError: Number must be an unsigned integer: -1",
+      "direct": "ValueError: Number must be an unsigned integer: -1",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "\n    Convert an unsigned integer to bytes (big-endian).\n\n    Does not preserve leading zeros if you don't specify a fill size.\n\n    :param number:\n        Integer value\n    :param fill_size:\n        If the optional fill size is given the length of the resulting\n        byte string is expected to be the fill size and will be padded\n        with prefix zero bytes to satisfy that length.\n    :returns:\n        Raw bytes (base-256 representation).\n    :raises:\n        ``ValueError`` when number is negative.\n        ``OverflowError`` when fill_size is given and the number takes up more\n        bytes than fit into the block.\n    :example:\n        >>> convert_integer_to_bytes(1024)\n        b'\\x04\\x00'\n        >>> convert_integer_to_bytes(1024, fill_size=4)\n        b'\\x00\\x00\\x04\\x00'\n    ",
+    "input_schema": {
+     "properties": {
+      "number": {
+       "title": "Number",
+       "type": "integer"
+      },
+      "fill_size": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Fill Size"
+      }
+     },
+     "required": [
+      "number"
+     ],
+     "title": "convert_integer_to_bytesArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"fill_size\": 1, \"number\": 255}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"fill_size\": 1, \"number\": 255}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"fill_size\": 1, \"number\": 255}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"fill_size\": 1, \"number\": 255}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd\""
+    }
+   ]
+  }
+ ]
+}

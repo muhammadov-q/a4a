@@ -1,15 +1,24 @@
 """Tests for the candidate list of the many-repo experiments. No network: PyPI's answers are written here."""
 
+import asyncio
 import json
+import shutil
 import subprocess
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
+from helpers import ScriptedLLM
+from repo2tools.corpus import benchmark
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
+from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
 from repo2tools.corpus.granularity import level_counts, tool_candidates
 from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from repo2tools.corpus.scan import likely_names, report, scan_one
+from repo2tools.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
+from repo2tools.evaluation.exercise_check import check as exercise_check
+from repo2tools.synthesis import pipeline
 from repo2tools.synthesis.scrape import public_api
 
 
@@ -269,3 +278,208 @@ def test_vectors_are_cut_and_made_unit_length():
 
     vectors = embed(["a", "b", "c"], Client, "m", batch=2)
     assert vectors.shape == (3, 1024) and np.allclose(np.linalg.norm(vectors, axis=1), 1) and np.allclose(vectors[0, :2], [0.6, 0.8])
+
+
+# --- exercises from documentation examples -----------------------------------------------------
+
+EXAMPLES = """Shapes
+======
+
+>>> from shapes import Square, parse
+>>> small = parse("2")
+>>> small.area
+4.0
+>>> small.corners
+4
+>>> small
+<a square>
+>>> small.area + 1
+6.0
+
+Prose in between does not matter: `small` and `parse` are still known on this page.
+
+>>> small.corners
+4
+>>> import random
+>>> random.random()
+0.5
+>>> print(parse("3").area)
+9.0
+>>> sides = [parse("1").corners]
+>>> sides.append("x")
+>>> sides
+[4, 'x']
+>>> parse("x")
+Traceback (most recent call last):
+ValueError: no
+"""
+
+
+def test_an_example_becomes_a_draft_with_the_lines_it_needs():
+    drafts = drafts_of(examples_of(EXAMPLES))
+    by_expression = {d["expression"]: d for d in drafts}
+    assert list(by_expression) == ["small.area", "small.corners", "small", "small.area + 1", "random.random()", "parse('3').area", "sides"]  # statements are setup, not questions
+    assert by_expression["small.area"] == {"steps": ["from shapes import Square, parse", 'small = parse("2")'], "expression": "small.area", "printed": False, "documented": "4.0"}
+    assert by_expression["small.area + 1"]["steps"] == by_expression["small.area"]["steps"]  # lines that only showed a value are not setup
+    assert by_expression["random.random()"]["steps"] == ["import random"]
+    assert by_expression["parse('3').area"] == {"steps": ["from shapes import Square, parse"], "expression": "parse('3').area", "printed": True, "documented": "9.0"}
+    assert by_expression["sides"]["steps"] == ["from shapes import Square, parse", 'sides = [parse("1").corners]', 'sides.append("x")']  # a call that changes it is setup
+    assert setup_for(["a = 1", "b = a + 1", "c = 5", "print(b)", "d = {}", "d['k'] = b"], "d") == ["a = 1", "b = a + 1", "d = {}", "d['k'] = b"]
+    assert examples_of("no examples here") == [] and names_of("not python (") == (set(), set(), set())
+    assert setup_for(["from shapes import *", "import os", "x = 1"], "parse('1')") == ["from shapes import *"]
+    # a method call on a new object changes nothing that a later line reads
+    assert setup_for(['Square("1").scaled(2)', 'big = Square("9")', "big.scaled(2)", "items = []", "items.append(big)"], 'Square("3").area') == []
+    assert setup_for(["items = []", 'Square("1").scaled(2)', "items.append(1)"], "items") == ["items = []", "items.append(1)"]
+
+
+def test_only_examples_that_run_and_match_the_documentation_are_kept(tmp_path, monkeypatch):
+    monkeypatch.setattr(pipeline, "CACHE", tmp_path / "cache")
+    outside = Path.home() / ".repo2tools-example-test"
+    assert not outside.exists()
+    hostile = f"\nAn example that tries to write outside the scratch folder:\n\n>>> open({str(outside)!r}, 'w').write('x')\n1\n"
+    docstring = '"""Shapes with an area.\n\n>>> parse("4").area\n16.0\n"""\n'
+    repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES.replace('"""Shapes with an area."""\n', docstring), "README.rst": EXAMPLES + hostile,
+                                                 "pyproject.toml": '[project]\nname = "shapes"\n'})
+    candidate = {"package": "shapes", "repo": str(repo)}
+    scanned = scan_one(candidate, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    record, verified = exercises_for(candidate | {"commit": scanned["commit"]}, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    assert record["error"] is None and record["drafts"] == 9
+    expected = {"verified": 5, "not_json": 1, "differs_from_docs": 1, "not_repeatable": 1, "error": 1}
+    if shutil.which("sandbox-exec") is None:  # without the sandbox the write works and gives the documented 1
+        expected = {"verified": 6, "not_json": 1, "differs_from_docs": 1, "not_repeatable": 1}
+    assert record["outcomes"] == expected
+    assert shutil.which("sandbox-exec") is None or not outside.exists()
+    outside.unlink(missing_ok=True)
+    by_expression = {e["expression"]: e for e in verified}
+    assert by_expression["small.area"]["answer"] == 4.0 and by_expression["small.area"]["steps"] == ["from shapes import Square, parse", 'small = parse("2")']
+    assert by_expression["small.area"]["uses"] == ["shapes.Square.area", "shapes.parse"] and by_expression["small.area"]["commit"] == scanned["commit"]
+    assert by_expression["parse('3').area"]["answer"] == 9.0 and by_expression["sides"]["answer"] == [4, "x"]  # printed in the documentation; built in three lines
+    assert by_expression['parse("4").area']["module"] == "shapes" and by_expression['parse("4").area']["steps"] == []  # a docstring example sees its module's names
+    assert [e["id"] for e in verified] == [f"me__shapes-{i:03d}" for i in range(1, len(verified) + 1)]
+    assert not (tmp_path / "cache" / "envs" / "examples-me__shapes").exists()  # the environment is deleted afterwards
+    text = exercises_report([record])
+    assert f"9 examples in their documentation show a value; {len(verified)} of them are verified" in text and f"| `shapes` | 9 | {len(verified)} |" in text
+    assert record["errors"] == ({"PermissionError": 1} if shutil.which("sandbox-exec") else {})
+
+
+def test_standard_types_get_one_plain_form():
+    import datetime
+    import decimal
+
+    from repo2tools.corpus.example_worker import plain
+
+    kinds: set = set()
+    value = {"when": datetime.datetime(2003, 9, 25, 10, 36), "span": datetime.timedelta(minutes=2), "price": decimal.Decimal("1.50"), "tags": {"b", "a"}, "pair": (1, 2.5)}
+    assert plain(value, kinds) == {"when": "2003-09-25T10:36:00", "span": 120.0, "price": "1.50", "tags": ["a", "b"], "pair": [1, 2.5]}
+    assert kinds == {"datetime", "timedelta", "Decimal", "set"}
+    for not_plain in (object(), float("nan"), {1: "a"}, {1, "a"}):
+        with pytest.raises(TypeError):
+            plain(not_plain, set())
+
+
+# --- questions in plain words ------------------------------------------------------------------
+
+
+def example(n, uses, steps=("from shapes import parse",), expression='parse("2").area', answer=4.0, kinds=()):
+    return {"id": f"me__shapes-{n:03d}", "repo": "https://github.com/me/shapes", "commit": "abcdef1234", "package": "shapes", "file": "README.rst", "module": None,
+            "steps": list(steps), "expression": expression, "answer": answer, "answer_kinds": list(kinds), "documented": "4.0", "uses": uses}
+
+
+def test_examples_are_chosen_across_the_number_of_uses():
+    pool = [example(i, ["a"]) for i in range(1, 7)] + [example(7, ["a", "b"]), example(8, ["a", "b", "c"]), example(9, []), example(10, ["a"], answer=None),
+                                                         example(11, ["a"], expression='parse("' + "x" * 200 + '")')]
+    chosen = choose(pool, per_repo=4)
+    assert len(chosen) == 4 and {len(e["uses"]) for e in chosen} == {1, 2, 3}  # one, two and three uses each take a turn; no uses, no answer and a huge input are left out
+    assert all(e["id"] not in ("me__shapes-009", "me__shapes-010", "me__shapes-011") for e in choose(pool, per_repo=20)) and len(choose(pool, per_repo=20)) == 8
+    assert literals_of('x = parse("2", scale=1.5)\nx.area') == ["2", "1.5"]
+    own_class = example(12, ["a"], steps=("class Mine:\n    pass",), expression="Mine()")
+    with_lambda = example(13, ["a"], expression='parse("2").scaled(lambda x: x)')
+    assert choose([own_class, with_lambda], per_repo=5) == []  # code written for the example cannot be said in plain words
+
+
+def test_a_request_must_carry_the_inputs_and_hide_the_code_and_the_answer():
+    e = example(1, ["shapes.parse", "shapes.Square.area"])
+    assert task_problem("What is the area of the square with side 2? Answer with a number.", e) is None
+    assert "must appear exactly" in task_problem("What is the area of the square? Answer with a number.", e)
+    assert "no code" in task_problem("What does parse(2) give for the area? Answer with a number.", e)
+    named = example(2, ["shapes.name"], expression='name("2")', answer="square")
+    assert "gives away" in task_problem("What kind of shape has side 2? It is a square. Answer with a text.", named)
+    assert task_problem(None, e) == 'reply with {"task": "..."}'
+    assert answer_form(e) == "a number" and answer_form(example(3, ["a"], answer=True)) == "true or false"
+    assert answer_form(example(4, ["a"], answer="2003-09-25", kinds=["date"])) == "a date as ISO 8601 text, like 2003-09-25"
+    assert answer_form(example(5, ["a"], answer=["a", "b"], kinds=["set"])) == "a JSON list in sorted order"
+
+
+def test_tasks_are_written_repaired_or_dropped_and_the_answer_stays_the_verified_one():
+    good = json.dumps({"task": "What is the area of the square with side 2? Answer with a number."})
+    llm = ScriptedLLM({("task", "me__shapes-001"): [good],
+                       ("task", "me__shapes-002"): [json.dumps({"task": "What is the area of the square? Answer with a number."}), good],
+                       ("task", "me__shapes-003"): ["not json"]})
+    written, outcomes = asyncio.run(write_tasks([example(1, ["shapes.parse"]), example(2, ["shapes.parse", "shapes.Square.area"]), example(3, ["shapes.parse"])], llm))
+    assert [e["id"] for e in written] == ["me__shapes-001", "me__shapes-002"] and outcomes == {"written": 2, 'reply with {"task"': 1}
+    first = written[0]
+    assert first["answer"] == 4.0 and first["check"] == {"kind": "number"} and first["kind"] == "shapes" and first["horizon"] == "short"
+    assert first["source_repo"] == "me/shapes@abcdef1" and first["reference_code"] == ["from shapes import parse", 'parse("2").area'] and first["reference_calls"] == []
+    assert written[1]["reference_call_count"] == 2 and written[1]["library_functions"] == ["shapes.parse", "shapes.Square.area"]
+    assert "Not usable: these input values must appear exactly" in llm.chats[2][2][-1]["content"]  # the reason goes back to the writer
+    assert "Answer: 4.0" in llm.chats[0][2][1]["content"] and 'character for character: ["2"]' in llm.chats[0][2][1]["content"]
+    assert as_exercise(example(6, ["a"], answer=["b", "a"], kinds=["set"]), "t")["check"] == {"kind": "set_equal"}
+    assert as_exercise(example(7, ["a"], answer=True), "t")["check"] == {"kind": "exact"}
+    text = tasks_report([{"package": "shapes", "usable": 3, "chosen": 3, "written": 2, "by_tools": {1: 1, 2: 1}, "dropped": {}}])
+    assert "2 exercises from 1 repositories" in text and "1: 1, 2: 1" in text and "| `shapes` | 3 | 3 | 2 | 2 |" in text
+
+
+def test_a_number_answer_may_be_written_with_or_without_a_point():
+    number = {"answer": 4.0, "check": {"kind": "number"}}
+    assert exercise_check(number, 4) and exercise_check(number, 4.0) and not exercise_check(number, 4.1) and not exercise_check(number, "4") and not exercise_check(number, True)
+    assert not exercise_check({"answer": 1, "check": {"kind": "number"}}, True) and exercise_check({"answer": 0.1 + 0.2, "check": {"kind": "number"}}, 0.3)
+
+
+def test_a_request_is_kept_only_if_code_written_from_it_gives_the_answer():
+    api = {"callables": [{"module": "shapes", "qualname": "parse", "kind": "function", "params": [{"name": "text"}], "docstring": "Read a square from text.", "summary": ""},
+                         {"module": "shapes", "qualname": "Square.area", "kind": "property", "params": [], "docstring": "The area.", "summary": ""}],
+           "classes": {"Square": {"module": "shapes", "params": [{"name": "text"}], "summary": "A square."}}}
+    reference = reference_of(["shapes.parse", "shapes.Square.area", "Square()", "Square <", "unknown.thing"], api)
+    assert reference.splitlines() == ["- shapes.parse(text) [function]: Read a square from text.", "- shapes.Square.area [property]: The area.",
+                                      "- shapes.Square(text) [class]: A square.", "- objects of shapes.Square can be used with the operator `<`"]
+    assert as_item("from shapes import parse\nsmall = parse('2')\nsmall.area") == {"module": None, "steps": ["from shapes import parse", "small = parse('2')"],
+                                                                                    "expression": "small.area", "printed": False}
+    assert as_item("x = 1") is None and as_item("not python (") is None and as_item(None) is None
+    exercises = [as_exercise(example(n, ["shapes.parse", "shapes.Square.area"]), f"What is the area of the square with side 2? Question {n}.") for n in (1, 2, 3, 4)]
+    llm = ScriptedLLM({("solve", "me__shapes-001"): [json.dumps({"code": "from shapes import parse\nparse('2').area"})],
+                       ("solve", "me__shapes-002"): [json.dumps({"code": "from shapes import parse\nparse('3').area"})],  # runs, but gives another value
+                       ("solve", "me__shapes-003"): [json.dumps({"code": "x = 1"})],  # no expression at the end
+                       ("solve", "me__shapes-004"): ["no json"]})
+    ran = []
+
+    def run_items(items):
+        ran.extend(items)
+        return [{"status": "ok", "value": 4.0 if "'2'" in item["expression"] else 9.0, "text": ""} for item in items]
+
+    kept, dropped = asyncio.run(solvable(exercises, api, llm, run_items))
+    assert [e["id"] for e in kept] == ["me__shapes-001"] and dropped == 3 and len(ran) == 2  # only code with an expression is run
+    prompt = llm.chats[0][2][1]["content"]
+    assert "Request: What is the area of the square with side 2? Question 1." in prompt and "- shapes.parse(text) [function]" in prompt and "4.0" not in prompt  # the solver never sees the answer
+
+
+def test_the_benchmark_report_is_built_from_the_saved_runs(tmp_path, monkeypatch):
+    monkeypatch.setattr(benchmark, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(benchmark, "OUT", tmp_path / "out" / "corpus")
+    (tmp_path / "out" / "corpus" / "tasks").mkdir(parents=True)
+    (tmp_path / "out" / "runs").mkdir()
+    task = as_exercise(example(1, ["shapes.parse"]), "What is the area of the square with side 2?")
+    (tmp_path / "out" / "corpus" / "tasks" / "me__shapes.jsonl").write_text((json.dumps(task) + "\n") * 3)
+    (tmp_path / "out" / "corpus" / "tasks" / "me__small.jsonl").write_text(json.dumps(task) + "\n")  # too few questions
+    repos = benchmark.repositories(min_tasks=2)
+    assert [(r["stem"], r["package"], r["url"], r["tasks"]) for r in repos] == [("me__shapes", "shapes", "https://github.com/me/shapes", 3)]
+    (tmp_path / "out" / "generated" / "shapes-t1").mkdir(parents=True)
+    (tmp_path / "out" / "generated" / "shapes-t1" / "report.json").write_text(json.dumps({"tools": [{}, {}], "accepted": 1}))
+    benchmark.run_file("m", "none", "t1", "me__shapes").write_text("".join(json.dumps({"passed": p}) + "\n" for p in (True, True, False)))
+    benchmark.run_file("m", "tools", "t1", "me__shapes").write_text("".join(json.dumps(r) + "\n" for r in (
+        {"passed": True, "tool_calls": 2, "tool_errors": 1}, {"passed": False, "tool_calls": 1, "tool_errors": 0}, {"passed": False, "tool_calls": 0, "tool_errors": 0})))
+    rows = benchmark.summarize(repos, "m", "t1")
+    assert rows == [{"package": "shapes", "repo": "https://github.com/me/shapes", "questions": 3, "tools_picked": 2, "tools_accepted": 1, "none": 2, "tools": 1,
+                     "called_a_tool": 2, "right_when_called": 1, "tool_errors": 1}]
+    text = benchmark.report(rows, "m", "t1")
+    assert "3 questions: 2 right without tools (67%), 1 right with the generated tools (33%)" in text and "| `shapes` | 3 | 2 | 1 | 2 | 1 | 2 | 1 | 1 |" in text
+    assert benchmark.summarize(repos, "m", "missing")[0]["none"] is None

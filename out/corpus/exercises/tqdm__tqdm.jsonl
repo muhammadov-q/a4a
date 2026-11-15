@@ -1,0 +1,1 @@
+{"id": "tqdm__tqdm-001", "repo": "https://github.com/tqdm/tqdm", "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac", "package": "tqdm", "file": "tqdm/utils.py", "module": "tqdm.utils", "steps": ["a = FormatReplace('something')"], "expression": "f\"{a:5d}\"", "answer": "something", "answer_kinds": [], "documented": "'something'", "uses": []}

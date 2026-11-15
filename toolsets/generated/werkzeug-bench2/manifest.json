@@ -1,0 +1,838 @@
+{
+ "url": "https://github.com/pallets/werkzeug",
+ "commit": "0f43c6ebd426039e4b99ec22535c2c8a2ec2f69f",
+ "package": "werkzeug",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "werkzeug-bench2",
+ "toolset": "toolsets/generated/werkzeug-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [
+  "markupsafe>=3.0.3"
+ ],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "create_client",
+   "wraps": "werkzeug.Client",
+   "description": "Create a WSGI client for testing applications without running a server.\n    \n    Args:\n        application: The WSGI application to make requests to\n        use_cookies: Persist cookies from Set-Cookie response headers to the Cookie \n            header in subsequent requests\n    \n    Returns:\n        A werkzeug.Client instance for making requests to the WSGI application\n    \n    Example:\n        >>> client = create_client(my_wsgi_app)\n        >>> response = client.get('/')\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.Client(application=application, use_cookies=use_cookies)",
+   "samples": [
+    {
+     "application": "my_wsgi_app",
+     "use_cookies": true
+    },
+    {
+     "application": "my_wsgi_app",
+     "use_cookies": false
+    },
+    {
+     "application": "another_wsgi_app"
+    },
+    {
+     "application": "flask_app",
+     "use_cookies": true
+    }
+   ]
+  },
+  {
+   "name": "create_response",
+   "wraps": "werkzeug.Response",
+   "description": "Create a new response object with specified parameters. response: The data for the body of the response, defaults to empty body. status: The status code for the response, defaults to 200.",
+   "verified": true,
+   "direct_call": "werkzeug.wrappers.Response(response, status=status)",
+   "samples": [
+    {
+     "response": "Hello, World!",
+     "status": 200
+    },
+    {
+     "response": "<html><body>Error</body></html>",
+     "status": 500
+    },
+    {
+     "response": "",
+     "status": 404
+    },
+    {
+     "response": "OK"
+    },
+    {
+     "response": "Success",
+     "status": 201
+    },
+    {
+     "response": "Bad Request",
+     "status": "400 Bad Request"
+    }
+   ]
+  },
+  {
+   "name": "response_text",
+   "wraps": "werkzeug.Response.text",
+   "description": "Get the response body as decoded UTF-8 text. response: The response body as string, bytes, or iterable of strings/bytes, e.g. b'hello' -> 'hello'.",
+   "verified": true,
+   "direct_call": "werkzeug.Response(response=response).text",
+   "samples": [
+    {
+     "response": "Hello, world!"
+    },
+    {
+     "response": "\u041f\u0440\u0438\u0432\u0435\u0442 \u043c\u0438\u0440!"
+    },
+    {
+     "response": ""
+    },
+    {
+     "response": "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess"
+    },
+    {
+     "response": "Invalid response"
+    }
+   ]
+  },
+  {
+   "name": "create_headers",
+   "wraps": "werkzeug.datastructures.Headers",
+   "description": "Create a new headers object with optional initial values. defaults: An array of header key-value pairs to initialize the Headers object with, e.g. [['Content-Type', 'application/json'], ['X-Custom', 'value']] -> 'Content-Type: application/json\\r\\nX-Custom: value\\r\\n\\r\\n'.",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.Headers(defaults)",
+   "samples": [
+    {
+     "defaults": [
+      [
+       "Content-Type",
+       "application/json"
+      ],
+      [
+       "X-Custom",
+       "value"
+      ]
+     ]
+    },
+    {
+     "defaults": null
+    },
+    {
+     "defaults": []
+    },
+    {
+     "defaults": [
+      [
+       "Authorization",
+       "Bearer token123"
+      ]
+     ]
+    },
+    {
+     "defaults": [
+      [
+       "User-Agent",
+       "Mozilla/5.0"
+      ],
+      [
+       "Accept",
+       "text/html"
+      ],
+      [
+       "Accept",
+       "application/json"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "parse_accept_header",
+   "wraps": "werkzeug.datastructures.Accept.from_header",
+   "description": "Parse an Accept header and create an Accept object. value: The Accept header value to parse, e.g. 'text/html,application/json;q=0.9' -> 'text/html,application/json;q=0.9'",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.Accept.from_header(value)",
+   "samples": [
+    {
+     "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+    },
+    {
+     "value": "application/json"
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": null
+    },
+    {
+     "value": "text/plain;q=1.0, application/json;q=0.5, */*;q=0.1"
+    },
+    {
+     "value": "invalid;header;with;no;semicolon"
+    }
+   ]
+  },
+  {
+   "name": "parse_authorization_header",
+   "wraps": "werkzeug.datastructures.Authorization.from_header",
+   "description": "Parse an Authorization header value and create an Authorization object.\n    \n    Args:\n        value: The header value to parse, e.g. \"Basic dXNlcjpwYXNz\"\n        \n    Returns:\n        A dictionary with the authorization type and data, or None if empty.\n        Example: {\"auth_type\": \"basic\", \"data\": {\"username\": \"user\", \"password\": \"pass\"}}\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.Authorization.from_header(value)",
+   "samples": [
+    {
+     "value": "Basic dXNlcjpwYXNz"
+    },
+    {
+     "value": "Bearer abc123"
+    },
+    {
+     "value": "Digest username=\"test\", realm=\"testrealm@host.com\", nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\", uri=\"/dir/index.html\", response=\"6629fae49393a05397450978507c4ef1\", opaque=\"5ccc069c403ebaf9f0171e9517f40654\""
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": "InvalidAuth"
+    }
+   ]
+  },
+  {
+   "name": "parse_www_authenticate",
+   "wraps": "werkzeug.datastructures.WWWAuthenticate.from_header",
+   "description": "Parse a ``WWW-Authenticate`` header value and create an instance of\n    this class.\n    \n    :param value: The WWW-Authenticate header value to parse.\n    \n    Example: parse_www_authenticate('Bearer realm=\"example\"') -> {'auth_type': 'bearer', 'values': {'realm': 'example'}}\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.WWWAuthenticate.from_header(value)",
+   "samples": [
+    {
+     "value": "Bearer realm=\"example\""
+    },
+    {
+     "value": "Basic realm=\"Login Required\""
+    },
+    {
+     "value": "Digest realm=\"test\", nonce=\"abc123\""
+    },
+    {
+     "value": "Bearer"
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": null
+    }
+   ]
+  },
+  {
+   "name": "format_www_authenticate",
+   "wraps": "werkzeug.datastructures.WWWAuthenticate.to_header",
+   "description": "Convert a WWWAuthenticate instance to a WWW-Authenticate header value.\n    \n    Args:\n        auth_type: The authentication type (e.g., 'basic', 'digest')\n        values: A dictionary of authentication parameters\n        token: A token for authentication\n    \n    Returns:\n        A WWW-Authenticate header value string\n    \n    Example:\n        format_www_authenticate('basic') -> 'Basic'\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.WWWAuthenticate(auth_type=auth_type, values=values, token=token).to_header()",
+   "samples": [
+    {
+     "auth_type": "basic",
+     "values": {},
+     "token": null
+    },
+    {
+     "auth_type": "digest",
+     "values": {
+      "realm": "example",
+      "nonce": "abc123"
+     },
+     "token": null
+    },
+    {
+     "auth_type": "bearer",
+     "values": {
+      "scope": "read"
+     },
+     "token": "abc123"
+    },
+    {
+     "auth_type": "basic",
+     "values": {
+      "realm": "Protected Area"
+     },
+     "token": null
+    },
+    {
+     "auth_type": "",
+     "values": {},
+     "token": null
+    }
+   ]
+  },
+  {
+   "name": "parse_content_security_policy",
+   "wraps": "werkzeug.datastructures.ContentSecurityPolicy.from_header",
+   "description": "Parse a Content-Security-Policy header value and create an instance of the ContentSecurityPolicy class.\n    \n    Args:\n        value: The Content-Security-Policy header value to parse\n        \n    Returns:\n        A dictionary mapping directive names to their values\n        \n    Example:\n        parse_content_security_policy(\"default-src 'self'; script-src 'self' https://example.com\")\n        -> {\"default-src\": \"'self'\", \"script-src\": \"'self' https://example.com\"}\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.ContentSecurityPolicy.from_header(value)",
+   "samples": [
+    {
+     "value": "default-src 'self'; script-src 'self' https://apis.google.com"
+    },
+    {
+     "value": "img-src 'self' data:; style-src 'self' 'unsafe-inline'"
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": null
+    },
+    {
+     "value": "script-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+     "value": "invalid-policy-without-space"
+    }
+   ]
+  },
+  {
+   "name": "parse_etag",
+   "wraps": "werkzeug.datastructures.ETag.from_header",
+   "description": "Parse a quoted ETag value and create an instance of the ETag class, or None if the value is empty or invalid. value: The ETag value to parse, e.g. '\"foo\"' -> {'value': 'foo', 'weak': False}.",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.ETag.from_header(value)",
+   "samples": [
+    {
+     "value": "\"abc123\""
+    },
+    {
+     "value": "W/\"weak_etag\""
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": "invalid_etag"
+    },
+    {
+     "value": "\"missing_quote"
+    },
+    {
+     "value": "null"
+    }
+   ]
+  },
+  {
+   "name": "format_etag",
+   "wraps": "werkzeug.datastructures.ETag.to_header",
+   "description": "Convert an ETag instance to an ETag header value. value: The ETag value, e.g. 'abc123' -> '\"abc123\"'. weak: Whether the ETag is weak, e.g. True -> 'W/\"abc123\"'.",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.ETag(value=value, weak=weak).to_header()",
+   "samples": [
+    {
+     "value": "abc123",
+     "weak": false
+    },
+    {
+     "value": "xyz789",
+     "weak": true
+    },
+    {
+     "value": "",
+     "weak": false
+    },
+    {
+     "value": "hello\"world",
+     "weak": false
+    },
+    {
+     "value": "test",
+     "weak": true
+    }
+   ]
+  },
+  {
+   "name": "get_header_value",
+   "wraps": "werkzeug.datastructures.Headers.get",
+   "description": "Get the value of a header by key, returning None if the key is not found. headers: An object that stores headers with dict-like interface, key: The header key to look up.",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.Headers(headers).get(key)",
+   "samples": [
+    {
+     "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "Mozilla/5.0"
+     },
+     "key": "Content-Type"
+    },
+    {
+     "headers": {
+      "Accept": "text/html",
+      "Cache-Control": "no-cache"
+     },
+     "key": "User-Agent"
+    },
+    {
+     "headers": {
+      "Authorization": "Bearer token123",
+      "X-API-Key": "secret"
+     },
+     "key": "Authorization"
+    },
+    {
+     "headers": {
+      "Host": "example.com",
+      "Connection": "keep-alive"
+     },
+     "key": "Content-Length"
+    },
+    {
+     "headers": {},
+     "key": "Any-Key"
+    }
+   ]
+  },
+  {
+   "name": "get_header_list",
+   "wraps": "werkzeug.datastructures.Headers.getlist",
+   "description": "Get all values for a header key as a list. headers: an object that stores headers with dict-like interface, key: the header key to retrieve all values for. Example: get_header_list({\"Content-Type\": [\"text/html\"], \"Accept\": [\"application/json\"]}, \"Accept\") -> [\"application/json\"]",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.Headers(headers).getlist(key)",
+   "samples": [
+    {
+     "headers": {
+      "Content-Type": "application/json",
+      "Accept": "text/html"
+     },
+     "key": "Content-Type"
+    },
+    {
+     "headers": {
+      "Set-Cookie": "user=def"
+     },
+     "key": "Set-Cookie"
+    },
+    {
+     "headers": {
+      "User-Agent": "Mozilla/5.0",
+      "Host": "example.com"
+     },
+     "key": "User-Agent"
+    },
+    {
+     "headers": {
+      "Authorization": "Bearer token123"
+     },
+     "key": "Authorization"
+    },
+    {
+     "headers": {
+      "X-Custom": "value3"
+     },
+     "key": "X-Custom"
+    }
+   ]
+  },
+  {
+   "name": "clear_headers",
+   "wraps": "werkzeug.datastructures.Headers.clear",
+   "description": "Clear all headers from the headers object. headers: An object that stores headers with a dict-like interface -> None.",
+   "verified": true,
+   "direct_call": "headers.clear()",
+   "samples": [
+    {
+     "headers": {}
+    },
+    {
+     "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer token"
+     }
+    },
+    {
+     "headers": {
+      "Accept": "text/html",
+      "User-Agent": "Mozilla/5.0",
+      "Accept-Language": "en-US,en;q=0.5"
+     }
+    },
+    {
+     "headers": {
+      "X-Custom-Header": "value2"
+     }
+    }
+   ]
+  },
+  {
+   "name": "parse_content_range",
+   "wraps": "werkzeug.datastructures.ContentRange.from_header",
+   "description": "Parse a Content-Range header value and create an instance of the ContentRange class.\n    \n    Args:\n        value: The Content-Range header value to parse, e.g. \"bytes 200-400/1000\"\n        \n    Returns:\n        A dictionary with the ContentRange components: units, start, stop, length\n        \n    Example:\n        parse_content_range(\"bytes 200-400/1000\") -> {\"units\": \"bytes\", \"start\": 200, \"stop\": 401, \"length\": 1000}\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.ContentRange.from_header(value)",
+   "samples": [
+    {
+     "value": "bytes 200-1000/67589"
+    },
+    {
+     "value": "bytes */67589"
+    },
+    {
+     "value": "bytes 200-1000/*"
+    },
+    {
+     "value": "bytes */*"
+    },
+    {
+     "value": "invalid-range-header"
+    },
+    {
+     "value": null
+    }
+   ]
+  },
+  {
+   "name": "format_content_range",
+   "wraps": "werkzeug.datastructures.ContentRange.to_header",
+   "description": "Convert a ContentRange instance to a Content-Range header value.\n    \n    Args:\n        units: The units for the range, e.g., 'bytes'\n        start: The start of the range\n        stop: The end of the range (exclusive)\n        length: The total length of the resource\n        \n    Returns:\n        A Content-Range header value string\n        \n    Example:\n        format_content_range('bytes', 0, 1023, 2048) -> 'bytes 0-1022/2048'\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.datastructures.ContentRange(units, start, stop, length).to_header()",
+   "samples": [
+    {
+     "units": "bytes",
+     "start": 0,
+     "stop": 1023,
+     "length": 2048
+    },
+    {
+     "units": "bytes",
+     "start": null,
+     "stop": null,
+     "length": 2048
+    },
+    {
+     "units": "bytes",
+     "start": 0,
+     "stop": 1023,
+     "length": null
+    },
+    {
+     "units": "bytes",
+     "start": 1024,
+     "stop": 2047,
+     "length": 2048
+    },
+    {
+     "units": "chunks",
+     "start": 0,
+     "stop": 5,
+     "length": 10
+    },
+    {
+     "units": "bytes",
+     "start": 0,
+     "stop": 1023,
+     "length": -1
+    }
+   ]
+  },
+  {
+   "name": "parse_options_header",
+   "wraps": "werkzeug.formparser.parse_options_header",
+   "description": "Parse a header that consists of a value with key=value parameters separated by semicolons. For example, the Content-Type header.\n    \n    Example:\n        parse_options_header(\"text/html; charset=UTF-8\") -> {\"value\": \"text/html\", \"options\": {\"charset\": \"UTF-8\"}}\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.formparser.parse_options_header(value)",
+   "samples": [
+    {
+     "value": "text/html; charset=UTF-8"
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": "application/json"
+    },
+    {
+     "value": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"
+    },
+    {
+     "value": "text/plain; charset=utf-8; foo=bar; invalid"
+    }
+   ]
+  },
+  {
+   "name": "unquote_header_value",
+   "wraps": "werkzeug.http.unquote_header_value",
+   "description": "Remove double quotes and backslash escapes from a header value. value: The header value to unquote, e.g. '\"hello \\\"world\\\"\"' -> 'hello \"world\"'.",
+   "verified": true,
+   "direct_call": "werkzeug.http.unquote_header_value(value)",
+   "samples": [
+    {
+     "value": "\"hello world\""
+    },
+    {
+     "value": "\"path\\/to\\/file\""
+    },
+    {
+     "value": "normal_value"
+    },
+    {
+     "value": "\"escaped\\\"quote\""
+    },
+    {
+     "value": "\"\""
+    },
+    {
+     "value": "no_quotes"
+    }
+   ]
+  },
+  {
+   "name": "parse_dict_header",
+   "wraps": "werkzeug.http.parse_dict_header",
+   "description": "Parse a list header into a dictionary of key-value pairs. value: The header value to parse, e.g. 'a=b, c=\"d, e\", f' -> {\"a\": \"b\", \"c\": \"d, e\", \"f\": None}.",
+   "verified": true,
+   "direct_call": "werkzeug.http.parse_dict_header(value)",
+   "samples": [
+    {
+     "value": "a=b, c=\"d, e\", f"
+    },
+    {
+     "value": "key1=value1, key2, key3*=utf-8''encoded%20value"
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": "unclosed=\"quote"
+    },
+    {
+     "value": "simple=key, another="
+    }
+   ]
+  },
+  {
+   "name": "bind_map",
+   "wraps": "werkzeug.routing.Map.bind",
+   "description": "Create a MapAdapter to match and build URLs based on request information.\n    \n    Args:\n        server_name: The host:port of the request. The port is optional if it's the standard port for url_scheme.\n        script_name: The URL path prefix under which the application is served, used to build URLs. Defaults to '/'.\n        subdomain: The subdomain part of server_name, used when subdomain_matching is enabled.\n        url_scheme: The protocol of the request. Used to match HTTP vs WebSocket rules, and when building external URLs.\n        default_method: The HTTP method of the request.\n        path_info: The path part after script_name, used to match rules. Defaults to '/'.\n        query_args: The part of the URL after '?'. Used to preserve the args when redirecting during matching.\n    \n    Returns:\n        A MapAdapter instance for URL matching and building.\n    \n    Example:\n        >>> adapter = bind_map('example.com:8080', '/app', url_scheme='https')\n        >>> # Use adapter to match or build URLs\n    ",
+   "verified": false,
+   "direct_call": "werkzeug.routing.Map().bind(server_name, script_name, subdomain, url_scheme, default_method, path_info, query_args)",
+   "samples": [
+    {
+     "server_name": "example.com",
+     "script_name": "/app",
+     "subdomain": null,
+     "url_scheme": "https",
+     "default_method": "POST",
+     "path_info": "/users/123",
+     "query_args": null
+    },
+    {
+     "server_name": "localhost:8000",
+     "script_name": "/api/v1",
+     "subdomain": "www",
+     "url_scheme": "ws",
+     "default_method": "GET",
+     "path_info": "/websocket",
+     "query_args": {
+      "token": "abc123"
+     }
+    },
+    {
+     "server_name": "test.example.org",
+     "script_name": "/",
+     "subdomain": "dev",
+     "url_scheme": "http",
+     "default_method": "PUT",
+     "path_info": "/resource",
+     "query_args": "key=value&other=123"
+    },
+    {
+     "server_name": "invalid..hostname",
+     "script_name": "/",
+     "subdomain": null,
+     "url_scheme": "https",
+     "default_method": "GET",
+     "path_info": "/",
+     "query_args": null
+    }
+   ]
+  },
+  {
+   "name": "check_password_hash",
+   "wraps": "werkzeug.security.check_password_hash",
+   "description": "Securely check that the given stored password hash, previously generated using\n    :func:`generate_password_hash`, matches the given password.\n\n    Methods may be deprecated and removed if they are no longer considered secure. To\n    migrate old hashes, you may generate a new hash when checking an old hash, or you\n    may contact users with a link to reset their password.\n\n    :param pwhash: The hashed password.\n    :param password: The plaintext password.\n\n    .. versionchanged:: 3.0\n        All plain hashes are no longer supported.\n    \n    Example: check_password_hash(\"pbkdf2:sha256$150000$salt$hash\", \"password\") -> True\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.security.check_password_hash(pwhash, password)",
+   "samples": [
+    {
+     "pwhash": "pbkdf2:sha256:260000$abc123$def456",
+     "password": "secret"
+    },
+    {
+     "pwhash": "pbkdf2:sha256:260000$xyz789$uvw012",
+     "password": "password123"
+    },
+    {
+     "pwhash": "invalid_hash_format",
+     "password": "any_password"
+    },
+    {
+     "pwhash": "pbkdf2:sha256:260000$salt$hash",
+     "password": ""
+    },
+    {
+     "pwhash": "",
+     "password": "test"
+    }
+   ]
+  },
+  {
+   "name": "iri_to_uri",
+   "wraps": "werkzeug.urls.iri_to_uri",
+   "description": "Convert an IRI to a URI. All non-ASCII and unsafe characters are quoted. If the URL has a domain, it is encoded to Punycode. iri: The IRI to convert, e.g. 'http://\u2603.net/p\u00e5th?q=\u00e8ry%DF' -> 'http://xn--n3h.net/p%C3%A5th?q=%C3%A8ry%DF'.",
+   "verified": true,
+   "direct_call": "werkzeug.urls.iri_to_uri(iri)",
+   "samples": [
+    {
+     "iri": "http://example.com/path"
+    },
+    {
+     "iri": "http://\u2603.net/p\u00e5th?q=\u00e8ry%DF"
+    },
+    {
+     "iri": "https://user:pass@example.com:8080/path?query=value#fragment"
+    },
+    {
+     "iri": "http://xn--n3h.net/p%C3%A5th?q=%C3%A8ry%DF"
+    },
+    {
+     "iri": "ftp://ftp.example.com/file with spaces.txt"
+    }
+   ]
+  },
+  {
+   "name": "generate_debug_representation",
+   "wraps": "werkzeug.debug.repr.DebugReprGenerator.repr",
+   "description": "Create a debug representation of an object for better visualization in error messages. obj: any object to represent, e.g. {'a': 1} -> \"<dict object at 0x...>\".",
+   "verified": true,
+   "direct_call": "werkzeug.debug.repr.DebugReprGenerator().repr(obj)",
+   "samples": [
+    {
+     "obj": "hello"
+    },
+    {
+     "obj": 42
+    },
+    {
+     "obj": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "obj": {
+      "key": "value"
+     }
+    },
+    {
+     "obj": null
+    }
+   ]
+  },
+  {
+   "name": "parse_http_cookies",
+   "wraps": "werkzeug.sansio.http.parse_cookie",
+   "description": "Parse cookies from a Cookie header into a dictionary. cookie: The Cookie header string to parse, e.g. 'sessionid=abc123; csrftoken=xyz789' -> {'sessionid': 'abc123', 'csrftoken': 'xyz789'}.",
+   "verified": true,
+   "direct_call": "werkzeug.sansio.http.parse_cookie(cookie)",
+   "samples": [
+    {
+     "cookie": "sessionid=abc123; csrftoken=xyz789"
+    },
+    {
+     "cookie": "user=john; theme=dark; lang=en"
+    },
+    {
+     "cookie": ""
+    },
+    {
+     "cookie": null
+    },
+    {
+     "cookie": "a=1; b=2; a=3"
+    }
+   ]
+  },
+  {
+   "name": "set_http_cookie",
+   "wraps": "werkzeug.sansio.response.Response.set_cookie",
+   "description": "Sets a cookie in the response with specified parameters like expiration and security flags.\n    \n    Args:\n        key: the key (name) of the cookie to be set\n        value: the value of the cookie\n        max_age: should be a number of seconds, or None if the cookie should last only as long as the client's browser session\n        path: limits the cookie to a given path, per default it will span the whole domain\n        secure: If True, the cookie will only be available via HTTPS\n        httponly: Disallow JavaScript access to the cookie\n    \n    Example:\n        set_http_cookie(\"session_id\", \"abc123\", max_age=3600, secure=True, httponly=True)\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.sansio.response.Response().set_cookie(key, value=value, max_age=max_age, path=path, secure=secure, httponly=httponly)",
+   "samples": [
+    {
+     "key": "session_id",
+     "value": "abc123"
+    },
+    {
+     "key": "user_pref",
+     "value": "dark_mode",
+     "max_age": 3600,
+     "secure": true,
+     "httponly": true
+    },
+    {
+     "key": "lang",
+     "value": "en",
+     "path": "/app"
+    },
+    {
+     "key": "tracking",
+     "value": "1",
+     "max_age": 86400,
+     "secure": false,
+     "httponly": false
+    },
+    {
+     "key": "test",
+     "value": "test_value",
+     "max_age": 0,
+     "secure": true,
+     "httponly": true
+    }
+   ]
+  },
+  {
+   "name": "delete_http_cookie",
+   "wraps": "werkzeug.sansio.response.Response.delete_cookie",
+   "description": "Deletes a cookie from the response, useful for session management or user logout.\n    \n    Args:\n        key: the key (name) of the cookie to be deleted.\n        path: if the cookie that should be deleted was limited to a path, the path has to be defined here.\n        domain: if the cookie that should be deleted was limited to a domain, that domain has to be defined here.\n    \n    Example:\n        delete_http_cookie(\"session_id\", \"/app\", \"example.com\")\n    ",
+   "verified": true,
+   "direct_call": "werkzeug.sansio.response.Response().delete_cookie(key, path, domain)",
+   "samples": [
+    {
+     "key": "session_id"
+    },
+    {
+     "key": "user_prefs",
+     "path": "/settings"
+    },
+    {
+     "key": "auth_token",
+     "domain": "example.com"
+    },
+    {
+     "key": "test_cookie",
+     "path": "/api",
+     "domain": "sub.example.com"
+    },
+    {
+     "key": ""
+    },
+    {
+     "key": "missing_cookie"
+    }
+   ]
+  }
+ ]
+}

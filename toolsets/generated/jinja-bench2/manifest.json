@@ -1,0 +1,388 @@
+{
+ "url": "https://github.com/pallets/jinja",
+ "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+ "package": "jinja2",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "jinja-bench2",
+ "toolset": "toolsets/generated/jinja-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [
+  "MarkupSafe>=3.0"
+ ],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "create_environment",
+   "wraps": "jinja2.Environment",
+   "description": "Create a Jinja2 environment with configurable settings. loader: A Jinja2 loader instance for loading templates, extensions: List of Jinja2 extensions to use, autoescape: Enable XML/HTML autoescaping. Example: create_environment(autoescape=True) -> Environment instance.",
+   "verified": false,
+   "direct_call": "jinja2.Environment(loader=loader, extensions=extensions, autoescape=autoescape)",
+   "samples": [
+    {
+     "loader": null,
+     "extensions": [],
+     "autoescape": false
+    },
+    {
+     "loader": null,
+     "extensions": [
+      "jinja2.ext.do"
+     ],
+     "autoescape": true
+    },
+    {
+     "loader": null,
+     "extensions": [
+      "jinja2.ext.loopcontrols",
+      "jinja2.ext.debug"
+     ],
+     "autoescape": false
+    },
+    {
+     "loader": null,
+     "extensions": [],
+     "autoescape": true
+    }
+   ]
+  },
+  {
+   "name": "create_template",
+   "wraps": "jinja2.Template",
+   "description": "Compile a template from a source string using a Jinja2 environment. source: The template source code as a string, e.g. '{{ name }}' -> Template object serialized as string.",
+   "verified": false,
+   "direct_call": "jinja2.Template(source)",
+   "samples": [
+    {
+     "source": "Hello {{ name }}!"
+    },
+    {
+     "source": "{% for item in items %}{{ item }}{% endfor %}"
+    },
+    {
+     "source": "{{ 'test' | upper }}"
+    },
+    {
+     "source": ""
+    },
+    {
+     "source": "No variables here"
+    }
+   ]
+  },
+  {
+   "name": "render_template",
+   "wraps": "jinja2.Template.render",
+   "description": "Render a template with provided variables and return the result as a string. template: The template string to render, e.g. 'Hello {{ name }}!' -> 'Hello World!'. context: The context variables to use for rendering, e.g. {'name': 'World'}.",
+   "verified": true,
+   "direct_call": "jinja2.Template(template).render(context)",
+   "samples": [
+    {
+     "template": "Hello {{ name }}!",
+     "context": {
+      "name": "World"
+     }
+    },
+    {
+     "template": "{{ greeting }} {{ name }}!",
+     "context": {
+      "greeting": "Hi",
+      "name": "Alice"
+     }
+    },
+    {
+     "template": "Count: {{ count }}",
+     "context": {
+      "count": 42
+     }
+    },
+    {
+     "template": "No variables here",
+     "context": {}
+    },
+    {
+     "template": "{% for item in items %}{{ item }}{% endfor %}",
+     "context": {
+      "items": [
+       "a",
+       "b",
+       "c"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "tokenize_template",
+   "wraps": "jinja2.Environment.lex",
+   "description": "Lex the template source code and return a generator of tokens.\n    \n    Each token is returned as a tuple in the form (lineno, token_type, value).\n    This can be useful for extension development and debugging templates.\n    \n    Args:\n        source (str): The template source code to lex\n        name (str | None): Name of the template (optional)\n        filename (str | None): Filename of the template (optional)\n    \n    Returns:\n        List[Tuple[int, str, str]]: List of tokens as (line_number, token_type, value) tuples\n    \n    Example:\n        >>> tokenize_template(\"Hello {{ name }}!\")\n        [(1, 'name', 'Hello '), (1, 'variable_begin', '{{'), (1, 'name', 'name'), (1, 'variable_end', '}}'), (1, 'name', '!')]\n    ",
+   "verified": true,
+   "direct_call": "jinja2.Environment().lex(source, name, filename)",
+   "samples": [
+    {
+     "source": "{% if user %}Hello {{ user }}!{% endif %}",
+     "name": "test_template",
+     "filename": "test.html"
+    },
+    {
+     "source": "{{ variable|upper }}",
+     "name": null,
+     "filename": "simple.j2"
+    },
+    {
+     "source": "{# comment #}Text here",
+     "name": "comment_template",
+     "filename": null
+    },
+    {
+     "source": "",
+     "name": "empty_template",
+     "filename": "empty.html"
+    },
+    {
+     "source": "{% for item in items %}{{ item }}{% endfor %}",
+     "name": "loop_template",
+     "filename": "loop.j2"
+    }
+   ]
+  },
+  {
+   "name": "create_dict_loader",
+   "wraps": "jinja2.DictLoader",
+   "description": "Create a Jinja2 loader that loads templates from a Python dictionary. mapping: A dictionary mapping template names to template source strings, e.g. {'index.html': 'Hello {{ name }}'}.",
+   "verified": false,
+   "direct_call": "jinja2.DictLoader(mapping)",
+   "samples": [
+    {
+     "mapping": {
+      "index.html": "<html><body>{{ content }}</body></html>",
+      "base.html": "<!DOCTYPE html><html>{{ body }}</html>"
+     }
+    },
+    {
+     "mapping": {
+      "test.txt": "Hello, {{ name }}!"
+     }
+    },
+    {
+     "mapping": {}
+    },
+    {
+     "mapping": {
+      "a.html": "content a",
+      "b.html": "content b",
+      "c.html": "content c"
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_overlay_environment",
+   "wraps": "jinja2.Environment.overlay",
+   "description": "Create a new Jinja2 environment that shares data with the current one but overrides specific settings.\n    \n    Args:\n        block_start_string: The string marking the start of a block\n        block_end_string: The string marking the end of a block\n        variable_start_string: The string marking the start of a variable\n        variable_end_string: The string marking the end of a variable\n    \n    Returns:\n        A dictionary representation of the new environment, or None if no parameters provided\n    \n    Example:\n        >>> create_overlay_environment(variable_start_string='[[')\n        {'variable_start_string': '[['}\n    ",
+   "verified": false,
+   "direct_call": "jinja2.Environment().overlay(block_start_string=block_start_string, block_end_string=block_end_string, variable_start_string=variable_start_string, variable_end_string=variable_end_string)",
+   "samples": [
+    {
+     "block_start_string": "{%",
+     "block_end_string": "%}",
+     "variable_start_string": "{{",
+     "variable_end_string": "}}"
+    },
+    {
+     "block_start_string": "<%",
+     "block_end_string": "%>",
+     "variable_start_string": "<<",
+     "variable_end_string": ">>"
+    },
+    {
+     "block_start_string": "{%",
+     "block_end_string": "%}",
+     "variable_start_string": "{",
+     "variable_end_string": "}"
+    },
+    {
+     "block_start_string": "[%",
+     "block_end_string": "%]",
+     "variable_start_string": "[[",
+     "variable_end_string": "]]"
+    },
+    {
+     "block_start_string": "{%",
+     "block_end_string": "%}",
+     "variable_start_string": "{{",
+     "variable_end_string": "}}"
+    }
+   ]
+  },
+  {
+   "name": "clear_jinja_caches",
+   "wraps": "jinja2.clear_caches",
+   "description": "Clear internal caches for environments and lexers to free memory. This is useful when measuring memory consumption.",
+   "verified": true,
+   "direct_call": "jinja2.clear_caches()",
+   "samples": [
+    {}
+   ]
+  },
+  {
+   "name": "iterate_tokens",
+   "wraps": "jinja2.environment.Lexer.tokeniter",
+   "description": "Tokenize a Jinja2 template source and return tokens as an iterator. source: The Jinja2 template source code to tokenize, name: Name of the template, filename: Filename of the template, state: Initial parsing state ('root', 'variable', or 'block'). Example: iterate_tokens('Hello {{ name }}', 'test') -> iterator of tokens.",
+   "verified": true,
+   "direct_call": "jinja2.environment.Lexer(jinja2.Environment()).tokeniter(source, name, filename, state)",
+   "samples": [
+    {
+     "source": "Hello {{ name }}!",
+     "name": "test_template"
+    },
+    {
+     "source": "{% if user %}Welcome {{ user }}!{% endif %}",
+     "name": "conditional_template",
+     "filename": "template.html"
+    },
+    {
+     "source": "{% for item in items %}{{ item }}{% endfor %}",
+     "name": "loop_template",
+     "state": "block"
+    },
+    {
+     "source": "",
+     "name": "empty_template"
+    },
+    {
+     "source": "Plain text with no template syntax",
+     "name": "plain_text"
+    }
+   ]
+  },
+  {
+   "name": "join_markup",
+   "wraps": "jinja2.runtime.markup_join",
+   "description": "Concatenation that escapes if necessary and converts to string. sequence: A sequence of values to concatenate, e.g. ['hello', 'world'] -> 'helloworld'.",
+   "verified": true,
+   "direct_call": "jinja2.runtime.markup_join(sequence)",
+   "samples": [
+    {
+     "sequence": [
+      "hello",
+      " ",
+      "world"
+     ]
+    },
+    {
+     "sequence": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "sequence": [
+      "<script>",
+      "alert('xss')",
+      "</script>"
+     ]
+    },
+    {
+     "sequence": []
+    },
+    {
+     "sequence": [
+      "a",
+      null,
+      "b"
+     ]
+    },
+    {
+     "sequence": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ]
+  },
+  {
+   "name": "join_strings",
+   "wraps": "jinja2.runtime.str_join",
+   "description": "Convert arguments to strings and concatenate them. items: sequence of items to convert to strings and concatenate, e.g. [1, 2, 3] -> '123'.",
+   "verified": true,
+   "direct_call": "jinja2.runtime.str_join(items)",
+   "samples": [
+    {
+     "items": [
+      "hello",
+      " ",
+      "world"
+     ]
+    },
+    {
+     "items": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "items": []
+    },
+    {
+     "items": [
+      "a",
+      1,
+      "b",
+      2
+     ]
+    },
+    {
+     "items": [
+      null,
+      true,
+      false
+     ]
+    },
+    {
+     "items": [
+      "single"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "describe_token_expression",
+   "wraps": "jinja2.lexer.describe_token_expr",
+   "description": "Returns a human-readable description of a token expression used in the lexer. expr: A token expression string, e.g. 'name:foo' -> 'foo'.",
+   "verified": true,
+   "direct_call": "jinja2.lexer.describe_token_expr(expr)",
+   "samples": [
+    {
+     "expr": "name:foo"
+    },
+    {
+     "expr": "whitespace"
+    },
+    {
+     "expr": "literal:hello"
+    },
+    {
+     "expr": "operator:+"
+    },
+    {
+     "expr": "invalid_token"
+    },
+    {
+     "expr": "name"
+    }
+   ]
+  }
+ ]
+}

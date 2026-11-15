@@ -277,9 +277,9 @@ Tool candidates are counted at three levels of granularity:
 
 | Level | One tool is | Candidates in 97 repositories | Median per repository | Used in the repository's own docs |
 | --- | --- | --- | --- | --- |
-| low | one public function, method or property | 17,362 | 54 | 1,611 (9%) |
-| medium | one operation on an object: build it, read its properties, call one method, or one family of operators | 19,140 | 59 | 1,899 (10%) |
-| high | one documented example that uses two or more things of the API | 1,112 | 2 | all, by definition |
+| low | one public function, method or property | 17,362 | 54 | 2,150 (12%) |
+| medium | one operation on an object: build it, read its properties, call one method, or one family of operators | 19,144 | 59 | 2,451 (13%) |
+| high | one documented example that uses two or more things of the API | 1,814 | 2 | all, by definition |
 
 Read on 15 November 2026: 97 of 100 repositories scanned, 1,248,695 lines of code. Three are monorepos where no package was found. 19 repositories have no documentation example that uses their API in a way the scan can read. The table per repository is in `out/corpus/static.md`.
 
@@ -287,7 +287,7 @@ What these numbers are and are not:
 
 - They are counts of **candidates**, read from the code. No tool was generated, so nothing here says a candidate would pass the checks.
 - "Used in the docs" is a stand-in for useful. It misses what the docs never show (on packaging: the wheel parser) and what the scan cannot read (docs kept outside the repository, examples in other formats).
-- The same thing in two repositories counts twice. Counting distinct tools across repositories is the next step.
+- The same thing in two repositories counts twice. Counting distinct tools across repositories is the next section.
 - A static scan sees only what is written out: functions made at run time, lazy imports through `__getattr__`, and classes without public methods are missed.
 
 ### Do the distinct tools saturate?
@@ -306,12 +306,12 @@ At threshold 0.85, 97 repositories, mean of 10 random orders:
 | Level | Candidates | Distinct inside the repositories | Distinct over all | Exponent | Seen before, early | Seen before, late |
 | --- | --- | --- | --- | --- | --- | --- |
 | low | 17,362 | 11,324 | 11,073 | 0.983 | 1% | 6% |
-| medium | 19,140 | 12,938 | 12,606 | 0.985 | 1% | 6% |
-| high | 1,112 | 769 | 766 | 1.004 | 0% | 0% |
+| medium | 19,144 | 12,936 | 12,606 | 0.985 | 1% | 6% |
+| high | 1,814 | 1,137 | 1,134 | 0.998 | 0% | 0% |
 
 - **No saturation at 97 repositories.** The number of distinct tools grows in step with the candidates: the exponent b in `distinct = a * candidates^b` is 0.98 to 1.0 at every level and threshold (1 means no repetition).
 - **The repetition there is sits inside repositories, not between them.** Of 17,362 low-level candidates, 11,324 are distinct inside their own repository, and 11,073 over all repositories: sharing between repositories removes 2%.
-- **Later repositories repeat a little more.** "Seen before" is the share of a repository's distinct things that an earlier repository already had: under 1% for repositories added early, 6% for those added last at the low and medium level. So the curve does bend, slowly. At the high level nothing repeats: a documented example belongs to its library.
+- **Later repositories repeat a little more.** "Seen before" is the share of a repository's distinct things that an earlier repository already had: about 1% for repositories added early, 6% for those added last at the low and medium level. So the curve does bend, slowly. At the high level nothing repeats: a documented example belongs to its library.
 - **The threshold was chosen by reading pairs** (`out/corpus/saturation_pairs.md`): from about 0.85 up, two candidates from different repositories do the same job (`canonicalize_name` and `normalize_name`, two `Stack.push`); below 0.80 mostly not. The reading covered six pairs per band and is a first look, not a labelled set. The table for 0.80 and 0.90 is in `out/corpus/saturation.md`.
 - **What this is not:** a count of working tools, or of useful ones. And these are the 100 most downloaded pure-Python packages, which are chosen to be different from each other; a sample from one field (say, date libraries) would repeat more.
 
@@ -328,6 +328,65 @@ A sample check with real generation, one run each, on five of the scanned reposi
 | `itsdangerous` | 38 | 15 | 8 | 5 |
 
 74 of 126 picked tools pass every check (59%). The pick varies a lot: one tool for `python-dateutil`, 59 for `tomlkit`. On `tomlkit` most failures are at the test itself or at the comparison with the library: its functions return document objects, not plain values. These sets are in `toolsets/generated/*-sample/`; no exercises exist for them, so nothing here says the tools are useful.
+
+### Exercises with known answers, from each repository's documentation
+
+```sh
+uv run repo2tools corpus-exercises --jobs 3
+uv run repo2tools corpus-tasks --base-url http://127.0.0.1:18003/v1 --model qwen3-32b \
+    --solver-base-url http://127.0.0.1:18000/v1 --solver-model qwen3-coder
+```
+
+To say whether tools are useful, a library needs questions with known answers. packaging has 222 that were built by hand from its tests. For any other library they come from its documentation: a doctest example is code together with the value its authors say it gives.
+
+`corpus-exercises` reads every documentation example that shows a value, finds the earlier lines of the same text that it needs (by following the names it reads), and runs it twice in the library's own environment and sandbox. An example is **verified** if both runs give the same plain JSON value and that value is what the documentation shows. So a verified answer has two independent sources. Dates, time spans, decimals, paths and sets are given one plain form each (a date as ISO 8601 text, a set as a sorted list).
+
+`corpus-tasks` then lets an LLM write, for each verified example, the request of a person who needs that value and does not see the code. The LLM writes only the wording; the answer stays the verified value. A request must repeat every input value exactly, show no code, and not give the answer away. It is kept only if it says enough: a second model gets the request and the reference of the API elements the example uses, writes code, and that code must give the verified answer in the sandbox.
+
+Read on 15 November 2026, 97 repositories:
+
+| Step | Number |
+| --- | --- |
+| Documentation examples that show a value | 3,023 |
+| Verified by two sandboxed runs and the documented value | 1,545, in 35 repositories |
+| of these, use the public API at least once | 1,204, in 27 repositories |
+| Chosen for a question (at most 40 per repository, no class or function defined in the example) | 348 |
+| Request written and passing the wording checks | 329 |
+| **Kept: solvable from the request** | **165, in 21 repositories** |
+
+- The examples that were not verified: 934 raised an error (needs earlier context, the network or a file), 320 gave an object, not a plain value, 161 gave something else than the documentation shows, 37 took longer than 5 s, 26 gave two different results.
+- By the number of API elements a kept question's example uses, which is how many tools a solution needs: 1: 75, 2: 41, 3: 13, 4: 12, 5: 10, 6: 4, 7: 3, 8: 3, 10: 2, 13: 2.
+- Most verified examples come from few libraries: more-itertools 342, networkx 259, packaging 231, python-dateutil 175. Libraries whose examples need the network (requests, huggingface-hub) or whose documentation is not in the repository give almost none.
+- The solvability check is strict and drops about half of the written requests. It was not yet looked at whether a dropped request was unclear or the solver model too weak.
+- The questions are in `out/corpus/tasks/`, in the exercise format below, with the code of the example as `reference_code`.
+
+### Do generated tools help on these questions?
+
+```sh
+uv run repo2tools corpus-benchmark --writer-base-url http://127.0.0.1:18000/v1 --writer-model qwen3-coder \
+    --base-url http://127.0.0.1:18001/v1 --model qwen3-8b --tag <name>
+```
+
+For every repository with at least 8 kept questions: generate a tool set at the low level (one tool per function), then let Qwen3-8B answer the repository's questions without tools and with them. Same instruction in both runs, one reminder if the reply is not a bare value, tool outputs cut at 20,000 characters.
+
+First run, 15 November 2026 (`--tag bench2`; one run):
+
+| Package | Questions | Tools accepted | Right without tools | Right with the generated tools |
+| --- | --- | --- | --- | --- |
+| `dateutil` | 11 | 1 of 1 | 4 | 3 |
+| `mcp` | 15 | 0 of 54 | 10 | no tool passed |
+| `more_itertools` | 19 | 25 of 59 | 10 | 9 |
+| `networkx` | 20 | 3 of 45 | 6 | 0 |
+| `jinja2` | 9 | 11 of 58 | 6 | 6 |
+| `werkzeug` | 16 | 26 of 60 | 7 | 4 |
+| `packaging` | 28 | 41 of 60 | 14 | 8 |
+| `rsa` | 17 | 11 of 24 | 7 | 4 |
+| **7 repositories with both runs** | **120** | | **54 (45%)** | **34 (28%)** |
+
+- **With the generated tools the model is worse in six of seven libraries and equal in one.** This is the packaging result again (124 against 133 of 222), now on questions that come from each library's own documentation.
+- Many questions are small workflows on an object (build a graph, add edges, compute a measure). A tool per function takes and returns plain JSON, so it cannot carry the object from one call to the next. networkx shows it most clearly: 44 tool errors and no right answer with tools.
+- What is missing for a fair picture: more than one run; tools at the medium and high level; a larger model; and a baseline where the model gets one tool that runs Python with the library installed.
+- The first attempt of the day used questions written without the solvability check and without the reminder: 101 of 263 right without tools, 53 with. Its questions were often too vague to answer ("a request created with specific input values"), so those numbers are not used.
 
 ## Usability: can a small model call the tools
 
@@ -510,7 +569,11 @@ src/repo2tools/
 │   ├── candidates.py        corpus-candidates  pure-Python PyPI packages with a GitHub repository, for a person to approve
 │   ├── scan.py              corpus-scan        clone the approved repositories and scan them; nothing is run
 │   ├── granularity.py                          tool candidates at three levels, each with a short description
-│   └── saturation.py        corpus-saturation  group similar candidates across repositories; do the distinct ones saturate?
+│   ├── saturation.py        corpus-saturation  group similar candidates across repositories; do the distinct ones saturate?
+│   ├── exercises.py         corpus-exercises   documentation examples as exercises, verified by two sandboxed runs
+│   ├── example_worker.py                       runs those examples; inside the library's own environment and sandbox
+│   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
+│   └── benchmark.py         corpus-benchmark   per repository: generate tools, score a model without and with them
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server
@@ -523,7 +586,7 @@ src/repo2tools/
 
 | Path | What is there |
 | --- | --- |
-| `tests/` | 167 tests. `helpers.py` holds the scripted LLM they share. |
+| `tests/` | 181 tests. `helpers.py` holds the scripted LLM they share. |
 | `toolsets/pypa_packaging/` | The reference tool set (called "hand-made"), written in a chat session with an LLM before the pipeline existed: 21 tools over pypa/packaging (`tools.py`), a coarser cut (`coarse_tools.py`), the MCP server (`server.py`, stdio or `--http PORT`; `--level function\|feature\|workflow\|all`), and its ToolGym types. These files stay flat so that they can be handed to other harnesses as they are. |
 | `toolsets/generated/` | Generated tool sets, one folder per run and one file per tool, each with `server.py`, `run_server.sh` and `manifest.json`. Not reviewed by a person. |
 | `out/` | Results: `corpus/` (candidate repositories for the many-repo experiments), `baseline/` (ToolGym's catalog today), `packaging/` (API, exercises, tool check), `packaging_toolgym/` (ToolGym's view of our tools), `usage/` (usage scans), `runs/` (model runs), `traces/` (full traces and their analysis), `generated/` (reports and LLM logs of generated tool sets), `toolgym_exercises/` (ToolGym tasks as exercises), `toolgym_runs/` (summaries of ToolGym pipeline runs). |

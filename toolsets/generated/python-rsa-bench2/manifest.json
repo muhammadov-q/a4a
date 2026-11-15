@@ -1,0 +1,351 @@
+{
+ "url": "https://github.com/sybrenstuvel/python-rsa",
+ "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+ "package": "rsa",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "python-rsa-bench2",
+ "toolset": "toolsets/generated/python-rsa-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "blinded_decrypt",
+   "wraps": "rsa.PrivateKey.blinded_decrypt",
+   "description": "Decrypts the message using blinding to prevent side-channel attacks.\n    \n    :param n: RSA modulus\n    :param e: RSA public exponent\n    :param d: RSA private exponent\n    :param p: First prime factor of n\n    :param q: Second prime factor of n\n    :param encrypted: the encrypted message\n    :type encrypted: int\n    \n    :returns: the decrypted message\n    :rtype: int\n    \n    Example: blinded_decrypt(1024, 65537, 65537, 31, 33, 123) -> decrypted message\n    ",
+   "verified": true,
+   "direct_call": "rsa.PrivateKey(n, e, d, p, q).blinded_decrypt(encrypted)",
+   "samples": [
+    {
+     "n": 3233,
+     "e": 17,
+     "d": 2753,
+     "p": 61,
+     "q": 53,
+     "encrypted": 2790
+    },
+    {
+     "n": 143,
+     "e": 7,
+     "d": 103,
+     "p": 11,
+     "q": 13,
+     "encrypted": 100
+    },
+    {
+     "n": 123456789,
+     "e": 65537,
+     "d": 123456789,
+     "p": 123456789,
+     "q": 123456789,
+     "encrypted": 123456789
+    },
+    {
+     "n": 1000000007,
+     "e": 65537,
+     "d": 1000000007,
+     "p": 1000000007,
+     "q": 1000000007,
+     "encrypted": 1000000007
+    }
+   ]
+  },
+  {
+   "name": "get_integer_bit_size",
+   "wraps": "rsa.common.bit_size",
+   "description": "Calculate the number of bits needed to represent an integer. num: Integer value. If num is 0, returns 0. Only the absolute value of the number is considered.",
+   "verified": true,
+   "direct_call": "rsa.common.bit_size(num)",
+   "samples": [
+    {
+     "num": 1023
+    },
+    {
+     "num": 1024
+    },
+    {
+     "num": 1025
+    },
+    {
+     "num": 0
+    },
+    {
+     "num": -1024
+    },
+    {
+     "num": 1
+    }
+   ]
+  },
+  {
+   "name": "get_integer_byte_size",
+   "wraps": "rsa.common.byte_size",
+   "description": "Calculate the number of bytes required to store an integer. number: An unsigned integer -> The number of bytes required to hold the integer.",
+   "verified": true,
+   "direct_call": "rsa.common.byte_size(number)",
+   "samples": [
+    {
+     "number": 0
+    },
+    {
+     "number": 1
+    },
+    {
+     "number": 255
+    },
+    {
+     "number": 256
+    },
+    {
+     "number": 1024
+    },
+    {
+     "number": 123456789
+    }
+   ]
+  },
+  {
+   "name": "extended_euclidean_algorithm",
+   "wraps": "rsa.common.extended_gcd",
+   "description": "Returns a tuple (r, i, j) such that r = gcd(a, b) = ia + jb. Example: extended_euclidean_algorithm(30, 18) -> (6, -1, 2)",
+   "verified": true,
+   "direct_call": "rsa.common.extended_gcd(a, b)",
+   "samples": [
+    {
+     "a": 30,
+     "b": 18
+    },
+    {
+     "a": 17,
+     "b": 13
+    },
+    {
+     "a": 0,
+     "b": 5
+    },
+    {
+     "a": 7,
+     "b": 0
+    },
+    {
+     "a": -12,
+     "b": 8
+    }
+   ]
+  },
+  {
+   "name": "modular_inverse",
+   "wraps": "rsa.common.inverse",
+   "description": "Returns the inverse of x % n under multiplication, a.k.a x^-1 (mod n)\n    \n    Args:\n        x: The integer to find the modular multiplicative inverse of\n        n: The modulus\n    \n    Returns:\n        The modular multiplicative inverse of x modulo n\n    \n    Example:\n        >>> modular_inverse(7, 4)\n        3\n    ",
+   "verified": true,
+   "direct_call": "rsa.common.inverse(x, n)",
+   "samples": [
+    {
+     "x": 7,
+     "n": 4
+    },
+    {
+     "x": 143,
+     "n": 4
+    },
+    {
+     "x": 10,
+     "n": 17
+    },
+    {
+     "x": 3,
+     "n": 6
+    },
+    {
+     "x": 1,
+     "n": 5
+    }
+   ]
+  },
+  {
+   "name": "encrypt_integer",
+   "wraps": "rsa.core.encrypt_int",
+   "description": "Encrypts a message using encryption key 'ekey', working modulo n. message: The integer message to encrypt, ekey: The RSA encryption key, n: The modulus for RSA encryption. Example: encrypt_integer(123, 5, 1000) -> 827",
+   "verified": true,
+   "direct_call": "rsa.core.encrypt_int(message, ekey, n)",
+   "samples": [
+    {
+     "message": 42,
+     "ekey": 17,
+     "n": 1000000007
+    },
+    {
+     "message": 0,
+     "ekey": 3,
+     "n": 1000000009
+    },
+    {
+     "message": 999999,
+     "ekey": 65537,
+     "n": 1000000009
+    },
+    {
+     "message": -1,
+     "ekey": 3,
+     "n": 1000000009
+    },
+    {
+     "message": 1000000008,
+     "ekey": 3,
+     "n": 1000000009
+    }
+   ]
+  },
+  {
+   "name": "decrypt_integer",
+   "wraps": "rsa.core.decrypt_int",
+   "description": "Decrypts a cypher text using the decryption key 'dkey', working modulo n. cyphertext: The encrypted integer to decrypt, dkey: The RSA private decryption exponent, n: The RSA modulus, e.g. decrypt_integer(123, 456, 789) -> 678.",
+   "verified": true,
+   "direct_call": "rsa.core.decrypt_int(cyphertext, dkey, n)",
+   "samples": [
+    {
+     "cyphertext": 12345,
+     "dkey": 65537,
+     "n": 100003
+    },
+    {
+     "cyphertext": 98765,
+     "dkey": 12345,
+     "n": 54321
+    },
+    {
+     "cyphertext": 0,
+     "dkey": 1,
+     "n": 2
+    },
+    {
+     "cyphertext": 1,
+     "dkey": 1,
+     "n": 2
+    },
+    {
+     "cyphertext": 100,
+     "dkey": 101,
+     "n": 103
+    }
+   ]
+  },
+  {
+   "name": "generate_prime_number",
+   "wraps": "rsa.prime.getprime",
+   "description": "Generate a prime number that fits within a specified number of bits.\n    \n    Args:\n        nbits: The number of bits for the generated prime number\n        \n    Returns:\n        A prime number that can be stored in 'nbits' bits\n        \n    Example:\n        >>> generate_prime_number(128)\n        123456789012345678901234567890123456789\n    ",
+   "verified": false,
+   "direct_call": "rsa.prime.getprime(nbits)",
+   "samples": [
+    {
+     "nbits": 128
+    },
+    {
+     "nbits": 256
+    },
+    {
+     "nbits": 512
+    },
+    {
+     "nbits": 1024
+    },
+    {
+     "nbits": 3
+    },
+    {
+     "nbits": 2
+    }
+   ]
+  },
+  {
+   "name": "check_coprime",
+   "wraps": "rsa.prime.are_relatively_prime",
+   "description": "Returns True if a and b are relatively prime, and False if they are not.\n    \n    Args:\n        a: First integer to check\n        b: Second integer to check\n    \n    Example:\n        >>> check_coprime(2, 3)\n        True\n    ",
+   "verified": true,
+   "direct_call": "rsa.prime.are_relatively_prime(a, b)",
+   "samples": [
+    {
+     "a": 2,
+     "b": 3
+    },
+    {
+     "a": 2,
+     "b": 4
+    },
+    {
+     "a": 1,
+     "b": 100
+    },
+    {
+     "a": 15,
+     "b": 28
+    },
+    {
+     "a": 12,
+     "b": 18
+    }
+   ]
+  },
+  {
+   "name": "read_random_integer",
+   "wraps": "rsa.randnum.read_random_int",
+   "description": "Reads a random integer of approximately nbits bits. nbits: The approximate number of bits for the random integer, e.g. read_random_integer(8) -> 173.",
+   "verified": false,
+   "direct_call": "rsa.randnum.read_random_int(nbits)",
+   "samples": [
+    {
+     "nbits": 8
+    },
+    {
+     "nbits": 16
+    },
+    {
+     "nbits": 32
+    },
+    {
+     "nbits": 128
+    },
+    {
+     "nbits": 1
+    },
+    {
+     "nbits": 0
+    }
+   ]
+  },
+  {
+   "name": "read_random_odd_integer",
+   "wraps": "rsa.randnum.read_random_odd_int",
+   "description": "Reads a random odd integer of approximately nbits bits.\n    \n    Args:\n        nbits: The approximate number of bits for the random odd integer\n        \n    Returns:\n        A random odd integer with approximately nbits bits\n        \n    Example:\n        >>> read_random_odd_integer(512) & 1\n        1\n    ",
+   "verified": false,
+   "direct_call": "rsa.randnum.read_random_odd_int(nbits)",
+   "samples": [
+    {
+     "nbits": 8
+    },
+    {
+     "nbits": 16
+    },
+    {
+     "nbits": 256
+    },
+    {
+     "nbits": 512
+    },
+    {
+     "nbits": 1024
+    },
+    {
+     "nbits": -1
+    }
+   ]
+  }
+ ]
+}

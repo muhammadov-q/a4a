@@ -13,7 +13,8 @@
 #SBATCH --output=%x-%j.out
 
 set -euo pipefail
-echo "node=$(hostname) port=8000 start=$(date -Is)"
+PORT="${PORT:-8000}"  # two servers on one node need different ports: sbatch --export=ALL,PORT=8001 ...
+echo "node=$(hostname) port=$PORT start=$(date -Is)"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv
 export HF_HOME="${HF_HOME:-/storage/scratch/users/$USER/hf}"
 export HF_HUB_OFFLINE=1  # weights were downloaded on the login node
@@ -21,7 +22,7 @@ source "$HOME/envs/vllm/bin/activate"
 exec vllm serve Qwen/Qwen3-Embedding-4B \
   --served-model-name qwen3-embedding-4b \
   --runner pooling \
-  --host 0.0.0.0 --port 8000 \
+  --host 0.0.0.0 --port "$PORT" \
   --api-key "$(cat "$HOME/.vllm_api_key")" \
   --max-model-len 4096 \
   --gpu-memory-utilization 0.90
