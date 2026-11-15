@@ -157,6 +157,8 @@ def scrape_package(repo: Path, package: str) -> tuple[list[Callable], list[str]]
     if all_names is None:
         callables = []
         for path in sorted(pkg.rglob("*.py")):
+            if path.is_symlink():
+                continue  # a link may point outside the checkout
             rel = path.relative_to(pkg).with_suffix("")
             # an __init__.py is the module of its own package
             parts = rel.parts[:-1] if rel.name == "__init__" else rel.parts
@@ -173,6 +175,155 @@ def scrape_package(repo: Path, package: str) -> tuple[list[Callable], list[str]]
         callables += scrape_module(pkg / f"{mod.replace('.', '/')}.py", f"{package}.{mod}", repo, names)
     found = {c.qualname.split(".")[0] for c in callables}
     return callables, [n for n in all_names if n not in found]
+
+
+# --- the public API with re-exports followed ----------------------------------------------------
+# scrape_package() above reads what packaging and arrow need: modules that define what they export.
+# Many libraries define things in private modules and re-export them (`from ._core import X` in
+# __init__.py, sometimes through several levels, or only under `if TYPE_CHECKING:`). public_api()
+# follows those imports. It is used for the many-repository scans; `repo2tools generate` keeps
+# scrape_package() so that the tool sets made so far can be reproduced.
+
+NOT_PUBLIC_PARTS = {"tests", "test", "testing", "conftest"}
+
+
+def top_level(body: list[ast.stmt]) -> list[ast.stmt]:
+    """Statements of a module, with the bodies of `if`, `try` and `with` at module level opened up."""
+    out: list[ast.stmt] = []
+    for node in body:
+        if isinstance(node, ast.If):
+            out += top_level(node.body) + top_level(node.orelse)
+        elif isinstance(node, ast.Try):
+            out += top_level(node.body) + top_level(node.orelse) + top_level(node.finalbody) + [s for h in node.handlers for s in top_level(h.body)]
+        elif isinstance(node, ast.With):
+            out += top_level(node.body)
+        else:
+            out.append(node)
+    return out
+
+
+class Package:
+    """One package on disk, read with `ast` only.
+
+    A module is named by its dotted path as a tuple: ("click",) is the package, ("click", "core") a module.
+    Imports from another top-level package of the same checkout are followed too, because some
+    distributions ship a thin public package over a private one (`pytest` over `_pytest`, `attrs` over `attr`).
+    """
+
+    def __init__(self, repo: Path, package: str):
+        self.repo, self.package = repo, package
+        self.trees: dict[Path, list[ast.stmt] | None] = {}
+
+    def file(self, module: tuple[str, ...]) -> Path | None:
+        folder = self.repo.joinpath(*module)
+        for path in (folder / "__init__.py", folder.with_suffix(".py")):
+            if path.is_file() and not path.is_symlink():
+                return path
+        return None
+
+    def statements(self, module: tuple[str, ...]) -> list[ast.stmt]:
+        path = self.file(module)
+        if path is None:
+            return []
+        if path not in self.trees:
+            try:
+                self.trees[path] = top_level(ast.parse(path.read_text(encoding="utf-8", errors="replace")).body)
+            except (SyntaxError, ValueError, RecursionError):
+                self.trees[path] = None
+        return self.trees[path] or []
+
+    def target(self, module: tuple[str, ...], node: ast.ImportFrom) -> tuple[str, ...] | None:
+        """The module an import statement names; None if it is not in this checkout's package folder."""
+        if node.level:
+            path = self.file(module)
+            here = module if path is not None and path.name == "__init__.py" else module[:-1]
+            base = here[:len(here) - (node.level - 1)]
+            return (*base, *(node.module.split(".") if node.module else ())) if base else None
+        dotted = tuple((node.module or "").split("."))
+        return dotted if dotted[0] and self.file(dotted[:1]) is not None else None
+
+    def exposed(self, module: tuple[str, ...], depth: int = 0) -> list[str]:
+        """Names a module offers: its `__all__` if that is a plain list, else its public definitions and in-checkout imports."""
+        names: list[str] = []
+        for node in self.statements(module):
+            if isinstance(node, (ast.Assign, ast.AnnAssign)):
+                targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+                if any(isinstance(t, ast.Name) and t.id == "__all__" for t in targets) and isinstance(node.value, (ast.List, ast.Tuple)):
+                    listed = [e.value for e in node.value.elts if isinstance(e, ast.Constant) and isinstance(e.value, str)]
+                    if len(listed) == len(node.value.elts):
+                        return listed
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                names.append(node.name)
+            elif isinstance(node, ast.ImportFrom):
+                target = self.target(module, node)
+                for alias in node.names if target is not None else ():
+                    if alias.name != "*":
+                        names.append(alias.asname or alias.name)
+                    elif target != module and depth < 8:
+                        names += self.exposed(target, depth + 1)
+        return [n for n in dict.fromkeys(names) if public(n)]
+
+    def resolve(self, module: tuple[str, ...], name: str, depth: int = 0):
+        """Where a name offered by a module is defined: (module, path, definition), following imports. None if it is not a function or a class."""
+        if depth > 8:
+            return None
+        imports = []
+        for node in self.statements(module):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == name:
+                if isinstance(node, ast.ClassDef) or not is_overload(node):
+                    return module, self.file(module), node
+            elif isinstance(node, ast.ImportFrom) and self.target(module, node) is not None:
+                imports.append(node)
+        for node in imports:
+            target = self.target(module, node)
+            for alias in node.names:
+                if alias.name != "*" and (alias.asname or alias.name) == name:
+                    found = self.resolve(target, alias.name, depth + 1)
+                    if found:
+                        return found
+            if target != module and any(alias.name == "*" for alias in node.names):
+                found = self.resolve(target, name, depth + 1)
+                if found:
+                    return found
+        return None
+
+    def modules(self) -> list[tuple[str, ...]]:
+        """The package itself and its public modules: the package first, then by depth."""
+        found = [(self.package,)]
+        root = self.repo / self.package
+        for path in sorted(root.rglob("*.py")) if root.is_dir() else ():
+            if path.is_symlink():
+                continue
+            rel = path.relative_to(root).with_suffix("")
+            parts = rel.parts[:-1] if rel.name == "__init__" else rel.parts
+            if parts and not any(part.startswith("_") or part in NOT_PUBLIC_PARTS for part in parts):
+                found.append((self.package, *parts))
+        return sorted(dict.fromkeys(found), key=lambda module: (len(module), module))
+
+
+def public_api(repo: Path, package: str) -> list[Callable]:
+    """Public functions, and public methods of public classes, of a package or a one-file module, following re-exports.
+
+    A name is public where the package itself or one of its public modules offers it. Each definition is
+    reported once, under the shortest module that offers it (`click.command`, not `click.decorators.command`).
+    """
+    pkg = Package(repo, package)
+    out: list[Callable] = []
+    seen: set[tuple[Path, int]] = set()
+    for module in pkg.modules():
+        for name in pkg.exposed(module):
+            found = pkg.resolve(module, name)
+            if not found or (found[1], found[2].lineno) in seen:
+                continue
+            home, path, node = found
+            seen.add((path, node.lineno))
+            if isinstance(node, ast.ClassDef):
+                out += [describe(fn, f"{name}.{member}", ".".join(module), path, repo, in_class=True, n_overloads=n)
+                        for member, (fn, n) in functions_in(node.body).items() if public(member)]
+            else:
+                overloads = sum(1 for s in pkg.statements(home) if isinstance(s, (ast.FunctionDef, ast.AsyncFunctionDef)) and s.name == node.name and is_overload(s))
+                out.append(describe(node, name, ".".join(module), path, repo, in_class=False, n_overloads=overloads))
+    return out
 
 
 def constructors(repo: Path, callables: list[Callable]) -> dict[str, dict]:
