@@ -35,6 +35,7 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
     "Corpus: many repositories": {
         "corpus-candidates": ("repo2tools.corpus.candidates", "list pure-Python PyPI packages with a GitHub repository, for a person to approve"),
         "corpus-scan": ("repo2tools.corpus.scan", "clone the approved repositories and scan them without running anything"),
+        "corpus-saturation": ("repo2tools.corpus.saturation", "group similar tool candidates across repositories; do the distinct ones saturate?"),
     },
     "ToolGym": {
         "toolgym-types": ("repo2tools.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),

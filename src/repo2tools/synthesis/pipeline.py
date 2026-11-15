@@ -49,7 +49,7 @@ from openai import AsyncOpenAI
 
 from repo2tools.evaluation.reference_calls import output_value
 from repo2tools.paths import API_KEY_FILE, REPO_ROOT
-from repo2tools.synthesis.scrape import constructors, scrape_package
+from repo2tools.synthesis.scrape import constructors, public_api, scrape_package
 from repo2tools.synthesis.usage import count_usage
 from repo2tools.synthesis.worker import DANGEROUS_MODULES, FORBIDDEN_NAMES, direct_call_problem
 
@@ -855,7 +855,8 @@ async def generate(args, llm=None) -> dict:
         return {"set": set_name, "env_only": True}
 
     out.mkdir(parents=True, exist_ok=True)
-    callables, _ = scrape_package(base, package)
+    # the first scan reads modules that define what they export; the other also follows re-exports, which most libraries need
+    callables = public_api(base, package) if getattr(args, "follow_reexports", False) else scrape_package(base, package)[0]
     classes = constructors(base, callables)
     (out / "api.json").write_text(json.dumps({"repo": url, "package": package, "commit": commit, "n_callables": len(callables),
                                               "callables": [asdict(c) for c in callables], "classes": classes}, indent=2), encoding="utf-8")
@@ -911,7 +912,8 @@ async def generate(args, llm=None) -> dict:
         else "NONE: this system has no sandbox-exec, only a separate environment"
     meta = {"url": url, "commit": commit, "package": package, "model": getattr(llm, "model", "unknown"), "thinking": getattr(llm, "thinking", False),
             "set": set_name, "toolset": str(toolset.relative_to(ROOT)), "sandbox": sandbox, "dependencies": dependencies,
-            "dropped_proposals": dropped_picks, "pick": {"usage": by, "classes": bool(getattr(args, "classes", False)), "operators": operators}}
+            "dropped_proposals": dropped_picks, "pick": {"usage": by, "classes": bool(getattr(args, "classes", False)), "operators": operators},
+            "api_scan": "re-exports followed" if getattr(args, "follow_reexports", False) else "defining modules"}
     write_toolset(toolset, set_name, tag, meta, accepted)
 
     # the finished server, over real MCP; anything that fails here leaves the tool set
@@ -948,6 +950,8 @@ def main() -> None:
                         help="let the LLM also make tools from a class itself: building the object, and its operators")
     parser.add_argument("--operators", action="store_true",
                         help="also list each operator the repo uses with a class (e.g. Version <) as its own entry that can become a tool")
+    parser.add_argument("--follow-reexports", action="store_true",
+                        help="scan the API following re-exports (`from ._core import X` in __init__.py); needed for most libraries other than packaging")
     parser.add_argument("--env-only", action="store_true", help="only (re)build the environment of an existing tool set")
     args = parser.parse_args()
     if not args.env_only and not (args.base_url and args.model):

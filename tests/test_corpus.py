@@ -2,9 +2,14 @@
 
 import json
 import subprocess
+from types import SimpleNamespace
+
+import pytest
 
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
-from repo2tools.corpus.scan import levels, likely_names, report, scan_one
+from repo2tools.corpus.granularity import level_counts, tool_candidates
+from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
+from repo2tools.corpus.scan import likely_names, report, scan_one
 from repo2tools.synthesis.scrape import public_api
 
 
@@ -129,7 +134,15 @@ def test_the_static_pass_counts_a_package_without_running_it(tmp_path):
     # high: one example uses two or more things (parse, Square(), area, <); the other uses only parse
     assert record["levels"] == {"low": 5, "low_used_in_docs": 2, "medium": 6, "medium_used_in_docs": 4, "high": 1, "examples": 2, "examples_with_two_or_more": 1}
     saved = json.loads((tmp_path / "scans" / "me__shapes" / "usage.json").read_text())
-    assert saved["examples"][0] == ["Square <", "Square()", "shapes.Square.area", "shapes.parse"]
+    assert saved["examples"][0]["uses"] == ["Square <", "Square()", "shapes.Square.area", "shapes.parse"] and "small.area" in saved["examples"][0]["code"]
+    api = json.loads((tmp_path / "scans" / "me__shapes" / "api.json").read_text())
+    texts = {c["id"]: (c["level"], c["text"], c["used_in_docs"]) for c in tool_candidates(api, saved)}
+    assert texts["shapes.Square#build"] == ("medium", "Square(text: str): build a Square. A square with a side length, built from text such as \"3\".", True)
+    assert texts["shapes.Square#properties"] == ("medium", "Square: read its properties: area, corners", True)
+    assert texts["shapes.Square#compare"] == ("medium", "Square: compare two of them (smaller, equal, greater)", True)
+    assert texts["shapes.Square.scaled"][1] == "Square.scaled(factor: float) -> 'Square': A square with the side multiplied by factor." and not texts["shapes.Square.scaled"][2]
+    high = [c for c in tool_candidates(api, saved) if c["level"] == "high"]
+    assert len(high) == 1 and high[0]["text"].startswith("Example that uses Square <, Square(), Square.area, parse:\nfrom shapes import Square, parse")
     text = report([record])
     assert "1 of 1 repositories scanned" in text and "| `shapes` |" in text and "| low | one function, method or property | 5 | 5 | 2 (40%) |" in text
 
@@ -148,9 +161,9 @@ def test_names_to_try_and_operator_families():
     assert likely_names({"package": "python-dateutil", "repo": "https://github.com/dateutil/dateutil"}) == ["python_dateutil", "dateutil", "thon_dateutil"]
     assert likely_names({"package": "pyjwt", "repo": "https://github.com/jpadilla/pyjwt"})[:2] == ["pyjwt", "jwt"]
     api = {"callables": [{"module": "m", "qualname": "Box.size", "kind": "property"}], "classes": {"Box": {}}}
-    usage = {"callables": {"m.Box.size": {"docs": 0, "guessed_docs": 0}}, "examples": [["a"], ["a", "b"], ["a", "b"]],
+    usage = {"callables": {"m.Box.size": {"docs": 0, "guessed_docs": 0}}, "examples": [{"uses": u, "code": "x"} for u in (["a"], ["a", "b"], ["a", "b"])],
              "classes": {"Box": {"built": {"docs": 1}, "operators": {"<": {"docs": 0}, ">=": {"docs": 2}, "in": {"docs": 0}, "&": {"docs": 0}}}}}
-    found = levels(api, usage)
+    found = level_counts(api, usage)
     assert found["medium"] == 5  # build, properties, compare, contains, &
     assert found["medium_used_in_docs"] == 2 and found["high"] == 1 and found["examples_with_two_or_more"] == 2
 
@@ -199,3 +212,56 @@ def test_a_thin_public_package_over_a_private_one(tmp_path):
         "_nice/core.py": "class Config:\n    def get(self, key: str) -> str:\n        return key\n\n\ndef run() -> int:\n    return 0\n"})
     assert paths(public_api(root, "nice")) == ["nice.Config.get", "nice.run"]
     assert public_api(root, "missing") == []
+
+
+# --- saturation ------------------------------------------------------------------------------
+
+np = pytest.importorskip("numpy")  # in the `analysis` group
+
+
+def unit(*rows):
+    vectors = np.asarray(rows, dtype=np.float32)
+    return vectors / np.linalg.norm(vectors, axis=1, keepdims=True)
+
+
+def test_a_candidate_joins_the_group_of_a_similar_earlier_one():
+    first = unit([1, 0, 0], [0, 1, 0])
+    second = unit([0.99, 0.1, 0], [0, 0, 1], [0, 0.05, 1])  # like the first of `first`; new; like the one before it
+    third = np.zeros((0, 3), dtype=np.float32)  # a repository with nothing at this level
+    assert count_groups([first, second, third], threshold=0.9) == [2, 3, 3]
+    assert count_groups([first, second, third], threshold=0.9999) == [2, 5, 5]
+    assert count_groups([second, first], threshold=0.9) == [2, 3]
+
+
+def test_the_exponent_tells_repetition_from_growth():
+    same = [unit([1, 0, 0], [0, 1, 0])] * 12  # every repository repeats the first
+    result = curve(same, threshold=0.9, orders=3)
+    assert result["groups"] == [2.0] * 12 and result["candidates"][-1] == 24 and result["exponent"] == 0.0 and result["new_in_last_tenth"] == 0.0
+    different = [unit(*np.eye(24, dtype=np.float32)[2 * i:2 * i + 2]) for i in range(12)]  # every repository brings two new directions
+    result = curve(different, threshold=0.9, orders=3)
+    assert result["groups"][-1] == 24 and result["exponent"] == 1.0 and result["new_in_last_tenth"] == 1.0
+    assert exponent([1, 2], [1, 2]) is None
+
+
+def test_pairs_come_from_different_repositories_and_the_report_reads(tmp_path):
+    vectors = unit([1, 0], [1, 0.01], [0.7, 0.7], [0, 1])
+    pairs = similar_pairs(["a", "b", "c", "d"], ["parse a date", "parse a date again", "format a date", "sort a list"], ["one", "one", "two", "three"], vectors, sample=4)
+    flat = [row for rows in pairs.values() for row in rows]
+    assert all(row["a"].split("]")[0] != row["b"].split("]")[0] for row in flat) and len(flat) >= 2
+    assert not pairs["0.95 to 1.00"]  # the two nearly equal texts are in the same repository
+    result = {"model": "m", "repositories": 12, "orders": 3, "curves": {s: {level: {"0.90": curve([unit([1, 0])] * 12, 0.9, 3)} for level in ("low", "medium", "high")} for s in ("all", "used_in_docs")}}
+    text = saturation_report(result)
+    assert "| low | 0.90 | 12 | 1 | 0.08 | 0.0 | 0% | 1 | 1 | 1 | 1 |" in text and "k=12" in text
+    assert "## low" in pairs_report({"low": pairs})
+
+
+def test_vectors_are_cut_and_made_unit_length():
+    class Client:
+        class embeddings:  # noqa: N801
+            @staticmethod
+            def create(model, input):  # noqa: A002
+                data = [SimpleNamespace(index=i, embedding=[3.0, 4.0] + [0.0] * 2000) for i, _ in enumerate(input)]
+                return SimpleNamespace(data=list(reversed(data)))
+
+    vectors = embed(["a", "b", "c"], Client, "m", batch=2)
+    assert vectors.shape == (3, 1024) and np.allclose(np.linalg.norm(vectors, axis=1), 1) and np.allclose(vectors[0, :2], [0.6, 0.8])

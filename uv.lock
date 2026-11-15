@@ -1182,6 +1182,7 @@ dependencies = [
 [package.dev-dependencies]
 analysis = [
     { name = "jinja2" },
+    { name = "numpy" },
     { name = "transformers" },
 ]
 dev = [
@@ -1200,6 +1201,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 analysis = [
     { name = "jinja2", specifier = ">=3.1" },
+    { name = "numpy", specifier = ">=2" },
     { name = "transformers", specifier = ">=4.51" },
 ]
 dev = [
