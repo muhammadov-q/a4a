@@ -1,0 +1,1361 @@
+{
+ "url": "https://github.com/more-itertools/more-itertools",
+ "commit": "ceafee8ce96f4bc1eb74c528bc247c91d648a0bb",
+ "package": "more_itertools",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "more-itertools-bench2",
+ "toolset": "toolsets/generated/more-itertools-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 62,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "create_peekable_iterator",
+   "wraps": "more_itertools.peekable",
+   "description": "Wrap an iterator to allow lookahead and prepending elements. iterable: The iterable to wrap with peekable functionality, e.g. ['a', 'b'] -> peekable object that supports peek() and prepend() methods.",
+   "verified": true,
+   "direct_call": "more_itertools.peekable(iterable)",
+   "samples": [
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c"
+     ]
+    },
+    {
+     "iterable": []
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "iterable": [
+      "hello"
+     ]
+    },
+    {
+     "iterable": [
+      10,
+      20
+     ]
+    }
+   ]
+  },
+  {
+   "name": "split_into_chunks",
+   "wraps": "more_itertools.chunked",
+   "description": "Break an iterable into lists of length n.\n    \n    Args:\n        iterable: The iterable to split into chunks\n        n: The length of each chunk\n        \n    Returns:\n        A list of chunks, where each chunk is a list of length n\n        \n    Example:\n        >>> split_into_chunks([1, 2, 3, 4, 5, 6], 3)\n        [[1, 2, 3], [4, 5, 6]]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.chunked(iterable, n)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [],
+     "n": 2
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "n": 1
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "n": 2
+    }
+   ]
+  },
+  {
+   "name": "get_first_item",
+   "wraps": "more_itertools.first",
+   "description": "Return the first item of *iterable*, or *default* if *iterable* is empty.\n    \n    Args:\n        iterable: An iterable to retrieve the first item from\n        default: A default value to return if the iterable is empty\n        \n    Returns:\n        The first item of the iterable, or the default value if empty\n        \n    Example:\n        >>> get_first_item([0, 1, 2, 3])\n        0\n        >>> get_first_item([], 'some default')\n        'some default'\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.first(iterable, default)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "default": "default_value"
+    },
+    {
+     "iterable": [],
+     "default": "default_value"
+    },
+    {
+     "iterable": [],
+     "default": ""
+    },
+    {
+     "iterable": [
+      "a",
+      "b"
+     ],
+     "default": "fallback"
+    },
+    {
+     "iterable": [
+      0
+     ],
+     "default": "no_items"
+    }
+   ]
+  },
+  {
+   "name": "get_last_item",
+   "wraps": "more_itertools.last",
+   "description": "Return the last item of *iterable*, or *default* if *iterable* is empty.\n    \n    Args:\n        iterable: The iterable to get the last item from\n        default: The default value to return if the iterable is empty\n        \n    Returns:\n        The last item of the iterable, or the default value if empty\n        \n    Example:\n        >>> get_last_item([0, 1, 2, 3])\n        3\n        >>> get_last_item([], 'some default')\n        'some default'\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.last(iterable, more_itertools._marker if default == 'NO_DEFAULT_PROVIDED' else default)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "default": "default_value"
+    },
+    {
+     "iterable": [],
+     "default": "empty_default"
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c"
+     ],
+     "default": "unused_default"
+    },
+    {
+     "iterable": [],
+     "default": "another_default"
+    },
+    {
+     "iterable": [
+      42
+     ],
+     "default": "ignored"
+    }
+   ]
+  },
+  {
+   "name": "get_nth_item",
+   "wraps": "more_itertools.nth",
+   "description": "Returns the nth item or a default value.\n    \n    Args:\n        iterable: The iterable to extract the item from\n        n: The index of the item to retrieve (0-based)\n        default: The default value to return if the index is out of bounds\n    \n    Example:\n        >>> get_nth_item([1, 2, 3, 4], 2)\n        3\n        >>> get_nth_item([1, 2, 3, 4], 10, \"missing\")\n        'missing'\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.nth(iterable, n, default)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "n": 2,
+     "default": "not found"
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c"
+     ],
+     "n": 5,
+     "default": "out of bounds"
+    },
+    {
+     "iterable": [],
+     "n": 0,
+     "default": "empty"
+    },
+    {
+     "iterable": [
+      10,
+      20,
+      30
+     ],
+     "n": 1,
+     "default": null
+    },
+    {
+     "iterable": "hello",
+     "n": 4,
+     "default": "end"
+    }
+   ]
+  },
+  {
+   "name": "peek_at_items",
+   "wraps": "more_itertools.spy",
+   "description": "Return a 2-tuple with a list containing the first *n* elements of *iterable*, and an iterator with the same items as *iterable*.\n    \n    Args:\n        iterable: The iterable to peek at\n        n: Number of items to take from the beginning\n        \n    Returns:\n        A 2-tuple of (list of first n items, iterator of all items)\n        \n    Example:\n        >>> peek_at_items([1, 2, 3, 4], 2)\n        ([1, 2], [1, 2, 3, 4])\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.spy(iterable, n)",
+   "samples": [
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "n": 1
+    },
+    {
+     "iterable": [],
+     "n": 2
+    },
+    {
+     "iterable": [
+      "x",
+      "y"
+     ],
+     "n": 5
+    },
+    {
+     "iterable": [
+      10,
+      20,
+      30,
+      40
+     ]
+    }
+   ]
+  },
+  {
+   "name": "consume_iterator",
+   "wraps": "more_itertools.consume",
+   "description": "Advance *iterable* by *n* steps. If *n* is ``None``, consume it entirely.\n    \n    Efficiently exhausts an iterator without returning values. Defaults to\n    consuming the whole iterator, but an optional second argument may be\n    provided to limit consumption.\n    \n        >>> i = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n        >>> next(i)\n        0\n        >>> consume_iterator(i, 3)\n        >>> next(i)\n        4\n    \n    Args:\n        iterator: The iterable to advance\n        n: Number of steps to advance the iterator\n        \n    Returns:\n        None\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.consume(iterator, n)",
+   "samples": [
+    {
+     "iterator": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "n": 3
+    },
+    {
+     "iterator": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "n": null
+    },
+    {
+     "iterator": [
+      0,
+      1,
+      2
+     ],
+     "n": 5
+    },
+    {
+     "iterator": [],
+     "n": 2
+    },
+    {
+     "iterator": [
+      10,
+      20,
+      30
+     ],
+     "n": 0
+    }
+   ]
+  },
+  {
+   "name": "check_is_sorted",
+   "wraps": "more_itertools.is_sorted",
+   "description": "Returns True if the items of an iterable are in sorted order.\n    \n    Args:\n        iterable (array): An iterable of items to check for sorted order\n        key (string, optional): A string specifying the attribute or method to use for comparison\n        reverse (boolean, optional): If True, checks for descending order instead of ascending\n        strict (boolean, optional): If True, returns False if equal elements are found\n    \n    Example:\n        >>> check_is_sorted([1, 2, 3, 4, 5])\n        True\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.is_sorted(iterable, key=key, reverse=reverse, strict=strict)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "iterable": [
+      5,
+      4,
+      3,
+      2,
+      1
+     ],
+     "reverse": true
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      2
+     ],
+     "strict": true
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c"
+     ],
+     "key": "lower"
+    },
+    {
+     "iterable": []
+    },
+    {
+     "iterable": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "name": "generate_distinct_combinations",
+   "wraps": "more_itertools.distinct_combinations",
+   "description": "Yield the distinct combinations of *r* items taken from *iterable*.\n    \n    Args:\n        iterable: An iterable from which to generate combinations\n        r: The number of items in each combination\n    \n    Returns:\n        A list of tuples, each containing a distinct combination\n    \n    Example:\n        >>> generate_distinct_combinations([0, 0, 1], 2)\n        [(0, 0), (0, 1)]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.distinct_combinations(iterable, r)",
+   "samples": [
+    {
+     "iterable": [
+      0,
+      0,
+      1
+     ],
+     "r": 2
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c"
+     ],
+     "r": 2
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      2,
+      3
+     ],
+     "r": 3
+    },
+    {
+     "iterable": [],
+     "r": 0
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "r": 0
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "r": -1
+    }
+   ]
+  },
+  {
+   "name": "generate_distinct_permutations",
+   "wraps": "more_itertools.distinct_permutations",
+   "description": "Yield successive distinct permutations of the elements in an iterable.\n    \n    Args:\n        iterable: An array of elements to permute\n        r: The length of each permutation (optional)\n        \n    Returns:\n        A list of distinct permutations\n        \n    Example:\n        >>> generate_distinct_permutations([1, 0, 1])\n        [[0, 1, 1], [1, 0, 1], [1, 1, 0]]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.distinct_permutations(iterable, r)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      0,
+      1
+     ],
+     "r": null
+    },
+    {
+     "iterable": [
+      1,
+      0,
+      1
+     ],
+     "r": 2
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "r": 2
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "b"
+     ],
+     "r": null
+    },
+    {
+     "iterable": [],
+     "r": null
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "r": 5
+    }
+   ]
+  },
+  {
+   "name": "interleave_iterables",
+   "wraps": "more_itertools.interleave",
+   "description": "Return a new iterable yielding from each iterable in turn, until the shortest is exhausted.\n    \n    Args:\n        iterables: One or more iterables to interleave\n        \n    Returns:\n        A list containing elements from each iterable in turn\n        \n    Example:\n        >>> interleave_iterables([[1, 2, 3], [4, 5], [6, 7, 8]])\n        [1, 4, 6, 2, 5, 7]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.interleave(iterables[0], iterables[1], iterables[2])",
+   "samples": [
+    {
+     "iterables": [
+      [
+       1,
+       2,
+       3
+      ],
+      [
+       4,
+       5
+      ],
+      [
+       6,
+       7,
+       8
+      ]
+     ]
+    },
+    {
+     "iterables": [
+      "abc",
+      "123",
+      "XYZ"
+     ]
+    },
+    {
+     "iterables": [
+      [
+       1,
+       2
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       5,
+       6
+      ]
+     ]
+    },
+    {
+     "iterables": [
+      [],
+      [
+       1,
+       2
+      ],
+      [
+       3,
+       4
+      ]
+     ]
+    },
+    {
+     "iterables": [
+      [
+       1
+      ],
+      [
+       2
+      ],
+      [
+       3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "sliding_window",
+   "wraps": "more_itertools.windowed",
+   "description": "Return a sliding window of width *n* over the given iterable.\n    \n    >>> sliding_window([1, 2, 3, 4, 5], 3)\n    [(1, 2, 3), (2, 3, 4), (3, 4, 5)]\n    \n    Args:\n        seq: The iterable to create sliding windows from\n        n: The width of the sliding window\n    \n    Returns:\n        A list of tuples representing the sliding windows\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.windowed(seq, n, fillvalue=None, step=1)",
+   "samples": [
+    {
+     "seq": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "n": 3
+    },
+    {
+     "seq": [
+      1,
+      2,
+      3
+     ],
+     "n": 4
+    },
+    {
+     "seq": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "n": 3
+    },
+    {
+     "seq": [],
+     "n": 2
+    },
+    {
+     "seq": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "name": "split_into_sizes",
+   "wraps": "more_itertools.split_into",
+   "description": "Yield a list of sequential items from *iterable* of length 'n' for each integer 'n' in *sizes*.\n    \n    Args:\n        iterable: The iterable to split into chunks\n        sizes: List of chunk sizes\n        \n    Returns:\n        List of lists containing the split chunks\n        \n    Example:\n        >>> split_into_sizes([1,2,3,4,5,6], [1,2,3])\n        [[1], [2, 3], [4, 5, 6]]\n    ",
+   "verified": true,
+   "direct_call": "list(more_itertools.split_into(iterable, sizes))",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "sizes": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "sizes": [
+      2,
+      3
+     ]
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "sizes": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      0
+     ],
+     "sizes": [
+      2,
+      3,
+      null
+     ]
+    },
+    {
+     "iterable": [],
+     "sizes": [
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "name": "repeat_elements",
+   "wraps": "more_itertools.repeat_each",
+   "description": "Repeat each element in *iterable* *n* times.\n    \n    Args:\n        iterable: The iterable containing elements to repeat\n        n: Number of times to repeat each element\n        \n    Returns:\n        A list with each element repeated n times\n        \n    Example:\n        >>> repeat_elements(['A', 'B', 'C'], 3)\n        ['A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C']\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.repeat_each(iterable, n)",
+   "samples": [
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C"
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "n": 2
+    },
+    {
+     "iterable": [
+      "X"
+     ],
+     "n": 5
+    },
+    {
+     "iterable": [],
+     "n": 3
+    },
+    {
+     "iterable": [
+      "A",
+      "B"
+     ],
+     "n": 1
+    }
+   ]
+  },
+  {
+   "name": "repeat_sequence",
+   "wraps": "more_itertools.ncycles",
+   "description": "Returns the sequence elements n times. iterable: The sequence of elements to repeat, n: Number of times to repeat the sequence",
+   "verified": true,
+   "direct_call": "more_itertools.ncycles(iterable, n)",
+   "samples": [
+    {
+     "iterable": [
+      "a",
+      "b"
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "n": 2
+    },
+    {
+     "iterable": [
+      "x"
+     ],
+     "n": 5
+    },
+    {
+     "iterable": [],
+     "n": 3
+    },
+    {
+     "iterable": [
+      "hello",
+      "world"
+     ],
+     "n": 0
+    }
+   ]
+  },
+  {
+   "name": "group_elements",
+   "wraps": "more_itertools.grouper",
+   "description": "Group elements from *iterable* into fixed-length groups of length *n*.\n    \n    Args:\n        iterable: The iterable to group elements from\n        n: The fixed-length of each group\n        incomplete: How to handle iterables whose length is not a multiple of n\n        fillvalue: The value to use for filling incomplete groups when incomplete='fill'\n        \n    Returns:\n        List of tuples containing grouped elements\n        \n    Example:\n        >>> group_elements(['A', 'B', 'C', 'D', 'E', 'F'], 3)\n        [('A', 'B', 'C'), ('D', 'E', 'F')]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.grouper(iterable, n, incomplete=incomplete, fillvalue=fillvalue)",
+   "samples": [
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G"
+     ],
+     "n": 3,
+     "incomplete": "fill",
+     "fillvalue": "x"
+    },
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G"
+     ],
+     "n": 3,
+     "incomplete": "ignore"
+    },
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G"
+     ],
+     "n": 3,
+     "incomplete": "strict"
+    },
+    {
+     "iterable": [],
+     "n": 2
+    },
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C"
+     ],
+     "n": 3,
+     "incomplete": "invalid_option"
+    }
+   ]
+  },
+  {
+   "name": "batch_elements",
+   "wraps": "more_itertools.batched",
+   "description": "Batch elements of an iterable into fixed-length chunks. iterable: The iterable to batch into fixed-length chunks, e.g. [1,2,3,4], 2 -> [[1,2], [3,4]]. n: The fixed length of each chunk, e.g. 2.",
+   "verified": true,
+   "direct_call": "more_itertools.batched(iterable, n, strict=False)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "n": 2
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+     ],
+     "n": 3
+    },
+    {
+     "iterable": [],
+     "n": 2
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "n": 1
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "n": 3
+    }
+   ]
+  },
+  {
+   "name": "group_consecutive",
+   "wraps": "more_itertools.consecutive_groups",
+   "description": "Yield groups of consecutive items using :func:`itertools.groupby`.\n    \n    The *ordering* function determines whether two items are adjacent by\n    returning their position.\n    \n    By default, the ordering function is the identity function. This is\n    suitable for finding runs of numbers:\n    \n        >>> iterable = [1, 10, 11, 12, 20, 30, 31, 32, 33, 40]\n        >>> group_consecutive(iterable)\n        [[1], [10, 11, 12], [20], [30, 31, 32, 33], [40]]\n    \n    To find runs of adjacent letters, apply :func:`ord` function\n    to convert letters to ordinals.\n    \n        >>> iterable = 'abcdfgilmnop'\n        >>> ordering = 'ord'\n        >>> group_consecutive(iterable, ordering)\n        [['a', 'b', 'c', 'd'], ['f', 'g'], ['i'], ['l', 'm', 'n', 'o', 'p']]\n    \n    Each group of consecutive items is an iterator that shares its source with\n    *iterable*. When an output group is advanced, the previous group is\n    no longer available unless its elements are copied (e.g., into a ``list``).\n    \n        >>> iterable = [1, 2, 11, 12, 21, 22]\n        >>> group_consecutive(iterable)\n        [[1, 2], [11, 12], [21, 22]]\n    \n    Args:\n        iterable: An iterable of items to group consecutively\n        ordering: A function name that determines whether two items are adjacent \n                  by returning their position\n    \n    Returns:\n        A list of lists, where each inner list contains consecutive items\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.consecutive_groups(iterable, ordering)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      10,
+      11,
+      12,
+      20,
+      30,
+      31,
+      32,
+      33,
+      40
+     ]
+    },
+    {
+     "iterable": "abcdfgilmnop",
+     "ordering": "ord"
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      11,
+      12,
+      21,
+      22
+     ]
+    },
+    {
+     "iterable": []
+    },
+    {
+     "iterable": [
+      5
+     ]
+    }
+   ]
+  },
+  {
+   "name": "stagger_elements",
+   "wraps": "more_itertools.stagger",
+   "description": "Yield tuples whose elements are offset from an iterable.\n    \n    Args:\n        iterable: The input iterable to stagger\n        offsets: The offsets for each element in the output tuples\n        longest: Whether to continue until the first element of a tuple is the last item in the iterable\n    \n    Returns:\n        List of tuples with staggered elements\n        \n    Example:\n        >>> stagger_elements([0, 1, 2, 3])\n        [(None, 0, 1), (0, 1, 2), (1, 2, 3)]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.stagger(iterable, offsets=offsets, longest=longest, fillvalue=None)",
+   "samples": [
+    {
+     "iterable": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "offsets": [
+      -1,
+      0,
+      1
+     ],
+     "longest": false
+    },
+    {
+     "iterable": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ],
+     "offsets": [
+      0,
+      2,
+      4
+     ],
+     "longest": false
+    },
+    {
+     "iterable": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "offsets": [
+      -1,
+      0,
+      1
+     ],
+     "longest": true
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ],
+     "offsets": [
+      0,
+      1
+     ],
+     "longest": false
+    },
+    {
+     "iterable": [],
+     "offsets": [
+      -1,
+      0,
+      1
+     ],
+     "longest": false
+    }
+   ]
+  },
+  {
+   "name": "zip_with_offset",
+   "wraps": "more_itertools.zip_offset",
+   "description": "Zip the input iterables together, but offset the i-th iterable by the i-th item in offsets.\n    \n    Args:\n        iterable1: First iterable to be zipped together\n        iterable2: Second iterable to be zipped together\n        offset1: Offset for first iterable\n        offset2: Offset for second iterable\n        longest: Whether to continue until the longest iterable is exhausted\n        fillvalue: Value to use for missing items when longest=True\n    \n    Example:\n        >>> zip_with_offset(['0','1','2','3'], ['a','b','c','d','e','f'], 0, 1)\n        [('0', 'b'), ('1', 'c'), ('2', 'd'), ('3', 'e')]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.zip_offset(iterable1, iterable2, offsets=[offset1, offset2], longest=longest, fillvalue=fillvalue)",
+   "samples": [
+    {
+     "iterable1": [
+      "0",
+      "1",
+      "2",
+      "3"
+     ],
+     "iterable2": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+     ],
+     "offset1": 0,
+     "offset2": 1
+    },
+    {
+     "iterable1": [
+      "a",
+      "b",
+      "c"
+     ],
+     "iterable2": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "offset1": 1,
+     "offset2": 2,
+     "longest": true
+    },
+    {
+     "iterable1": [
+      "h",
+      "e",
+      "l",
+      "l",
+      "o"
+     ],
+     "iterable2": [
+      "w",
+      "o",
+      "r",
+      "l",
+      "d"
+     ],
+     "offset1": -1,
+     "offset2": 1,
+     "fillvalue": "X"
+    },
+    {
+     "iterable1": [
+      "a"
+     ],
+     "iterable2": [
+      "b"
+     ],
+     "offset1": 0,
+     "offset2": 0
+    },
+    {
+     "iterable1": [
+      "1",
+      "2",
+      "3"
+     ],
+     "iterable2": [
+      "4",
+      "5",
+      "6"
+     ],
+     "offset1": 0,
+     "offset2": 1,
+     "longest": false
+    }
+   ]
+  },
+  {
+   "name": "powerset",
+   "wraps": "more_itertools.powerset",
+   "description": "Yields all possible subsets of the iterable.\n    \n    >>> list(powerset([1, 2, 3]))\n    [(), (1,), (2,), (3,), (1, 2), (1, 3), (2, 3), (1, 2, 3)]\n    \n    :func:`powerset` will operate on iterables that aren't :class:`set`\n    instances, so repeated elements in the input will produce repeated elements\n    in the output.\n    \n    >>> seq = [1, 1, 0]\n    >>> list(powerset(seq))\n    [(), (1,), (1,), (0,), (1, 1), (1, 0), (1, 0), (1, 1, 0)]\n    \n    For a variant that efficiently yields actual :class:`set` instances, see\n    :func:`powerset_of_sets`.\n    \n    Args:\n        iterable: An iterable of elements to generate all possible subsets from\n        \n    Returns:\n        A list of all possible subsets of the iterable\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.powerset(iterable)",
+   "samples": [
+    {
+     "iterable": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "iterable": []
+    },
+    {
+     "iterable": [
+      "a",
+      "b"
+     ]
+    },
+    {
+     "iterable": [
+      1,
+      1,
+      0
+     ]
+    },
+    {
+     "iterable": [
+      true,
+      false
+     ]
+    }
+   ]
+  },
+  {
+   "name": "count_matches",
+   "wraps": "more_itertools.quantify",
+   "description": "Count how many times a predicate is true in an iterable.\n    \n    Args:\n        iterable: The iterable to check\n        pred: The predicate function as a string representation\n        \n    Returns:\n        The count of items for which the predicate is true\n        \n    Example:\n        >>> count_matches([True, False, True])\n        2\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.quantify(iterable, pred=bool if pred == 'bool' else None)",
+   "samples": [
+    {
+     "iterable": [
+      true,
+      false,
+      true
+     ],
+     "pred": "bool"
+    },
+    {
+     "iterable": [
+      100,
+      101,
+      102,
+      103,
+      104
+     ],
+     "pred": "lambda x: x < 103"
+    },
+    {
+     "iterable": [],
+     "pred": "bool"
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "pred": "lambda x: x > 3"
+    },
+    {
+     "iterable": [
+      "a",
+      "b",
+      "c"
+     ],
+     "pred": "lambda x: x == 'a'"
+    }
+   ]
+  },
+  {
+   "name": "unique_elements",
+   "wraps": "more_itertools.unique_everseen",
+   "description": "Yield unique elements from an iterable while preserving their order.\n    \n    Args:\n        iterable: An iterable of elements to filter for uniqueness\n        key: A function to compute a key for each element; if None, use the element itself\n    \n    Returns:\n        list: Unique elements in order\n    \n    Example:\n        >>> unique_elements('AAAABBBCCDAABBB')\n        ['A', 'B', 'C', 'D']\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.unique_everseen(iterable, key)",
+   "samples": [
+    {
+     "iterable": [
+      "A",
+      "A",
+      "B",
+      "B",
+      "C",
+      "C"
+     ],
+     "key": null
+    },
+    {
+     "iterable": [
+      "A",
+      "B",
+      "b",
+      "C",
+      "c"
+     ],
+     "key": "str.casefold"
+    },
+    {
+     "iterable": [
+      [
+       1,
+       2
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       1,
+       2
+      ]
+     ],
+     "key": "tuple"
+    },
+    {
+     "iterable": [],
+     "key": null
+    },
+    {
+     "iterable": [
+      "A",
+      "B",
+      "C"
+     ],
+     "key": null
+    }
+   ]
+  },
+  {
+   "name": "running_average",
+   "wraps": "more_itertools.running_mean",
+   "description": "Calculate the cumulative average of values in an iterable.\n    \n    Args:\n        iterable: An iterable of numeric values\n        maxlen: Maximum size of the sliding window. If None, calculates cumulative average.\n        \n    Returns:\n        List of running averages\n        \n    Example:\n        >>> running_average([40, 30, 50, 46, 39, 44])\n        [40.0, 35.0, 40.0, 41.5, 41.0, 41.5]\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.running_mean(iterable, maxlen=maxlen)",
+   "samples": [
+    {
+     "iterable": [
+      40,
+      30,
+      50,
+      46,
+      39,
+      44
+     ],
+     "maxlen": null
+    },
+    {
+     "iterable": [
+      40,
+      30,
+      50,
+      46,
+      39,
+      44
+     ],
+     "maxlen": 3
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "maxlen": null
+    },
+    {
+     "iterable": [],
+     "maxlen": null
+    },
+    {
+     "iterable": [
+      10
+     ],
+     "maxlen": 1
+    }
+   ]
+  },
+  {
+   "name": "sum_of_squares",
+   "wraps": "more_itertools.sum_of_squares",
+   "description": "Return the sum of the squares of the input values.\n    \n    >>> sum_of_squares([10, 20, 30])\n    1400\n    \n    Supports all numeric types: int, float, complex, Decimal, Fraction.\n    \n    Args:\n        iterable: An iterable of numeric values (int, float, complex, Decimal, Fraction)\n        \n    Returns:\n        The sum of the squares of the input values\n    ",
+   "verified": true,
+   "direct_call": "more_itertools.sum_of_squares(iterable)",
+   "samples": [
+    {
+     "iterable": [
+      10,
+      20,
+      30
+     ]
+    },
+    {
+     "iterable": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    {
+     "iterable": []
+    },
+    {
+     "iterable": [
+      1.5,
+      2.5
+     ]
+    },
+    {
+     "iterable": [
+      1,
+      -2,
+      3
+     ]
+    },
+    {
+     "iterable": [
+      "invalid",
+      "input"
+     ]
+    }
+   ]
+  }
+ ]
+}

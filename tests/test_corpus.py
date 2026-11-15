@@ -10,6 +10,7 @@ from types import SimpleNamespace
 import pytest
 
 from helpers import ScriptedLLM
+from repo2tools.corpus import benchmark
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
 from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
 from repo2tools.corpus.granularity import level_counts, tool_candidates
@@ -459,3 +460,26 @@ def test_a_request_is_kept_only_if_code_written_from_it_gives_the_answer():
     assert [e["id"] for e in kept] == ["me__shapes-001"] and dropped == 3 and len(ran) == 2  # only code with an expression is run
     prompt = llm.chats[0][2][1]["content"]
     assert "Request: What is the area of the square with side 2? Question 1." in prompt and "- shapes.parse(text) [function]" in prompt and "4.0" not in prompt  # the solver never sees the answer
+
+
+def test_the_benchmark_report_is_built_from_the_saved_runs(tmp_path, monkeypatch):
+    monkeypatch.setattr(benchmark, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(benchmark, "OUT", tmp_path / "out" / "corpus")
+    (tmp_path / "out" / "corpus" / "tasks").mkdir(parents=True)
+    (tmp_path / "out" / "runs").mkdir()
+    task = as_exercise(example(1, ["shapes.parse"]), "What is the area of the square with side 2?")
+    (tmp_path / "out" / "corpus" / "tasks" / "me__shapes.jsonl").write_text((json.dumps(task) + "\n") * 3)
+    (tmp_path / "out" / "corpus" / "tasks" / "me__small.jsonl").write_text(json.dumps(task) + "\n")  # too few questions
+    repos = benchmark.repositories(min_tasks=2)
+    assert [(r["stem"], r["package"], r["url"], r["tasks"]) for r in repos] == [("me__shapes", "shapes", "https://github.com/me/shapes", 3)]
+    (tmp_path / "out" / "generated" / "shapes-t1").mkdir(parents=True)
+    (tmp_path / "out" / "generated" / "shapes-t1" / "report.json").write_text(json.dumps({"tools": [{}, {}], "accepted": 1}))
+    benchmark.run_file("m", "none", "t1", "me__shapes").write_text("".join(json.dumps({"passed": p}) + "\n" for p in (True, True, False)))
+    benchmark.run_file("m", "tools", "t1", "me__shapes").write_text("".join(json.dumps(r) + "\n" for r in (
+        {"passed": True, "tool_calls": 2, "tool_errors": 1}, {"passed": False, "tool_calls": 1, "tool_errors": 0}, {"passed": False, "tool_calls": 0, "tool_errors": 0})))
+    rows = benchmark.summarize(repos, "m", "t1")
+    assert rows == [{"package": "shapes", "repo": "https://github.com/me/shapes", "questions": 3, "tools_picked": 2, "tools_accepted": 1, "none": 2, "tools": 1,
+                     "called_a_tool": 2, "right_when_called": 1, "tool_errors": 1}]
+    text = benchmark.report(rows, "m", "t1")
+    assert "3 questions: 2 right without tools (67%), 1 right with the generated tools (33%)" in text and "| `shapes` | 3 | 2 | 1 | 2 | 1 | 2 | 1 | 1 |" in text
+    assert benchmark.summarize(repos, "m", "missing")[0]["none"] is None

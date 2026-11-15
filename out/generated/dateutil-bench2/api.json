@@ -1,0 +1,1965 @@
+{
+  "repo": "https://github.com/dateutil/dateutil",
+  "package": "dateutil",
+  "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+  "n_callables": 66,
+  "callables": [
+    {
+      "qualname": "easter",
+      "module": "dateutil.easter",
+      "kind": "function",
+      "params": [
+        {
+          "name": "year",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "method",
+          "annotation": null,
+          "default": "EASTER_WESTERN",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "This method was ported from the work done by GM Arts, on top of the algorithm by Claus Tondering, which was based in part on the algorithm of Ouding (1940), as quoted in \"Explanatory Supplement to the Astronomical Almanac\", P.  Kenneth Seidelmann, editor.",
+      "docstring": "This method was ported from the work done by GM Arts,\non top of the algorithm by Claus Tondering, which was\nbased in part on the algorithm of Ouding (1940), as\nquoted in \"Explanatory Supplement to the Astronomical\nAlmanac\", P.  Kenneth Seidelmann, editor.\n\nThis algorithm implements three different Easter\ncalculation methods:\n\n1. Original calculation in Julian calendar, valid in\n   dates after 326 AD\n2. Original method, with date converted to Gregorian\n   calendar, valid in years 1583 to 4099\n3. Revised method, in Gregorian calendar, valid in\n   years 1583 to 4099 as well\n\nThese methods are represented by the constants:\n\n* ``EASTER_JULIAN   = 1``\n* ``EASTER_ORTHODOX = 2``\n* ``EASTER_WESTERN  = 3``\n\nThe default method is method 3.\n\nMore about the algorithm may be found at:\n\n`GM Arts: Easter Algorithms <http://www.gmarts.org/index.php?go=415>`_\n\nand\n\n`The Calendar FAQ: Easter <https://www.tondering.dk/claus/cal/easter.php>`_",
+      "file": "dateutil/easter.py",
+      "line": 15,
+      "loc": 74,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parse",
+      "module": "dateutil.parser",
+      "kind": "function",
+      "params": [
+        {
+          "name": "timestr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "parserinfo",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse a string in one of the supported formats, using the ``parserinfo`` parameters.",
+      "docstring": "Parse a string in one of the supported formats, using the\n``parserinfo`` parameters.\n\n:param timestr:\n    A string containing a date/time stamp.\n\n:param parserinfo:\n    A :class:`parserinfo` object containing parameters for the parser.\n    If ``None``, the default arguments to the :class:`parserinfo`\n    constructor are used.\n\nThe ``**kwargs`` parameter takes the following keyword arguments:\n\n:param default:\n    The default datetime object, if this is a datetime object and not\n    ``None``, elements specified in ``timestr`` replace elements in the\n    default object.\n\n:param ignoretz:\n    If set ``True``, time zones in parsed strings are ignored and a naive\n    :class:`datetime` object is returned.\n\n:param tzinfos:\n    Additional time zone names / aliases which may be present in the\n    string. This argument maps time zone names (and optionally offsets\n    from those time zones) to time zones. This parameter can be a\n    dictionary with timezone aliases mapping time zone names to time\n    zones or a function taking two parameters (``tzname`` and\n    ``tzoffset``) and returning a time zone.\n\n    The timezones to which the names are mapped can be an integer\n    offset from UTC in seconds or a :class:`tzinfo` object.\n\n    .. doctest::\n       :options: +NORMALIZE_WHITESPACE\n\n        >>> from dateutil.parser import parse\n        >>> from dateutil.tz import gettz\n        >>> tzinfos = {\"BRST\": -7200, \"CST\": gettz(\"America/Chicago\")}\n        >>> parse(\"2012-01-19 17:21:00 BRST\", tzinfos=tzinfos)\n        datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -7200))\n        >>> parse(\"2012-01-19 17:21:00 CST\", tzinfos=tzinfos)\n        datetime.datetime(2012, 1, 19, 17, 21,\n                          tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))\n\n    This parameter is ignored if ``ignoretz`` is set.\n\n:param dayfirst:\n    Whether to interpret the first value in an ambiguous 3-integer date\n    (e.g. 01/05/09) as the day (``True``) or month (``False``). If\n    ``yearfirst`` is set to ``True``, this distinguishes between YDM and\n    YMD. If set to ``None``, this value is retrieved from the current\n    :class:`parserinfo` object (which itself defaults to ``False``).\n\n:param yearfirst:\n    Whether to interpret the first value in an ambiguous 3-integer date\n    (e.g. 01/05/09) as the year. If ``True``, the first number is taken to\n    be the year, otherwise the last number is taken to be the year. If\n    this is set to ``None``, the value is retrieved from the current\n    :class:`parserinfo` object (which itself defaults to ``False``).\n\n:param fuzzy:\n    Whether to allow fuzzy parsing, allowing for string like \"Today is\n    January 1, 2047 at 8:21:00AM\".\n\n:param fuzzy_with_tokens:\n    If ``True``, ``fuzzy`` is automatically set to True, and the parser\n    will return a tuple where the first element is the parsed\n    :class:`datetime.datetime` datetimestamp and the second element is\n    a tuple containing the portions of the string which were ignored:\n\n    .. doctest::\n\n        >>> from dateutil.parser import parse\n        >>> parse(\"Today is January 1, 2047 at 8:21:00AM\", fuzzy_with_tokens=True)\n        (datetime.datetime(2047, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))\n\n:return:\n    Returns a :class:`datetime.datetime` object or, if the\n    ``fuzzy_with_tokens`` option is ``True``, returns a tuple, the\n    first element being a :class:`datetime.datetime` object, the second\n    a tuple containing the fuzzy tokens.\n\n:raises ParserError:\n    Raised for invalid or unknown string formats, if the provided\n    :class:`tzinfo` is not in a valid format, or if an invalid date would\n    be created.\n\n:raises OverflowError:\n    Raised if the parsed date exceeds the largest valid C integer on\n    your system.",
+      "file": "dateutil/parser/_parser.py",
+      "line": 1264,
+      "loc": 99,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parser.parse",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "timestr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "default",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "ignoretz",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "tzinfos",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse the date/time string into a :class:`datetime.datetime` object.",
+      "docstring": "Parse the date/time string into a :class:`datetime.datetime` object.\n\n:param timestr:\n    Any date/time string using the supported formats.\n\n:param default:\n    The default datetime object, if this is a datetime object and not\n    ``None``, elements specified in ``timestr`` replace elements in the\n    default object.\n\n:param ignoretz:\n    If set ``True``, time zones in parsed strings are ignored and a\n    naive :class:`datetime.datetime` object is returned.\n\n:param tzinfos:\n    Additional time zone names / aliases which may be present in the\n    string. This argument maps time zone names (and optionally offsets\n    from those time zones) to time zones. This parameter can be a\n    dictionary with timezone aliases mapping time zone names to time\n    zones or a function taking two parameters (``tzname`` and\n    ``tzoffset``) and returning a time zone.\n\n    The timezones to which the names are mapped can be an integer\n    offset from UTC in seconds or a :class:`tzinfo` object.\n\n    .. doctest::\n       :options: +NORMALIZE_WHITESPACE\n\n        >>> from dateutil.parser import parse\n        >>> from dateutil.tz import gettz\n        >>> tzinfos = {\"BRST\": -7200, \"CST\": gettz(\"America/Chicago\")}\n        >>> parse(\"2012-01-19 17:21:00 BRST\", tzinfos=tzinfos)\n        datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -7200))\n        >>> parse(\"2012-01-19 17:21:00 CST\", tzinfos=tzinfos)\n        datetime.datetime(2012, 1, 19, 17, 21,\n                          tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))\n\n    This parameter is ignored if ``ignoretz`` is set.\n\n:param \\*\\*kwargs:\n    Keyword arguments as passed to ``_parse()``.\n\n:return:\n    Returns a :class:`datetime.datetime` object or, if the\n    ``fuzzy_with_tokens`` option is ``True``, returns a tuple, the\n    first element being a :class:`datetime.datetime` object, the second\n    a tuple containing the fuzzy tokens.\n\n:raises ParserError:\n    Raised for invalid or unknown string format, if the provided\n    :class:`tzinfo` is not in a valid format, or if an invalid date\n    would be created.\n\n:raises TypeError:\n    Raised for non-string or character stream input.\n\n:raises OverflowError:\n    Raised if the parsed date exceeds the largest valid C integer on\n    your system.",
+      "file": "dateutil/parser/_parser.py",
+      "line": 566,
+      "loc": 88,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.jump",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 313,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.weekday",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 316,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.month",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 323,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.hms",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 330,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.ampm",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 336,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.pertain",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 342,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.utczone",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 345,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.tzoffset",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 348,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.convertyear",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "year",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "century_specified",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Converts two-digit years to year within [-50, 49] range of self._year (current local time)",
+      "docstring": "Converts two-digit years to year within [-50, 49]\nrange of self._year (current local time)",
+      "file": "dateutil/parser/_parser.py",
+      "line": 354,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "parserinfo.validate",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "res",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 374,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "isoparser.isoparse",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt_str",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse an ISO-8601 datetime string into a :class:`datetime.datetime`.",
+      "docstring": "Parse an ISO-8601 datetime string into a :class:`datetime.datetime`.\n\nAn ISO-8601 datetime string consists of a date portion, followed\noptionally by a time portion - the date and time portions are separated\nby a single character separator, which is ``T`` in the official\nstandard. Incomplete date formats (such as ``YYYY-MM``) may *not* be\ncombined with a time portion.\n\nSupported date formats are:\n\nCommon:\n\n- ``YYYY``\n- ``YYYY-MM``\n- ``YYYY-MM-DD`` or ``YYYYMMDD``\n\nUncommon:\n\n- ``YYYY-Www`` or ``YYYYWww`` - ISO week (day defaults to 0)\n- ``YYYY-Www-D`` or ``YYYYWwwD`` - ISO week and day\n\nThe ISO week and day numbering follows the same logic as\n:func:`datetime.date.isocalendar`.\n\nSupported time formats are:\n\n- ``hh``\n- ``hh:mm`` or ``hhmm``\n- ``hh:mm:ss`` or ``hhmmss``\n- ``hh:mm:ss.ssssss`` (Up to 6 sub-second digits)\n\nMidnight is a special case for `hh`, as the standard supports both\n00:00 and 24:00 as a representation. The decimal separator can be\neither a dot or a comma.\n\n\n.. caution::\n\n    Support for fractional components other than seconds is part of the\n    ISO-8601 standard, but is not currently implemented in this parser.\n\nSupported time zone offset formats are:\n\n- `Z` (UTC)\n- `\u00b1HH:MM`\n- `\u00b1HHMM`\n- `\u00b1HH`\n\nOffsets will be represented as :class:`dateutil.tz.tzoffset` objects,\nwith the exception of UTC, which will be represented as\n:class:`dateutil.tz.tzutc`. Time zone offsets equivalent to UTC (such\nas `+00:00`) will also be represented as :class:`dateutil.tz.tzutc`.\n\n:param dt_str:\n    A string or stream containing only an ISO-8601 datetime string\n\n:return:\n    Returns a :class:`datetime.datetime` representing the string.\n    Unspecified components default to their lowest value.\n\n.. warning::\n\n    As of version 2.7.0, the strictness of the parser should not be\n    considered a stable part of the contract. Any valid ISO-8601 string\n    that parses correctly with the default settings will continue to\n    parse correctly in future versions, but invalid strings that\n    currently fail (e.g. ``2017-01-01T00:00+00:00:00``) are not\n    guaranteed to continue failing in future versions if they encode\n    a valid date.\n\n.. versionadded:: 2.7.0",
+      "file": "dateutil/parser/isoparser.py",
+      "line": 58,
+      "loc": 87,
+      "n_overloads": 0,
+      "decorators": [
+        "_takes_ascii"
+      ]
+    },
+    {
+      "qualname": "isoparser.parse_isodate",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "datestr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse the date portion of an ISO string.",
+      "docstring": "Parse the date portion of an ISO string.\n\n:param datestr:\n    The string portion of an ISO string, without a separator\n\n:return:\n    Returns a :class:`datetime.date` object",
+      "file": "dateutil/parser/isoparser.py",
+      "line": 147,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": [
+        "_takes_ascii"
+      ]
+    },
+    {
+      "qualname": "isoparser.parse_isotime",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "timestr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse the time portion of an ISO string.",
+      "docstring": "Parse the time portion of an ISO string.\n\n:param timestr:\n    The time portion of an ISO string, without a separator\n\n:return:\n    Returns a :class:`datetime.time` object",
+      "file": "dateutil/parser/isoparser.py",
+      "line": 164,
+      "loc": 14,
+      "n_overloads": 0,
+      "decorators": [
+        "_takes_ascii"
+      ]
+    },
+    {
+      "qualname": "isoparser.parse_tzstr",
+      "module": "dateutil.parser",
+      "kind": "method",
+      "params": [
+        {
+          "name": "tzstr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "zero_as_utc",
+          "annotation": null,
+          "default": "True",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse a valid ISO time zone string.",
+      "docstring": "Parse a valid ISO time zone string.\n\nSee :func:`isoparser.isoparse` for details on supported formats.\n\n:param tzstr:\n    A string representing an ISO time zone offset\n\n:param zero_as_utc:\n    Whether to return :class:`dateutil.tz.tzutc` for zero-offset zones\n\n:return:\n    Returns :class:`dateutil.tz.tzoffset` for offsets and\n    :class:`dateutil.tz.tzutc` for ``Z`` and (if ``zero_as_utc`` is\n    specified) offsets equivalent to UTC.",
+      "file": "dateutil/parser/isoparser.py",
+      "line": 180,
+      "loc": 18,
+      "n_overloads": 0,
+      "decorators": [
+        "_takes_ascii"
+      ]
+    },
+    {
+      "qualname": "relativedelta.weeks",
+      "module": "dateutil.relativedelta",
+      "kind": "property",
+      "params": [],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/relativedelta.py",
+      "line": 267,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "relativedelta.normalized",
+      "module": "dateutil.relativedelta",
+      "kind": "method",
+      "params": [],
+      "returns": null,
+      "summary": "Return a version of this object represented entirely using integer values for the relative attributes.",
+      "docstring": "Return a version of this object represented entirely using integer\nvalues for the relative attributes.\n\n>>> relativedelta(days=1.5, hours=2).normalized()\nrelativedelta(days=+1, hours=+14)\n\n:return:\n    Returns a :class:`dateutil.relativedelta.relativedelta` object.",
+      "file": "dateutil/relativedelta.py",
+      "line": 284,
+      "loc": 34,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "rrule.replace",
+      "module": "dateutil.rrule",
+      "kind": "method",
+      "params": [
+        {
+          "name": "kwargs",
+          "annotation": null,
+          "default": null,
+          "kind": "var_keyword"
+        }
+      ],
+      "returns": null,
+      "summary": "Return new rrule with same attributes except for those attributes given new values by whichever keyword arguments are specified.",
+      "docstring": "Return new rrule with same attributes except for those attributes given new\nvalues by whichever keyword arguments are specified.",
+      "file": "dateutil/rrule.py",
+      "line": 777,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "rruleset.rrule",
+      "module": "dateutil.rrule",
+      "kind": "method",
+      "params": [
+        {
+          "name": "rrule",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Include the given :py:class:`rrule` instance in the recurrence set generation.",
+      "docstring": "Include the given :py:class:`rrule` instance in the recurrence set\ngeneration. ",
+      "file": "dateutil/rrule.py",
+      "line": 1371,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": [
+        "_invalidates_cache"
+      ]
+    },
+    {
+      "qualname": "rruleset.rdate",
+      "module": "dateutil.rrule",
+      "kind": "method",
+      "params": [
+        {
+          "name": "rdate",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Include the given :py:class:`datetime` instance in the recurrence set generation.",
+      "docstring": "Include the given :py:class:`datetime` instance in the recurrence\nset generation. ",
+      "file": "dateutil/rrule.py",
+      "line": 1377,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": [
+        "_invalidates_cache"
+      ]
+    },
+    {
+      "qualname": "rruleset.exrule",
+      "module": "dateutil.rrule",
+      "kind": "method",
+      "params": [
+        {
+          "name": "exrule",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Include the given rrule instance in the recurrence set exclusion list. Dates which are part of the given recurrence rules will not be generated, even if some inclusive rrule or rdate matches them.",
+      "docstring": "Include the given rrule instance in the recurrence set exclusion\nlist. Dates which are part of the given recurrence rules will not\nbe generated, even if some inclusive rrule or rdate matches them.",
+      "file": "dateutil/rrule.py",
+      "line": 1383,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": [
+        "_invalidates_cache"
+      ]
+    },
+    {
+      "qualname": "rruleset.exdate",
+      "module": "dateutil.rrule",
+      "kind": "method",
+      "params": [
+        {
+          "name": "exdate",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Include the given datetime instance in the recurrence set exclusion list. Dates included that way will not be generated, even if some inclusive rrule or rdate matches them.",
+      "docstring": "Include the given datetime instance in the recurrence set\nexclusion list. Dates included that way will not be generated,\neven if some inclusive rrule or rdate matches them. ",
+      "file": "dateutil/rrule.py",
+      "line": 1391,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": [
+        "_invalidates_cache"
+      ]
+    },
+    {
+      "qualname": "tzutc.utcoffset",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 66,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzutc.dst",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 69,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzutc.tzname",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 72,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzutc.is_ambiguous",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Whether or not the \"wall time\" of a given datetime is ambiguous in this zone.",
+      "docstring": "Whether or not the \"wall time\" of a given datetime is ambiguous in this\nzone.\n\n:param dt:\n    A :py:class:`datetime.datetime`, naive or time zone aware.\n\n\n:return:\n    Returns ``True`` if ambiguous, ``False`` otherwise.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/tz.py",
+      "line": 75,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzutc.fromutc",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Fast track version of fromutc() returns the original ``dt`` object for any valid :py:class:`datetime.datetime` object.",
+      "docstring": "Fast track version of fromutc() returns the original ``dt`` object for\nany valid :py:class:`datetime.datetime` object.",
+      "file": "dateutil/tz/tz.py",
+      "line": 92,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": [
+        "_validate_fromutc_inputs"
+      ]
+    },
+    {
+      "qualname": "tzoffset.utcoffset",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 142,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzoffset.dst",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 145,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzoffset.tzname",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 148,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzoffset.fromutc",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 152,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": [
+        "_validate_fromutc_inputs"
+      ]
+    },
+    {
+      "qualname": "tzoffset.is_ambiguous",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Whether or not the \"wall time\" of a given datetime is ambiguous in this zone.",
+      "docstring": "Whether or not the \"wall time\" of a given datetime is ambiguous in this\nzone.\n\n:param dt:\n    A :py:class:`datetime.datetime`, naive or time zone aware.\n:return:\n    Returns ``True`` if ambiguous, ``False`` otherwise.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/tz.py",
+      "line": 155,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzlocal.utcoffset",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 203,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzlocal.dst",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 212,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzlocal.tzname",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/tz.py",
+      "line": 221,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzlocal.is_ambiguous",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Whether or not the \"wall time\" of a given datetime is ambiguous in this zone.",
+      "docstring": "Whether or not the \"wall time\" of a given datetime is ambiguous in this\nzone.\n\n:param dt:\n    A :py:class:`datetime.datetime`, naive or time zone aware.\n\n\n:return:\n    Returns ``True`` if ambiguous, ``False`` otherwise.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/tz.py",
+      "line": 224,
+      "loc": 17,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzfile.key",
+      "module": "dateutil.tz",
+      "kind": "property",
+      "params": [],
+      "returns": null,
+      "summary": "Read-only attribute returning the ``key`` constructor argument.",
+      "docstring": "Read-only attribute returning the ``key`` constructor argument.\n\nFor zones generated from :func:`gettz`, this will be the IANA key\npassed to ``gettz`` \u2014 no normalization is done, so although in most\ndistributions of the time zone database \"US/Eastern\" is a link to\n\"America/New_York\", ``tz.gettz(\"US/Eastern\").key`` should always return\n``\"US/Eastern\"``.\n\nFor zones constructed via another mechanism without specifying ``key``,\nthis returns :obj:`None`.",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 161,
+      "loc": 14,
+      "n_overloads": 0,
+      "decorators": [
+        "property"
+      ]
+    },
+    {
+      "qualname": "tzfile.is_ambiguous",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Whether or not the \"wall time\" of a given datetime is ambiguous in this zone.",
+      "docstring": "Whether or not the \"wall time\" of a given datetime is ambiguous in this\nzone.\n\n:param dt:\n    A :py:class:`datetime.datetime`, naive or time zone aware.\n\n\n:return:\n    Returns ``True`` if ambiguous, ``False`` otherwise.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 176,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzfile.utcoffset",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 205,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzfile.dst",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 208,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzfile.tzname",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 211,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzfile.fromutc",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "The ``tzfile`` implementation of :py:func:`datetime.tzinfo.fromutc`.",
+      "docstring": "The ``tzfile`` implementation of :py:func:`datetime.tzinfo.fromutc`.\n\n:param dt:\n    A :py:class:`datetime.datetime` object.\n\n:raises TypeError:\n    Raised if ``dt`` is not a :py:class:`datetime.datetime` object.\n\n:raises ValueError:\n    Raised if this is called with a ``dt`` which does not have this\n    ``tzinfo`` attached.\n\n:return:\n    Returns a :py:class:`datetime.datetime` object representing the\n    wall time in ``self``'s time zone.",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 214,
+      "loc": 72,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzrange.transitions",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "year",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "For a given year, get the DST on and off transition times, expressed always on the standard time side. For zones with no transitions, this function returns ``None``.",
+      "docstring": "For a given year, get the DST on and off transition times, expressed\nalways on the standard time side. For zones with no transitions, this\nfunction returns ``None``.\n\n:param year:\n    The year whose transitions you would like to query.\n\n:return:\n    Returns a :class:`tuple` of :class:`datetime.datetime` objects,\n    ``(dston, dstoff)`` for zones with an annual DST transition, or\n    ``None`` for fixed offset zones.",
+      "file": "dateutil/tz/tz.py",
+      "line": 427,
+      "loc": 23,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzical.keys",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [],
+      "returns": null,
+      "summary": "Retrieves the available time zones as a list.",
+      "docstring": "Retrieves the available time zones as a list.",
+      "file": "dateutil/tz/tz.py",
+      "line": 708,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzical.get",
+      "module": "dateutil.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "tzid",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Retrieve a :py:class:`datetime.tzinfo` object by its ``tzid``.",
+      "docstring": "Retrieve a :py:class:`datetime.tzinfo` object by its ``tzid``.\n\n:param tzid:\n    If there is exactly one time zone available, omitting ``tzid``\n    or passing :py:const:`None` value returns it. Otherwise a valid\n    key (which can be retrieved from :func:`keys`) is required.\n\n:raises ValueError:\n    Raised if ``tzid`` is not specified but there are either more\n    or fewer than 1 zone defined.\n\n:returns:\n    Returns either a :py:class:`datetime.tzinfo` object representing\n    the relevant time zone or :py:const:`None` if the ``tzid`` was\n    not found.",
+      "file": "dateutil/tz/tz.py",
+      "line": 714,
+      "loc": 26,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "enfold",
+      "module": "dateutil.tz",
+      "kind": "function",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": "datetime",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "fold",
+          "annotation": "int",
+          "default": "1",
+          "kind": "positional"
+        }
+      ],
+      "returns": "datetime",
+      "summary": "Returns a datetime with the ``fold`` attribute set to ``fold``.",
+      "docstring": "Returns a datetime with the ``fold`` attribute set to ``fold``.\n\n:param fold:\n    The value for the ``fold`` attribute, either 0 or 1.\n\n:return:\n    A :class:`datetime.datetime` with the requested ``fold`` value.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/_common.py",
+      "line": 14,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "datetime_ambiguous",
+      "module": "dateutil.tz",
+      "kind": "function",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "tz",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Given a datetime and a time zone, determine whether or not a given datetime is ambiguous (i.e if there are two times differentiated only by their DST status).",
+      "docstring": "Given a datetime and a time zone, determine whether or not a given datetime\nis ambiguous (i.e if there are two times differentiated only by their DST\nstatus).\n\n:param dt:\n    A :class:`datetime.datetime` (whose time zone will be ignored if ``tz``\n    is provided.)\n\n:param tz:\n    A :class:`datetime.tzinfo` with support for the ``fold`` attribute. If\n    ``None`` or not provided, the datetime's own time zone will be used.\n\n:return:\n    Returns a boolean value whether or not the \"wall time\" is ambiguous in\n    ``tz``.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/tz.py",
+      "line": 1292,
+      "loc": 44,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "datetime_exists",
+      "module": "dateutil.tz",
+      "kind": "function",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "tz",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Given a datetime and a time zone, determine whether or not a given datetime would fall in a gap.",
+      "docstring": "Given a datetime and a time zone, determine whether or not a given datetime\nwould fall in a gap.\n\n:param dt:\n    A :class:`datetime.datetime` (whose time zone will be ignored if ``tz``\n    is provided.)\n\n:param tz:\n    A :class:`datetime.tzinfo` with support for the ``fold`` attribute. If\n    ``None`` or not provided, the datetime's own time zone will be used.\n\n:return:\n    Returns a boolean value whether or not the \"wall time\" exists in\n    ``tz``.\n\n.. versionadded:: 2.7.0",
+      "file": "dateutil/tz/tz.py",
+      "line": 1258,
+      "loc": 32,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "resolve_imaginary",
+      "module": "dateutil.tz",
+      "kind": "function",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Given a datetime that may be imaginary, return an existing datetime.",
+      "docstring": "Given a datetime that may be imaginary, return an existing datetime.\n\nThis function assumes that an imaginary datetime represents what the\nwall time would be in a zone had the offset transition not occurred, so\nit will always fall forward by the transition's change in offset.\n\n.. doctest::\n\n    >>> from dateutil import tz\n    >>> from datetime import datetime\n    >>> NYC = tz.gettz('America/New_York')\n    >>> print(tz.resolve_imaginary(datetime(2017, 3, 12, 2, 30, tzinfo=NYC)))\n    2017-03-12 03:30:00-04:00\n\n    >>> KIR = tz.gettz('Pacific/Kiritimati')\n    >>> print(tz.resolve_imaginary(datetime(1995, 1, 1, 12, 30, tzinfo=KIR)))\n    1995-01-02 12:30:00+14:00\n\nAs a note, :func:`datetime.astimezone` is guaranteed to produce a valid,\nexisting datetime, so a round-trip to and from UTC is sufficient to get\nan extant datetime, however, this generally \"falls back\" to an earlier time\nrather than falling forward to the STD side (though no guarantees are made\nabout this behavior).\n\n:param dt:\n    A :class:`datetime.datetime` which may or may not exist.\n\n:return:\n    Returns an existing :class:`datetime.datetime`. If ``dt`` was not\n    imaginary, the datetime returned is guaranteed to be the same object\n    passed to the function.\n\n.. versionadded:: 2.7.0",
+      "file": "dateutil/tz/tz.py",
+      "line": 1338,
+      "loc": 44,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "available_iana_timezones",
+      "module": "dateutil.tz",
+      "kind": "function",
+      "params": [],
+      "returns": null,
+      "summary": "Returns a set containing all available IANA time zones keys.",
+      "docstring": "Returns a set containing all available IANA time zones keys.\n\nThese are suitable for use with :func:`gettz`. This is essentially a direct\nport of :py:func:`zoneinfo.available_timezones`.\n\nThe search includes time zones found on :data:`TZPATH` as well as any\ntime zones provided by the `tzdata <https://pypi.org/project/tzdata/>`_\npackage if it is installed.\n\n:return:\n    Returns a mutable set containing strings of time zones. Each call will\n    return a fresh set.\n\n.. caution::\n\n    This may attempt to open a large number of files, since the best way to\n    determine if a given file on the time zone search path is to open it\n    and check for the \"magic string\" at the beginning.\n\n.. note::\n\n    These values are not designed to be exposed to end-users; for\n    user-facing elements, applications should use something like CLDR (the\n    Unicode Common Locale Data Repository) to get more user-friendly\n    strings.",
+      "file": "dateutil/tz/tz.py",
+      "line": 1179,
+      "loc": 77,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzres.load_name",
+      "module": "dateutil.tzwin",
+      "kind": "method",
+      "params": [
+        {
+          "name": "offset",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Load a timezone name from a DLL offset (integer).",
+      "docstring": "Load a timezone name from a DLL offset (integer).\n\n>>> from dateutil.tzwin import tzres\n>>> tzr = tzres()\n>>> print(tzr.load_name(112))\n'Eastern Standard Time'\n\n:param offset:\n    A positive integer value referring to a string from the tzres dll.\n\n.. note::\n\n    Offsets found in the registry are generally of the form\n    ``@tzres.dll,-114``. The offset in this case is 114, not -114.",
+      "file": "dateutil/tz/win.py",
+      "line": 72,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzres.name_from_string",
+      "module": "dateutil.tzwin",
+      "kind": "method",
+      "params": [
+        {
+          "name": "tzname_str",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Parse strings as returned from the Windows registry into the time zone name as defined in the registry.",
+      "docstring": "Parse strings as returned from the Windows registry into the time zone\nname as defined in the registry.\n\n>>> from dateutil.tzwin import tzres\n>>> tzr = tzres()\n>>> print(tzr.name_from_string('@tzres.dll,-251'))\n'Dateline Daylight Time'\n>>> print(tzr.name_from_string('Eastern Standard Time'))\n'Eastern Standard Time'\n\n:param tzname_str:\n    A timezone name string as returned from a Windows registry key.\n\n:return:\n    Returns the localized timezone string from tzres.dll if the string\n    is of the form `@tzres.dll,-offset`, else returns the input string.",
+      "file": "dateutil/tz/win.py",
+      "line": 95,
+      "loc": 29,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "today",
+      "module": "dateutil.utils",
+      "kind": "function",
+      "params": [
+        {
+          "name": "tzinfo",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Returns a :py:class:`datetime` representing the current day at midnight",
+      "docstring": "Returns a :py:class:`datetime` representing the current day at midnight\n\n:param tzinfo:\n    The time zone to attach (also used to determine the current day).\n\n:return:\n    A :py:class:`datetime.datetime` object representing the current day\n    at midnight.",
+      "file": "dateutil/utils.py",
+      "line": 11,
+      "loc": 14,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "default_tzinfo",
+      "module": "dateutil.utils",
+      "kind": "function",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "tzinfo",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Sets the ``tzinfo`` parameter on naive datetimes only",
+      "docstring": "Sets the ``tzinfo`` parameter on naive datetimes only\n\nThis is useful for example when you are provided a datetime that may have\neither an implicit or explicit time zone, such as when parsing a time zone\nstring.\n\n.. doctest::\n\n    >>> from dateutil.tz import tzoffset\n    >>> from dateutil.parser import parse\n    >>> from dateutil.utils import default_tzinfo\n    >>> dflt_tz = tzoffset(\"EST\", -18000)\n    >>> print(default_tzinfo(parse('2014-01-01 12:30 UTC'), dflt_tz))\n    2014-01-01 12:30:00+00:00\n    >>> print(default_tzinfo(parse('2014-01-01 12:30'), dflt_tz))\n    2014-01-01 12:30:00-05:00\n\n:param dt:\n    The datetime on which to replace the time zone\n\n:param tzinfo:\n    The :py:class:`datetime.tzinfo` subclass instance to assign to\n    ``dt`` if (and only if) it is naive.\n\n:return:\n    Returns an aware :py:class:`datetime.datetime`.",
+      "file": "dateutil/utils.py",
+      "line": 27,
+      "loc": 33,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "within_delta",
+      "module": "dateutil.utils",
+      "kind": "function",
+      "params": [
+        {
+          "name": "dt1",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "dt2",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "delta",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Useful for comparing two datetimes that may have a negligible difference to be considered equal.",
+      "docstring": "Useful for comparing two datetimes that may have a negligible difference\nto be considered equal.",
+      "file": "dateutil/utils.py",
+      "line": 62,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "get_zonefile_instance",
+      "module": "dateutil.zoneinfo",
+      "kind": "function",
+      "params": [
+        {
+          "name": "new_instance",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "This is a convenience function which provides a :class:`ZoneInfoFile` instance using the data provided by the ``dateutil`` package. By default, it caches a single instance of the ZoneInfoFile object and returns that.",
+      "docstring": "This is a convenience function which provides a :class:`ZoneInfoFile`\ninstance using the data provided by the ``dateutil`` package. By default, it\ncaches a single instance of the ZoneInfoFile object and returns that.\n\n:param new_instance:\n    If ``True``, a new instance of :class:`ZoneInfoFile` is instantiated and\n    used as the cached instance for the next call. Otherwise, new instances\n    are created only as necessary.\n\n:return:\n    Returns a :class:`ZoneInfoFile` object.\n\n.. versionadded:: 2.6",
+      "file": "dateutil/zoneinfo/__init__.py",
+      "line": 140,
+      "loc": 27,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "gettz",
+      "module": "dateutil.zoneinfo",
+      "kind": "function",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "This retrieves a time zone from the ``tzdata`` package.",
+      "docstring": "This retrieves a time zone from the ``tzdata`` package.\n\n:param name:\n    An IANA-style time zone name, as found in the zoneinfo file.\n\n:return:\n    Returns a :class:`dateutil.tz.tzfile` time zone object.\n\n.. warning::\n    It is generally inadvisable to use this function, and it is only\n    provided for API compatibility with earlier versions. This is *not*\n    equivalent to ``dateutil.tz.gettz()``, which selects an appropriate\n    time zone based on the inputs, favoring system zoneinfo. This is ONLY\n    for accessing the dateutil-specific zoneinfo (which may be out of\n    date compared to the system zoneinfo).\n\n.. deprecated:: 2.6\n    If you need to use a specific zoneinfofile over the system zoneinfo,\n    instantiate a :class:`dateutil.zoneinfo.ZoneInfoFile` object and call\n    :func:`dateutil.zoneinfo.ZoneInfoFile.get(name)` instead.\n\n    Use :func:`get_zonefile_instance` to retrieve an instance of the\n    dateutil-provided zoneinfo.",
+      "file": "dateutil/zoneinfo/__init__.py",
+      "line": 169,
+      "loc": 35,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "gettz_db_metadata",
+      "module": "dateutil.zoneinfo",
+      "kind": "function",
+      "params": [],
+      "returns": null,
+      "summary": "Get the zonefile metadata",
+      "docstring": "Get the zonefile metadata\n\n:returns:\n    A dictionary with the database metadata\n\n.. deprecated:: 2.6\n    See deprecation warning in :func:`zoneinfo.gettz`. To get metadata,\n    query the attribute ``zoneinfo.ZoneInfoFile.metadata``.",
+      "file": "dateutil/zoneinfo/__init__.py",
+      "line": 206,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzrangebase.utcoffset",
+      "module": "dateutil.tz.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/_common.py",
+      "line": 185,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzrangebase.dst",
+      "module": "dateutil.tz.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/_common.py",
+      "line": 195,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzrangebase.tzname",
+      "module": "dateutil.tz.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/tz/_common.py",
+      "line": 205,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzrangebase.fromutc",
+      "module": "dateutil.tz.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Given a datetime in UTC, return local time",
+      "docstring": "Given a datetime in UTC, return local time ",
+      "file": "dateutil/tz/_common.py",
+      "line": 211,
+      "loc": 32,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "tzrangebase.is_ambiguous",
+      "module": "dateutil.tz.tz",
+      "kind": "method",
+      "params": [
+        {
+          "name": "dt",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Whether or not the \"wall time\" of a given datetime is ambiguous in this zone.",
+      "docstring": "Whether or not the \"wall time\" of a given datetime is ambiguous in this\nzone.\n\n:param dt:\n    A :py:class:`datetime.datetime`, naive or time zone aware.\n\n\n:return:\n    Returns ``True`` if ambiguous, ``False`` otherwise.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/_common.py",
+      "line": 244,
+      "loc": 21,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "rebuild",
+      "module": "dateutil.zoneinfo.rebuild",
+      "kind": "function",
+      "params": [
+        {
+          "name": "filename",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "tag",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "format",
+          "annotation": null,
+          "default": "'gz'",
+          "kind": "positional"
+        },
+        {
+          "name": "zonegroups",
+          "annotation": null,
+          "default": "[]",
+          "kind": "positional"
+        },
+        {
+          "name": "metadata",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": null,
+      "summary": "Formerly rebuilt the zoneinfo tarball bundled with ``dateutil``.",
+      "docstring": "Formerly rebuilt the zoneinfo tarball bundled with ``dateutil``.\n\n``dateutil`` no longer ships a zoneinfo tarball; it reads time zone data\nfrom the system and from the `tzdata <https://pypi.org/project/tzdata/>`_\npackage instead. This function now does nothing except raise\n:class:`RebuildDeprecationWarning`, which is an error unless a warnings\nfilter says otherwise.\n\n.. deprecated:: 3.0.0",
+      "file": "dateutil/zoneinfo/rebuild.py",
+      "line": 18,
+      "loc": 25,
+      "n_overloads": 0,
+      "decorators": []
+    }
+  ],
+  "classes": {
+    "parser": {
+      "module": "dateutil.parser",
+      "params": [
+        {
+          "name": "info",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/_parser.py",
+      "line": 562,
+      "loc": 697
+    },
+    "parserinfo": {
+      "module": "dateutil.parser",
+      "params": [
+        {
+          "name": "dayfirst",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "yearfirst",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "Class which handles what inputs are accepted. Subclass this to customize the language and acceptable values for each parameter.",
+      "docstring": "Class which handles what inputs are accepted. Subclass this to customize\nthe language and acceptable values for each parameter.\n\n:param dayfirst:\n    Whether to interpret the first value in an ambiguous 3-integer date\n    (e.g. 01/05/09) as the day (``True``) or month (``False``). If\n    ``yearfirst`` is set to ``True``, this distinguishes between YDM\n    and YMD. Default is ``False``.\n\n:param yearfirst:\n    Whether to interpret the first value in an ambiguous 3-integer date\n    (e.g. 01/05/09) as the year. If ``True``, the first number is taken\n    to be the year, otherwise the last number is taken to be the year.\n    Default is ``False``.",
+      "file": "dateutil/parser/_parser.py",
+      "line": 235,
+      "loc": 151
+    },
+    "isoparser": {
+      "module": "dateutil.parser",
+      "params": [
+        {
+          "name": "sep",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "",
+      "docstring": "",
+      "file": "dateutil/parser/isoparser.py",
+      "line": 40,
+      "loc": 383
+    },
+    "relativedelta": {
+      "module": "dateutil.relativedelta",
+      "params": [
+        {
+          "name": "dt1",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "dt2",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "years",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "months",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "days",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "leapdays",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "weeks",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "hours",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "minutes",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "seconds",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "microseconds",
+          "annotation": null,
+          "default": "0",
+          "kind": "positional"
+        },
+        {
+          "name": "year",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "month",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "day",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "weekday",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "yearday",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "nlyearday",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "hour",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "minute",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "second",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "microsecond",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "The relativedelta type is designed to be applied to an existing datetime and can replace specific components of that datetime, or represents an interval of time.",
+      "docstring": "The relativedelta type is designed to be applied to an existing datetime and\ncan replace specific components of that datetime, or represents an interval\nof time.\n\nIt is based on the specification of the excellent work done by M.-A. Lemburg\nin his\n`mx.DateTime <https://www.egenix.com/products/python/mxBase/mxDateTime/>`_ extension.\nHowever, notice that this type does *NOT* implement the same algorithm as\nhis work. Do *NOT* expect it to behave like mx.DateTime's counterpart.\n\nThere are two different ways to build a relativedelta instance. The\nfirst one is passing it two date/datetime classes::\n\n    relativedelta(datetime1, datetime2)\n\nThe second one is passing it any number of the following keyword arguments::\n\n    relativedelta(arg1=x,arg2=y,arg3=z...)\n\n    year, month, day, hour, minute, second, microsecond:\n        Absolute information (argument is singular); adding or subtracting a\n        relativedelta with absolute information does not perform an arithmetic\n        operation, but rather REPLACES the corresponding value in the\n        original datetime with the value(s) in relativedelta.\n\n    years, months, weeks, days, hours, minutes, seconds, microseconds:\n        Relative information, may be negative (argument is plural); adding\n        or subtracting a relativedelta with relative information performs\n        the corresponding arithmetic operation on the original datetime value\n        with the information in the relativedelta.\n\n    weekday:\n        One of the weekday instances (MO, TU, etc) available in the\n        relativedelta module. These instances may receive a parameter N,\n        specifying the Nth weekday, which could be positive or negative\n        (like MO(+1) or MO(-2)). Not specifying it is the same as specifying\n        +1. You can also use an integer, where 0=MO. This argument is always\n        relative e.g. if the calculated date is already Monday, using MO(1)\n        or MO(-1) won't change the day. To effectively make it absolute, use\n        it in combination with the day argument (e.g. day=1, MO(1) for first\n        Monday of the month).\n\n    leapdays:\n        Will add given days to the date found, if year is a leap\n        year, and the date found is post 28 of february.\n\n    yearday, nlyearday:\n        Set the yearday or the non-leap year day (jump leap days).\n        These are converted to day/month/leapdays information.\n\nThere are relative and absolute forms of the keyword\narguments. The plural is relative, and the singular is\nabsolute. For each argument in the order below, the absolute form\nis applied first (by setting each attribute to that value) and\nthen the relative form (by adding the value to the attribute).\n\nThe order of attributes considered when this relativedelta is\nadded to a datetime is:\n\n1. Year\n2. Month\n3. Day\n4. Hours\n5. Minutes\n6. Seconds\n7. Microseconds\n\nFinally, weekday is applied, using the rule described above.\n\nFor example\n\n>>> from datetime import datetime\n>>> from dateutil.relativedelta import relativedelta, MO\n>>> dt = datetime(2018, 4, 9, 13, 37, 0)\n>>> delta = relativedelta(hours=25, day=1, weekday=MO(1))\n>>> dt + delta\ndatetime.datetime(2018, 4, 2, 14, 37)\n\nFirst, the day is set to 1 (the first of the month), then 25 hours\nare added, to get to the 2nd day and 14th hour, finally the\nweekday is applied, but since the 2nd is already a Monday there is\nno effect.",
+      "file": "dateutil/relativedelta.py",
+      "line": 16,
+      "loc": 574
+    },
+    "rrule": {
+      "module": "dateutil.rrule",
+      "params": [
+        {
+          "name": "freq",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "dtstart",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "interval",
+          "annotation": null,
+          "default": "1",
+          "kind": "positional"
+        },
+        {
+          "name": "wkst",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "count",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "until",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "bysetpos",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "bymonth",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "bymonthday",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "byyearday",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "byeaster",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "byweekno",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "byweekday",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "byhour",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "byminute",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "bysecond",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "cache",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "That's the base of the rrule operation. It accepts all the keywords defined in the RFC as its constructor parameters (except byday, which was renamed to byweekday) and more. The constructor prototype is::",
+      "docstring": "That's the base of the rrule operation. It accepts all the keywords\ndefined in the RFC as its constructor parameters (except byday,\nwhich was renamed to byweekday) and more. The constructor prototype is::\n\n        rrule(freq)\n\nWhere freq must be one of YEARLY, MONTHLY, WEEKLY, DAILY, HOURLY, MINUTELY,\nor SECONDLY.\n\n.. note::\n    Per RFC section 3.3.10, recurrence instances falling on invalid dates\n    and times are ignored rather than coerced:\n\n        Recurrence rules may generate recurrence instances with an invalid\n        date (e.g., February 30) or nonexistent local time (e.g., 1:30 AM\n        on a day where the local time is moved forward by an hour at 1:00\n        AM).  Such recurrence instances MUST be ignored and MUST NOT be\n        counted as part of the recurrence set.\n\n    This can lead to possibly surprising behavior when, for example, the\n    start date occurs at the end of the month:\n\n    >>> from dateutil.rrule import rrule, MONTHLY\n    >>> from datetime import datetime\n    >>> start_date = datetime(2014, 12, 31)\n    >>> list(rrule(freq=MONTHLY, count=4, dtstart=start_date))\n    ... # doctest: +NORMALIZE_WHITESPACE\n    [datetime.datetime(2014, 12, 31, 0, 0),\n     datetime.datetime(2015, 1, 31, 0, 0),\n     datetime.datetime(2015, 3, 31, 0, 0),\n     datetime.datetime(2015, 5, 31, 0, 0)]\n\nAdditionally, it supports the following keyword arguments:\n\n:param dtstart:\n    The recurrence start. Besides being the base for the recurrence,\n    missing parameters in the final recurrence instances will also be\n    extracted from this date. If not given, datetime.now() will be used\n    instead.\n:param interval:\n    The interval between each freq iteration. For example, when using\n    YEARLY, an interval of 2 means once every two years, but with HOURLY,\n    it means once every two hours. The default interval is 1.\n:param wkst:\n    The week start day. Must be one of the MO, TU, WE constants, or an\n    integer, specifying the first day of the week. This will affect\n    recurrences based on weekly periods. The default week start is got\n    from calendar.firstweekday(), and may be modified by\n    calendar.setfirstweekday().\n:param count:\n    If given, this determines how many occurrences will be generated.\n\n    .. note::\n        As of version 2.5.0, the use of the keyword ``until`` in conjunction\n        with ``count`` is deprecated, to make sure ``dateutil`` is fully\n        compliant with `RFC-5545 Sec. 3.3.10 <https://tools.ietf.org/\n        html/rfc5545#section-3.3.10>`_. Therefore, ``until`` and ``count``\n        **must not** occur in the same call to ``rrule``.\n:param until:\n    If given, this must be a datetime instance specifying the upper-bound\n    limit of the recurrence. The last recurrence in the rule is the greatest\n    datetime that is less than or equal to the value specified in the\n    ``until`` parameter.\n\n    .. note::\n        As of version 2.5.0, the use of the keyword ``until`` in conjunction\n        with ``count`` is deprecated, to make sure ``dateutil`` is fully\n        compliant with `RFC-5545 Sec. 3.3.10 <https://tools.ietf.org/\n        html/rfc5545#section-3.3.10>`_. Therefore, ``until`` and ``count``\n        **must not** occur in the same call to ``rrule``.\n:param bysetpos:\n    If given, it must be either an integer, or a sequence of integers,\n    positive or negative. Each given integer will specify an occurrence\n    number, corresponding to the nth occurrence of the rule inside the\n    frequency period. For example, a bysetpos of -1 if combined with a\n    MONTHLY frequency, and a byweekday of (MO, TU, WE, TH, FR), will\n    result in the last work day of every month.\n:param bymonth:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the months to apply the recurrence to.\n:param bymonthday:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the month days to apply the recurrence to.\n:param byyearday:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the year days to apply the recurrence to.\n:param byeaster:\n    If given, it must be either an integer, or a sequence of integers,\n    positive or negative. Each integer will define an offset from the\n    Easter Sunday. Passing the offset 0 to byeaster will yield the Easter\n    Sunday itself. This is an extension to the RFC specification.\n:param byweekno:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the week numbers to apply the recurrence to. Week numbers\n    have the meaning described in ISO8601, that is, the first week of\n    the year is that containing at least four days of the new year.\n:param byweekday:\n    If given, it must be either an integer (0 == MO), a sequence of\n    integers, one of the weekday constants (MO, TU, etc), or a sequence\n    of these constants. When given, these variables will define the\n    weekdays where the recurrence will be applied. It's also possible to\n    use an argument n for the weekday instances, which will mean the nth\n    occurrence of this weekday in the period. For example, with MONTHLY,\n    or with YEARLY and BYMONTH, using FR(+1) in byweekday will specify the\n    first friday of the month where the recurrence happens. Notice that in\n    the RFC documentation, this is specified as BYDAY, but was renamed to\n    avoid the ambiguity of that keyword.\n:param byhour:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the hours to apply the recurrence to.\n:param byminute:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the minutes to apply the recurrence to.\n:param bysecond:\n    If given, it must be either an integer, or a sequence of integers,\n    meaning the seconds to apply the recurrence to.\n:param cache:\n    If given, it must be a boolean value specifying to enable or disable\n    caching of results. If you will use the same rrule instance multiple\n    times, enabling caching will improve the performance considerably.\n ",
+      "file": "dateutil/rrule.py",
+      "line": 320,
+      "loc": 805
+    },
+    "rruleset": {
+      "module": "dateutil.rrule",
+      "params": [
+        {
+          "name": "cache",
+          "annotation": null,
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "summary": "The rruleset type allows more complex recurrence setups, mixing multiple rules, dates, exclusion rules, and exclusion dates. The type constructor takes the following keyword arguments:",
+      "docstring": "The rruleset type allows more complex recurrence setups, mixing\nmultiple rules, dates, exclusion rules, and exclusion dates. The type\nconstructor takes the following keyword arguments:\n\n:param cache: If True, caching of results will be enabled, improving\n              performance of multiple queries considerably. ",
+      "file": "dateutil/rrule.py",
+      "line": 1322,
+      "loc": 106
+    },
+    "tzutc": {
+      "module": "dateutil.tz",
+      "params": null,
+      "summary": "This is a tzinfo object that represents the UTC time zone.",
+      "docstring": "This is a tzinfo object that represents the UTC time zone.\n\n**Examples:**\n\n.. doctest::\n\n    >>> from datetime import *\n    >>> from dateutil.tz import *\n\n    >>> datetime.now()\n    datetime.datetime(2003, 9, 27, 9, 40, 1, 521290)\n\n    >>> datetime.now(tzutc())\n    datetime.datetime(2003, 9, 27, 12, 40, 12, 156379, tzinfo=tzutc())\n\n    >>> datetime.now(tzutc()).tzname()\n    'UTC'\n\n.. versionchanged:: 2.7.0\n    ``tzutc()`` is now a singleton, so the result of ``tzutc()`` will\n    always return the same object.\n\n    .. doctest::\n\n        >>> from dateutil.tz import tzutc, UTC\n        >>> tzutc() is tzutc()\n        True\n        >>> tzutc() is UTC\n        True",
+      "file": "dateutil/tz/tz.py",
+      "line": 34,
+      "loc": 79
+    },
+    "tzoffset": {
+      "module": "dateutil.tz",
+      "params": [
+        {
+          "name": "name",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "offset",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "A simple class for representing a fixed offset from UTC.",
+      "docstring": "A simple class for representing a fixed offset from UTC.\n\n:param name:\n    The timezone name, to be returned when ``tzname()`` is called.\n:param offset:\n    The time zone offset in seconds, or (since version 2.6.0, represented\n    as a :py:class:`datetime.timedelta` object).",
+      "file": "dateutil/tz/tz.py",
+      "line": 121,
+      "loc": 63
+    },
+    "tzlocal": {
+      "module": "dateutil.tz",
+      "params": [],
+      "summary": "A :class:`tzinfo` subclass built around the ``time`` timezone functions.",
+      "docstring": "A :class:`tzinfo` subclass built around the ``time`` timezone functions.",
+      "file": "dateutil/tz/tz.py",
+      "line": 186,
+      "loc": 117
+    },
+    "tzfile": {
+      "module": "dateutil.tz",
+      "params": [
+        {
+          "name": "fileobj",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "filename",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "key",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "This is a ``tzinfo`` subclass that allows one to use the ``tzfile(5)`` format timezone files to extract current and historical zone information.",
+      "docstring": "This is a ``tzinfo`` subclass that allows one to use the ``tzfile(5)``\nformat timezone files to extract current and historical zone information.\n\n:param fileobj:\n    This can be an opened file stream or a file name that the time zone\n    information can be read from.\n\n:param filename:\n    This is an optional parameter specifying the source of the time zone\n    information in the event that ``fileobj`` is a file object. If omitted\n    and ``fileobj`` is a file stream, this parameter will be set either to\n    ``fileobj``'s ``name`` attribute or to ``repr(fileobj)``.\n\nThis class is intended to be mostly equivalent to the standard library\n:py:class:`zoneinfo.ZoneInfo` class. The primary differences are:\n\n    * All caching in ``tzfile`` is handled by :func:`tz.gettz` level (you\n      should generally not attempt to construct a ``tzfile`` directly).\n    * ``tzfile`` objects are pickled by value rather than by reference to\n      the IANA key.\n    * ``tzfile`` has equality-by-value semantics, whereas\n      :py:class:`~zoneinfo.ZoneInfo` has equality-by-identity semantics.\n\nSee `Sources for Time Zone and Daylight Saving Time Data\n<https://data.iana.org/time-zones/tz-link.html>`_ for more information.\nTime zone files can be compiled from the `IANA Time Zone database files\n<https://www.iana.org/time-zones>`_ with the `zic time zone compiler\n<https://www.freebsd.org/cgi/man.cgi?query=zic&sektion=8>`_\n\n.. note::\n\n    Only construct a ``tzfile`` directly if you have a specific timezone\n    file on disk that you want to read into a Python ``tzinfo`` object.\n    If you want to get a ``tzfile`` representing a specific IANA zone,\n    (e.g. ``'America/New_York'``), you should call\n    :func:`dateutil.tz.gettz` with the zone identifier.\n\n.. versionchanged:: 3.0.0\n    ``tzfile`` is now a partial backport of :py:class:`zoneinfo.ZoneInfo`,\n    which brings with it support for Version 2 and 3 ``tzfile(5)`` binaries.\n\n**Examples:**\n\nUsing the US Eastern time zone as an example, we can see that a ``tzfile``\nprovides time zone information for the standard Daylight Saving offsets:\n\n.. testsetup:: tzfile\n\n    from dateutil.tz import gettz\n    from datetime import datetime\n\n.. doctest:: tzfile\n\n    >>> NYC = gettz('America/New_York')\n    >>> NYC\n    tzfile('/usr/share/zoneinfo/America/New_York')\n\n    >>> print(datetime(2016, 1, 3, tzinfo=NYC))     # EST\n    2016-01-03 00:00:00-05:00\n\n    >>> print(datetime(2016, 7, 7, tzinfo=NYC))     # EDT\n    2016-07-07 00:00:00-04:00\n\n\nThe ``tzfile`` structure contains a fully history of the time zone,\nso historical dates will also have the right offsets. For example, before\nthe adoption of standard time on November 18, 1883, New York used local\nmean time:\n\n.. doctest:: tzfile\n\n   >>> print(datetime(1883, 11, 18, tzinfo=NYC))    # LMT\n   1883-11-18 00:00:00-04:56:02\n\nAnd during World War II, New York was on \"Eastern War Time\", which was a\nstate of permanent daylight saving time:\n\n.. doctest:: tzfile\n\n    >>> print(datetime(1944, 2, 7, tzinfo=NYC))    # EWT\n    1944-02-07 00:00:00-04:00",
+      "file": "dateutil/tz/_tzfile.py",
+      "line": 48,
+      "loc": 594
+    },
+    "tzrange": {
+      "module": "dateutil.tz",
+      "params": [
+        {
+          "name": "stdabbr",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "stdoffset",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "dstabbr",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "dstoffset",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "start",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        },
+        {
+          "name": "end",
+          "annotation": null,
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "The ``tzrange`` object is a time zone specified by a set of offsets and abbreviations, equivalent to the way the ``TZ`` variable can be specified in POSIX-like systems, but using Python delta objects to specify DST start, end and offsets.",
+      "docstring": "The ``tzrange`` object is a time zone specified by a set of offsets and\nabbreviations, equivalent to the way the ``TZ`` variable can be specified\nin POSIX-like systems, but using Python delta objects to specify DST\nstart, end and offsets.\n\n:param stdabbr:\n    The abbreviation for standard time (e.g. ``'EST'``).\n\n:param stdoffset:\n    An integer or :class:`datetime.timedelta` object or equivalent\n    specifying the base offset from UTC.\n\n    If unspecified, +00:00 is used.\n\n:param dstabbr:\n    The abbreviation for DST / \"Summer\" time (e.g. ``'EDT'``).\n\n    If specified, with no other DST information, DST is assumed to occur\n    and the default behavior or ``dstoffset``, ``start`` and ``end`` is\n    used. If unspecified and no other DST information is specified, it\n    is assumed that this zone has no DST.\n\n    If this is unspecified and other DST information is *is* specified,\n    DST occurs in the zone but the time zone abbreviation is left\n    unchanged.\n\n:param dstoffset:\n    A an integer or :class:`datetime.timedelta` object or equivalent\n    specifying the UTC offset during DST. If unspecified and any other DST\n    information is specified, it is assumed to be the STD offset +1 hour.\n\n:param start:\n    A :class:`relativedelta.relativedelta` object or equivalent specifying\n    the time and time of year that daylight savings time starts. To\n    specify, for example, that DST starts at 2AM on the 2nd Sunday in\n    March, pass:\n\n        ``relativedelta(hours=2, month=3, day=1, weekday=SU(+2))``\n\n    If unspecified and any other DST information is specified, the default\n    value is 2 AM on the first Sunday in April.\n\n:param end:\n    A :class:`relativedelta.relativedelta` object or equivalent\n    representing the time and time of year that daylight savings time\n    ends, with the same specification method as in ``start``. One note is\n    that this should point to the first time in the *standard* zone, so if\n    a transition occurs at 2AM in the DST zone and the clocks are set back\n    1 hour to 1AM, set the ``hours`` parameter to +1.\n\n\n**Examples:**\n\n.. testsetup:: tzrange\n\n    from dateutil.tz import tzrange, tzstr\n\n.. doctest:: tzrange\n\n    >>> tzstr('EST5EDT') == tzrange(\"EST\", -18000, \"EDT\")\n    True\n\n    >>> from dateutil.relativedelta import *\n    >>> range1 = tzrange(\"EST\", -18000, \"EDT\")\n    >>> range2 = tzrange(\"EST\", -18000, \"EDT\", -14400,\n    ...                  relativedelta(hours=+2, month=4, day=1,\n    ...                                weekday=SU(+1)),\n    ...                  relativedelta(hours=+1, month=10, day=31,\n    ...                                weekday=SU(-1)))\n    >>> tzstr('EST5EDT') == range1 == range2\n    True",
+      "file": "dateutil/tz/tz.py",
+      "line": 305,
+      "loc": 160
+    },
+    "tzical": {
+      "module": "dateutil.tz",
+      "params": [
+        {
+          "name": "fileobj",
+          "annotation": null,
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "summary": "This object is designed to parse an iCalendar-style ``VTIMEZONE`` structure as set out in `RFC 5545`_ Section 4.6.5 into one or more `tzinfo` objects.",
+      "docstring": "This object is designed to parse an iCalendar-style ``VTIMEZONE`` structure\nas set out in `RFC 5545`_ Section 4.6.5 into one or more `tzinfo` objects.\n\n:param `fileobj`:\n    A file or stream in iCalendar format, which should be UTF-8 encoded\n    with CRLF endings.\n\n.. _`RFC 5545`: https://tools.ietf.org/html/rfc5545",
+      "file": "dateutil/tz/tz.py",
+      "line": 680,
+      "loc": 206
+    },
+    "tzres": {
+      "module": "dateutil.tzwin",
+      "params": [
+        {
+          "name": "tzres_loc",
+          "annotation": null,
+          "default": "'tzres.dll'",
+          "kind": "positional"
+        }
+      ],
+      "summary": "Class for accessing ``tzres.dll``, which contains timezone name related resources.",
+      "docstring": "Class for accessing ``tzres.dll``, which contains timezone name related\nresources.\n\n.. versionadded:: 2.5.0",
+      "file": "dateutil/tz/win.py",
+      "line": 42,
+      "loc": 82
+    },
+    "tzrangebase": {
+      "module": "dateutil.tz.tz",
+      "params": [],
+      "summary": "This is an abstract base class for time zones represented by an annual transition into and out of DST. Child classes should implement the following methods:",
+      "docstring": "This is an abstract base class for time zones represented by an annual\ntransition into and out of DST. Child classes should implement the following\nmethods:\n\n    * ``__init__(self, *args, **kwargs)``\n    * ``transitions(self, year)`` - this is expected to return a tuple of\n      datetimes representing the DST on and off transitions in standard\n      time.\n\nA fully initialized ``tzrangebase`` subclass should also provide the\nfollowing attributes:\n    * ``hasdst``: Boolean whether or not the zone uses DST.\n    * ``_dst_offset`` / ``_std_offset``: :class:`datetime.timedelta` objects\n      representing the respective UTC offsets.\n    * ``_dst_abbr`` / ``_std_abbr``: Strings representing the timezone short\n      abbreviations in DST and STD, respectively.\n    * ``_hasdst``: Whether or not the zone has DST.\n\n.. versionadded:: 2.6.0",
+      "file": "dateutil/tz/_common.py",
+      "line": 160,
+      "loc": 149
+    }
+  }
+}

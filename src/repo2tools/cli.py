@@ -38,6 +38,7 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "corpus-saturation": ("repo2tools.corpus.saturation", "group similar tool candidates across repositories; do the distinct ones saturate?"),
         "corpus-exercises": ("repo2tools.corpus.exercises", "exercises with known answers from documentation examples, confirmed by running them in the sandbox"),
         "corpus-tasks": ("repo2tools.corpus.tasks", "a question in plain words for each verified example, in the format of run-model"),
+        "corpus-benchmark": ("repo2tools.corpus.benchmark", "per repository: generate tools, then score a model on its questions without and with them"),
     },
     "ToolGym": {
         "toolgym-types": ("repo2tools.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),

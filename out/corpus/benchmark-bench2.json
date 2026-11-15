@@ -1,0 +1,100 @@
+{
+ "model": "qwen3-8b",
+ "tag": "bench2",
+ "min_tasks": 8,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "questions": 11,
+   "tools_picked": 1,
+   "tools_accepted": 1,
+   "none": 4,
+   "tools": 3,
+   "called_a_tool": 9,
+   "right_when_called": 1,
+   "tool_errors": 2
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "questions": 15,
+   "tools_picked": 54,
+   "tools_accepted": 0,
+   "none": 10,
+   "tools": null
+  },
+  {
+   "package": "more_itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "questions": 19,
+   "tools_picked": 59,
+   "tools_accepted": 25,
+   "none": 10,
+   "tools": 9,
+   "called_a_tool": 10,
+   "right_when_called": 4,
+   "tool_errors": 5
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "questions": 20,
+   "tools_picked": 45,
+   "tools_accepted": 3,
+   "none": 6,
+   "tools": 0,
+   "called_a_tool": 12,
+   "right_when_called": 0,
+   "tool_errors": 44
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "questions": 9,
+   "tools_picked": 58,
+   "tools_accepted": 11,
+   "none": 6,
+   "tools": 6,
+   "called_a_tool": 3,
+   "right_when_called": 2,
+   "tool_errors": 0
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "questions": 16,
+   "tools_picked": 60,
+   "tools_accepted": 26,
+   "none": 7,
+   "tools": 4,
+   "called_a_tool": 11,
+   "right_when_called": 2,
+   "tool_errors": 4
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "questions": 28,
+   "tools_picked": 60,
+   "tools_accepted": 41,
+   "none": 14,
+   "tools": 8,
+   "called_a_tool": 22,
+   "right_when_called": 8,
+   "tool_errors": 23
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "questions": 17,
+   "tools_picked": 24,
+   "tools_accepted": 11,
+   "none": 7,
+   "tools": 4,
+   "called_a_tool": 6,
+   "right_when_called": 2,
+   "tool_errors": 0
+  }
+ ]
+}

@@ -1,0 +1,1289 @@
+{
+  "repo": "https://github.com/sybrenstuvel/python-rsa",
+  "package": "rsa",
+  "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+  "n_callables": 44,
+  "callables": [
+    {
+      "qualname": "newkeys",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nbits",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "accurate",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "positional"
+        },
+        {
+          "name": "poolsize",
+          "annotation": "int",
+          "default": "1",
+          "kind": "positional"
+        },
+        {
+          "name": "exponent",
+          "annotation": "int",
+          "default": "DEFAULT_EXPONENT",
+          "kind": "positional"
+        },
+        {
+          "name": "nprimes",
+          "annotation": "int",
+          "default": "2",
+          "kind": "positional"
+        }
+      ],
+      "returns": "typing.Tuple[PublicKey, PrivateKey]",
+      "summary": "Generates public and private keys, and returns them as (pub, priv).",
+      "docstring": "Generates public and private keys, and returns them as (pub, priv).\n\nThe public key is also known as the 'encryption key', and is a\n:py:class:`rsa.PublicKey` object. The private key is also known as the\n'decryption key' and is a :py:class:`rsa.PrivateKey` object.\n\n:param nbits: the number of bits required to store the modulus ``n``.\n:param accurate: when True, ``n`` will have exactly the number of bits you\n    asked for. However, this makes key generation much slower. When False,\n    `n`` may have slightly less bits.\n:param poolsize: the number of processes to use to generate the prime\n    numbers. If set to a number > 1, a parallel algorithm will be used.\n    This requires Python 2.6 or newer.\n:param exponent: the exponent for the key; only change this if you know\n    what you're doing, as the exponent influences how difficult your\n    private key can be cracked. A very common choice for e is 65537.\n:type exponent: int\n:param nprimes: the number of prime factors comprising the modulus.\n\n:returns: a tuple (:py:class:`rsa.PublicKey`, :py:class:`rsa.PrivateKey`)\n\nThe ``poolsize`` parameter was added in *Python-RSA 3.1* and requires\nPython 2.6 or newer.",
+      "file": "rsa/key.py",
+      "line": 897,
+      "loc": 64,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "encrypt",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "message",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pub_key",
+          "annotation": "key.PublicKey",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Encrypts the given message using PKCS#1 v1.5",
+      "docstring": "Encrypts the given message using PKCS#1 v1.5\n\n:param message: the message to encrypt. Must be a byte string no longer than\n    ``k-11`` bytes, where ``k`` is the number of bytes needed to encode\n    the ``n`` component of the public key.\n:param pub_key: the :py:class:`rsa.PublicKey` to encrypt with.\n:raise OverflowError: when the message is too large to fit in the padded\n    block.\n\n>>> from rsa import key, common\n>>> (pub_key, priv_key) = key.newkeys(256)\n>>> message = b'hello'\n>>> crypto = encrypt(message, pub_key)\n\nThe crypto text should be just as long as the public key 'n' component:\n\n>>> len(crypto) == common.byte_size(pub_key.n)\nTrue",
+      "file": "rsa/pkcs1.py",
+      "line": 159,
+      "loc": 30,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "decrypt",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "crypto",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "priv_key",
+          "annotation": "key.PrivateKey",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Decrypts the given message using PKCS#1 v1.5",
+      "docstring": "Decrypts the given message using PKCS#1 v1.5\n\nThe decryption is considered 'failed' when the resulting cleartext doesn't\nstart with the bytes 00 02, or when the 00 byte between the padding and\nthe message cannot be found.\n\n:param crypto: the crypto text as returned by :py:func:`rsa.encrypt`\n:param priv_key: the :py:class:`rsa.PrivateKey` to decrypt with.\n:raise DecryptionError: when the decryption fails. No details are given as\n    to why the code thinks the decryption fails, as this would leak\n    information about the private key.\n\n\n>>> import rsa\n>>> (pub_key, priv_key) = rsa.newkeys(256)\n\nIt works with strings:\n\n>>> crypto = encrypt(b'hello', pub_key)\n>>> decrypt(crypto, priv_key)\nb'hello'\n\nAnd with binary data:\n\n>>> crypto = encrypt(b'\\x00\\x00\\x00\\x00\\x01', pub_key)\n>>> decrypt(crypto, priv_key)\nb'\\x00\\x00\\x00\\x00\\x01'\n\nAltering the encrypted information will *likely* cause a\n:py:class:`rsa.pkcs1.DecryptionError`. If you want to be *sure*, use\n:py:func:`rsa.sign`.\n\n\n.. warning::\n\n    Never display the stack trace of a\n    :py:class:`rsa.pkcs1.DecryptionError` exception. It shows where in the\n    code the exception occurred, and thus leaks information about the key.\n    It's only a tiny bit of information, but every bit makes cracking the\n    keys easier.\n\n>>> crypto = encrypt(b'hello', pub_key)\n>>> crypto = crypto[0:5] + b'X' + crypto[6:] # change a byte\n>>> decrypt(crypto, priv_key)\nTraceback (most recent call last):\n...\nrsa.pkcs1.DecryptionError: Decryption failed",
+      "file": "rsa/pkcs1.py",
+      "line": 191,
+      "loc": 81,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "sign",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "message",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "priv_key",
+          "annotation": "key.PrivateKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "hash_method",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Signs the message with the private key.",
+      "docstring": "Signs the message with the private key.\n\nHashes the message, then signs the hash with the given key. This is known\nas a \"detached signature\", because the message itself isn't altered.\n\n:param message: the message to sign. Can be an 8-bit string or a file-like\n    object. If ``message`` has a ``read()`` method, it is assumed to be a\n    file-like object.\n:param priv_key: the :py:class:`rsa.PrivateKey` to sign with\n:param hash_method: the hash method used on the message. Use 'MD5', 'SHA-1',\n    'SHA-224', SHA-256', 'SHA-384' or 'SHA-512'.\n:return: a message signature block.\n:raise OverflowError: if the private key is too small to contain the\n    requested hash.",
+      "file": "rsa/pkcs1.py",
+      "line": 307,
+      "loc": 20,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "verify",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "message",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "signature",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pub_key",
+          "annotation": "key.PublicKey",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Verifies that the signature matches the message.",
+      "docstring": "Verifies that the signature matches the message.\n\nThe hash method is detected automatically from the signature.\n\n:param message: the signed message. Can be an 8-bit string or a file-like\n    object. If ``message`` has a ``read()`` method, it is assumed to be a\n    file-like object.\n:param signature: the signature block, as created with :py:func:`rsa.sign`.\n:param pub_key: the :py:class:`rsa.PublicKey` of the person signing the message.\n:raise VerificationError: when the signature doesn't match the message.\n:returns: the name of the used hash.",
+      "file": "rsa/pkcs1.py",
+      "line": 329,
+      "loc": 36,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "PublicKey.load_pkcs1_openssl_pem",
+      "module": "rsa",
+      "kind": "classmethod",
+      "params": [
+        {
+          "name": "keyfile",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "'PublicKey'",
+      "summary": "Loads a PKCS#1.5 PEM-encoded public key file from OpenSSL.",
+      "docstring": "Loads a PKCS#1.5 PEM-encoded public key file from OpenSSL.\n\nThese files can be recognised in that they start with BEGIN PUBLIC KEY\nrather than BEGIN RSA PUBLIC KEY.\n\nThe contents of the file before the \"-----BEGIN PUBLIC KEY-----\" and\nafter the \"-----END PUBLIC KEY-----\" lines is ignored.\n\n:param keyfile: contents of a PEM-encoded file that contains the public\n    key, from OpenSSL.\n:type keyfile: bytes\n:return: a PublicKey object",
+      "file": "rsa/key.py",
+      "line": 351,
+      "loc": 17,
+      "n_overloads": 0,
+      "decorators": [
+        "classmethod"
+      ]
+    },
+    {
+      "qualname": "PublicKey.load_pkcs1_openssl_der",
+      "module": "rsa",
+      "kind": "classmethod",
+      "params": [
+        {
+          "name": "keyfile",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "'PublicKey'",
+      "summary": "Loads a PKCS#1 DER-encoded public key file from OpenSSL.",
+      "docstring": "Loads a PKCS#1 DER-encoded public key file from OpenSSL.\n\n:param keyfile: contents of a DER-encoded file that contains the public\n    key, from OpenSSL.\n:return: a PublicKey object",
+      "file": "rsa/key.py",
+      "line": 370,
+      "loc": 18,
+      "n_overloads": 0,
+      "decorators": [
+        "classmethod"
+      ]
+    },
+    {
+      "qualname": "PrivateKey.blinded_decrypt",
+      "module": "rsa",
+      "kind": "method",
+      "params": [
+        {
+          "name": "encrypted",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Decrypts the message using blinding to prevent side-channel attacks.",
+      "docstring": "Decrypts the message using blinding to prevent side-channel attacks.\n\n:param encrypted: the encrypted message\n:type encrypted: int\n\n:returns: the decrypted message\n:rtype: int",
+      "file": "rsa/key.py",
+      "line": 537,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "find_signature_hash",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "signature",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pub_key",
+          "annotation": "key.PublicKey",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Returns the hash name detected from the signature.",
+      "docstring": "Returns the hash name detected from the signature.\n\nIf you also want to verify the message, use :py:func:`rsa.verify()` instead.\nIt also returns the name of the used hash.\n\n:param signature: the signature block, as created with :py:func:`rsa.sign`.\n:param pub_key: the :py:class:`rsa.PublicKey` of the person signing the message.\n:returns: the name of the used hash.",
+      "file": "rsa/pkcs1.py",
+      "line": 367,
+      "loc": 17,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "compute_hash",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "message",
+          "annotation": "typing.Union[bytes, typing.BinaryIO]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "method_name",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Returns the message digest.",
+      "docstring": "Returns the message digest.\n\n:param message: the signed message. Can be an 8-bit string or a file-like\n    object. If ``message`` has a ``read()`` method, it is assumed to be a\n    file-like object.\n:param method_name: the hash method, must be a key of\n    :py:const:`rsa.pkcs1.HASH_METHODS`.",
+      "file": "rsa/pkcs1.py",
+      "line": 407,
+      "loc": 26,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "sign_hash",
+      "module": "rsa",
+      "kind": "function",
+      "params": [
+        {
+          "name": "hash_value",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "priv_key",
+          "annotation": "key.PrivateKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "hash_method",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Signs a precomputed hash with the private key.",
+      "docstring": "Signs a precomputed hash with the private key.\n\nSigns the hash with the given key. This is known as a \"detached signature\",\nbecause the message itself isn't altered.\n\n:param hash_value: A precomputed hash to sign (ignores message).\n:param priv_key: the :py:class:`rsa.PrivateKey` to sign with\n:param hash_method: the hash method used on the message. Use 'MD5', 'SHA-1',\n    'SHA-224', SHA-256', 'SHA-384' or 'SHA-512'.\n:return: a message signature block.\n:raise OverflowError: if the private key is too small to contain the\n    requested hash.",
+      "file": "rsa/pkcs1.py",
+      "line": 274,
+      "loc": 31,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "keygen",
+      "module": "rsa.cli",
+      "kind": "function",
+      "params": [],
+      "returns": "None",
+      "summary": "Key generator.",
+      "docstring": "Key generator.",
+      "file": "rsa/cli.py",
+      "line": 33,
+      "loc": 65,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "CryptoOperation.perform_operation",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indata",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "key",
+          "annotation": "rsa.key.AbstractKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "cli_args",
+          "annotation": "Indexable",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "typing.Any",
+      "summary": "Performs the program's operation.",
+      "docstring": "Performs the program's operation.\n\nImplement in a subclass.\n\n:returns: the data to write to the output.",
+      "file": "rsa/cli.py",
+      "line": 125,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": [
+        "abc.abstractmethod"
+      ]
+    },
+    {
+      "qualname": "CryptoOperation.parse_cli",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [],
+      "returns": "typing.Tuple[optparse.Values, typing.List[str]]",
+      "summary": "Parse the CLI options",
+      "docstring": "Parse the CLI options\n\n:returns: (cli_opts, cli_args)",
+      "file": "rsa/cli.py",
+      "line": 150,
+      "loc": 27,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "CryptoOperation.read_key",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "filename",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "keyform",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "rsa.key.AbstractKey",
+      "summary": "Reads a public or private key.",
+      "docstring": "Reads a public or private key.",
+      "file": "rsa/cli.py",
+      "line": 178,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "CryptoOperation.read_infile",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "inname",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Read the input file",
+      "docstring": "Read the input file",
+      "file": "rsa/cli.py",
+      "line": 187,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "CryptoOperation.write_outfile",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "outdata",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "outname",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Write the output file",
+      "docstring": "Write the output file",
+      "file": "rsa/cli.py",
+      "line": 198,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "EncryptOperation.perform_operation",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indata",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pub_key",
+          "annotation": "rsa.key.AbstractKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "cli_args",
+          "annotation": "Indexable",
+          "default": "()",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Encrypts files.",
+      "docstring": "Encrypts files.",
+      "file": "rsa/cli.py",
+      "line": 221,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "DecryptOperation.perform_operation",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indata",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "priv_key",
+          "annotation": "rsa.key.AbstractKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "cli_args",
+          "annotation": "Indexable",
+          "default": "()",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Decrypts files.",
+      "docstring": "Decrypts files.",
+      "file": "rsa/cli.py",
+      "line": 242,
+      "loc": 6,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "SignOperation.perform_operation",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indata",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "priv_key",
+          "annotation": "rsa.key.AbstractKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "cli_args",
+          "annotation": "Indexable",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Signs files.",
+      "docstring": "Signs files.",
+      "file": "rsa/cli.py",
+      "line": 270,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "VerifyOperation.perform_operation",
+      "module": "rsa.cli",
+      "kind": "method",
+      "params": [
+        {
+          "name": "indata",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pub_key",
+          "annotation": "rsa.key.AbstractKey",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "cli_args",
+          "annotation": "Indexable",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Verifies files.",
+      "docstring": "Verifies files.",
+      "file": "rsa/cli.py",
+      "line": 299,
+      "loc": 17,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "bit_size",
+      "module": "rsa.common",
+      "kind": "function",
+      "params": [
+        {
+          "name": "num",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Number of bits needed to represent a integer excluding any prefix 0 bits.",
+      "docstring": "Number of bits needed to represent a integer excluding any prefix\n0 bits.\n\nUsage::\n\n    >>> bit_size(1023)\n    10\n    >>> bit_size(1024)\n    11\n    >>> bit_size(1025)\n    11\n\n:param num:\n    Integer value. If num is 0, returns 0. Only the absolute value of the\n    number is considered. Therefore, signed integers will be abs(num)\n    before the number's bit length is determined.\n:returns:\n    Returns the number of bits in the integer.",
+      "file": "rsa/common.py",
+      "line": 28,
+      "loc": 26,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "byte_size",
+      "module": "rsa.common",
+      "kind": "function",
+      "params": [
+        {
+          "name": "number",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Returns the number of bytes required to hold a specific long number.",
+      "docstring": "Returns the number of bytes required to hold a specific long number.\n\nThe number of bytes is rounded up.\n\nUsage::\n\n    >>> byte_size(1 << 1023)\n    128\n    >>> byte_size((1 << 1024) - 1)\n    128\n    >>> byte_size(1 << 1024)\n    129\n\n:param number:\n    An unsigned integer\n:returns:\n    The number of bytes required to hold a specific long number.",
+      "file": "rsa/common.py",
+      "line": 56,
+      "loc": 23,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ceil_div",
+      "module": "rsa.common",
+      "kind": "function",
+      "params": [
+        {
+          "name": "num",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "div",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Returns the ceiling function of a division between `num` and `div`.",
+      "docstring": "Returns the ceiling function of a division between `num` and `div`.\n\nUsage::\n\n    >>> ceil_div(100, 7)\n    15\n    >>> ceil_div(100, 10)\n    10\n    >>> ceil_div(1, 4)\n    1\n\n:param num: Division's numerator, a number\n:param div: Division's divisor, a number\n\n:return: Rounded up result of the division between the parameters.",
+      "file": "rsa/common.py",
+      "line": 81,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "extended_gcd",
+      "module": "rsa.common",
+      "kind": "function",
+      "params": [
+        {
+          "name": "a",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "b",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "typing.Tuple[int, int, int]",
+      "summary": "Returns a tuple (r, i, j) such that r = gcd(a, b) = ia + jb",
+      "docstring": "Returns a tuple (r, i, j) such that r = gcd(a, b) = ia + jb",
+      "file": "rsa/common.py",
+      "line": 105,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "inverse",
+      "module": "rsa.common",
+      "kind": "function",
+      "params": [
+        {
+          "name": "x",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "n",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Returns the inverse of x % n under multiplication, a.k.a x^-1 (mod n)",
+      "docstring": "Returns the inverse of x % n under multiplication, a.k.a x^-1 (mod n)\n\n>>> inverse(7, 4)\n3\n>>> (inverse(143, 4) * 143) % 4\n1",
+      "file": "rsa/common.py",
+      "line": 129,
+      "loc": 15,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "crt",
+      "module": "rsa.common",
+      "kind": "function",
+      "params": [
+        {
+          "name": "a_values",
+          "annotation": "typing.Iterable[int]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "modulo_values",
+          "annotation": "typing.Iterable[int]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Chinese Remainder Theorem.",
+      "docstring": "Chinese Remainder Theorem.\n\nCalculates x such that x = a[i] (mod m[i]) for each i.\n\n:param a_values: the a-values of the above equation\n:param modulo_values: the m-values of the above equation\n:returns: x such that x = a[i] (mod m[i]) for each i\n\n\n>>> crt([2, 3], [3, 5])\n8\n\n>>> crt([2, 3, 2], [3, 5, 7])\n23\n\n>>> crt([2, 3, 0], [7, 11, 15])\n135",
+      "file": "rsa/common.py",
+      "line": 146,
+      "loc": 33,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "assert_int",
+      "module": "rsa.core",
+      "kind": "function",
+      "params": [
+        {
+          "name": "var",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "name",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "rsa/core.py",
+      "line": 24,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "encrypt_int",
+      "module": "rsa.core",
+      "kind": "function",
+      "params": [
+        {
+          "name": "message",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "ekey",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "n",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Encrypts a message using encryption key 'ekey', working modulo n",
+      "docstring": "Encrypts a message using encryption key 'ekey', working modulo n",
+      "file": "rsa/core.py",
+      "line": 31,
+      "loc": 14,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "decrypt_int",
+      "module": "rsa.core",
+      "kind": "function",
+      "params": [
+        {
+          "name": "cyphertext",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "dkey",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "n",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Decrypts a cypher text using the decryption key 'dkey', working modulo n",
+      "docstring": "Decrypts a cypher text using the decryption key 'dkey', working modulo n",
+      "file": "rsa/core.py",
+      "line": 47,
+      "loc": 9,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "decrypt_int_fast",
+      "module": "rsa.core",
+      "kind": "function",
+      "params": [
+        {
+          "name": "cyphertext",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "rs",
+          "annotation": "typing.List[int]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "ds",
+          "annotation": "typing.List[int]",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "ts",
+          "annotation": "typing.List[int]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Decrypts a cypher text more quickly using the Chinese Remainder Theorem.",
+      "docstring": "Decrypts a cypher text more quickly using the Chinese Remainder Theorem.",
+      "file": "rsa/core.py",
+      "line": 58,
+      "loc": 32,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "getprime",
+      "module": "rsa.parallel",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nbits",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "poolsize",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Returns a prime number that can be stored in 'nbits' bits.",
+      "docstring": "Returns a prime number that can be stored in 'nbits' bits.\n\nWorks in multiple threads at the same time.\n\n>>> p = getprime(128, 3)\n>>> rsa.prime.is_prime(p-1)\nFalse\n>>> rsa.prime.is_prime(p)\nTrue\n>>> rsa.prime.is_prime(p+1)\nFalse\n\n>>> from rsa import common\n>>> common.bit_size(p) == 128\nTrue",
+      "file": "rsa/parallel.py",
+      "line": 42,
+      "loc": 38,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "load_pem",
+      "module": "rsa.pem",
+      "kind": "function",
+      "params": [
+        {
+          "name": "contents",
+          "annotation": "FlexiText",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pem_marker",
+          "annotation": "FlexiText",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Loads a PEM file.",
+      "docstring": "Loads a PEM file.\n\n:param contents: the contents of the file to interpret\n:param pem_marker: the marker of the PEM content, such as 'RSA PRIVATE KEY'\n    when your file has '-----BEGIN RSA PRIVATE KEY-----' and\n    '-----END RSA PRIVATE KEY-----' markers.\n\n:return: the base64-decoded content between the start and end markers.\n\n@raise ValueError: when the content is invalid, for example when the start\n    marker cannot be found.",
+      "file": "rsa/pem.py",
+      "line": 83,
+      "loc": 25,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "save_pem",
+      "module": "rsa.pem",
+      "kind": "function",
+      "params": [
+        {
+          "name": "contents",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pem_marker",
+          "annotation": "FlexiText",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Saves a PEM file.",
+      "docstring": "Saves a PEM file.\n\n:param contents: the contents to encode in PEM format\n:param pem_marker: the marker of the PEM content, such as 'RSA PRIVATE KEY'\n    when your file has '-----BEGIN RSA PRIVATE KEY-----' and\n    '-----END RSA PRIVATE KEY-----' markers.\n\n:return: the base64-encoded content between the start and end markers, as bytes.",
+      "file": "rsa/pem.py",
+      "line": 110,
+      "loc": 25,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "mgf1",
+      "module": "rsa.pkcs1_v2",
+      "kind": "function",
+      "params": [
+        {
+          "name": "seed",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "length",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "hasher",
+          "annotation": "str",
+          "default": "'SHA-1'",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "MGF1 is a Mask Generation Function based on a hash function.",
+      "docstring": "MGF1 is a Mask Generation Function based on a hash function.\n\nA mask generation function takes an octet string of variable length and a\ndesired output length as input, and outputs an octet string of the desired\nlength. The plaintext-awareness of RSAES-OAEP relies on the random nature of\nthe output of the mask generation function, which in turn relies on the\nrandom nature of the underlying hash.\n\n:param bytes seed: seed from which mask is generated, an octet string\n:param int length: intended length in octets of the mask, at most 2^32(hLen)\n:param str hasher: hash function (hLen denotes the length in octets of the hash\n    function output)\n\n:return: mask, an octet string of length `length`\n:rtype: bytes\n\n:raise OverflowError: when `length` is too large for the specified `hasher`\n:raise ValueError: when specified `hasher` is invalid",
+      "file": "rsa/pkcs1_v2.py",
+      "line": 28,
+      "loc": 54,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "getprime",
+      "module": "rsa.prime",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nbits",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Returns a prime number that can be stored in 'nbits' bits.",
+      "docstring": "Returns a prime number that can be stored in 'nbits' bits.\n\n>>> p = getprime(128)\n>>> is_prime(p-1)\nFalse\n>>> is_prime(p)\nTrue\n>>> is_prime(p+1)\nFalse\n\n>>> from rsa import common\n>>> common.bit_size(p) == 128\nTrue",
+      "file": "rsa/prime.py",
+      "line": 144,
+      "loc": 24,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "are_relatively_prime",
+      "module": "rsa.prime",
+      "kind": "function",
+      "params": [
+        {
+          "name": "a",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "b",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Returns True if a and b are relatively prime, and False if they are not.",
+      "docstring": "Returns True if a and b are relatively prime, and False if they\nare not.\n\n>>> are_relatively_prime(2, 3)\nTrue\n>>> are_relatively_prime(2, 4)\nFalse",
+      "file": "rsa/prime.py",
+      "line": 172,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "read_random_bits",
+      "module": "rsa.randnum",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nbits",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Reads 'nbits' random bits.",
+      "docstring": "Reads 'nbits' random bits.\n\nIf nbits isn't a whole number of bytes, an extra byte will be appended with\nonly the lower bits set.",
+      "file": "rsa/randnum.py",
+      "line": 25,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "read_random_int",
+      "module": "rsa.randnum",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nbits",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Reads a random integer of approximately nbits bits.",
+      "docstring": "Reads a random integer of approximately nbits bits.",
+      "file": "rsa/randnum.py",
+      "line": 46,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "read_random_odd_int",
+      "module": "rsa.randnum",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nbits",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Reads a random odd integer of approximately nbits bits.",
+      "docstring": "Reads a random odd integer of approximately nbits bits.\n\n>>> read_random_odd_int(512) & 1\n1",
+      "file": "rsa/randnum.py",
+      "line": 59,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "randint",
+      "module": "rsa.randnum",
+      "kind": "function",
+      "params": [
+        {
+          "name": "maxvalue",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Returns a random integer x with 1 <= x <= maxvalue",
+      "docstring": "Returns a random integer x with 1 <= x <= maxvalue\n\nMay take a very long time in specific situations. If maxvalue needs N bits\nto store, the closer maxvalue is to (2 ** N) - 1, the faster this function\nis.",
+      "file": "rsa/randnum.py",
+      "line": 72,
+      "loc": 24,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "bytes2int",
+      "module": "rsa.transform",
+      "kind": "function",
+      "params": [
+        {
+          "name": "raw_bytes",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Converts a list of bytes or an 8-bit string to an integer.",
+      "docstring": "Converts a list of bytes or an 8-bit string to an integer.\n\nWhen using unicode strings, encode it to some encoding like UTF8 first.\n\n>>> (((128 * 256) + 64) * 256) + 15\n8405007\n>>> bytes2int(b'\\x80@\\x0f')\n8405007",
+      "file": "rsa/transform.py",
+      "line": 23,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "int2bytes",
+      "module": "rsa.transform",
+      "kind": "function",
+      "params": [
+        {
+          "name": "number",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "fill_size",
+          "annotation": "int",
+          "default": "0",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Convert an unsigned integer to bytes (big-endian)::",
+      "docstring": "Convert an unsigned integer to bytes (big-endian)::\n\nDoes not preserve leading zeros if you don't specify a fill size.\n\n:param number:\n    Integer value\n:param fill_size:\n    If the optional fill size is given the length of the resulting\n    byte string is expected to be the fill size and will be padded\n    with prefix zero bytes to satisfy that length.\n:returns:\n    Raw bytes (base-256 representation).\n:raises:\n    ``OverflowError`` when fill_size is given and the number takes up more\n    bytes than fit into the block. This requires the ``overflow``\n    argument to this function to be set to ``False`` otherwise, no\n    error will be raised.",
+      "file": "rsa/transform.py",
+      "line": 37,
+      "loc": 30,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "private_to_public",
+      "module": "rsa.util",
+      "kind": "function",
+      "params": [],
+      "returns": "None",
+      "summary": "Reads a private key and outputs the corresponding public key.",
+      "docstring": "Reads a private key and outputs the corresponding public key.",
+      "file": "rsa/util.py",
+      "line": 23,
+      "loc": 75,
+      "n_overloads": 0,
+      "decorators": []
+    }
+  ],
+  "classes": {
+    "PublicKey": {
+      "module": "rsa",
+      "params": null,
+      "summary": "Represents a public RSA key.",
+      "docstring": "Represents a public RSA key.\n\nThis key is also known as the 'encryption key'. It contains the 'n' and 'e'\nvalues.\n\nSupports attributes as well as dictionary-like access. Attribute access is\nfaster, though.\n\n>>> PublicKey(5, 3)\nPublicKey(5, 3)\n\n>>> key = PublicKey(5, 3)\n>>> key.n\n5\n>>> key['n']\n5\n>>> key.e\n3\n>>> key['e']\n3",
+      "file": "rsa/key.py",
+      "line": 225,
+      "loc": 163
+    },
+    "PrivateKey": {
+      "module": "rsa",
+      "params": [
+        {
+          "name": "n",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "e",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "d",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "p",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "q",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "rs",
+          "annotation": "typing.Optional[typing.List[int]]",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "summary": "Represents a private RSA key.",
+      "docstring": "Represents a private RSA key.\n\nThis key is also known as the 'decryption key'. It contains the 'n', 'e',\n'd', 'p', 'q' and other values. For example ,in the case of multiprime RSA,\nit additionally contains the lists 'rs', 'ds', and 'ts' which contain the\nfactors, exponents, and coefficients for the other primes.\n\nSupports attributes as well as dictionary-like access. Attribute access is\nfaster, though.\n\n>>> PrivateKey(3247, 65537, 833, 191, 17)\nPrivateKey(3247, 65537, 833, 191, 17)\n\nexp1, exp2 and coef will be calculated:\n\n>>> pk = PrivateKey(3727264081, 65537, 3349121513, 65063, 57287)\n>>> pk.exp1\n55063\n>>> pk.exp2\n10095\n>>> pk.coef\n50797",
+      "file": "rsa/key.py",
+      "line": 390,
+      "loc": 304
+    },
+    "CryptoOperation": {
+      "module": "rsa.cli",
+      "params": [],
+      "summary": "CLI callable that operates with input, output, and a key.",
+      "docstring": "CLI callable that operates with input, output, and a key.",
+      "file": "rsa/cli.py",
+      "line": 100,
+      "loc": 108
+    },
+    "EncryptOperation": {
+      "module": "rsa.cli",
+      "params": null,
+      "summary": "Encrypts a file.",
+      "docstring": "Encrypts a file.",
+      "file": "rsa/cli.py",
+      "line": 210,
+      "loc": 17
+    },
+    "DecryptOperation": {
+      "module": "rsa.cli",
+      "params": null,
+      "summary": "Decrypts a file.",
+      "docstring": "Decrypts a file.",
+      "file": "rsa/cli.py",
+      "line": 229,
+      "loc": 19
+    },
+    "SignOperation": {
+      "module": "rsa.cli",
+      "params": null,
+      "summary": "Signs a file.",
+      "docstring": "Signs a file.",
+      "file": "rsa/cli.py",
+      "line": 250,
+      "loc": 31
+    },
+    "VerifyOperation": {
+      "module": "rsa.cli",
+      "params": null,
+      "summary": "Verify a signature.",
+      "docstring": "Verify a signature.",
+      "file": "rsa/cli.py",
+      "line": 283,
+      "loc": 33
+    }
+  }
+}

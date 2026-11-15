@@ -1,0 +1,19 @@
+{
+ "url": "https://github.com/modelcontextprotocol/python-sdk",
+ "commit": "77001c96f9507be0f4d009b83210a384a5e08bda",
+ "package": "mcp",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "python-sdk-bench2",
+ "toolset": "toolsets/generated/python-sdk-bench2",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": []
+}
