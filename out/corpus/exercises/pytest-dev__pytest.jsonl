@@ -1,0 +1,1 @@
+{"id": "pytest-dev__pytest-001", "repo": "https://github.com/pytest-dev/pytest", "commit": "fc9a7ef678f64d17f1c03b619f3842ea1d127e74", "package": "pytest", "file": "doc/en/how-to/doctest.rst", "module": null, "steps": ["x = 3"], "expression": "x", "answer": 3, "answer_kinds": [], "documented": "3", "uses": []}

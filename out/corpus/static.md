@@ -8,15 +8,15 @@
 | Lines of code (not blank) | 1,248,695 | 4387 |
 | Public functions, methods and properties | 17,362 | 54 |
 | Classes with public members | 2,539 | 7 |
-| Documentation examples that use the API | 4,136 | 7 |
+| Documentation examples that use the API | 4,871 | 7 |
 
 ## Tool candidates by level
 
 | Level | One tool is | Candidates | Median per repository | Used in the repository's own docs |
 | --- | --- | --- | --- | --- |
-| low | one function, method or property | 17,362 | 54 | 1,611 (9%) |
-| medium | one operation on an object | 19,140 | 59 | 1,899 (10%) |
-| high | one documented example with two or more uses | 1,112 | 2 | all, by definition |
+| low | one function, method or property | 17,362 | 54 | 2,150 (12%) |
+| medium | one operation on an object | 19,144 | 59 | 2,451 (13%) |
+| high | one documented example with two or more uses | 1,814 | 2 | all, by definition |
 
 ## Per repository
 
@@ -31,7 +31,7 @@
 | `requests` | `3c7baaa` | 19 | 5,186 | 165 | 15 | 28 | 165 | 178 | 21 |
 | `pluggy` | `46a8072` | 13 | 1,755 | 35 | 3 | 3 | 35 | 37 | 4 |
 | `pycparser` | `c1f7fe5` | 7 | 5,882 | 131 | 65 | 2 | 131 | 196 | 1 |
-| `python-dateutil` | `a78cbd8` | 20 | 6,998 | 66 | 14 | 12 | 66 | 89 | 9 |
+| `python-dateutil` | `a78cbd8` | 20 | 6,998 | 66 | 14 | 19 | 66 | 89 | 18 |
 | `six` | `c8e3940` | 1 | 813 | 31 | 1 | 3 | 31 | 32 | 0 |
 | `setuptools` | `049ae8e` | 329 | 72,957 | 326 | 40 | 13 | 326 | 321 | 2 |
 | `pydantic` | `cd1d8be` | 55 | 24,385 | 234 | 33 | 28 | 234 | 268 | 40 |
@@ -102,11 +102,11 @@
 | `cachetools` | `1ce79ef` | 7 | 1,274 | 35 | 7 | 2 | 35 | 41 | 1 |
 | `docstring-parser` | `a8e2a3b` | 34 | 7,673 | 95 | 6 | 3 | 95 | 88 | 1 |
 | `editables` | `e501700` | 2 | 151 | 16 | 2 | 3 | 16 | 18 | 1 |
-| `oauthlib` | `179287a` | 75 | 10,367 | 327 | 41 | 14 | 327 | 331 | 11 |
+| `oauthlib` | `179287a` | 75 | 10,367 | 327 | 41 | 14 | 327 | 331 | 12 |
 | `werkzeug` | `0f43c6e` | 54 | 19,082 | 436 | 71 | 43 | 436 | 506 | 27 |
 | `more-itertools` | `ceafee8` | 3 | 5,628 | 176 | 6 | 163 | 176 | 183 | 21 |
 | `defusedxml` | `c744588` | 11 | 818 | 52 | 7 | 2 | 52 | 59 | 0 |
-| `networkx` | `ada19dd` | 585 | 167,870 | 1180 | 37 | 247 | 1180 | 1217 | 209 |
+| `networkx` | `ada19dd` | 585 | 167,870 | 1180 | 37 | 779 | 1180 | 1221 | 900 |
 | `pytest-cov` | `a8cb126` | 3 | 815 | 38 | 6 | 0 | 38 | 44 | 0 |
 | `distlib` | `c2d6d64` | 13 | 9,268 | 286 | 52 | 32 | 286 | 325 | 13 |
 | `exceptiongroup` | `62edd3a` | 5 | 996 | 11 | 1 | 2 | 11 | 11 | 1 |
@@ -114,7 +114,7 @@
 | `mako` | `14889bc` | 33 | 7,024 | 191 | 45 | 0 | 191 | 220 | 0 |
 | `alembic` | `1bcba93` | 77 | 24,225 | 510 | 57 | 1 | 510 | 532 | 0 |
 | `requests-toolbelt` | `bcd5f7b` | 34 | 2,797 | 74 | 24 | 13 | 74 | 97 | 8 |
-| `prompt-toolkit` | `6c7fbc1` | 145 | 34,386 | 964 | 167 | 35 | 964 | 1061 | 54 |
+| `prompt-toolkit` | `6c7fbc1` | 145 | 34,386 | 964 | 167 | 35 | 964 | 1061 | 55 |
 | `rsa` | `42b0e14` | 14 | 2,241 | 44 | 7 | 16 | 44 | 51 | 5 |
 | `cloudpickle` | `4af5936` | 3 | 1,312 | 10 | 1 | 3 | 10 | 11 | 1 |
 | `threadpoolctl` | `13b1a12` | 1 | 1,736 | 15 | 3 | 5 | 15 | 18 | 3 |

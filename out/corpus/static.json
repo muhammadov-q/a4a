@@ -41,7 +41,7 @@
     "examples": 166,
     "examples_with_two_or_more": 28
    },
-   "seconds": 1.5
+   "seconds": 1.4
   },
   {
    "package": "packaging",
@@ -170,7 +170,7 @@
     "examples": 1,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "idna",
@@ -213,7 +213,7 @@
     "examples": 2,
     "examples_with_two_or_more": 2
    },
-   "seconds": 1.6
+   "seconds": 1.5
   },
   {
    "package": "urllib3",
@@ -256,7 +256,7 @@
     "examples": 63,
     "examples_with_two_or_more": 36
    },
-   "seconds": 1.4
+   "seconds": 1.5
   },
   {
    "package": "requests",
@@ -342,7 +342,7 @@
     "examples": 10,
     "examples_with_two_or_more": 8
    },
-   "seconds": 1.4
+   "seconds": 0.8
   },
   {
    "package": "pycparser",
@@ -372,7 +372,7 @@
     "test_files": 9,
     "unparsed_pieces": 3,
     "callables_used_in_docs": 2,
-    "callables_used_in_tests": 8,
+    "callables_used_in_tests": 69,
     "classes_built_in_docs": 1,
     "classes_with_operators": 0
    },
@@ -385,7 +385,7 @@
     "examples": 3,
     "examples_with_two_or_more": 1
    },
-   "seconds": 1.7
+   "seconds": 1.1
   },
   {
    "package": "python-dateutil",
@@ -414,21 +414,21 @@
     "doc_files": 21,
     "test_files": 23,
     "unparsed_pieces": 4,
-    "callables_used_in_docs": 12,
+    "callables_used_in_docs": 19,
     "callables_used_in_tests": 46,
-    "classes_built_in_docs": 7,
+    "classes_built_in_docs": 10,
     "classes_with_operators": 7
    },
    "levels": {
     "low": 66,
-    "low_used_in_docs": 12,
+    "low_used_in_docs": 19,
     "medium": 89,
-    "medium_used_in_docs": 21,
-    "high": 9,
-    "examples": 24,
-    "examples_with_two_or_more": 10
+    "medium_used_in_docs": 31,
+    "high": 18,
+    "examples": 173,
+    "examples_with_two_or_more": 127
    },
-   "seconds": 1.5
+   "seconds": 1.1
   },
   {
    "package": "six",
@@ -471,7 +471,7 @@
     "examples": 3,
     "examples_with_two_or_more": 0
    },
-   "seconds": 1.2
+   "seconds": 0.6
   },
   {
    "package": "setuptools",
@@ -514,7 +514,7 @@
     "examples": 52,
     "examples_with_two_or_more": 6
    },
-   "seconds": 2.3
+   "seconds": 1.7
   },
   {
    "package": "pydantic",
@@ -557,7 +557,7 @@
     "examples": 229,
     "examples_with_two_or_more": 81
    },
-   "seconds": 5.8
+   "seconds": 5.3
   },
   {
    "package": "click",
@@ -686,7 +686,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.5
+   "seconds": 0.6
   },
   {
    "package": "pytest",
@@ -815,7 +815,7 @@
     "examples": 11,
     "examples_with_two_or_more": 1
    },
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "h11",
@@ -901,7 +901,7 @@
     "examples": 99,
     "examples_with_two_or_more": 46
    },
-   "seconds": 0.9
+   "seconds": 0.8
   },
   {
    "package": "httpx",
@@ -1030,7 +1030,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 1.2
+   "seconds": 1.0
   },
   {
    "package": "python-dotenv",
@@ -1159,7 +1159,7 @@
     "examples": 22,
     "examples_with_two_or_more": 9
    },
-   "seconds": 1.3
+   "seconds": 1.2
   },
   {
    "package": "aiobotocore",
@@ -1245,14 +1245,14 @@
     "examples": 96,
     "examples_with_two_or_more": 39
    },
-   "seconds": 1.3
+   "seconds": 1.2
   },
   {
    "package": "opentelemetry-api",
    "repo": "https://github.com/open-telemetry/opentelemetry-python",
    "commit": "b4dff8c663110a866a5f263016679da25bd02f33",
    "error": "SystemExit: no Python package  found in open-telemetry__opentelemetry-python (looked in src/ and the top level)",
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "platformdirs",
@@ -1295,7 +1295,7 @@
     "examples": 35,
     "examples_with_two_or_more": 5
    },
-   "seconds": 0.8
+   "seconds": 0.7
   },
   {
    "package": "uvicorn",
@@ -1338,7 +1338,7 @@
     "examples": 3,
     "examples_with_two_or_more": 0
    },
-   "seconds": 2.3
+   "seconds": 1.0
   },
   {
    "package": "pathspec",
@@ -1381,7 +1381,7 @@
     "examples": 16,
     "examples_with_two_or_more": 2
    },
-   "seconds": 2.2
+   "seconds": 0.7
   },
   {
    "package": "fsspec",
@@ -1424,7 +1424,7 @@
     "examples": 20,
     "examples_with_two_or_more": 5
    },
-   "seconds": 2.8
+   "seconds": 2.4
   },
   {
    "package": "jsonschema",
@@ -1467,7 +1467,7 @@
     "examples": 8,
     "examples_with_two_or_more": 0
    },
-   "seconds": 2.0
+   "seconds": 0.7
   },
   {
    "package": "filelock",
@@ -1510,7 +1510,7 @@
     "examples": 41,
     "examples_with_two_or_more": 28
    },
-   "seconds": 2.6
+   "seconds": 1.5
   },
   {
    "package": "jmespath",
@@ -1553,7 +1553,7 @@
     "examples": 4,
     "examples_with_two_or_more": 1
    },
-   "seconds": 1.1
+   "seconds": 0.8
   },
   {
    "package": "tzdata",
@@ -1596,7 +1596,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.7
+   "seconds": 0.8
   },
   {
    "package": "referencing",
@@ -1639,7 +1639,7 @@
     "examples": 2,
     "examples_with_two_or_more": 2
    },
-   "seconds": 0.6
+   "seconds": 0.7
   },
   {
    "package": "tomlkit",
@@ -1725,7 +1725,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.5
+   "seconds": 0.6
   },
   {
    "package": "markdown-it-py",
@@ -1768,7 +1768,7 @@
     "examples": 14,
     "examples_with_two_or_more": 13
    },
-   "seconds": 0.9
+   "seconds": 0.8
   },
   {
    "package": "rich",
@@ -1811,7 +1811,7 @@
     "examples": 394,
     "examples_with_two_or_more": 174
    },
-   "seconds": 2.0
+   "seconds": 2.1
   },
   {
    "package": "mdurl",
@@ -1897,7 +1897,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 2.4
+   "seconds": 2.5
   },
   {
    "package": "annotated-doc",
@@ -1983,14 +1983,14 @@
     "examples": 22,
     "examples_with_two_or_more": 8
    },
-   "seconds": 3.2
+   "seconds": 3.3
   },
   {
    "package": "googleapis-common-protos",
    "repo": "https://github.com/googleapis/google-cloud-python",
    "commit": "900ba57cf4142a045d75634c837727052e9839eb",
    "error": "SystemExit: no Python package  found in googleapis__google-cloud-python (looked in src/ and the top level)",
-   "seconds": 2.2
+   "seconds": 1.1
   },
   {
    "package": "pytz",
@@ -2033,7 +2033,7 @@
     "examples": 28,
     "examples_with_two_or_more": 14
    },
-   "seconds": 0.6
+   "seconds": 0.5
   },
   {
    "package": "tqdm",
@@ -2076,7 +2076,7 @@
     "examples": 73,
     "examples_with_two_or_more": 32
    },
-   "seconds": 2.1
+   "seconds": 0.9
   },
   {
    "package": "pyasn1",
@@ -2119,7 +2119,7 @@
     "examples": 4,
     "examples_with_two_or_more": 1
    },
-   "seconds": 2.0
+   "seconds": 1.1
   },
   {
    "package": "aiosignal",
@@ -2162,7 +2162,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.9
+   "seconds": 0.6
   },
   {
    "package": "aiohappyeyeballs",
@@ -2205,7 +2205,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.6
+   "seconds": 0.5
   },
   {
    "package": "sniffio",
@@ -2248,7 +2248,7 @@
     "examples": 1,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.6
+   "seconds": 0.5
   },
   {
    "package": "pydantic-settings",
@@ -2291,7 +2291,7 @@
     "examples": 24,
     "examples_with_two_or_more": 7
    },
-   "seconds": 1.1
+   "seconds": 1.0
   },
   {
    "package": "python-multipart",
@@ -2334,7 +2334,7 @@
     "examples": 4,
     "examples_with_two_or_more": 2
    },
-   "seconds": 0.6
+   "seconds": 0.7
   },
   {
    "package": "trove-classifiers",
@@ -2377,7 +2377,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 3.0
+   "seconds": 0.5
   },
   {
    "package": "zipp",
@@ -2420,7 +2420,7 @@
     "examples": 16,
     "examples_with_two_or_more": 6
    },
-   "seconds": 0.6
+   "seconds": 0.5
   },
   {
    "package": "tenacity",
@@ -2506,7 +2506,7 @@
     "examples": 8,
     "examples_with_two_or_more": 5
    },
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "pyasn1-modules",
@@ -2549,7 +2549,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 1.5
+   "seconds": 1.4
   },
   {
    "package": "hatchling",
@@ -2592,7 +2592,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 1.8
+   "seconds": 2.0
   },
   {
    "package": "wheel",
@@ -2635,7 +2635,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.6
+   "seconds": 1.4
   },
   {
    "package": "pyparsing",
@@ -2764,14 +2764,14 @@
     "examples": 96,
     "examples_with_two_or_more": 79
    },
-   "seconds": 17.7
+   "seconds": 17.5
   },
   {
    "package": "httpx2",
    "repo": "https://github.com/pydantic/httpx2",
    "commit": "f4f65c1ba4517a864b33770a92dee05ea74f9072",
    "error": "SystemExit: no Python package  found in pydantic__httpx2 (looked in src/ and the top level)",
-   "seconds": 0.7
+   "seconds": 0.5
   },
   {
    "package": "soupsieve",
@@ -2814,7 +2814,7 @@
     "examples": 2,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.9
+   "seconds": 1.2
   },
   {
    "package": "distro",
@@ -2900,7 +2900,7 @@
     "examples": 2,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.6
+   "seconds": 0.8
   },
   {
    "package": "sse-starlette",
@@ -2943,7 +2943,7 @@
     "examples": 10,
     "examples_with_two_or_more": 1
    },
-   "seconds": 0.9
+   "seconds": 0.7
   },
   {
    "package": "s3fs",
@@ -2986,7 +2986,7 @@
     "examples": 18,
     "examples_with_two_or_more": 2
    },
-   "seconds": 1.0
+   "seconds": 0.8
   },
   {
    "package": "mypy-extensions",
@@ -3029,7 +3029,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.8
+   "seconds": 0.5
   },
   {
    "package": "typer",
@@ -3072,7 +3072,7 @@
     "examples": 5,
     "examples_with_two_or_more": 5
    },
-   "seconds": 1.4
+   "seconds": 1.2
   },
   {
    "package": "mcp",
@@ -3115,7 +3115,7 @@
     "examples": 167,
     "examples_with_two_or_more": 83
    },
-   "seconds": 4.3
+   "seconds": 3.9
   },
   {
    "package": "colorama",
@@ -3158,7 +3158,7 @@
     "examples": 5,
     "examples_with_two_or_more": 1
    },
-   "seconds": 0.6
+   "seconds": 0.5
   },
   {
    "package": "huggingface-hub",
@@ -3244,7 +3244,7 @@
     "examples": 2,
     "examples_with_two_or_more": 1
    },
-   "seconds": 2.0
+   "seconds": 1.9
   },
   {
    "package": "requests-oauthlib",
@@ -3330,7 +3330,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.8
+   "seconds": 1.0
   },
   {
    "package": "cachetools",
@@ -3373,7 +3373,7 @@
     "examples": 2,
     "examples_with_two_or_more": 1
    },
-   "seconds": 1.3
+   "seconds": 2.1
   },
   {
    "package": "docstring-parser",
@@ -3416,7 +3416,7 @@
     "examples": 2,
     "examples_with_two_or_more": 1
    },
-   "seconds": 1.5
+   "seconds": 1.3
   },
   {
    "package": "editables",
@@ -3459,7 +3459,7 @@
     "examples": 1,
     "examples_with_two_or_more": 1
    },
-   "seconds": 0.9
+   "seconds": 0.6
   },
   {
    "package": "oauthlib",
@@ -3489,20 +3489,20 @@
     "test_files": 78,
     "unparsed_pieces": 21,
     "callables_used_in_docs": 14,
-    "callables_used_in_tests": 182,
-    "classes_built_in_docs": 13,
+    "callables_used_in_tests": 192,
+    "classes_built_in_docs": 14,
     "classes_with_operators": 0
    },
    "levels": {
     "low": 327,
     "low_used_in_docs": 14,
     "medium": 331,
-    "medium_used_in_docs": 26,
-    "high": 11,
+    "medium_used_in_docs": 27,
+    "high": 12,
     "examples": 20,
-    "examples_with_two_or_more": 11
+    "examples_with_two_or_more": 12
    },
-   "seconds": 1.3
+   "seconds": 1.0
   },
   {
    "package": "werkzeug",
@@ -3545,7 +3545,7 @@
     "examples": 59,
     "examples_with_two_or_more": 33
    },
-   "seconds": 1.4
+   "seconds": 1.5
   },
   {
    "package": "more-itertools",
@@ -3588,7 +3588,7 @@
     "examples": 282,
     "examples_with_two_or_more": 23
    },
-   "seconds": 1.0
+   "seconds": 1.1
   },
   {
    "package": "defusedxml",
@@ -3660,19 +3660,19 @@
     "doc_files": 212,
     "test_files": 0,
     "unparsed_pieces": 43,
-    "callables_used_in_docs": 247,
+    "callables_used_in_docs": 779,
     "callables_used_in_tests": 0,
-    "classes_built_in_docs": 11,
-    "classes_with_operators": 0
+    "classes_built_in_docs": 14,
+    "classes_with_operators": 4
    },
    "levels": {
     "low": 1180,
-    "low_used_in_docs": 247,
-    "medium": 1217,
-    "medium_used_in_docs": 258,
-    "high": 209,
-    "examples": 746,
-    "examples_with_two_or_more": 603
+    "low_used_in_docs": 779,
+    "medium": 1221,
+    "medium_used_in_docs": 797,
+    "high": 900,
+    "examples": 1331,
+    "examples_with_two_or_more": 1020
    },
    "seconds": 18.2
   },
@@ -3717,7 +3717,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.6
+   "seconds": 0.7
   },
   {
    "package": "distlib",
@@ -3803,7 +3803,7 @@
     "examples": 1,
     "examples_with_two_or_more": 1
    },
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "itsdangerous",
@@ -3932,7 +3932,7 @@
     "examples": 1,
     "examples_with_two_or_more": 0
    },
-   "seconds": 2.1
+   "seconds": 2.4
   },
   {
    "package": "requests-toolbelt",
@@ -3975,7 +3975,7 @@
     "examples": 31,
     "examples_with_two_or_more": 10
    },
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "prompt-toolkit",
@@ -4006,19 +4006,19 @@
     "unparsed_pieces": 5,
     "callables_used_in_docs": 35,
     "callables_used_in_tests": 81,
-    "classes_built_in_docs": 25,
+    "classes_built_in_docs": 27,
     "classes_with_operators": 2
    },
    "levels": {
     "low": 964,
     "low_used_in_docs": 35,
     "medium": 1061,
-    "medium_used_in_docs": 60,
-    "high": 54,
-    "examples": 117,
-    "examples_with_two_or_more": 68
+    "medium_used_in_docs": 62,
+    "high": 55,
+    "examples": 118,
+    "examples_with_two_or_more": 69
    },
-   "seconds": 1.9
+   "seconds": 1.7
   },
   {
    "package": "rsa",
@@ -4061,7 +4061,7 @@
     "examples": 36,
     "examples_with_two_or_more": 9
    },
-   "seconds": 0.7
+   "seconds": 0.6
   },
   {
    "package": "cloudpickle",
@@ -4104,7 +4104,7 @@
     "examples": 3,
     "examples_with_two_or_more": 1
    },
-   "seconds": 1.1
+   "seconds": 0.7
   },
   {
    "package": "threadpoolctl",
@@ -4147,7 +4147,7 @@
     "examples": 11,
     "examples_with_two_or_more": 6
    },
-   "seconds": 1.1
+   "seconds": 0.7
   },
   {
    "package": "isodate",
@@ -4190,7 +4190,7 @@
     "examples": 0,
     "examples_with_two_or_more": 0
    },
-   "seconds": 0.7
+   "seconds": 0.8
   }
  ]
 }
