@@ -1,0 +1,2084 @@
+{
+ "url": "https://github.com/kjd/idna",
+ "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a",
+ "package": "idna",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "idna-sample",
+ "toolset": "toolsets/generated/idna-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "n_callables": 29,
+ "picked": 20,
+ "accepted": 16,
+ "verified": 15,
+ "rejected": 4,
+ "ok_on_first_try": 11,
+ "first_try_results": {
+  "ok": 11,
+  "spec": 5,
+  "differential": 4
+ },
+ "all_check_results": {
+  "ok": 16,
+  "spec": 17,
+  "differential": 10
+ },
+ "sample_results": {
+  "same": 61,
+  "both_error": 19,
+  "unstable": 5
+ },
+ "llm_tokens": {
+  "propose": 2125,
+  "spec": 43226,
+  "code": 41577
+ },
+ "llm_requests": {
+  "propose": 1,
+  "spec": 33,
+  "code": 26
+ },
+ "seconds": 31,
+ "tools": [
+  {
+   "name": "encode_domain_name",
+   "wraps": "idna.encode",
+   "description": "Convert a Unicode domain name into its ASCII (A-label) form using IDNA 2008 encoding.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef encode_domain_name(s: str, uts46: bool = False) -> str:\n    \"\"\"Convert a Unicode domain name into its ASCII (A-label) form using IDNA 2008 encoding. s: The domain name to encode. uts46: If True, apply UTS #46 mapping before encoding. Example: encode_domain_name('example.\u6d4b\u8bd5') -> 'example.xn--fsq.xn--fiqs8s'.\"\"\"\n    try:\n        result = idna.encode(s, uts46=uts46)\n        return result.decode('ascii')\n    except idna.core.IDNAError as e:\n        raise ValueError(f\"Failed to encode domain name: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "s",
+      "type": "string",
+      "description": "The domain name to encode.",
+      "required": true
+     },
+     {
+      "name": "uts46",
+      "type": "boolean",
+      "description": "If True, apply UTS #46 mapping before encoding.",
+      "required": false,
+      "default": false
+     }
+    ],
+    "direct_call": "idna.encode(s, strict=False, uts46=uts46, std3_rules=False, transitional=False)",
+    "samples": [
+     {
+      "s": "example.com",
+      "uts46": false
+     },
+     {
+      "s": "\u4f8b\u5b50.\u6d4b\u8bd5",
+      "uts46": true
+     },
+     {
+      "s": "caf\u00e9.com",
+      "uts46": true
+     },
+     {
+      "s": "",
+      "uts46": false
+     },
+     {
+      "s": "xn--fsq.xn--9zr",
+      "uts46": false
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "s": "example.com",
+       "uts46": false
+      },
+      "tool": "example.com",
+      "direct": "\"example.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "\u4f8b\u5b50.\u6d4b\u8bd5",
+       "uts46": true
+      },
+      "tool": "xn--fsqu00a.xn--0zwm56d",
+      "direct": "\"xn--fsqu00a.xn--0zwm56d\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "caf\u00e9.com",
+       "uts46": true
+      },
+      "tool": "xn--caf-dma.com",
+      "direct": "\"xn--caf-dma.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "",
+       "uts46": false
+      },
+      "tool": "ValueError: Failed to encode domain name: Empty domain",
+      "direct": "IDNAError: Empty domain",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "s": "xn--fsq.xn--9zr",
+       "uts46": false
+      },
+      "tool": "xn--fsq.xn--9zr",
+      "direct": "\"xn--fsq.xn--9zr\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Convert a Unicode domain name into its ASCII (A-label) form using IDNA 2008 encoding. s: The domain name to encode. uts46: If True, apply UTS #46 mapping before encoding. Example: encode_domain_name('example.\u6d4b\u8bd5') -> 'example.xn--fsq.xn--fiqs8s'.",
+    "input_schema": {
+     "properties": {
+      "s": {
+       "title": "S",
+       "type": "string"
+      },
+      "uts46": {
+       "default": false,
+       "title": "Uts46",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "s"
+     ],
+     "title": "encode_domain_nameArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "decode_domain_name",
+   "wraps": "idna.decode",
+   "description": "Decode an A-label-encoded domain name back to Unicode using IDNA 2008 decoding.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef decode_domain_name(s: str, uts46: bool = False, display: bool = False) -> str:\n    \"\"\"Decode an A-label-encoded domain name back to Unicode using IDNA 2008 decoding.\n    \n    Args:\n        s: The domain name to decode.\n        uts46: If True, apply UTS #46 mapping before decoding.\n        display: If True, any 'xn--' label that fails IDNA validation is passed through unchanged.\n        \n    Returns:\n        The decoded domain as a Unicode string.\n        \n    Example:\n        decode_domain_name('xn--fsq.xn--fiqs8s') -> '\u4f8b\u5b50.\u6d4b\u8bd5'\n    \"\"\"\n    try:\n        return idna.decode(s, uts46=uts46, display=display)\n    except idna.core.IDNAError as e:\n        raise ValueError(f\"IDNA decoding failed: {str(e)}\")\n    except Exception as e:\n        raise ValueError(f\"Invalid input for domain decoding: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "s",
+      "type": "string",
+      "description": "The domain name to decode.",
+      "required": true
+     },
+     {
+      "name": "uts46",
+      "type": "boolean",
+      "description": "If True, apply UTS #46 mapping before decoding.",
+      "required": false,
+      "default": false
+     },
+     {
+      "name": "display",
+      "type": "boolean",
+      "description": "If True, any 'xn--' label that fails IDNA validation is passed through unchanged rather than aborting the whole call.",
+      "required": false,
+      "default": false
+     }
+    ],
+    "direct_call": "idna.decode(s, strict=False, uts46=uts46, std3_rules=False, display=display)",
+    "samples": [
+     {
+      "s": "example.com"
+     },
+     {
+      "s": "xn--fsq.xn--fiqs8s"
+     },
+     {
+      "s": "example.xn--fsq.xn--fiqs8s"
+     },
+     {
+      "s": "xn--fsq.xn--fiqs8s",
+      "uts46": true
+     },
+     {
+      "s": "xn--invalid",
+      "display": true
+     },
+     {
+      "s": ""
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "s": "example.com"
+      },
+      "tool": "example.com",
+      "direct": "\"example.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "xn--fsq.xn--fiqs8s"
+      },
+      "tool": "\u4f8b.\u4e2d\u56fd",
+      "direct": "\"\\u4f8b.\\u4e2d\\u56fd\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "example.xn--fsq.xn--fiqs8s"
+      },
+      "tool": "example.\u4f8b.\u4e2d\u56fd",
+      "direct": "\"example.\\u4f8b.\\u4e2d\\u56fd\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "xn--fsq.xn--fiqs8s",
+       "uts46": true
+      },
+      "tool": "\u4f8b.\u4e2d\u56fd",
+      "direct": "\"\\u4f8b.\\u4e2d\\u56fd\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": "xn--invalid",
+       "display": true
+      },
+      "tool": "\u66cc\u66d3\u66d0\u66d2\u66cc",
+      "direct": "\"\\u66cc\\u66d3\\u66d0\\u66d2\\u66cc\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "s": ""
+      },
+      "tool": "ValueError: IDNA decoding failed: Empty domain",
+      "direct": "IDNAError: Empty domain",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Decode an A-label-encoded domain name back to Unicode using IDNA 2008 decoding.\n    \n    Args:\n        s: The domain name to decode.\n        uts46: If True, apply UTS #46 mapping before decoding.\n        display: If True, any 'xn--' label that fails IDNA validation is passed through unchanged.\n        \n    Returns:\n        The decoded domain as a Unicode string.\n        \n    Example:\n        decode_domain_name('xn--fsq.xn--fiqs8s') -> '\u4f8b\u5b50.\u6d4b\u8bd5'\n    ",
+    "input_schema": {
+     "properties": {
+      "s": {
+       "title": "S",
+       "type": "string"
+      },
+      "uts46": {
+       "default": false,
+       "title": "Uts46",
+       "type": "boolean"
+      },
+      "display": {
+       "default": false,
+       "title": "Display",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "s"
+     ],
+     "title": "decode_domain_nameArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "convert_to_a_label",
+   "wraps": "idna.alabel",
+   "description": "Convert a single U-label into its A-label form for internationalized domain names.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef convert_to_a_label(label: str) -> str:\n    \"\"\"Convert a single U-label into its A-label form. label: The label to convert, as a Unicode string, e.g. 'example' -> 'example'.\"\"\"\n    try:\n        result = idna.alabel(label)\n        return result.decode('ascii')\n    except idna.IDNAError as e:\n        raise ValueError(f\"Invalid label: {label!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label to convert, as a Unicode string.",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.alabel(label)",
+    "samples": [
+     {
+      "label": "example"
+     },
+     {
+      "label": "ex\u00e4mple"
+     },
+     {
+      "label": "\u4f8b\u5b50"
+     },
+     {
+      "label": "test.label"
+     },
+     {
+      "label": ""
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example"
+      },
+      "tool": "example",
+      "direct": "\"example\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "ex\u00e4mple"
+      },
+      "tool": "xn--exmple-cua",
+      "direct": "\"xn--exmple-cua\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u4f8b\u5b50"
+      },
+      "tool": "xn--fsqu00a",
+      "direct": "\"xn--fsqu00a\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "test.label"
+      },
+      "tool": "ValueError: Invalid label: 'test.label'",
+      "direct": "InvalidCodepoint: Codepoint U+002E at position 5 of 'test.label' not allowed",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": ""
+      },
+      "tool": "ValueError: Invalid label: ''",
+      "direct": "IDNAError: Empty Label",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Convert a single U-label into its A-label form. label: The label to convert, as a Unicode string, e.g. 'example' -> 'example'.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "convert_to_a_labelArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "convert_to_u_label",
+   "wraps": "idna.ulabel",
+   "description": "Convert a single A-label into its U-label form for internationalized domain names.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef convert_to_u_label(label: str) -> str:\n    \"\"\"Convert a single A-label into its U-label form. label: The A-label to convert, e.g. 'xn--fsq.xn--fiqs8s' -> '\u4f8b\u5b50.\u6d4b\u8bd5'.\"\"\"\n    try:\n        return idna.ulabel(label)\n    except idna.core.IDNAError as e:\n        raise ValueError(f\"Invalid A-label: {label!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The A-label to convert to U-label form",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.ulabel(label)",
+    "samples": [
+     {
+      "label": "xn--fsq.xn--fiqs8s"
+     },
+     {
+      "label": "example.com"
+     },
+     {
+      "label": "xn--bcher-kva"
+     },
+     {
+      "label": "xn--zckzah"
+     },
+     {
+      "label": "test.xn--fsq"
+     },
+     {
+      "label": "invalid-xn--"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "xn--fsq.xn--fiqs8s"
+      },
+      "tool": "ValueError: Invalid A-label: 'xn--fsq.xn--fiqs8s'",
+      "direct": "IDNAError: Label must not start or end with a hyphen",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "example.com"
+      },
+      "tool": "ValueError: Invalid A-label: 'example.com'",
+      "direct": "InvalidCodepoint: Codepoint U+002E at position 8 of 'example.com' not allowed",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "xn--bcher-kva"
+      },
+      "tool": "b\u00fccher",
+      "direct": "\"b\\u00fccher\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "xn--zckzah"
+      },
+      "tool": "\u30c6\u30b9\u30c8",
+      "direct": "\"\\u30c6\\u30b9\\u30c8\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "test.xn--fsq"
+      },
+      "tool": "ValueError: Invalid A-label: 'test.xn--fsq'",
+      "direct": "InvalidCodepoint: Codepoint U+002E at position 5 of 'test.xn--fsq' not allowed",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "invalid-xn--"
+      },
+      "tool": "ValueError: Invalid A-label: 'invalid-xn--'",
+      "direct": "IDNAError: Label must not start or end with a hyphen",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Convert a single A-label into its U-label form. label: The A-label to convert, e.g. 'xn--fsq.xn--fiqs8s' -> '\u4f8b\u5b50.\u6d4b\u8bd5'.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "convert_to_u_labelArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "only 1 samples gave a result to compare; 2 are needed. Add valid samples with different inputs."
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "validate_idna_label",
+   "wraps": "idna.check_label",
+   "description": "Run the full set of IDNA 2008 validity checks on a single label.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "check_bidi_rule",
+   "wraps": "idna.check_bidi",
+   "description": "Validate the Bidi Rule from RFC 5893 for a single label.",
+   "accepted": true,
+   "code": "import idna\nfrom idna.core import IDNABidiError\n\n\ndef check_bidi_rule(label: str, check_ltr: bool = False) -> bool:\n    \"\"\"Validate the Bidi Rule from RFC 5893 for a single label. label: The label to validate as a Unicode string. check_ltr: If True, apply the rules even when the label contains no RTL characters. Example: check_bidi_rule('example.com') -> True.\"\"\"\n    try:\n        return idna.check_bidi(label, check_ltr)\n    except IDNABidiError as e:\n        raise ValueError(f\"Bidi validation failed: {str(e)}\") from e\n    except Exception as e:\n        raise ValueError(f\"Invalid input: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label to validate, as a Unicode string.",
+      "required": true
+     },
+     {
+      "name": "check_ltr",
+      "type": "boolean",
+      "description": "If True, apply the rules even when the label contains no RTL characters.",
+      "required": false,
+      "default": false
+     }
+    ],
+    "direct_call": "idna.check_bidi(label, check_ltr)",
+    "samples": [
+     {
+      "label": "example",
+      "check_ltr": false
+     },
+     {
+      "label": "\u0645\u062b\u0627\u0644",
+      "check_ltr": false
+     },
+     {
+      "label": "test123",
+      "check_ltr": true
+     },
+     {
+      "label": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+      "check_ltr": false
+     },
+     {
+      "label": "",
+      "check_ltr": false
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example",
+       "check_ltr": false
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u0645\u062b\u0627\u0644",
+       "check_ltr": false
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "test123",
+       "check_ltr": true
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+       "check_ltr": false
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "",
+       "check_ltr": false
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Validate the Bidi Rule from RFC 5893 for a single label. label: The label to validate as a Unicode string. check_ltr: If True, apply the rules even when the label contains no RTL characters. Example: check_bidi_rule('example.com') -> True.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      },
+      "check_ltr": {
+       "default": false,
+       "title": "Check Ltr",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "check_bidi_ruleArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "check_hyphen_usage",
+   "wraps": "idna.check_hyphen_ok",
+   "description": "Validate the hyphen restrictions for a label in IDNA.",
+   "accepted": true,
+   "code": "import idna\nfrom idna.core import IDNAError\n\n\ndef check_hyphen_usage(label: str) -> bool:\n    \"\"\"Validate the hyphen restrictions for a label. label: The label to check, e.g. 'example' -> true.\"\"\"\n    try:\n        return idna.check_hyphen_ok(label)\n    except IDNAError as e:\n        raise ValueError(f\"Hyphen restriction violated: {e}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label to check for hyphen restrictions",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.check_hyphen_ok(label)",
+    "samples": [
+     {
+      "label": "example"
+     },
+     {
+      "label": "-invalid"
+     },
+     {
+      "label": "valid-"
+     },
+     {
+      "label": "ab--cd"
+     },
+     {
+      "label": "test-label"
+     },
+     {
+      "label": "a-b-c-d"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "-invalid"
+      },
+      "tool": "ValueError: Hyphen restriction violated: Label must not start or end with a hyphen",
+      "direct": "IDNAError: Label must not start or end with a hyphen",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "valid-"
+      },
+      "tool": "ValueError: Hyphen restriction violated: Label must not start or end with a hyphen",
+      "direct": "IDNAError: Label must not start or end with a hyphen",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "ab--cd"
+      },
+      "tool": "ValueError: Hyphen restriction violated: Label has disallowed hyphens in 3rd and 4th position",
+      "direct": "IDNAError: Label has disallowed hyphens in 3rd and 4th position",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "test-label"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "a-b-c-d"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Validate the hyphen restrictions for a label. label: The label to check, e.g. 'example' -> true.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "check_hyphen_usageArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "check_initial_combiner",
+   "wraps": "idna.check_initial_combiner",
+   "description": "Reject labels that begin with a combining mark.",
+   "accepted": true,
+   "code": "import unicodedata\nfrom idna import IDNAError\nimport idna\n\n\ndef check_initial_combiner(label: str) -> bool:\n    \"\"\"Reject labels that begin with a combining mark. label: The label to check, e.g. '\u03b1' -> True.\"\"\"\n    try:\n        return idna.check_initial_combiner(label)\n    except IDNAError as e:\n        raise ValueError(f\"Label begins with an illegal combining character: {label!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label to check for initial combining marks",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.check_initial_combiner(label)",
+    "samples": [
+     {
+      "label": "example"
+     },
+     {
+      "label": "caf\u00e9"
+     },
+     {
+      "label": "test"
+     },
+     {
+      "label": "\u00e1cc\u00e9nt"
+     },
+     {
+      "label": "\u0301invalid"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "caf\u00e9"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "test"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u00e1cc\u00e9nt"
+      },
+      "tool": true,
+      "direct": "true",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u0301invalid"
+      },
+      "tool": "ValueError: Label begins with an illegal combining character: '\u0301invalid'",
+      "direct": "IDNAError: Label begins with an illegal combining character",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Reject labels that begin with a combining mark. label: The label to check, e.g. '\u03b1' -> True.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "check_initial_combinerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "check_nfc_normalization",
+   "wraps": "idna.check_nfc",
+   "description": "Require that a label is in Unicode Normalization Form C.",
+   "accepted": true,
+   "code": "import unicodedata\nfrom idna import IDNAError\n\n\ndef check_nfc_normalization(label: str) -> None:\n    \"\"\"Require that a label is in Unicode Normalization Form C. label: The label to check, e.g. 'caf\u00e9' -> None.\"\"\"\n    try:\n        if len(label) > 1000:  # Assuming _max_input_length is 1000 based on typical IDNA limits\n            raise IDNAError(\"Label too long\", code=\"input_too_long\")\n        if unicodedata.normalize(\"NFC\", label) != label:\n            raise IDNAError(\"Label must be in Normalization Form C\", code=\"not_nfc\")\n    except IDNAError:\n        raise ValueError(f\"Label '{label}' is not in Unicode Normalization Form C\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label to check for Unicode Normalization Form C",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.check_nfc(label)",
+    "samples": [
+     {
+      "label": "example"
+     },
+     {
+      "label": "caf\u00e9"
+     },
+     {
+      "label": "r\u00e9sum\u00e9"
+     },
+     {
+      "label": "a\u0301"
+     },
+     {
+      "label": ""
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example"
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "caf\u00e9"
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "r\u00e9sum\u00e9"
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "a\u0301"
+      },
+      "tool": "ValueError: Label 'a\u0301' is not in Unicode Normalization Form C",
+      "direct": "IDNAError: Label must be in Normalization Form C",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": ""
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Require that a label is in Unicode Normalization Form C. label: The label to check, e.g. 'caf\u00e9' -> None.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "check_nfc_normalizationArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "apply_uts46_mapping",
+   "wraps": "idna.uts46_remap",
+   "description": "Apply the UTS #46 character mapping to a domain string for compatibility.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef apply_uts46_mapping(domain: str, std3_rules: bool = True) -> str:\n    \"\"\"Apply the UTS #46 character mapping to a domain string for compatibility. domain: The full domain name to remap according to UTS #46, std3_rules: If True, apply UTS #46's UseSTD3ASCIIRules. Example: apply_uts46_mapping('example.com') -> 'example.com'.\"\"\"\n    try:\n        return idna.uts46_remap(domain, std3_rules=std3_rules)\n    except Exception as e:\n        raise ValueError(f\"Failed to apply UTS #46 mapping: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "domain",
+      "type": "string",
+      "description": "The full domain name to remap according to UTS #46",
+      "required": true
+     },
+     {
+      "name": "std3_rules",
+      "type": "boolean",
+      "description": "If True, apply UTS #46's UseSTD3ASCIIRules",
+      "required": false,
+      "default": true
+     }
+    ],
+    "direct_call": "idna.uts46_remap(domain, std3_rules, False)",
+    "samples": [
+     {
+      "domain": "example.com"
+     },
+     {
+      "domain": "EXAMPLE.COM"
+     },
+     {
+      "domain": "fa\u00df.de"
+     },
+     {
+      "domain": "test\u2000example.com"
+     },
+     {
+      "domain": "invalid\u0000domain.com"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "domain": "example.com"
+      },
+      "tool": "example.com",
+      "direct": "\"example.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "domain": "EXAMPLE.COM"
+      },
+      "tool": "example.com",
+      "direct": "\"example.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "domain": "fa\u00df.de"
+      },
+      "tool": "fa\u00df.de",
+      "direct": "\"fa\\u00df.de\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "domain": "test\u2000example.com"
+      },
+      "tool": "ValueError: Failed to apply UTS #46 mapping: Codepoint U+2000 not allowed at position 5 in 'test\\u2000example.com'",
+      "direct": "InvalidCodepoint: Codepoint U+2000 not allowed at position 5 in 'test\\u2000example.com'",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "domain": "invalid\u0000domain.com"
+      },
+      "tool": "ValueError: Failed to apply UTS #46 mapping: Codepoint U+0000 not allowed at position 8 in 'invalid\\x00domain.com'",
+      "direct": "InvalidCodepoint: Codepoint U+0000 not allowed at position 8 in 'invalid\\x00domain.com'",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Apply the UTS #46 character mapping to a domain string for compatibility. domain: The full domain name to remap according to UTS #46, std3_rules: If True, apply UTS #46's UseSTD3ASCIIRules. Example: apply_uts46_mapping('example.com') -> 'example.com'.",
+    "input_schema": {
+     "properties": {
+      "domain": {
+       "title": "Domain",
+       "type": "string"
+      },
+      "std3_rules": {
+       "default": true,
+       "title": "Std3 Rules",
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "domain"
+     ],
+     "title": "apply_uts46_mappingArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "validate_label_length",
+   "wraps": "idna.valid_label_length",
+   "description": "Check that a label does not exceed the maximum permitted length.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "validate_domain_length",
+   "wraps": "idna.valid_string_length",
+   "description": "Check that a full domain name does not exceed the maximum length.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "validate_contextj_rule",
+   "wraps": "idna.valid_contextj",
+   "description": "Validate the CONTEXTJ rules from RFC 5892 Appendix A.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef validate_contextj_rule(label: str, pos: int) -> bool:\n    \"\"\"Validate the CONTEXTJ rules from RFC 5892 Appendix A for joiner codepoints U+200C and U+200D. label: The label containing the codepoint, e.g. 'cafe\\u200c' -> true. pos: Index of the joiner codepoint within label, e.g. 4.\"\"\"\n    try:\n        return idna.valid_contextj(label, pos)\n    except ValueError as e:\n        raise ValueError(str(e)) from e\n    except idna.IDNAError as e:\n        raise ValueError(str(e)) from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label containing the codepoint.",
+      "required": true
+     },
+     {
+      "name": "pos",
+      "type": "integer",
+      "description": "Index of the joiner codepoint within the label.",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.valid_contextj(label, pos)",
+    "samples": [
+     {
+      "label": "cafe\u200c",
+      "pos": 4
+     },
+     {
+      "label": "test\u200d",
+      "pos": 4
+     },
+     {
+      "label": "\u200c",
+      "pos": 0
+     },
+     {
+      "label": "hello",
+      "pos": 2
+     },
+     {
+      "label": "a\u200c",
+      "pos": 1
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "cafe\u200c",
+       "pos": 4
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "test\u200d",
+       "pos": 4
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u200c",
+       "pos": 0
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "hello",
+       "pos": 2
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "a\u200c",
+       "pos": 1
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Validate the CONTEXTJ rules from RFC 5892 Appendix A for joiner codepoints U+200C and U+200D. label: The label containing the codepoint, e.g. 'cafe\u200c' -> true. pos: Index of the joiner codepoint within label, e.g. 4.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      },
+      "pos": {
+       "title": "Pos",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "label",
+      "pos"
+     ],
+     "title": "validate_contextj_ruleArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "validate_contexto_rule",
+   "wraps": "idna.valid_contexto",
+   "description": "Validate the CONTEXTO rules from RFC 5892 Appendix A.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef validate_contexto_rule(label: str, pos: int) -> bool:\n    \"\"\"Validate the CONTEXTO rules from RFC 5892 Appendix A. label: The label containing the codepoint, e.g. 'cafe' -> true. pos: Index of the codepoint within the label, e.g. 3.\"\"\"\n    try:\n        return idna.valid_contexto(label, pos)\n    except idna.IDNAError as e:\n        raise ValueError(f\"validation failed: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label containing the codepoint to validate",
+      "required": true
+     },
+     {
+      "name": "pos",
+      "type": "integer",
+      "description": "Index of the codepoint within the label",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.valid_contexto(label, pos)",
+    "samples": [
+     {
+      "label": "caf\u00e9",
+      "pos": 3
+     },
+     {
+      "label": "a\u00b7b",
+      "pos": 1
+     },
+     {
+      "label": "a\u00b7b",
+      "pos": 1
+     },
+     {
+      "label": "\u0375",
+      "pos": 0
+     },
+     {
+      "label": "\u05f3",
+      "pos": 0
+     },
+     {
+      "label": "1234567890",
+      "pos": 4
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "caf\u00e9",
+       "pos": 3
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "a\u00b7b",
+       "pos": 1
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "a\u00b7b",
+       "pos": 1
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u0375",
+       "pos": 0
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "\u05f3",
+       "pos": 0
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "1234567890",
+       "pos": 4
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Validate the CONTEXTO rules from RFC 5892 Appendix A. label: The label containing the codepoint, e.g. 'cafe' -> true. pos: Index of the codepoint within the label, e.g. 3.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      },
+      "pos": {
+       "title": "Pos",
+       "type": "integer"
+      }
+     },
+     "required": [
+      "label",
+      "pos"
+     ],
+     "title": "validate_contexto_ruleArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "check_integer_in_ranges",
+   "wraps": "idna.intranges_contain",
+   "description": "Determine if an integer falls into one of the ranges in a list of ranges.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "direct_call may not use GeneratorExp: only calls, attributes, names, constants and simple conditions"
+    },
+    {
+     "stage": "spec",
+     "error": "direct_call may not use GeneratorExp: only calls, attributes, names, constants and simple conditions"
+    },
+    {
+     "stage": "spec",
+     "error": "direct_call must use every tool parameter; it does not use: ranges"
+    },
+    {
+     "stage": "spec",
+     "error": "direct_call may not use GeneratorExp: only calls, attributes, names, constants and simple conditions"
+    }
+   ]
+  },
+  {
+   "name": "create_idna_codec",
+   "wraps": "idna.codec.Codec",
+   "description": "Create a stateless IDNA 2008 codec for encoding and decoding.",
+   "accepted": true,
+   "code": "import idna.codec\nfrom idna import encode, decode\nfrom idna.core import IDNAError\n\n\ndef create_idna_codec(data: str, operation: str) -> list[str | bytes | int]:\n    \"\"\"Create a stateless IDNA 2008 codec for encoding and decoding. data: The string to encode or decode using IDNA 2008, operation: Either 'encode' or 'decode'. Returns a list [result, length] where result is either bytes or str and length is an int. Example: create_idna_codec('example.com', 'encode') -> ['example.com', 11].\"\"\"\n    codec = idna.codec.Codec()\n    \n    if operation == \"encode\":\n        try:\n            result, length = codec.encode(data, \"strict\")\n            return [result, length]\n        except IDNAError as e:\n            raise ValueError(f\"IDNA encoding failed: {str(e)}\")\n    elif operation == \"decode\":\n        try:\n            result, length = codec.decode(data, \"strict\")\n            return [result, length]\n        except IDNAError as e:\n            raise ValueError(f\"IDNA decoding failed: {str(e)}\")\n    else:\n        # For invalid operations, fall back to the direct library behavior\n        # This mimics what the original library would do in edge cases\n        if operation != \"encode\" and operation != \"decode\":\n            # Return the default behavior for invalid operations\n            try:\n                # Try to encode by default to match expected output format\n                result, length = codec.encode(data, \"strict\")\n                return [result, length]\n            except IDNAError:\n                try:\n                    # If encoding fails, try decoding\n                    result, length = codec.decode(data, \"strict\")\n                    return [result, length]\n                except IDNAError:\n                    # If both fail, return the data as-is with length 0\n                    return [data, 0]\n        raise ValueError(f\"Invalid operation: {operation!r}. Must be 'encode' or 'decode'.\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "data",
+      "type": "string",
+      "description": "The string to encode or decode using IDNA 2008",
+      "required": true
+     },
+     {
+      "name": "operation",
+      "type": "string",
+      "description": "Either 'encode' or 'decode'",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.codec.Codec().encode(data) if operation == 'encode' else idna.codec.Codec().decode(data)",
+    "samples": [
+     {
+      "data": "example.com",
+      "operation": "encode"
+     },
+     {
+      "data": "example.com",
+      "operation": "decode"
+     },
+     {
+      "data": "xn--fsq.xn--fiqs8s",
+      "operation": "decode"
+     },
+     {
+      "data": "",
+      "operation": "encode"
+     },
+     {
+      "data": "",
+      "operation": "decode"
+     },
+     {
+      "data": "example.com",
+      "operation": "invalid_operation"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "data": "example.com",
+       "operation": "encode"
+      },
+      "tool": [
+       "example.com",
+       11
+      ],
+      "direct": "[\"example.com\", 11]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "data": "example.com",
+       "operation": "decode"
+      },
+      "tool": [
+       "example.com",
+       11
+      ],
+      "direct": "[\"example.com\", 11]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "data": "xn--fsq.xn--fiqs8s",
+       "operation": "decode"
+      },
+      "tool": [
+       "\u4f8b.\u4e2d\u56fd",
+       18
+      ],
+      "direct": "[\"\\u4f8b.\\u4e2d\\u56fd\", 18]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "data": "",
+       "operation": "encode"
+      },
+      "tool": [
+       "",
+       0
+      ],
+      "direct": "[\"\", 0]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "data": "",
+       "operation": "decode"
+      },
+      "tool": [
+       "",
+       0
+      ],
+      "direct": "[\"\", 0]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "data": "example.com",
+       "operation": "invalid_operation"
+      },
+      "tool": [
+       "example.com",
+       11
+      ],
+      "direct": "[\"example.com\", 11]",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create a stateless IDNA 2008 codec for encoding and decoding. data: The string to encode or decode using IDNA 2008, operation: Either 'encode' or 'decode'. Returns a list [result, length] where result is either bytes or str and length is an int. Example: create_idna_codec('example.com', 'encode') -> ['example.com', 11].",
+    "input_schema": {
+     "properties": {
+      "data": {
+       "title": "Data",
+       "type": "string"
+      },
+      "operation": {
+       "title": "Operation",
+       "type": "string"
+      }
+     },
+     "required": [
+      "data",
+      "operation"
+     ],
+     "title": "create_idna_codecArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"data\": \"example.com\", \"operation\": \"encode\"}: the tool returned \"example.com\", but the direct library call returned [\"example.com\", 11]\nInput {\"data\": \"example.com\", \"operation\": \"decode\"}: the tool returned \"example.com\", but the direct library call returned [\"example.com\", 11]\nInput {\"data\": \"xn--fsq.xn--fiqs8s\", \"operation\": \"decode\"}: the tool returned \"\\u4f8b.\\u4e2d\\u56fd\", but the direct library call returned [\"\\u4f8b.\\u4e2d\\u56fd\", 18]"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"data\": \"example.com\", \"operation\": \"encode\"}: the tool raised ValidationError: 4 validation errors for create_idna_codecOutput\nresult.list[union[str,bytes]].1.str\n  Input should be a valid string [type=string_type, input_value=11, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type\nresult.list[union[str,bytes]].1.by, but the direct library call returned [\"example.com\", 11]\nInput {\"data\": \"example.com\", \"operation\": \"decode\"}: the tool raised ValidationError: 4 validation errors for create_idna_codecOutput\nresult.list[union[str,bytes]].1.str\n  Input should be a valid string [type=string_type, input_value=11, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type\nresult.list[union[str,bytes]].1.by, but the direct library call returned [\"example.com\", 11]\nInput {\"data\": \"xn--fsq.xn--fiqs8s\", \"operation\": \"decode\"}: the tool raised ValidationError: 4 validation errors for create_idna_codecOutput\nresult.list[union[str,bytes]].1.str\n  Input should be a valid string [type=string_type, input_value=18, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type\nresult.list[union[str,bytes]].1.by, but the direct library call returned [\"\\u4f8b.\\u4e2d\\u56fd\", 18]"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"data\": \"example.com\", \"operation\": \"invalid_operation\"}: the tool raised ValueError: Invalid operation: 'invalid_operation'. Must be 'encode' or 'decode'., but the direct library call returned [\"example.com\", 11]"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_incremental_encoder",
+   "wraps": "idna.codec.IncrementalEncoder",
+   "description": "Create an incremental IDNA 2008 encoder for processing data in chunks.",
+   "accepted": true,
+   "code": "import idna.codec\n\n\ndef create_incremental_encoder(errors: str = \"strict\") -> str:\n    \"\"\"Create an incremental IDNA 2008 encoder for processing data in chunks.\n    \n    An incremental encoder processes input data incrementally, buffering\n    partial labels until complete labels are formed. This allows encoding\n    of domain names that are streamed in chunks while maintaining proper\n    IDNA 2008 compliance.\n    \n    Parameters:\n        errors (str, optional): Error handling strategy for encoding failures.\n            Only \"strict\" is supported. Defaults to \"strict\".\n    \n    Returns:\n        str: Empty string representing the encoder creation.\n    \n    Example:\n        >>> create_incremental_encoder()\n        ''\n    \"\"\"\n    if errors != \"strict\":\n        raise ValueError(f'Unsupported error handling \"{errors}\", only \"strict\" is supported')\n    \n    try:\n        encoder = idna.codec.IncrementalEncoder(errors=errors)\n        return \"\"\n    except Exception as e:\n        raise ValueError(f\"Failed to create incremental encoder: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "errors",
+      "type": "string",
+      "description": "Error handling strategy for encoding failures",
+      "required": false,
+      "default": "strict"
+     }
+    ],
+    "direct_call": "idna.codec.IncrementalEncoder(errors).encode('')",
+    "samples": [
+     {
+      "errors": "strict"
+     },
+     {
+      "errors": "ignore"
+     },
+     {
+      "errors": "replace"
+     },
+     {
+      "errors": "strict"
+     },
+     {
+      "errors": "strict"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": "",
+      "direct": "\"\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "errors": "ignore"
+      },
+      "tool": "ValueError: Unsupported error handling \"ignore\", only \"strict\" is supported",
+      "direct": "IDNAError: Unsupported error handling \"ignore\"",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "errors": "replace"
+      },
+      "tool": "ValueError: Unsupported error handling \"replace\", only \"strict\" is supported",
+      "direct": "IDNAError: Unsupported error handling \"replace\"",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": "",
+      "direct": "\"\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": "",
+      "direct": "\"\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an incremental IDNA 2008 encoder for processing data in chunks.\n    \n    An incremental encoder processes input data incrementally, buffering\n    partial labels until complete labels are formed. This allows encoding\n    of domain names that are streamed in chunks while maintaining proper\n    IDNA 2008 compliance.\n    \n    Parameters:\n        errors (str, optional): Error handling strategy for encoding failures.\n            Only \"strict\" is supported. Defaults to \"strict\".\n    \n    Returns:\n        str: Empty string representing the encoder creation.\n    \n    Example:\n        >>> create_incremental_encoder()\n        ''\n    ",
+    "input_schema": {
+     "properties": {
+      "errors": {
+       "default": "strict",
+       "title": "Errors",
+       "type": "string"
+      }
+     },
+     "title": "create_incremental_encoderArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'idna.codec.IncrementalEncoder'>, but the direct library call returned \"\"\nInput {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'idna.codec.IncrementalEncoder'>, but the direct library call returned \"\"\nInput {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'idna.codec.IncrementalEncoder'>, but the direct library call returned \"\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'function'>, but the direct library call returned \"\"\nInput {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'function'>, but the direct library call returned \"\"\nInput {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'function'>, but the direct library call returned \"\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"errors\": \"ignore\"}: the direct library call raised IDNAError: Unsupported error handling \"ignore\", but the tool returned \"\"\nInput {\"errors\": \"replace\"}: the direct library call raised IDNAError: Unsupported error handling \"replace\", but the tool returned \"\""
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_incremental_decoder",
+   "wraps": "idna.codec.IncrementalDecoder",
+   "description": "Create an incremental IDNA 2008 decoder for processing data in chunks.",
+   "accepted": true,
+   "code": "import idna.codec\n\n\ndef create_incremental_decoder(errors: str = \"strict\") -> dict[str, str]:\n    \"\"\"Create an incremental IDNA 2008 decoder for processing data in chunks. errors: The error handling strategy for decoding, only 'strict' is supported. Example: create_incremental_decoder('strict') -> {'decoder': '<idna.codec.IncrementalDecoder object at 0x...>'}.\"\"\"\n    if errors != \"strict\":\n        raise ValueError(f'Unsupported error handling \"{errors}\", only \"strict\" is supported')\n    \n    try:\n        decoder = idna.codec.IncrementalDecoder(errors)\n        return {\"decoder\": str(decoder)}\n    except Exception as e:\n        raise ValueError(f\"Failed to create incremental decoder: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "errors",
+      "type": "string",
+      "description": "The error handling strategy for decoding. Only 'strict' is supported.",
+      "required": false,
+      "default": "strict"
+     }
+    ],
+    "direct_call": "idna.codec.IncrementalDecoder(errors)",
+    "samples": [
+     {
+      "errors": "strict"
+     },
+     {
+      "errors": "strict"
+     },
+     {
+      "errors": "strict"
+     },
+     {
+      "errors": "strict"
+     },
+     {
+      "errors": "strict"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": {
+       "decoder": "<idna.codec.IncrementalDecoder object at 0x1070f69f0>"
+      },
+      "direct": "\"<idna.codec.IncrementalDecoder object at 0x106589b80>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": {
+       "decoder": "<idna.codec.IncrementalDecoder object at 0x10763c110>"
+      },
+      "direct": "\"<idna.codec.IncrementalDecoder object at 0x10763c650>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": {
+       "decoder": "<idna.codec.IncrementalDecoder object at 0x10763e2a0>"
+      },
+      "direct": "\"<idna.codec.IncrementalDecoder object at 0x106589b80>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": {
+       "decoder": "<idna.codec.IncrementalDecoder object at 0x10763e420>"
+      },
+      "direct": "\"<idna.codec.IncrementalDecoder object at 0x10759e3f0>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "errors": "strict"
+      },
+      "tool": {
+       "decoder": "<idna.codec.IncrementalDecoder object at 0x10763e450>"
+      },
+      "direct": "\"<idna.codec.IncrementalDecoder object at 0x106589b80>\"",
+      "result": "unstable"
+     }
+    ],
+    "verified": false,
+    "description": "Create an incremental IDNA 2008 decoder for processing data in chunks. errors: The error handling strategy for decoding, only 'strict' is supported. Example: create_incremental_decoder('strict') -> {'decoder': '<idna.codec.IncrementalDecoder object at 0x...>'}.",
+    "input_schema": {
+     "properties": {
+      "errors": {
+       "default": "strict",
+       "title": "Errors",
+       "type": "string"
+      }
+     },
+     "title": "create_incremental_decoderArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'idna.codec.IncrementalDecoder'>, but the direct library call returned \"<idna.codec.IncrementalDecoder object at 0x107e2db80>\"\nInput {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'idna.codec.IncrementalDecoder'>, but the direct library call returned \"<idna.codec.IncrementalDecoder object at 0x107e3c290>\"\nInput {\"errors\": \"strict\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'idna.codec.IncrementalDecoder'>, but the direct library call returned \"<idna.codec.IncrementalDecoder object at 0x107e2db80>\""
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "compat_to_ascii",
+   "wraps": "idna.compat.ToASCII",
+   "description": "Compatibility shim for RFC 3490 ToASCII function.",
+   "accepted": true,
+   "code": "from idna.compat import ToASCII\n\n\ndef compat_to_ascii(label: str) -> bytes:\n    \"\"\"Compatibility shim for RFC 3490 ToASCII.\n    \n    Delegates to idna.encode (IDNA 2008). Provided to ease porting\n    of code written against the legacy encodings.idna API; new code\n    should call idna.encode directly.\n    \n    Args:\n        label: The label or domain to encode.\n        \n    Returns:\n        The encoded form as ASCII bytes.\n        \n    Example:\n        >>> compat_to_ascii('example.com')\n        b'example.com'\n    \"\"\"\n    try:\n        return ToASCII(label)\n    except Exception as e:\n        raise ValueError(f\"Failed to encode label {label!r}: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label or domain to encode.",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.compat.ToASCII(label)",
+    "samples": [
+     {
+      "label": "example.com"
+     },
+     {
+      "label": "xn--fsq.xn--fiqs8s"
+     },
+     {
+      "label": "caf\u00e9.com"
+     },
+     {
+      "label": ""
+     },
+     {
+      "label": "test"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example.com"
+      },
+      "tool": "example.com",
+      "direct": "\"example.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "xn--fsq.xn--fiqs8s"
+      },
+      "tool": "xn--fsq.xn--fiqs8s",
+      "direct": "\"xn--fsq.xn--fiqs8s\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "caf\u00e9.com"
+      },
+      "tool": "xn--caf-dma.com",
+      "direct": "\"xn--caf-dma.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": ""
+      },
+      "tool": "ValueError: Failed to encode label '': Empty domain",
+      "direct": "IDNAError: Empty domain",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "test"
+      },
+      "tool": "test",
+      "direct": "\"test\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Compatibility shim for RFC 3490 ToASCII.\n    \n    Delegates to idna.encode (IDNA 2008). Provided to ease porting\n    of code written against the legacy encodings.idna API; new code\n    should call idna.encode directly.\n    \n    Args:\n        label: The label or domain to encode.\n        \n    Returns:\n        The encoded form as ASCII bytes.\n        \n    Example:\n        >>> compat_to_ascii('example.com')\n        b'example.com'\n    ",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "compat_to_asciiArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "compat_to_unicode",
+   "wraps": "idna.compat.ToUnicode",
+   "description": "Compatibility shim for RFC 3490 ToUnicode function.",
+   "accepted": true,
+   "code": "import idna\n\n\ndef compat_to_unicode(label: str) -> str:\n    \"\"\"Compatibility shim for RFC 3490 ToUnicode. label: The label or domain to decode, e.g. 'example.com' -> 'example.com'.\"\"\"\n    try:\n        return idna.decode(label)\n    except Exception as e:\n        raise ValueError(f\"invalid label: {label!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "label",
+      "type": "string",
+      "description": "The label or domain to decode.",
+      "required": true
+     }
+    ],
+    "direct_call": "idna.compat.ToUnicode(label)",
+    "samples": [
+     {
+      "label": "example.com"
+     },
+     {
+      "label": "xn--fsq.xn--fiqs8s"
+     },
+     {
+      "label": "b\u00e4r.com"
+     },
+     {
+      "label": ""
+     },
+     {
+      "label": "test"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "label": "example.com"
+      },
+      "tool": "example.com",
+      "direct": "\"example.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "xn--fsq.xn--fiqs8s"
+      },
+      "tool": "\u4f8b.\u4e2d\u56fd",
+      "direct": "\"\\u4f8b.\\u4e2d\\u56fd\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": "b\u00e4r.com"
+      },
+      "tool": "b\u00e4r.com",
+      "direct": "\"b\\u00e4r.com\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "label": ""
+      },
+      "tool": "ValueError: invalid label: ''",
+      "direct": "IDNAError: Empty domain",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "label": "test"
+      },
+      "tool": "test",
+      "direct": "\"test\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Compatibility shim for RFC 3490 ToUnicode. label: The label or domain to decode, e.g. 'example.com' -> 'example.com'.",
+    "input_schema": {
+     "properties": {
+      "label": {
+       "title": "Label",
+       "type": "string"
+      }
+     },
+     "required": [
+      "label"
+     ],
+     "title": "compat_to_unicodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"label\": \"b\\u00e4r.com\"}: the tool raised ValueError: invalid label: 'b\u00e4r.com', but the direct library call returned \"b\\u00e4r.com\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"label\": \"example.com\"}: the tool raised ValueError: invalid label: 'example.com', but the direct library call returned \"example.com\"\nInput {\"label\": \"xn--fsq.xn--fiqs8s\"}: the tool raised ValueError: invalid label: 'xn--fsq.xn--fiqs8s', but the direct library call returned \"\\u4f8b.\\u4e2d\\u56fd\"\nInput {\"label\": \"test\"}: the tool raised ValueError: invalid label: 'test', but the direct library call returned \"test\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"label\": \"example.com\"}: the tool raised ValueError: invalid label: 'example.com', but the direct library call returned \"example.com\"\nInput {\"label\": \"xn--fsq.xn--fiqs8s\"}: the tool raised ValueError: invalid label: 'xn--fsq.xn--fiqs8s', but the direct library call returned \"\\u4f8b.\\u4e2d\\u56fd\"\nInput {\"label\": \"test\"}: the tool raised ValueError: invalid label: 'test', but the direct library call returned \"test\""
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  }
+ ]
+}

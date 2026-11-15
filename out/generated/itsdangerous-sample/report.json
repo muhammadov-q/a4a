@@ -1,0 +1,2207 @@
+{
+ "url": "https://github.com/pallets/itsdangerous",
+ "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+ "package": "itsdangerous",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "itsdangerous-sample",
+ "toolset": "toolsets/generated/itsdangerous-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 0,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "n_callables": 38,
+ "picked": 15,
+ "accepted": 8,
+ "verified": 5,
+ "rejected": 7,
+ "ok_on_first_try": 5,
+ "first_try_results": {
+  "fastmcp": 1,
+  "ok": 5,
+  "spec": 5,
+  "loads": 1,
+  "differential": 3
+ },
+ "all_check_results": {
+  "fastmcp": 2,
+  "ok": 9,
+  "spec": 20,
+  "loads": 1,
+  "differential": 8,
+  "end_to_end": 1
+ },
+ "sample_results": {
+  "unstable": 14,
+  "same": 21,
+  "same_values": 4
+ },
+ "llm_tokens": {
+  "propose": 2921,
+  "spec": 50389,
+  "code": 37781
+ },
+ "llm_requests": {
+  "propose": 1,
+  "spec": 30,
+  "code": 26
+ },
+ "seconds": 49,
+ "tools": [
+  {
+   "name": "create_serializer",
+   "wraps": "itsdangerous.Serializer",
+   "description": "Creates a new serializer instance with the given secret key and optional salt.",
+   "accepted": true,
+   "code": "from itsdangerous import Serializer\nfrom typing import Union, List, Optional, Any\n\n\ndef create_serializer(secret_key: Union[str, List[str]], salt: Optional[str] = None) -> Any:\n    \"\"\"Creates a new serializer instance with the given secret key and optional salt. secret_key: The secret key to sign and verify with. Can be a list of keys, oldest to newest, to support key rotation. salt: Extra key to combine with secret_key to distinguish signatures in different contexts. Example: create_serializer('my-secret-key', 'session-context') -> Serializer instance.\"\"\"\n    try:\n        return Serializer(secret_key, salt=salt)\n    except Exception as e:\n        raise ValueError(f\"Failed to create serializer: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key to sign and verify with. Can be a list of keys, oldest to newest, to support key rotation.",
+      "required": true
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "Extra key to combine with secret_key to distinguish signatures in different contexts.",
+      "required": false,
+      "default": "itsdangerous"
+     }
+    ],
+    "direct_call": "itsdangerous.Serializer(secret_key=secret_key, salt=salt)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "salt": "my_salt"
+     },
+     {
+      "secret_key": "another_secret_key"
+     },
+     {
+      "secret_key": [
+       "key1",
+       "key2"
+      ],
+      "salt": "context_salt"
+     },
+     {
+      "secret_key": "test_key",
+      "salt": ""
+     },
+     {
+      "secret_key": "",
+      "salt": "empty_key_test"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "salt": "my_salt"
+      },
+      "tool": "<itsdangerous.serializer.Serializer object at 0x102e29880>",
+      "direct": "\"<itsdangerous.serializer.Serializer object at 0x102e458b0>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret_key"
+      },
+      "tool": "<itsdangerous.serializer.Serializer object at 0x102e2c260>",
+      "direct": "\"<itsdangerous.serializer.Serializer object at 0x103112120>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": [
+        "key1",
+        "key2"
+       ],
+       "salt": "context_salt"
+      },
+      "tool": "<itsdangerous.serializer.Serializer object at 0x103019820>",
+      "direct": "\"<itsdangerous.serializer.Serializer object at 0x103110200>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "test_key",
+       "salt": ""
+      },
+      "tool": "<itsdangerous.serializer.Serializer object at 0x103112120>",
+      "direct": "\"<itsdangerous.serializer.Serializer object at 0x103019820>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "",
+       "salt": "empty_key_test"
+      },
+      "tool": "<itsdangerous.serializer.Serializer object at 0x103061730>",
+      "direct": "\"<itsdangerous.serializer.Serializer object at 0x103112120>\"",
+      "result": "unstable"
+     }
+    ],
+    "verified": false,
+    "description": "Creates a new serializer instance with the given secret key and optional salt. secret_key: The secret key to sign and verify with. Can be a list of keys, oldest to newest, to support key rotation. salt: Extra key to combine with secret_key to distinguish signatures in different contexts. Example: create_serializer('my-secret-key', 'session-context') -> Serializer instance.",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        }
+       ],
+       "title": "Secret Key"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      }
+     },
+     "required": [
+      "secret_key"
+     ],
+     "title": "create_serializerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "fastmcp",
+     "error": "PydanticSchemaGenerationError: Unable to generate pydantic-core schema for itsdangerous.serializer._PDataSerializer[typing.Any]. Set `arbitrary_types_allowed=True` in the model_config to ignore this error or implement `__get_pydantic_core_schema__` on your type to fully support it.\n\nIf you got this error by calling handler(<some type>) within `__get_pydantic_core_schema__` then you likely need to call `handler.generate_schema(<some type>)` since we do not call `__get_pydantic_core_schema__` on `<some type>` otherwise to avoid infinite recursion.\n\nFor further information visit https://errors.pydantic.dev/2.14/u/schema-for-unknown-type"
+    },
+    {
+     "stage": "fastmcp",
+     "error": "PydanticSchemaGenerationError: Unable to generate pydantic-core schema for itsdangerous.serializer._PDataSerializer[typing.Any]. Set `arbitrary_types_allowed=True` in the model_config to ignore this error or implement `__get_pydantic_core_schema__` on your type to fully support it.\n\nIf you got this error by calling handler(<some type>) within `__get_pydantic_core_schema__` then you likely need to call `handler.generate_schema(<some type>)` since we do not call `__get_pydantic_core_schema__` on `<some type>` otherwise to avoid infinite recursion.\n\nFor further information visit https://errors.pydantic.dev/2.14/u/schema-for-unknown-type"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "serialize_and_sign",
+   "wraps": "itsdangerous.Serializer.dumps",
+   "description": "Serializes an object and signs it with the serializer's secret key.",
+   "accepted": true,
+   "code": "from itsdangerous import Serializer\n\n\ndef serialize_and_sign(secret_key: str, obj: object, salt: str | None = None) -> str:\n    \"\"\"Serialize an object and sign it with the provided secret key. secret_key: The secret key used for signing, obj: The object to serialize and sign, salt: A salt value to use when signing. Example: serialize_and_sign('secret', {'key': 'value'}) -> 'eyJrZXkiOiAidmFsdWUifQ.XYz123...'\"\n    \n    Args:\n        secret_key: The secret key used for signing the serialized data\n        obj: The object to serialize and sign\n        salt: A salt value to use when signing\n        \n    Returns:\n        A signed string serialized with the internal serializer\n        \n    Raises:\n        ValueError: If the serialization fails\n    \"\"\"\n    try:\n        serializer = Serializer(secret_key, salt=salt)\n        result = serializer.dumps(obj, salt)\n        return str(result)\n    except Exception as e:\n        raise ValueError(f\"Failed to serialize and sign object: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing the serialized data",
+      "required": true
+     },
+     {
+      "name": "obj",
+      "type": "object",
+      "description": "The object to serialize and sign",
+      "required": true
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "A salt value to use when signing",
+      "required": false,
+      "default": "itsdangerous"
+     }
+    ],
+    "direct_call": "itsdangerous.Serializer(secret_key, salt=salt).dumps(obj)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "obj": {
+       "username": "john_doe",
+       "role": "admin"
+      },
+      "salt": "session"
+     },
+     {
+      "secret_key": "another_secret",
+      "obj": [
+       1,
+       2,
+       3,
+       4
+      ],
+      "salt": "data"
+     },
+     {
+      "secret_key": "test_key",
+      "obj": "simple_string_value",
+      "salt": null
+     },
+     {
+      "secret_key": "key_with_special_chars_!@#",
+      "obj": {
+       "nested": {
+        "value": 42
+       }
+      },
+      "salt": "custom_salt"
+     },
+     {
+      "secret_key": "",
+      "obj": {},
+      "salt": ""
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "obj": {
+        "username": "john_doe",
+        "role": "admin"
+       },
+       "salt": "session"
+      },
+      "tool": "{\"username\": \"john_doe\", \"role\": \"admin\"}.RQcAdGiFn-r8sTmouu69HsRhhuA",
+      "direct": "\"{\\\"username\\\": \\\"john_doe\\\", \\\"role\\\": \\\"admin\\\"}.RQcAdGiFn-r8sTmouu69HsRhhuA\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret",
+       "obj": [
+        1,
+        2,
+        3,
+        4
+       ],
+       "salt": "data"
+      },
+      "tool": "[1, 2, 3, 4].xKiliTfQIz-FA8LVczGbCFpgZJk",
+      "direct": "\"[1, 2, 3, 4].xKiliTfQIz-FA8LVczGbCFpgZJk\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "test_key",
+       "obj": "simple_string_value",
+       "salt": null
+      },
+      "tool": "\"simple_string_value\".-xdjoGHSAjaQKZOBeksbWUQ7tUQ",
+      "direct": "\"\\\"simple_string_value\\\".-xdjoGHSAjaQKZOBeksbWUQ7tUQ\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "key_with_special_chars_!@#",
+       "obj": {
+        "nested": {
+         "value": 42
+        }
+       },
+       "salt": "custom_salt"
+      },
+      "tool": "{\"nested\": {\"value\": 42}}.VqVJvy9t9-hDdzwiO_r_IR0rWP8",
+      "direct": "\"{\\\"nested\\\": {\\\"value\\\": 42}}.VqVJvy9t9-hDdzwiO_r_IR0rWP8\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "",
+       "obj": {},
+       "salt": ""
+      },
+      "tool": "{}.Rpn5tnlLwMb8XCVXJ90PZQei5S0",
+      "direct": "\"{}.Rpn5tnlLwMb8XCVXJ90PZQei5S0\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Serialize an object and sign it with the provided secret key. secret_key: The secret key used for signing, obj: The object to serialize and sign, salt: A salt value to use when signing. Example: serialize_and_sign('secret', {'key': 'value'}) -> 'eyJrZXkiOiAidmFsdWUifQ.XYz123...'\"\n    \n    Args:\n        secret_key: The secret key used for signing the serialized data\n        obj: The object to serialize and sign\n        salt: A salt value to use when signing\n        \n    Returns:\n        A signed string serialized with the internal serializer\n        \n    Raises:\n        ValueError: If the serialization fails\n    ",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "obj": {
+       "title": "Obj"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      }
+     },
+     "required": [
+      "secret_key",
+      "obj"
+     ],
+     "title": "serialize_and_signArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "verify_and_deserialize",
+   "wraps": "itsdangerous.Serializer.loads",
+   "description": "Verifies the signature of a signed string and deserializes the object.",
+   "accepted": false,
+   "code": "from itsdangerous import Serializer, BadSignature\n\n\ndef verify_and_deserialize(secret_key: str, signed_string: str, salt: str | None = None) -> dict[str, str | int | float | bool | None] | list | str | int | float | bool:\n    \"\"\"Verifies the signature of a signed string and deserializes the object. secret_key: The secret key used for signing and verification. signed_string: The signed string to verify and deserialize. salt: Salt to use for the signature. Returns the deserialized object.\"\"\"\n    try:\n        serializer = Serializer(secret_key, salt=salt.encode() if salt else None)\n        result = serializer.loads(signed_string)\n        return result\n    except BadSignature as e:\n        raise ValueError(f\"signature verification failed: {str(e)}\")\n    except Exception as e:\n        raise ValueError(f\"failed to verify and deserialize: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing and verification",
+      "required": true
+     },
+     {
+      "name": "signed_string",
+      "type": "string",
+      "description": "The signed string to verify and deserialize",
+      "required": true
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "Salt to use for the signature",
+      "required": false,
+      "default": "itsdangerous"
+     }
+    ],
+    "direct_call": "itsdangerous.Serializer(secret_key=secret_key, salt=salt).loads(signed_string)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "salt": "itsdangerous"
+     },
+     {
+      "secret_key": "another_secret",
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "salt": "custom_salt"
+     },
+     {
+      "secret_key": "test_key",
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "salt": "itsdangerous"
+     },
+     {
+      "secret_key": "key_with_special_chars!@#",
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "salt": "salt_with_special_chars!@#"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "salt": "itsdangerous"
+      },
+      "tool": "ValueError: signature verification failed: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret",
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "salt": "custom_salt"
+      },
+      "tool": "ValueError: signature verification failed: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "secret_key": "test_key",
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "salt": "itsdangerous"
+      },
+      "tool": "ValueError: signature verification failed: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "secret_key": "key_with_special_chars!@#",
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "salt": "salt_with_special_chars!@#"
+      },
+      "tool": "ValueError: signature verification failed: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Verifies the signature of a signed string and deserializes the object. secret_key: The secret key used for signing and verification. signed_string: The signed string to verify and deserialize. salt: Salt to use for the signature. Returns the deserialized object.",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "signed_string": {
+       "title": "Signed String",
+       "type": "string"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      }
+     },
+     "required": [
+      "secret_key",
+      "signed_string"
+     ],
+     "title": "verify_and_deserializeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: No b'.' found in value\", \"BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    }
+   ]
+  },
+  {
+   "name": "deserialize_without_verification",
+   "wraps": "itsdangerous.Serializer.loads_unsafe",
+   "description": "Deserializes a signed string without verifying the signature, potentially dangerous.",
+   "accepted": true,
+   "code": "from itsdangerous import Serializer\n\n\ndef deserialize_without_verification(secret_key: str, signed_string: str, salt: str | None = None) -> dict[str, bool | str | None]:\n    \"\"\"Deserializes a signed string without verifying the signature. secret_key: The secret key used for signing and verification, signed_string: The signed string to deserialize without verification, salt: Salt to use for the serializer. Returns a dictionary with 'signature_valid' (bool) and 'payload' (str or None).\"\"\"\n    try:\n        serializer = Serializer(secret_key, salt=salt.encode() if salt else None)\n        signature_valid, payload = serializer.loads_unsafe(signed_string)\n        return {\"signature_valid\": signature_valid, \"payload\": str(payload) if payload is not None else None}\n    except Exception as e:\n        raise ValueError(f\"Failed to deserialize string: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing and verification",
+      "required": true
+     },
+     {
+      "name": "signed_string",
+      "type": "string",
+      "description": "The signed string to deserialize without verification",
+      "required": true
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "Salt to use for the serializer",
+      "required": false,
+      "default": "itsdangerous"
+     }
+    ],
+    "direct_call": "itsdangerous.Serializer(secret_key=secret_key, salt=salt).loads_unsafe(signed_string)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "salt": "itsdangerous"
+     },
+     {
+      "secret_key": "another_secret",
+      "signed_string": "fake_signed_data",
+      "salt": "custom_salt"
+     },
+     {
+      "secret_key": "test_key",
+      "signed_string": "valid_signature_here",
+      "salt": null
+     },
+     {
+      "secret_key": "",
+      "signed_string": "empty_key_test",
+      "salt": "default"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "salt": "itsdangerous"
+      },
+      "tool": {
+       "signature_valid": false,
+       "payload": null
+      },
+      "direct": "[false, null]",
+      "result": "same_values"
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret",
+       "signed_string": "fake_signed_data",
+       "salt": "custom_salt"
+      },
+      "tool": {
+       "signature_valid": false,
+       "payload": null
+      },
+      "direct": "[false, null]",
+      "result": "same_values"
+     },
+     {
+      "arguments": {
+       "secret_key": "test_key",
+       "signed_string": "valid_signature_here",
+       "salt": null
+      },
+      "tool": {
+       "signature_valid": false,
+       "payload": null
+      },
+      "direct": "[false, null]",
+      "result": "same_values"
+     },
+     {
+      "arguments": {
+       "secret_key": "",
+       "signed_string": "empty_key_test",
+       "salt": "default"
+      },
+      "tool": {
+       "signature_valid": false,
+       "payload": null
+      },
+      "direct": "[false, null]",
+      "result": "same_values"
+     }
+    ],
+    "verified": true,
+    "description": "Deserializes a signed string without verifying the signature. secret_key: The secret key used for signing and verification, signed_string: The signed string to deserialize without verification, salt: Salt to use for the serializer. Returns a dictionary with 'signature_valid' (bool) and 'payload' (str or None).",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "signed_string": {
+       "title": "Signed String",
+       "type": "string"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      }
+     },
+     "required": [
+      "secret_key",
+      "signed_string"
+     ],
+     "title": "deserialize_without_verificationArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_timed_serializer",
+   "wraps": "itsdangerous.TimedSerializer",
+   "description": "Creates a serializer that includes timestamps for expiration handling.",
+   "accepted": true,
+   "code": "from itsdangerous import TimedSerializer\nimport json\n\n\ndef create_timed_serializer(secret_key: str, salt: str | None = None, serializer: object | None = None) -> dict[str, str]:\n    \"\"\"Create a timed serializer for signing and verifying data with expiration. secret_key: The secret key used for signing and verifying signatures. salt: A salt value to use for the signer. serializer: The serializer to wrap; defaults to JSONSerializer. Returns a dictionary with the serializer's representation.\"\"\"\n    if serializer is None:\n        serializer = json\n    \n    try:\n        timed_serializer = TimedSerializer(secret_key, salt=salt, serializer=serializer)\n        return {\n            \"repr\": str(timed_serializer),\n            \"secret_key\": secret_key,\n            \"salt\": salt or \"\"\n        }\n    except Exception as e:\n        raise ValueError(f\"Failed to create timed serializer: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing and verifying signatures",
+      "required": true
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "A salt value to use for the signer",
+      "required": false,
+      "default": "itsdangerous"
+     },
+     {
+      "name": "serializer",
+      "type": "object",
+      "description": "The serializer to wrap; defaults to JSONSerializer",
+      "required": false,
+      "default": null
+     }
+    ],
+    "direct_call": "itsdangerous.TimedSerializer(secret_key, salt=salt, serializer=serializer)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "salt": "custom_salt"
+     },
+     {
+      "secret_key": "another_secret",
+      "salt": "default_salt"
+     },
+     {
+      "secret_key": "simple_key"
+     },
+     {
+      "secret_key": "key_with_special_chars_!@#",
+      "serializer": null
+     },
+     {
+      "secret_key": ""
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "salt": "custom_salt"
+      },
+      "tool": {
+       "repr": "<itsdangerous.timed.TimedSerializer object at 0x10772d520>",
+       "secret_key": "my_secret_key",
+       "salt": "custom_salt"
+      },
+      "direct": "\"<itsdangerous.timed.TimedSerializer object at 0x10796b680>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret",
+       "salt": "default_salt"
+      },
+      "tool": {
+       "repr": "<itsdangerous.timed.TimedSerializer object at 0x10796b6b0>",
+       "secret_key": "another_secret",
+       "salt": "default_salt"
+      },
+      "direct": "\"<itsdangerous.timed.TimedSerializer object at 0x107969400>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "simple_key"
+      },
+      "tool": {
+       "repr": "<itsdangerous.timed.TimedSerializer object at 0x107969400>",
+       "secret_key": "simple_key",
+       "salt": ""
+      },
+      "direct": "\"<itsdangerous.timed.TimedSerializer object at 0x107a06360>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "key_with_special_chars_!@#",
+       "serializer": null
+      },
+      "tool": {
+       "repr": "<itsdangerous.timed.TimedSerializer object at 0x1079634d0>",
+       "secret_key": "key_with_special_chars_!@#",
+       "salt": ""
+      },
+      "direct": "\"<itsdangerous.timed.TimedSerializer object at 0x107a15190>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": ""
+      },
+      "tool": {
+       "repr": "<itsdangerous.timed.TimedSerializer object at 0x10796b680>",
+       "secret_key": "",
+       "salt": ""
+      },
+      "direct": "\"<itsdangerous.timed.TimedSerializer object at 0x107a14aa0>\"",
+      "result": "unstable"
+     }
+    ],
+    "verified": false,
+    "description": "Create a timed serializer for signing and verifying data with expiration. secret_key: The secret key used for signing and verifying signatures. salt: A salt value to use for the signer. serializer: The serializer to wrap; defaults to JSONSerializer. Returns a dictionary with the serializer's representation.",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      },
+      "serializer": {
+       "anyOf": [
+        {},
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Serializer"
+      }
+     },
+     "required": [
+      "secret_key"
+     ],
+     "title": "create_timed_serializerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "loads",
+     "error": "ImportError: cannot import name 'TimestampSigner' from 'itsdangerous.signer' (/Users/qobiljonmuhammadov/Notes S2026/agentic-llms/code/repo2tools/.cache/envs/itsdangerous-sample/lib/python3.12/site-packages/itsdangerous/signer.py)"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "verify_and_deserialize_with_expiry",
+   "wraps": "itsdangerous.TimedSerializer.loads",
+   "description": "Verifies a signed string with timestamp and deserializes it, checking for expiration.",
+   "accepted": false,
+   "code": "from itsdangerous import TimedSerializer, SignatureExpired, BadSignature\n\n\ndef verify_and_deserialize_with_expiry(\n    signed_string: str,\n    secret_key: str,\n    max_age: int | None = None,\n    salt: str | None = None,\n) -> dict[str, str | int | float | bool | None] | list | str:\n    \"\"\"Verify a signed string with timestamp and deserialize it, checking for expiration. signed_string: The signed string to verify and deserialize. secret_key: The secret key used to sign the string. max_age: Maximum age in seconds for the signature to be valid. salt: Salt to use for the signature verification. Example: verify_and_deserialize_with_expiry('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', 'my_secret', max_age=3600) -> {'data': 'example'}.\"\"\"\n    try:\n        serializer = TimedSerializer(secret_key, salt=salt)\n        result = serializer.loads(signed_string, max_age=max_age, return_timestamp=False)\n        return result\n    except SignatureExpired as e:\n        raise ValueError(f\"Signature has expired: {str(e)}\")\n    except BadSignature as e:\n        raise ValueError(f\"Invalid signature: {str(e)}\")\n    except Exception as e:\n        raise ValueError(f\"Failed to verify and deserialize: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "signed_string",
+      "type": "string",
+      "description": "The signed string to verify and deserialize",
+      "required": true
+     },
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used to sign the string",
+      "required": true
+     },
+     {
+      "name": "max_age",
+      "type": "integer",
+      "description": "Maximum age in seconds for the signature to be valid",
+      "required": false,
+      "default": null
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "Salt to use for the signature verification",
+      "required": false,
+      "default": null
+     }
+    ],
+    "direct_call": "itsdangerous.TimedSerializer(secret_key=secret_key, salt=salt).loads(signed_string, max_age=max_age)",
+    "samples": [
+     {
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "my_secret_key",
+      "max_age": 3600,
+      "salt": "my_salt"
+     },
+     {
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "my_secret_key",
+      "max_age": null,
+      "salt": null
+     },
+     {
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "my_secret_key",
+      "max_age": 100,
+      "salt": "another_salt"
+     },
+     {
+      "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "wrong_secret_key",
+      "max_age": 3600,
+      "salt": "my_salt"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "my_secret_key",
+       "max_age": 3600,
+       "salt": "my_salt"
+      },
+      "tool": "ValueError: Invalid signature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "my_secret_key",
+       "max_age": null,
+       "salt": null
+      },
+      "tool": "ValueError: Invalid signature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "my_secret_key",
+       "max_age": 100,
+       "salt": "another_salt"
+      },
+      "tool": "ValueError: Invalid signature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_string": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "wrong_secret_key",
+       "max_age": 3600,
+       "salt": "my_salt"
+      },
+      "tool": "ValueError: Invalid signature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Verify a signed string with timestamp and deserialize it, checking for expiration. signed_string: The signed string to verify and deserialize. secret_key: The secret key used to sign the string. max_age: Maximum age in seconds for the signature to be valid. salt: Salt to use for the signature verification. Example: verify_and_deserialize_with_expiry('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', 'my_secret', max_age=3600) -> {'data': 'example'}.",
+    "input_schema": {
+     "properties": {
+      "signed_string": {
+       "title": "Signed String",
+       "type": "string"
+      },
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "max_age": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Max Age"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      }
+     },
+     "required": [
+      "signed_string",
+      "secret_key"
+     ],
+     "title": "verify_and_deserialize_with_expiryArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"TypeError: Serializer.__init__() missing 1 required positional argument: 'secret_key'\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: No b'.' found in value\", \"BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "create_signer",
+   "wraps": "itsdangerous.Signer",
+   "description": "Creates a new signer instance with the given secret key and optional salt.",
+   "accepted": true,
+   "code": "from itsdangerous import Signer\nfrom typing import List, Union, Optional\n\n\ndef create_signer(secret_key: Union[str, List[str]], salt: Optional[str] = None) -> str:\n    \"\"\"Creates a new signer instance with the given secret key and optional salt.\n    \n    Args:\n        secret_key (str | list[str]): The secret key to sign and verify with. Can be a \n                                     list of keys, oldest to newest, to support key rotation.\n        salt (str, optional): Extra key to combine with secret_key to distinguish \n                             signatures in different contexts.\n    \n    Returns:\n        str: String representation of the signer instance.\n        \n    Example:\n        >>> create_signer(\"my-secret-key\", \"context-salt\")\n        \"<itsdangerous.Signer object at 0x...>\"\n    \"\"\"\n    try:\n        signer = Signer(secret_key, salt=salt)\n        return str(signer)\n    except Exception as e:\n        raise ValueError(f\"Failed to create signer: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key to sign and verify with. Can be a list of keys, oldest to newest, to support key rotation.",
+      "required": true
+     },
+     {
+      "name": "salt",
+      "type": "string",
+      "description": "Extra key to combine with secret_key to distinguish signatures in different contexts.",
+      "required": false,
+      "default": "itsdangerous.Signer"
+     }
+    ],
+    "direct_call": "itsdangerous.Signer(secret_key=secret_key, salt=salt)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "salt": "custom_salt"
+     },
+     {
+      "secret_key": "another_secret",
+      "salt": "itsdangerous.Signer"
+     },
+     {
+      "secret_key": "key1",
+      "salt": "context1"
+     },
+     {
+      "secret_key": [
+       "key1",
+       "key2"
+      ],
+      "salt": "rotation_salt"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "salt": "custom_salt"
+      },
+      "tool": "<itsdangerous.signer.Signer object at 0x106761940>",
+      "direct": "\"<itsdangerous.signer.Signer object at 0x106752990>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret",
+       "salt": "itsdangerous.Signer"
+      },
+      "tool": "<itsdangerous.signer.Signer object at 0x106751e50>",
+      "direct": "\"<itsdangerous.signer.Signer object at 0x1062e6600>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": "key1",
+       "salt": "context1"
+      },
+      "tool": "<itsdangerous.signer.Signer object at 0x106751f70>",
+      "direct": "\"<itsdangerous.signer.Signer object at 0x106752870>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "secret_key": [
+        "key1",
+        "key2"
+       ],
+       "salt": "rotation_salt"
+      },
+      "tool": "<itsdangerous.signer.Signer object at 0x106761910>",
+      "direct": "\"<itsdangerous.signer.Signer object at 0x106752990>\"",
+      "result": "unstable"
+     }
+    ],
+    "verified": false,
+    "description": "Creates a new signer instance with the given secret key and optional salt.\n    \n    Args:\n        secret_key (str | list[str]): The secret key to sign and verify with. Can be a \n                                     list of keys, oldest to newest, to support key rotation.\n        salt (str, optional): Extra key to combine with secret_key to distinguish \n                             signatures in different contexts.\n    \n    Returns:\n        str: String representation of the signer instance.\n        \n    Example:\n        >>> create_signer(\"my-secret-key\", \"context-salt\")\n        \"<itsdangerous.Signer object at 0x...>\"\n    ",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "items": {
+          "type": "string"
+         },
+         "type": "array"
+        }
+       ],
+       "title": "Secret Key"
+      },
+      "salt": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Salt"
+      }
+     },
+     "required": [
+      "secret_key"
+     ],
+     "title": "create_signerArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"salt\": \"rotation_salt\", \"secret_key\": [\"key1\", \"key2\"]}: the tool raised ValidationError: 1 validation error for create_signerArguments\nsecret_key\n  Input should be a valid string [type=string_type, input_value=['key1', 'key2'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type, but the direct library call returned \"<itsdangerous.signer.Signer object at 0x103d67d40>\""
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "sign_data",
+   "wraps": "itsdangerous.Signer.sign",
+   "description": "Signs a string or bytes value using the signer's secret key.",
+   "accepted": true,
+   "code": "from itsdangerous import Signer\n\n\ndef sign_data(secret_key: str, value: str) -> str:\n    \"\"\"Signs the given string. secret_key: The secret key used for signing, e.g. 'my_secret_key' -> 'hello.world.signature'. value: The string or bytes value to sign, e.g. 'hello.world'.\"\"\"\n    try:\n        signer = Signer(secret_key)\n        signature = signer.sign(value)\n        return signature.decode('utf-8')\n    except Exception as e:\n        raise ValueError(f\"Failed to sign data: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing",
+      "required": true
+     },
+     {
+      "name": "value",
+      "type": "string",
+      "description": "The string or bytes value to sign",
+      "required": true
+     }
+    ],
+    "direct_call": "itsdangerous.Signer(secret_key).sign(value)",
+    "samples": [
+     {
+      "secret_key": "my_secret_key",
+      "value": "Hello, World!"
+     },
+     {
+      "secret_key": "another_secret",
+      "value": "Test message"
+     },
+     {
+      "secret_key": "key123",
+      "value": ""
+     },
+     {
+      "secret_key": "test_key",
+      "value": "Special chars: !@#$%^&*()"
+     },
+     {
+      "secret_key": "invalid_key",
+      "value": "Valid value"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "secret_key": "my_secret_key",
+       "value": "Hello, World!"
+      },
+      "tool": "Hello, World!.B-Pu6A-VJTFDPpRhcb2RpgWIymU",
+      "direct": "\"Hello, World!.B-Pu6A-VJTFDPpRhcb2RpgWIymU\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "another_secret",
+       "value": "Test message"
+      },
+      "tool": "Test message.009q4vRdVRLHEeKTzwhX3z7PMjQ",
+      "direct": "\"Test message.009q4vRdVRLHEeKTzwhX3z7PMjQ\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "key123",
+       "value": ""
+      },
+      "tool": ".RiyCZ-0wpj42EDglVONlZBJ3eEA",
+      "direct": "\".RiyCZ-0wpj42EDglVONlZBJ3eEA\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "test_key",
+       "value": "Special chars: !@#$%^&*()"
+      },
+      "tool": "Special chars: !@#$%^&*().QdA3eA8DhNKWW1YavhPuMAk7jr4",
+      "direct": "\"Special chars: !@#$%^&*().QdA3eA8DhNKWW1YavhPuMAk7jr4\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "secret_key": "invalid_key",
+       "value": "Valid value"
+      },
+      "tool": "Valid value.kEV0ao0Vxq9qbfjdHtg3fLIJJIw",
+      "direct": "\"Valid value.kEV0ao0Vxq9qbfjdHtg3fLIJJIw\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Signs the given string. secret_key: The secret key used for signing, e.g. 'my_secret_key' -> 'hello.world.signature'. value: The string or bytes value to sign, e.g. 'hello.world'.",
+    "input_schema": {
+     "properties": {
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "value": {
+       "title": "Value",
+       "type": "string"
+      }
+     },
+     "required": [
+      "secret_key",
+      "value"
+     ],
+     "title": "sign_dataArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "verify_and_extract",
+   "wraps": "itsdangerous.Signer.unsign",
+   "description": "Verifies the signature of a signed value and returns the original data.",
+   "accepted": false,
+   "code": "from itsdangerous import Signer, BadSignature\n\n\ndef verify_and_extract(signed_value: str, secret_key: str) -> str:\n    \"\"\"Verifies the signature of a signed value and returns the original data.\n    \n    Args:\n        signed_value: The signed value to unsign\n        secret_key: The secret key used to sign the value\n        \n    Returns:\n        The original unsigned data as a string\n        \n    Example:\n        >>> verify_and_extract(\"hello.world\", \"secret\")\n        'hello'\n    \"\"\"\n    try:\n        signer = Signer(secret_key)\n        unsigned_data = signer.unsign(signed_value)\n        return unsigned_data.decode('utf-8')\n    except BadSignature as e:\n        raise ValueError(f\"Signature verification failed: {str(e)}\")\n    except Exception as e:\n        raise ValueError(f\"Error during verification: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "signed_value",
+      "type": "string",
+      "description": "The signed value to unsign",
+      "required": true
+     },
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used to sign the value",
+      "required": true
+     }
+    ],
+    "direct_call": "itsdangerous.Signer(secret_key=secret_key).unsign(signed_value)",
+    "samples": [
+     {
+      "signed_value": "hello.world",
+      "secret_key": "my_secret"
+     },
+     {
+      "signed_value": "test.data",
+      "secret_key": "another_key"
+     },
+     {
+      "signed_value": "foo.bar",
+      "secret_key": "secret"
+     },
+     {
+      "signed_value": "valid.signature",
+      "secret_key": "correct_key"
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'bar' does not match\", \"BadSignature: Signature b'data' does not match\", \"BadSignature: Signature b'signature' does not match\"]. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "signed_value": "hello.world",
+       "secret_key": "my_secret"
+      },
+      "tool": "ValueError: Signature verification failed: Signature b'world' does not match",
+      "direct": "BadSignature: Signature b'world' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'world' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_value": "test.data",
+       "secret_key": "another_key"
+      },
+      "tool": "ValueError: Signature verification failed: Signature b'data' does not match",
+      "direct": "BadSignature: Signature b'data' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'data' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_value": "foo.bar",
+       "secret_key": "secret"
+      },
+      "tool": "ValueError: Signature verification failed: Signature b'bar' does not match",
+      "direct": "BadSignature: Signature b'bar' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'bar' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_value": "valid.signature",
+       "secret_key": "correct_key"
+      },
+      "tool": "ValueError: Signature verification failed: Signature b'signature' does not match",
+      "direct": "BadSignature: Signature b'signature' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadSignature: Signature b'signature' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Verifies the signature of a signed value and returns the original data.\n    \n    Args:\n        signed_value: The signed value to unsign\n        secret_key: The secret key used to sign the value\n        \n    Returns:\n        The original unsigned data as a string\n        \n    Example:\n        >>> verify_and_extract(\"hello.world\", \"secret\")\n        'hello'\n    ",
+    "input_schema": {
+     "properties": {
+      "signed_value": {
+       "title": "Signed Value",
+       "type": "string"
+      },
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      }
+     },
+     "required": [
+      "signed_value",
+      "secret_key"
+     ],
+     "title": "verify_and_extractArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: No b'.' found in value\", \"BadSignature: Signature b'data' does not match\", \"BadSignature: Signature b'signature' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'bar' does not match\", \"BadSignature: Signature b'data' does not match\", \"BadSignature: Signature b'signature' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'bar' does not match\", \"BadSignature: Signature b'data' does not match\", \"BadSignature: Signature b'signature' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: Signature b'bar' does not match\", \"BadSignature: Signature b'data' does not match\", \"BadSignature: Signature b'signature' does not match\"]. Use samples that are valid for the library."
+    }
+   ]
+  },
+  {
+   "name": "verify_signature_only",
+   "wraps": "itsdangerous.Signer.verify_signature",
+   "description": "Checks if a signature matches the expected signature for a given value.",
+   "accepted": true,
+   "code": "from itsdangerous import Signer\nfrom itsdangerous.exc import BadSignature\n\n\ndef verify_signature_only(value: str, signature: str, secret_key: str) -> bool:\n    \"\"\"Verifies the signature for the given value. value: the value to verify the signature for, signature: the signature to verify against the value, secret_key: the secret key used for signing. Example: verify_signature_only('hello', 'sig', 'key') -> True.\"\"\"\n    try:\n        signer = Signer(secret_key)\n        return signer.verify_signature(value, signature)\n    except BadSignature:\n        return False\n    except Exception as e:\n        raise ValueError(f\"Failed to verify signature: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "value",
+      "type": "string",
+      "description": "The value to verify the signature for",
+      "required": true
+     },
+     {
+      "name": "signature",
+      "type": "string",
+      "description": "The signature to verify against the value",
+      "required": true
+     },
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing",
+      "required": true
+     }
+    ],
+    "direct_call": "itsdangerous.Signer(secret_key=secret_key).verify_signature(value, signature)",
+    "samples": [
+     {
+      "value": "hello world",
+      "signature": "SGVsbG8gV29ybGQ",
+      "secret_key": "my_secret"
+     },
+     {
+      "value": "test data",
+      "signature": "VGVzdCBEYXRh",
+      "secret_key": "another_key"
+     },
+     {
+      "value": "",
+      "signature": "AA",
+      "secret_key": "empty_value_key"
+     },
+     {
+      "value": "12345",
+      "signature": "MTIzNDU",
+      "secret_key": "numeric_key"
+     },
+     {
+      "value": "invalid signature test",
+      "signature": "invalid_signature",
+      "secret_key": "valid_key"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "value": "hello world",
+       "signature": "SGVsbG8gV29ybGQ",
+       "secret_key": "my_secret"
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "test data",
+       "signature": "VGVzdCBEYXRh",
+       "secret_key": "another_key"
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "",
+       "signature": "AA",
+       "secret_key": "empty_value_key"
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "12345",
+       "signature": "MTIzNDU",
+       "secret_key": "numeric_key"
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "invalid signature test",
+       "signature": "invalid_signature",
+       "secret_key": "valid_key"
+      },
+      "tool": false,
+      "direct": "false",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Verifies the signature for the given value. value: the value to verify the signature for, signature: the signature to verify against the value, secret_key: the secret key used for signing. Example: verify_signature_only('hello', 'sig', 'key') -> True.",
+    "input_schema": {
+     "properties": {
+      "value": {
+       "title": "Value",
+       "type": "string"
+      },
+      "signature": {
+       "title": "Signature",
+       "type": "string"
+      },
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      }
+     },
+     "required": [
+      "value",
+      "signature",
+      "secret_key"
+     ],
+     "title": "verify_signature_onlyArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "sign_with_timestamp",
+   "wraps": "itsdangerous.TimestampSigner.sign",
+   "description": "Signs a value and includes the current timestamp for expiration tracking.",
+   "accepted": false,
+   "code": "from itsdangerous import TimestampSigner\nfrom itsdangerous.exc import BadSignature\n\n\ndef sign_with_timestamp(value: str, secret_key: str) -> str:\n    \"\"\"Signs the given string and also attaches time information for expiration tracking.\n    \n    Args:\n        value: The string value to sign\n        secret_key: The secret key used for signing\n        \n    Returns:\n        The signed value as a string with timestamp information\n        \n    Example:\n        >>> sign_with_timestamp(\"hello world\", \"my_secret_key\")\n        'aGVsbG8gd29ybGQuYXZteDl3LlJkNWZRRUdQRUFlMENQMGc0UGpkeXdMWllkSQ=='\n    \"\"\"\n    try:\n        signer = TimestampSigner(secret_key)\n        signed_value = signer.sign(value)\n        return signed_value.decode('utf-8')\n    except BadSignature as e:\n        raise ValueError(f\"Failed to sign value: {str(e)}\")\n    except Exception as e:\n        raise ValueError(f\"Unexpected error during signing: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "value",
+      "type": "string",
+      "description": "The value to sign",
+      "required": true
+     },
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key for signing",
+      "required": true
+     }
+    ],
+    "direct_call": "itsdangerous.TimestampSigner(secret_key).sign(value)",
+    "samples": [
+     {
+      "value": "hello world",
+      "secret_key": "my_secret_key"
+     },
+     {
+      "value": "test data",
+      "secret_key": "another_secret"
+     },
+     {
+      "value": "",
+      "secret_key": "empty_value_key"
+     },
+     {
+      "value": "12345",
+      "secret_key": "numeric_key"
+     },
+     {
+      "value": "special chars: !@#$%^&*()",
+      "secret_key": "special_chars_key"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "value": "hello world",
+       "secret_key": "my_secret_key"
+      },
+      "tool": "hello world.avmx-w.0d1foRrs63LBCOoYYZesZ8paCwc",
+      "direct": "\"hello world.avmx-w.0d1foRrs63LBCOoYYZesZ8paCwc\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "test data",
+       "secret_key": "another_secret"
+      },
+      "tool": "test data.avmx-w.GxE08loJbkXI9wQAOKVE6mgX9Hw",
+      "direct": "\"test data.avmx-w.GxE08loJbkXI9wQAOKVE6mgX9Hw\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "",
+       "secret_key": "empty_value_key"
+      },
+      "tool": ".avmx-w.eNUqpLOP8w3JLhg4fJpjpdGmNOA",
+      "direct": "\".avmx-w.eNUqpLOP8w3JLhg4fJpjpdGmNOA\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "12345",
+       "secret_key": "numeric_key"
+      },
+      "tool": "12345.avmx-w.UTkPCjclkCBug2IglkkwIM6cBWk",
+      "direct": "\"12345.avmx-w.UTkPCjclkCBug2IglkkwIM6cBWk\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "value": "special chars: !@#$%^&*()",
+       "secret_key": "special_chars_key"
+      },
+      "tool": "special chars: !@#$%^&*().avmx-w.7QfVbGXajS0uhDdQIwOilCusb1Y",
+      "direct": "\"special chars: !@#$%^&*().avmx-w.7QfVbGXajS0uhDdQIwOilCusb1Y\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Signs the given string and also attaches time information for expiration tracking.\n    \n    Args:\n        value: The string value to sign\n        secret_key: The secret key used for signing\n        \n    Returns:\n        The signed value as a string with timestamp information\n        \n    Example:\n        >>> sign_with_timestamp(\"hello world\", \"my_secret_key\")\n        'aGVsbG8gd29ybGQuYXZteDl3LlJkNWZRRUdQRUFlMENQMGc0UGpkeXdMWllkSQ=='\n    ",
+    "input_schema": {
+     "properties": {
+      "value": {
+       "title": "Value",
+       "type": "string"
+      },
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      }
+     },
+     "required": [
+      "value",
+      "secret_key"
+     ],
+     "title": "sign_with_timestampArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"secret_key\": \"my_secret_key\", \"value\": \"hello world\"}: the tool returned \"aGVsbG8gd29ybGQuYXZteDdnLmV0SUY0SDBKQzJkZ2pjcmRVY2dHSmZLT3pUNA==\", but the direct library call returned \"hello world.avmx7g.etIF4H0JC2dgjcrdUcgGJfKOzT4\"\nInput {\"secret_key\": \"another_secret\", \"value\": \"test data\"}: the tool returned \"dGVzdCBkYXRhLmF2bXg3Zy5SRXlGN0hBUHdPUEp4Y3pFZFFNYUlRQ0h5ZXc=\", but the direct library call returned \"test data.avmx7g.REyF7HAPwOPJxczEdQMaIQCHyew\"\nInput {\"secret_key\": \"empty_value_key\", \"value\": \"\"}: the tool returned \"LmF2bXg3Zy4tQVZtRWFRVE5SYmg2SmxVZHFyT01wNzEyVlk=\", but the direct library call returned \".avmx7g.-AVmEaQTNRbh6JlUdqrOMp712VY\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"secret_key\": \"my_secret_key\", \"value\": \"hello world\"}: the tool returned \"aGVsbG8gd29ybGQuYXZteDh3LnJtOWdHbzRQRkN4Ry0zQTgtSWZGX01idk1SMA==\", but the direct library call returned \"hello world.avmx8w.rm9gGo4PFCxG-3A8-IfF_MbvMR0\"\nInput {\"secret_key\": \"another_secret\", \"value\": \"test data\"}: the tool returned \"dGVzdCBkYXRhLmF2bXg4dy4tM0FTaldoQUNrcDJvNENEUGhfSDBGRk5UcmM=\", but the direct library call returned \"test data.avmx8w.-3ASjWhACkp2o4CDPh_H0FFNTrc\"\nInput {\"secret_key\": \"empty_value_key\", \"value\": \"\"}: the tool returned \"LmF2bXg4dy5TREsyOE9NYnNFcDlXUVA3enhPcmlXUWkySm8=\", but the direct library call returned \".avmx8w.SDK28OMbsEp9WQP7zxOriWQi2Jo\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"secret_key\": \"my_secret_key\", \"value\": \"hello world\"}: the tool returned \"aGVsbG8gd29ybGQuYXZteDl3LlJkNWZRRUdQRUFlMENQMGc0UGpkeXdMWllkSQ==\", but the direct library call returned \"hello world.avmx9w.Rd5fQEGPEAe0CP0g4PjdywLZYdI\"\nInput {\"secret_key\": \"another_secret\", \"value\": \"test data\"}: the tool returned \"dGVzdCBkYXRhLmF2bXg5dy5OQ2xkemJVT0ZoaU8wNHlhT0J6OHNWMUpMS2c=\", but the direct library call returned \"test data.avmx9w.NCldzbUOFhiO04yaOBz8sV1JLKg\"\nInput {\"secret_key\": \"empty_value_key\", \"value\": \"\"}: the tool returned \"LmF2bXg5dy5MaVU3QmJVNk8wSE1KZ0l4T2E0Rkt1Z1pNUDQ=\", but the direct library call returned \".avmx9w.LiU7BbU6O0HMJgIxOa4FKugZMP4\""
+    },
+    {
+     "stage": "ok",
+     "error": null
+    },
+    {
+     "stage": "end_to_end",
+     "error": "over MCP it returned \"special chars: !@#$%^&*().avmyDA.Ukvd9MtiI8fKKEfiYv_P_94v1D0\", in the check \"special chars: !@#$%^&*().avmx-w.7QfVbGXajS0uhDdQIwOilCusb1Y\""
+    }
+   ]
+  },
+  {
+   "name": "verify_and_extract_with_timestamp",
+   "wraps": "itsdangerous.TimestampSigner.unsign",
+   "description": "Verifies a signed value with timestamp and extracts the original data.",
+   "accepted": false,
+   "code": "from itsdangerous import TimestampSigner, SignatureExpired\n\n\ndef verify_and_extract_with_timestamp(signed_value: str, secret_key: str, max_age: int | None = None) -> str:\n    \"\"\"Verify a signed value with timestamp and extract the original data. signed_value: the signed value to verify, secret_key: the secret key used for signing, max_age: maximum age in seconds for the signature to be valid. Example: verify_and_extract_with_timestamp('abc123', 'mykey', 3600) -> 'original_data'.\"\"\"\n    try:\n        signer = TimestampSigner(secret_key)\n        unsigned_data = signer.unsign(signed_value, max_age=max_age, return_timestamp=False)\n        return unsigned_data.decode('utf-8')\n    except SignatureExpired as e:\n        raise ValueError(\"Signature has expired\") from e\n    except Exception as e:\n        raise ValueError(f\"Failed to verify and extract signed value: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "signed_value",
+      "type": "string",
+      "description": "The signed value to verify and extract",
+      "required": true
+     },
+     {
+      "name": "secret_key",
+      "type": "string",
+      "description": "The secret key used for signing",
+      "required": true
+     },
+     {
+      "name": "max_age",
+      "type": "integer",
+      "description": "Maximum age in seconds for the signature to be valid",
+      "required": false,
+      "default": null
+     }
+    ],
+    "direct_call": "itsdangerous.TimestampSigner(secret_key).unsign(signed_value, max_age, False)",
+    "samples": [
+     {
+      "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "test_secret_key",
+      "max_age": 3600
+     },
+     {
+      "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "test_secret_key",
+      "max_age": null
+     },
+     {
+      "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "test_secret_key",
+      "max_age": 0
+     },
+     {
+      "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "secret_key": "test_secret_key",
+      "max_age": 7200
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library.",
+    "samples": [
+     {
+      "arguments": {
+       "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "test_secret_key",
+       "max_age": 3600
+      },
+      "tool": "ValueError: Failed to verify and extract signed value: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "test_secret_key",
+       "max_age": null
+      },
+      "tool": "ValueError: Failed to verify and extract signed value: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "test_secret_key",
+       "max_age": 0
+      },
+      "tool": "ValueError: Failed to verify and extract signed value: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "signed_value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+       "secret_key": "test_secret_key",
+       "max_age": 7200
+      },
+      "tool": "ValueError: Failed to verify and extract signed value: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "direct": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+      "result": "both_error",
+      "direct_error": {
+       "error": "BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Verify a signed value with timestamp and extract the original data. signed_value: the signed value to verify, secret_key: the secret key used for signing, max_age: maximum age in seconds for the signature to be valid. Example: verify_and_extract_with_timestamp('abc123', 'mykey', 3600) -> 'original_data'.",
+    "input_schema": {
+     "properties": {
+      "signed_value": {
+       "title": "Signed Value",
+       "type": "string"
+      },
+      "secret_key": {
+       "title": "Secret Key",
+       "type": "string"
+      },
+      "max_age": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Max Age"
+      }
+     },
+     "required": [
+      "signed_value",
+      "secret_key"
+     ],
+     "title": "verify_and_extract_with_timestampArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"TypeError: Signer.__init__() missing 1 required positional argument: 'secret_key'\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadSignature: No b'.' found in value\", \"BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"BadTimeSignature: Signature b'SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c' does not match\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  },
+  {
+   "name": "base64_encode_url_safe",
+   "wraps": "itsdangerous.base64_encode",
+   "description": "Encodes a string or bytes value using URL-safe base64 encoding.",
+   "accepted": true,
+   "code": "import base64\nfrom itsdangerous import base64_encode as itsdangerous_base64_encode\n\n\ndef base64_encode_url_safe(string: str | bytes) -> str:\n    \"\"\"Base64 encode a string of bytes or text. The resulting bytes are safe to use in URLs. string: The string or bytes to encode using URL-safe base64 encoding, e.g. 'hello' -> 'aGVsbG8'.\"\"\"\n    try:\n        result = itsdangerous_base64_encode(string)\n        return result.decode('ascii')\n    except Exception as e:\n        raise ValueError(f\"Failed to encode: {string!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "string",
+      "type": "string",
+      "description": "The string or bytes to encode using URL-safe base64 encoding",
+      "required": true
+     }
+    ],
+    "direct_call": "itsdangerous.base64_encode(string)",
+    "samples": [
+     {
+      "string": "hello world"
+     },
+     {
+      "string": "Hello, World!"
+     },
+     {
+      "string": ""
+     },
+     {
+      "string": "a"
+     },
+     {
+      "string": "1234567890"
+     },
+     {
+      "string": "Special chars: !@#$%^&*()"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "string": "hello world"
+      },
+      "tool": "aGVsbG8gd29ybGQ",
+      "direct": "\"aGVsbG8gd29ybGQ\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "Hello, World!"
+      },
+      "tool": "SGVsbG8sIFdvcmxkIQ",
+      "direct": "\"SGVsbG8sIFdvcmxkIQ\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": ""
+      },
+      "tool": "",
+      "direct": "\"\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "a"
+      },
+      "tool": "YQ",
+      "direct": "\"YQ\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "1234567890"
+      },
+      "tool": "MTIzNDU2Nzg5MA",
+      "direct": "\"MTIzNDU2Nzg5MA\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "Special chars: !@#$%^&*()"
+      },
+      "tool": "U3BlY2lhbCBjaGFyczogIUAjJCVeJiooKQ",
+      "direct": "\"U3BlY2lhbCBjaGFyczogIUAjJCVeJiooKQ\"",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Base64 encode a string of bytes or text. The resulting bytes are safe to use in URLs. string: The string or bytes to encode using URL-safe base64 encoding, e.g. 'hello' -> 'aGVsbG8'.",
+    "input_schema": {
+     "properties": {
+      "string": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "format": "binary",
+         "type": "string"
+        }
+       ],
+       "title": "String"
+      }
+     },
+     "required": [
+      "string"
+     ],
+     "title": "base64_encode_url_safeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "base64_decode_url_safe",
+   "wraps": "itsdangerous.base64_decode",
+   "description": "Decodes a URL-safe base64 encoded string or bytes value.",
+   "accepted": false,
+   "code": "import base64\nfrom itsdangerous import base64_decode as itsdangerous_base64_decode\nfrom itsdangerous.exc import BadData\n\n\ndef base64_decode_url_safe(string: str | bytes) -> bytes:\n    \"\"\"Base64 decode a URL-safe string of bytes or text. The result is bytes. string: A URL-safe base64 encoded string or bytes value to decode, e.g. 'SGVsbG8gV29ybGQ=' -> b'Hello World'.\"\"\"\n    try:\n        result = itsdangerous_base64_decode(string)\n        # Ensure the result is valid UTF-8 by encoding/decoding\n        result.decode('utf-8')\n        return result\n    except BadData as e:\n        raise ValueError(\"Invalid base64-encoded data\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "string",
+      "type": "string",
+      "description": "A URL-safe base64 encoded string or bytes value to decode",
+      "required": true
+     }
+    ],
+    "direct_call": "itsdangerous.base64_decode(string)",
+    "samples": [
+     {
+      "string": "SGVsbG8gV29ybGQ"
+     },
+     {
+      "string": "V2UgY2FuIGRlY29kZSB0aGlz"
+     },
+     {
+      "string": "dGVzdA"
+     },
+     {
+      "string": "invalid_base64"
+     },
+     {
+      "string": "SGVsbG8="
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "differential",
+    "error": "Input {\"string\": \"invalid_base64\"}: the tool raised UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8a in position 0: invalid start byte, but the direct library call returned \"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\"",
+    "samples": [
+     {
+      "arguments": {
+       "string": "SGVsbG8gV29ybGQ"
+      },
+      "tool": "Hello World",
+      "direct": "\"Hello World\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "V2UgY2FuIGRlY29kZSB0aGlz"
+      },
+      "tool": "We can decode this",
+      "direct": "\"We can decode this\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "dGVzdA"
+      },
+      "tool": "test",
+      "direct": "\"test\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "string": "invalid_base64"
+      },
+      "tool": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8a in position 0: invalid start byte",
+      "direct": "\"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\"",
+      "result": "mismatch",
+      "why": "the tool raised UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8a in position 0: invalid start byte, but the direct library call returned \"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\""
+     },
+     {
+      "arguments": {
+       "string": "SGVsbG8="
+      },
+      "tool": "Hello",
+      "direct": "\"Hello\"",
+      "result": "same"
+     }
+    ],
+    "verified": false,
+    "description": "Base64 decode a URL-safe string of bytes or text. The result is bytes. string: A URL-safe base64 encoded string or bytes value to decode, e.g. 'SGVsbG8gV29ybGQ=' -> b'Hello World'.",
+    "input_schema": {
+     "properties": {
+      "string": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "format": "binary",
+         "type": "string"
+        }
+       ],
+       "title": "String"
+      }
+     },
+     "required": [
+      "string"
+     ],
+     "title": "base64_decode_url_safeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"string\": \"invalid_base64\"}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"string\": \"invalid_base64\"}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"string\": \"invalid_base64\"}: the tool raised PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0, but the direct library call returned \"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\""
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"string\": \"invalid_base64\"}: the tool raised UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8a in position 0: invalid start byte, but the direct library call returned \"\\ufffd{\\u0696'\\u007fm\\ufffd\\u001e\\ufffd\""
+    }
+   ]
+  },
+  {
+   "name": "convert_to_bytes",
+   "wraps": "itsdangerous.want_bytes",
+   "description": "Converts a string or bytes value to bytes using the specified encoding.",
+   "accepted": false,
+   "code": null,
+   "spec": null,
+   "check": null,
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    },
+    {
+     "stage": "spec",
+     "error": "the reply must be a JSON object with parameters, direct_call and samples"
+    }
+   ]
+  }
+ ]
+}

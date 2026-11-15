@@ -8,7 +8,7 @@ For every repository in out/corpus/candidates.json it
   2. finds the package and counts files and lines,
   3. scans the public API, following re-exports (`scrape.public_api`), and how the repository's own
      documentation and tests use it (`repo2tools usage`), both with `ast` only,
-  4. counts tool candidates at three levels of granularity, see `levels()`.
+  4. counts tool candidates at three levels of granularity, see `corpus.granularity`.
 
 Only files inside the checkout are read; links are not followed. A repository that cannot be handled
 (no package found, a monorepo, a scan that takes too long) is recorded with the reason, not dropped.
@@ -29,6 +29,7 @@ from dataclasses import asdict
 from pathlib import Path
 from statistics import median
 
+from repo2tools.corpus.granularity import level_counts
 from repo2tools.paths import REPO_ROOT
 from repo2tools.synthesis.pipeline import checked_url, clone, find_package, native_code
 from repo2tools.synthesis.scrape import constructors, public_api
@@ -37,9 +38,6 @@ from repo2tools.synthesis.usage import DOC_SUFFIXES, SKIP_DIRS, count_usage, is_
 OUT = REPO_ROOT / "out" / "corpus"
 CLONES = REPO_ROOT / ".cache" / "corpus"
 TIME_LIMIT = 600  # seconds for one repository
-# operators that ask the same kind of question become one tool at the middle level
-FAMILIES = {"<": "compare", "<=": "compare", ">": "compare", ">=": "compare", "==": "compare", "!=": "compare", "in": "contains", "not in": "contains"}
-
 
 def folder_name(repo_url: str) -> str:
     owner, name = repo_url.rstrip("/").removesuffix(".git").split("/")[-2:]
@@ -86,40 +84,6 @@ def count_files(root: Path, package_dir: Path) -> dict:
     return counts
 
 
-def levels(api: dict, usage: dict) -> dict:
-    """Tool candidates at three levels of granularity, and how many of them the repository's own documentation uses.
-
-    low     one tool per API element: every public function, method and property
-    medium  one tool per operation on an object: a module function stays one tool; a class gives one tool that
-            builds it, one that reads all its properties, one per method, and one per family of operators the
-            repository uses with it (all comparisons together, `in` and `not in` together, others one each)
-    high    one tool per documented example that uses at least two different things of the API
-    """
-    in_docs = lambda path: bool(usage["callables"].get(path, {}).get("docs") or usage["callables"].get(path, {}).get("guessed_docs"))  # noqa: E731
-    low = [f"{c['module']}.{c['qualname']}" for c in api["callables"]]
-    medium, medium_used = 0, 0
-    by_class: dict[str, list[dict]] = {}
-    for c in api["callables"]:
-        if "." in c["qualname"]:
-            by_class.setdefault(c["qualname"].split(".")[0], []).append(c)
-        else:
-            medium += 1
-            medium_used += in_docs(f"{c['module']}.{c['qualname']}")
-    for name, members in by_class.items():
-        seen = usage["classes"].get(name, {"built": {}, "operators": {}})
-        properties = [m for m in members if m["kind"] == "property"]
-        methods = [m for m in members if m["kind"] != "property"]
-        families = {FAMILIES.get(symbol, symbol): 0 for symbol in seen["operators"]}
-        for symbol, n in seen["operators"].items():
-            families[FAMILIES.get(symbol, symbol)] += n.get("docs", 0)
-        medium += 1 + bool(properties) + len(methods) + len(families)
-        medium_used += (bool(seen["built"].get("docs")) + any(in_docs(f"{m['module']}.{m['qualname']}") for m in properties)
-                        + sum(in_docs(f"{m['module']}.{m['qualname']}") for m in methods) + sum(1 for n in families.values() if n))
-    examples = [e for e in usage.get("examples", []) if len(e) >= 2]
-    return {"low": len(low), "low_used_in_docs": sum(map(in_docs, low)), "medium": medium, "medium_used_in_docs": medium_used,
-            "high": len({tuple(e) for e in examples}), "examples": len(usage.get("examples", [])), "examples_with_two_or_more": len(examples)}
-
-
 def scan_one(candidate: dict, clones: Path = CLONES, scans: Path | None = None) -> dict:
     """One repository, start to end. Never raises: a failure is a record with `error`."""
     record = {"package": candidate["package"], "repo": candidate["repo"], "commit": None, "error": None}
@@ -151,7 +115,7 @@ def scan_one(candidate: dict, clones: Path = CLONES, scans: Path | None = None) 
                              "callables_used_in_docs": len(usage["ranking"]["docs"]), "callables_used_in_tests": len(usage["ranking"]["tests"]),
                              "classes_built_in_docs": sum(1 for c in usage["classes"].values() if c["built"]["docs"]),
                              "classes_with_operators": sum(1 for c in usage["classes"].values() if c["operators"])},
-                   "levels": levels(api, usage)}
+                   "levels": level_counts(api, usage)}
         if scans is not None:
             folder = scans / folder_name(candidate["repo"])
             folder.mkdir(parents=True, exist_ok=True)

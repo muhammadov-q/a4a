@@ -1,0 +1,1221 @@
+{
+ "url": "https://github.com/jmespath/jmespath.py",
+ "commit": "2812594e69d43098ef60f81f4efc404c071b0418",
+ "package": "jmespath",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "jmespath.py-sample",
+ "toolset": "toolsets/generated/jmespath.py-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 1,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "tools": [
+  {
+   "name": "compile_jmespath_expression",
+   "wraps": "jmespath.compile",
+   "description": "Compile a JMESPath expression into an optimized form for repeated use. expression: A JMESPath expression to compile, e.g. 'foo.bar' -> compiled expression string.",
+   "verified": true,
+   "direct_call": "jmespath.compile(expression)",
+   "samples": [
+    {
+     "expression": "name"
+    },
+    {
+     "expression": "users[*].name"
+    },
+    {
+     "expression": "foo.bar.baz"
+    },
+    {
+     "expression": ""
+    },
+    {
+     "expression": "invalid[expression"
+    }
+   ]
+  },
+  {
+   "name": "purge_jmespath_cache",
+   "wraps": "jmespath.parser.Parser.purge",
+   "description": "Clear the compiled JMESPath expression cache. Example: purge_jmespath_cache() -> None.",
+   "verified": true,
+   "direct_call": "jmespath.parser.Parser.purge()",
+   "samples": [
+    {},
+    {}
+   ]
+  },
+  {
+   "name": "tokenize_jmespath_expression",
+   "wraps": "jmespath.lexer.Lexer.tokenize",
+   "description": "Break down a JMESPath expression into tokens for parsing. expression: A JMESPath expression to tokenize, e.g. 'foo.bar' -> [{'type': 'unquoted_identifier', 'value': 'foo', 'start': 0, 'end': 3}, {'type': 'literal', 'value': '.', 'start': 3, 'end': 4}, {'type': 'unquoted_identifier', 'value': 'bar', 'start': 4, 'end': 7}].",
+   "verified": true,
+   "direct_call": "jmespath.lexer.Lexer().tokenize(expression)",
+   "samples": [
+    {
+     "expression": "foo.bar"
+    },
+    {
+     "expression": "[?name == 'John']"
+    },
+    {
+     "expression": "items[0].name"
+    },
+    {
+     "expression": "a | b"
+    },
+    {
+     "expression": "count(items)"
+    },
+    {
+     "expression": "not_valid"
+    }
+   ]
+  },
+  {
+   "name": "define_jmespath_function_signature",
+   "wraps": "jmespath.functions.signature",
+   "description": "Define the expected argument types and count for a JMESPath function signature.\n    \n    Args:\n        arguments: An array of expected argument types and count for a JMESPath function signature\n        \n    Example:\n        define_jmespath_function_signature([\"string\", \"number\"]) -> None\n    ",
+   "verified": false,
+   "direct_call": "jmespath.functions.signature(arguments)",
+   "samples": [
+    {
+     "arguments": [
+      "string"
+     ]
+    },
+    {
+     "arguments": [
+      "number",
+      "string"
+     ]
+    },
+    {
+     "arguments": [
+      "boolean",
+      "array",
+      "object"
+     ]
+    },
+    {
+     "arguments": []
+    },
+    {
+     "arguments": [
+      "integer",
+      "number",
+      "string",
+      "boolean",
+      "array",
+      "object"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "set_incomplete_expression_error",
+   "wraps": "jmespath.exceptions.IncompleteExpressionError.set_expression",
+   "description": "Set the expression that caused an incomplete JMESPath expression error.\n    \n    Args:\n        expression: The JMESPath expression that caused the incomplete expression error\n        \n    Example:\n        >>> set_incomplete_expression_error(\"foo.\")\n    ",
+   "verified": true,
+   "direct_call": "jmespath.exceptions.IncompleteExpressionError('test', 'test', 'test').set_expression(expression)",
+   "samples": [
+    {
+     "expression": "foo.bar"
+    },
+    {
+     "expression": "sum(`"
+    },
+    {
+     "expression": ""
+    },
+    {
+     "expression": "filter(@, &)"
+    }
+   ]
+  },
+  {
+   "name": "create_field_ast_node",
+   "wraps": "jmespath.ast.field",
+   "description": "Create an AST node representing a field access in a JMESPath expression. name: The name of the field to access, e.g. 'name' -> {'type': 'field', 'children': [], 'value': 'name'}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.field(name)",
+   "samples": [
+    {
+     "name": "name"
+    },
+    {
+     "name": "age"
+    },
+    {
+     "name": "user.name"
+    },
+    {
+     "name": ""
+    },
+    {
+     "name": "nested.field.value"
+    }
+   ]
+  },
+  {
+   "name": "create_literal_ast_node",
+   "wraps": "jmespath.ast.literal",
+   "description": "Create an AST node representing a literal value in a JMESPath expression. literal_value: The literal value to be represented in the AST node, e.g. [\"a\", \"b\", \"c\"] -> {'type': 'literal', 'value': ['a', 'b', 'c'], 'children': []}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.literal(literal_value)",
+   "samples": [
+    {
+     "literal_value": "hello"
+    },
+    {
+     "literal_value": 42
+    },
+    {
+     "literal_value": 3.14
+    },
+    {
+     "literal_value": true
+    },
+    {
+     "literal_value": null
+    },
+    {
+     "literal_value": [
+      "a",
+      "b",
+      "c"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "create_function_expression_ast_node",
+   "wraps": "jmespath.ast.function_expression",
+   "description": "Create an AST node representing a function call in a JMESPath expression. name: The name of the function to create an AST node for, e.g. 'length' -> {'type': 'function_expression', 'children': [], 'value': 'length'}. args: The arguments passed to the function as AST nodes, e.g. [{'type': 'field', 'value': 'name'}] -> {'type': 'function_expression', 'children': [{'type': 'field', 'value': 'name'}], 'value': 'length'}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.function_expression(name, args)",
+   "samples": [
+    {
+     "name": "upper",
+     "args": [
+      {
+       "type": "variable",
+       "value": "text"
+      }
+     ]
+    },
+    {
+     "name": "concat",
+     "args": [
+      {
+       "type": "literal",
+       "value": "Hello"
+      },
+      {
+       "type": "literal",
+       "value": "World"
+      }
+     ]
+    },
+    {
+     "name": "length",
+     "args": [
+      {
+       "type": "variable",
+       "value": "items"
+      }
+     ]
+    },
+    {
+     "name": "map",
+     "args": [
+      {
+       "type": "function_expression",
+       "value": "upper",
+       "children": [
+        {
+         "type": "variable",
+         "value": "item"
+        }
+       ]
+      },
+      {
+       "type": "variable",
+       "value": "list"
+      }
+     ]
+    },
+    {
+     "name": "sum",
+     "args": []
+    }
+   ]
+  },
+  {
+   "name": "create_projection_ast_node",
+   "wraps": "jmespath.ast.projection",
+   "description": "Create an AST node representing a projection operation in a JMESPath expression. left: The left side of the projection operation, right: The right side of the projection operation. Example: create_projection_ast_node({\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"literal\", \"value\": 1}) -> {'type': 'projection', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 1}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.projection(left, right)",
+   "samples": [
+    {
+     "left": {
+      "type": "field",
+      "value": "items"
+     },
+     "right": {
+      "type": "identifier",
+      "value": "name"
+     }
+    },
+    {
+     "left": {
+      "type": "array",
+      "value": [
+       1,
+       2,
+       3
+      ]
+     },
+     "right": {
+      "type": "wildcard",
+      "value": "*"
+     }
+    },
+    {
+     "left": {
+      "type": "literal",
+      "value": "hello"
+     },
+     "right": {
+      "type": "field",
+      "value": "world"
+     }
+    },
+    {
+     "left": {
+      "type": "expression",
+      "value": "foo.bar"
+     },
+     "right": {
+      "type": "function",
+      "name": "length"
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_value_projection_ast_node",
+   "wraps": "jmespath.ast.value_projection",
+   "description": "Create an AST node representing a value projection operation in a JMESPath expression. left: The left operand of the value projection operation, right: The right operand of the value projection operation, e.g. create_value_projection_ast_node({\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}) -> {\"type\": \"value_projection\", \"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.value_projection(left, right)",
+   "samples": [
+    {
+     "left": {
+      "type": "field",
+      "value": "items"
+     },
+     "right": {
+      "type": "identifier",
+      "value": "name"
+     }
+    },
+    {
+     "left": {
+      "type": "array",
+      "value": [
+       1,
+       2,
+       3
+      ]
+     },
+     "right": {
+      "type": "literal",
+      "value": "test"
+     }
+    },
+    {
+     "left": {
+      "type": "expression",
+      "value": "foo.bar"
+     },
+     "right": {
+      "type": "function",
+      "name": "length"
+     }
+    },
+    {
+     "left": {
+      "type": "wildcard",
+      "value": "*"
+     },
+     "right": {
+      "type": "filter",
+      "condition": "true"
+     }
+    },
+    {
+     "left": {
+      "type": "subexpression",
+      "value": "a.b.c"
+     },
+     "right": {
+      "type": "pipe",
+      "operations": [
+       "upper",
+       "reverse"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_filter_projection_ast_node",
+   "wraps": "jmespath.ast.filter_projection",
+   "description": "Create an AST node representing a filter projection operation in a JMESPath expression. left: the left operand of the filter projection, right: the right operand of the filter projection, comparator: the comparator used in the filter projection. Example: create_filter_projection_ast_node({'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 'John'}, {'type': 'eq'}) -> {'type': 'filter_projection', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 'John'}, {'type': 'eq'}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.filter_projection(left, right, comparator)",
+   "samples": [
+    {
+     "left": {
+      "type": "identifier",
+      "value": "items"
+     },
+     "right": {
+      "type": "literal",
+      "value": "test"
+     },
+     "comparator": {
+      "type": "eq",
+      "children": []
+     }
+    },
+    {
+     "left": {
+      "type": "array",
+      "children": [
+       {
+        "type": "literal",
+        "value": 1
+       }
+      ]
+     },
+     "right": {
+      "type": "identifier",
+      "value": "data"
+     },
+     "comparator": {
+      "type": "gt",
+      "children": []
+     }
+    },
+    {
+     "left": {
+      "type": "expression",
+      "children": []
+     },
+     "right": {
+      "type": "function",
+      "name": "length"
+     },
+     "comparator": {
+      "type": "lt",
+      "children": []
+     }
+    },
+    {
+     "left": {
+      "type": "identifier",
+      "value": "users"
+     },
+     "right": {
+      "type": "literal",
+      "value": "admin"
+     },
+     "comparator": {
+      "type": "ne",
+      "children": []
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_multi_select_list_ast_node",
+   "wraps": "jmespath.ast.multi_select_list",
+   "description": "Create an AST node representing a multi-select list operation in a JMESPath expression. nodes: Array of AST nodes to include in the multi-select list, e.g. [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}] -> {\"type\": \"multi_select_list\", \"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.multi_select_list(nodes)",
+   "samples": [
+    {
+     "nodes": [
+      {
+       "type": "field",
+       "value": "name"
+      },
+      {
+       "type": "field",
+       "value": "age"
+      }
+     ]
+    },
+    {
+     "nodes": [
+      {
+       "type": "literal",
+       "value": "foo"
+      },
+      {
+       "type": "literal",
+       "value": "bar"
+      },
+      {
+       "type": "literal",
+       "value": "baz"
+      }
+     ]
+    },
+    {
+     "nodes": []
+    },
+    {
+     "nodes": [
+      {
+       "type": "identifier",
+       "value": "items"
+      }
+     ]
+    },
+    {
+     "nodes": [
+      {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "field",
+         "value": "nested"
+        }
+       ]
+      },
+      {
+       "type": "field",
+       "value": "top_level"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "create_multi_select_dict_ast_node",
+   "wraps": "jmespath.ast.multi_select_dict",
+   "description": "Create an AST node representing a multi-select dictionary operation. nodes: Array of child nodes for the multi-select dictionary operation, e.g. [{'type': 'field', 'value': 'name'}, {'type': 'field', 'value': 'age'}] -> {'type': 'multi_select_dict', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'field', 'value': 'age'}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.multi_select_dict(nodes)",
+   "samples": [
+    {
+     "nodes": [
+      {
+       "type": "field",
+       "value": "name"
+      },
+      {
+       "type": "field",
+       "value": "age"
+      }
+     ]
+    },
+    {
+     "nodes": []
+    },
+    {
+     "nodes": [
+      {
+       "type": "literal",
+       "value": "test"
+      }
+     ]
+    },
+    {
+     "nodes": [
+      {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "field",
+         "value": "nested"
+        }
+       ]
+      },
+      {
+       "type": "field",
+       "value": "top_level"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "create_and_expression_ast_node",
+   "wraps": "jmespath.ast.and_expression",
+   "description": "Create an AST node representing an AND logical operation in a JMESPath expression. left: The left operand of the AND expression. right: The right operand of the AND expression. Example: create_and_expression_ast_node({\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"}) -> {\"type\": \"and_expression\", \"children\": [{\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"}]}",
+   "verified": true,
+   "direct_call": "jmespath.ast.and_expression(left, right)",
+   "samples": [
+    {
+     "left": {
+      "type": "field",
+      "value": "name"
+     },
+     "right": {
+      "type": "field",
+      "value": "age"
+     }
+    },
+    {
+     "left": {
+      "type": "comparison",
+      "operator": "==",
+      "left": {
+       "type": "field",
+       "value": "status"
+      },
+      "right": {
+       "type": "literal",
+       "value": "active"
+      }
+     },
+     "right": {
+      "type": "comparison",
+      "operator": "!=",
+      "left": {
+       "type": "field",
+       "value": "deleted"
+      },
+      "right": {
+       "type": "literal",
+       "value": true
+      }
+     }
+    },
+    {
+     "left": {
+      "type": "function",
+      "name": "starts_with",
+      "arguments": [
+       {
+        "type": "field",
+        "value": "name"
+       },
+       {
+        "type": "literal",
+        "value": "A"
+       }
+      ]
+     },
+     "right": {
+      "type": "function",
+      "name": "ends_with",
+      "arguments": [
+       {
+        "type": "field",
+        "value": "name"
+       },
+       {
+        "type": "literal",
+        "value": "z"
+       }
+      ]
+     }
+    },
+    {
+     "left": {
+      "type": "literal",
+      "value": true
+     },
+     "right": {
+      "type": "literal",
+      "value": false
+     }
+    },
+    {
+     "left": {
+      "type": "field",
+      "value": "x"
+     },
+     "right": {
+      "type": "field",
+      "value": "y"
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_or_expression_ast_node",
+   "wraps": "jmespath.ast.or_expression",
+   "description": "Create an AST node representing an OR logical operation in a JMESPath expression.\n    \n    Args:\n        left: The left operand of the OR expression\n        right: The right operand of the OR expression\n    \n    Returns:\n        A dictionary representing the OR expression AST node\n    \n    Example:\n        >>> create_or_expression_ast_node({\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"})\n        {'type': 'or_expression', 'children': [{'type': 'field', 'name': 'a'}, {'type': 'field', 'name': 'b'}]}\n    ",
+   "verified": true,
+   "direct_call": "jmespath.ast.or_expression(left, right)",
+   "samples": [
+    {
+     "left": {
+      "type": "field",
+      "value": "name"
+     },
+     "right": {
+      "type": "field",
+      "value": "title"
+     }
+    },
+    {
+     "left": {
+      "type": "literal",
+      "value": "hello"
+     },
+     "right": {
+      "type": "literal",
+      "value": "world"
+     }
+    },
+    {
+     "left": {
+      "type": "comparison",
+      "operator": "==",
+      "left": {
+       "type": "field",
+       "value": "age"
+      },
+      "right": {
+       "type": "literal",
+       "value": 25
+      }
+     },
+     "right": {
+      "type": "comparison",
+      "operator": "!=",
+      "left": {
+       "type": "field",
+       "value": "status"
+      },
+      "right": {
+       "type": "literal",
+       "value": "inactive"
+      }
+     }
+    },
+    {
+     "left": {
+      "type": "function",
+      "name": "length",
+      "arguments": [
+       {
+        "type": "field",
+        "value": "items"
+       }
+      ]
+     },
+     "right": {
+      "type": "function",
+      "name": "size",
+      "arguments": [
+       {
+        "type": "field",
+        "value": "data"
+       }
+      ]
+     }
+    },
+    {
+     "left": {
+      "type": "wildcard",
+      "value": "*"
+     },
+     "right": {
+      "type": "subexpression",
+      "value": {
+       "type": "field",
+       "value": "nested"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_not_expression_ast_node",
+   "wraps": "jmespath.ast.not_expression",
+   "description": "Create an AST node representing a NOT logical operation. expr: the expression to be negated",
+   "verified": true,
+   "direct_call": "jmespath.ast.not_expression(expr)",
+   "samples": [
+    {
+     "expr": {
+      "type": "field",
+      "value": "name"
+     }
+    },
+    {
+     "expr": {
+      "type": "comparison",
+      "left": {
+       "type": "field",
+       "value": "age"
+      },
+      "operator": ">",
+      "right": {
+       "type": "literal",
+       "value": 18
+      }
+     }
+    },
+    {
+     "expr": {
+      "type": "array_projection",
+      "left": {
+       "type": "field",
+       "value": "items"
+      },
+      "right": {
+       "type": "field",
+       "value": "value"
+      }
+     }
+    },
+    {
+     "expr": {
+      "type": "literal",
+      "value": true
+     }
+    },
+    {
+     "expr": {
+      "type": "function_expression",
+      "name": "length",
+      "arguments": [
+       {
+        "type": "field",
+        "value": "tags"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_pipe_ast_node",
+   "wraps": "jmespath.ast.pipe",
+   "description": "Create an AST node representing a pipe operation in a JMESPath expression. left: The left-hand side AST node of the pipe operation. right: The right-hand side AST node of the pipe operation. Example: create_pipe_ast_node({'type': 'field', 'value': 'a'}, {'type': 'field', 'value': 'b'}) -> {'type': 'pipe', 'children': [{'type': 'field', 'value': 'a'}, {'type': 'field', 'value': 'b'}]}",
+   "verified": true,
+   "direct_call": "jmespath.ast.pipe(left, right)",
+   "samples": [
+    {
+     "left": {
+      "type": "field",
+      "value": "name"
+     },
+     "right": {
+      "type": "method",
+      "value": "upper"
+     }
+    },
+    {
+     "left": {
+      "type": "literal",
+      "value": "hello"
+     },
+     "right": {
+      "type": "field",
+      "value": "world"
+     }
+    },
+    {
+     "left": {
+      "type": "pipe",
+      "children": [
+       {
+        "type": "field",
+        "value": "a"
+       },
+       {
+        "type": "field",
+        "value": "b"
+       }
+      ]
+     },
+     "right": {
+      "type": "field",
+      "value": "c"
+     }
+    },
+    {
+     "left": {
+      "type": "field",
+      "value": "data"
+     },
+     "right": {
+      "type": "filter",
+      "children": [
+       {
+        "type": "field",
+        "value": "items"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_comparator_ast_node",
+   "wraps": "jmespath.ast.comparator",
+   "description": "Create an AST node representing a comparison operation in a JMESPath expression. name: The comparison operator name (e.g., 'eq', 'lt', 'gt'), first: The first operand in the comparison, second: The second operand in the comparison. Example: create_comparator_ast_node('eq', {'type': 'field', 'value': 'name'}, 'John') -> {'type': 'comparator', 'children': [{'type': 'field', 'value': 'name'}, 'John'], 'value': 'eq'}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.comparator(name, first, second)",
+   "samples": [
+    {
+     "name": "eq",
+     "first": {
+      "type": "field",
+      "value": "name"
+     },
+     "second": {
+      "type": "literal",
+      "value": "John"
+     }
+    },
+    {
+     "name": "lt",
+     "first": {
+      "type": "field",
+      "value": "age"
+     },
+     "second": {
+      "type": "literal",
+      "value": 30
+     }
+    },
+    {
+     "name": "gt",
+     "first": {
+      "type": "field",
+      "value": "score"
+     },
+     "second": {
+      "type": "literal",
+      "value": 90
+     }
+    },
+    {
+     "name": "ne",
+     "first": {
+      "type": "field",
+      "value": "status"
+     },
+     "second": {
+      "type": "literal",
+      "value": "inactive"
+     }
+    },
+    {
+     "name": "le",
+     "first": {
+      "type": "field",
+      "value": "count"
+     },
+     "second": {
+      "type": "literal",
+      "value": 100
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_slice_ast_node",
+   "wraps": "jmespath.ast.slice",
+   "description": "Create an AST node representing a slice operation in a JMESPath expression. start: The start index of the slice, or None if omitted. end: The end index of the slice, or None if omitted. step: The step value of the slice, or None if omitted. Example: create_slice_ast_node(1, 5, 2) -> {'type': 'slice', 'children': [1, 5, 2]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.slice(start, end, step)",
+   "samples": [
+    {
+     "start": 1,
+     "end": 5,
+     "step": 1
+    },
+    {
+     "start": 0,
+     "end": 10,
+     "step": 2
+    },
+    {
+     "start": -1,
+     "end": -5,
+     "step": -1
+    },
+    {
+     "start": 2,
+     "end": 8,
+     "step": 3
+    },
+    {
+     "start": 0,
+     "end": 0,
+     "step": 1
+    }
+   ]
+  },
+  {
+   "name": "create_flatten_ast_node",
+   "wraps": "jmespath.ast.flatten",
+   "description": "Create an AST node representing a flatten operation in a JMESPath expression. node: The AST node to be wrapped in a flatten operation, e.g. create_flatten_ast_node({\"type\": \"field\", \"value\": \"name\"}) -> {\"type\": \"flatten\", \"children\": [{\"type\": \"field\", \"value\": \"name\"}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.flatten(node)",
+   "samples": [
+    {
+     "node": {
+      "type": "field",
+      "value": "name"
+     }
+    },
+    {
+     "node": {
+      "type": "literal",
+      "value": "hello"
+     }
+    },
+    {
+     "node": {
+      "type": "array",
+      "children": [
+       {
+        "type": "field",
+        "value": "items"
+       }
+      ]
+     }
+    },
+    {
+     "node": {
+      "type": "expression",
+      "children": [
+       {
+        "type": "field",
+        "value": "data"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "create_identity_ast_node",
+   "wraps": "jmespath.ast.identity",
+   "description": "Create an AST node representing an identity operation in a JMESPath expression. Returns a dictionary with type 'identity' and empty children list.",
+   "verified": true,
+   "direct_call": "jmespath.ast.identity()",
+   "samples": [
+    {},
+    {}
+   ]
+  },
+  {
+   "name": "create_current_node_ast_node",
+   "wraps": "jmespath.ast.current_node",
+   "description": "Create an AST node representing the current node in a JMESPath expression. -> A dictionary with type 'current' and empty children list.",
+   "verified": true,
+   "direct_call": "jmespath.ast.current_node()",
+   "samples": [
+    {},
+    {}
+   ]
+  },
+  {
+   "name": "create_expression_reference_ast_node",
+   "wraps": "jmespath.ast.expref",
+   "description": "Create an AST node representing an expression reference in a JMESPath expression. expression: The expression to create an expression reference for, e.g. {'type': 'field', 'value': 'name'} -> {'type': 'expref', 'children': [{'type': 'field', 'value': 'name'}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.expref(expression)",
+   "samples": [
+    {
+     "expression": {
+      "type": "field",
+      "value": "name"
+     }
+    },
+    {
+     "expression": {
+      "type": "literal",
+      "value": "hello"
+     }
+    },
+    {
+     "expression": {
+      "type": "array",
+      "children": []
+     }
+    },
+    {
+     "expression": {
+      "type": "function",
+      "name": "length",
+      "children": [
+       {
+        "type": "field",
+        "value": "items"
+       }
+      ]
+     }
+    },
+    {
+     "expression": null
+    }
+   ]
+  },
+  {
+   "name": "create_subexpression_ast_node",
+   "wraps": "jmespath.ast.subexpression",
+   "description": "Create an AST node representing a subexpression in a JMESPath expression. children: Array of child nodes that form the subexpression, e.g. [{'type': 'field', 'value': 'name'}] -> {'type': 'subexpression', 'children': [{'type': 'field', 'value': 'name'}]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.subexpression(children)",
+   "samples": [
+    {
+     "children": []
+    },
+    {
+     "children": [
+      {
+       "type": "field",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "children": [
+      {
+       "type": "field",
+       "value": "users"
+      },
+      {
+       "type": "array_projection",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "children": [
+      {
+       "type": "literal",
+       "value": "hello"
+      },
+      {
+       "type": "field",
+       "value": "world"
+      }
+     ]
+    },
+    {
+     "children": [
+      {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "field",
+         "value": "nested"
+        }
+       ]
+      },
+      {
+       "type": "function_expression",
+       "name": "length",
+       "children": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "create_index_expression_ast_node",
+   "wraps": "jmespath.ast.index_expression",
+   "description": "Create an AST node representing an index expression in a JMESPath expression. children: Array of child nodes for the index expression, e.g. [1, 2] -> {\"type\": \"index_expression\", \"children\": [1, 2]}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.index_expression(children)",
+   "samples": [
+    {
+     "children": [
+      "array",
+      "index"
+     ]
+    },
+    {
+     "children": [
+      "variable",
+      0
+     ]
+    },
+    {
+     "children": []
+    },
+    {
+     "children": [
+      "nested",
+      [
+       "array",
+       "access"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "name": "create_key_value_pair_ast_node",
+   "wraps": "jmespath.ast.key_val_pair",
+   "description": "Create an AST node representing a key-value pair in a JMESPath expression. key_name: The name of the key in the key-value pair, node: The AST node representing the value part of the key-value pair. Example: create_key_value_pair_ast_node('name', {'type': 'literal', 'value': 'John'}) -> {'type': 'key_val_pair', 'children': [{'type': 'literal', 'value': 'John'}], 'value': 'name'}.",
+   "verified": true,
+   "direct_call": "jmespath.ast.key_val_pair(key_name, node)",
+   "samples": [
+    {
+     "key_name": "name",
+     "node": {
+      "type": "literal",
+      "value": "John"
+     }
+    },
+    {
+     "key_name": "age",
+     "node": {
+      "type": "literal",
+      "value": 30
+     }
+    },
+    {
+     "key_name": "active",
+     "node": {
+      "type": "boolean",
+      "value": true
+     }
+    },
+    {
+     "key_name": "items",
+     "node": {
+      "type": "array",
+      "children": []
+     }
+    },
+    {
+     "key_name": "",
+     "node": {
+      "type": "literal",
+      "value": "empty key"
+     }
+    }
+   ]
+  }
+ ]
+}

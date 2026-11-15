@@ -5,6 +5,7 @@
 architecture.png  the system, drawn like a paper's architecture figure
 results.png         (a) exercises solved per tool set, from out/runs/;
                 (b) what the prompt tokens of a run consist of, from out/traces/analysis/repetition.json
+saturation.png    tool candidates and distinct tools as repositories are added, from out/corpus/saturation.json
 
 All numbers are read from result files in this repository, so the figures can be rebuilt.
 """
@@ -16,6 +17,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, PathPatch, Rectangle
 from matplotlib.path import Path
 
@@ -293,7 +295,47 @@ def results(theme: dict, path: pathlib.Path) -> None:
     plt.close(fig)
 
 
+def saturation(theme: dict, path: pathlib.Path) -> None:
+    """Tool candidates and distinct tools as repositories are added, one panel per level of granularity."""
+    data = json.loads((ROOT / "out" / "corpus" / "saturation.json").read_text())
+    curves = data["curves"]["all"]
+    titles = {"low": "Low: one function, method or property", "medium": "Medium: one operation on an object", "high": "High: one documented example"}
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.0), dpi=200, gridspec_kw={"wspace": 0.42})
+    fig.patch.set_facecolor(theme["surface"])
+    fig.subplots_adjust(left=0.055, right=0.93, top=0.74, bottom=0.15)
+    blue, gray = theme["series"][0], theme["muted"]
+    for ax, level in zip(axes, ("low", "medium", "high")):
+        main, loose, strict = curves[level]["0.85"], curves[level]["0.80"], curves[level]["0.90"]
+        x = range(1, len(main["groups"]) + 1)
+        ax.plot(x, main["candidates"], color=gray, lw=1.5, ls=(0, (4, 3)))
+        ax.fill_between(x, loose["groups"], strict["groups"], color=blue, alpha=0.16, lw=0)
+        ax.plot(x, main["groups"], color=blue, lw=2)
+        ax.set_facecolor(theme["surface"])
+        for side in ("top", "right"):
+            ax.spines[side].set_visible(False)
+        for side in ("left", "bottom"):
+            ax.spines[side].set_color(theme["line"])
+        ax.tick_params(axis="both", length=0, colors=theme["muted"], labelsize=10)
+        ax.yaxis.grid(True, color=theme["line"], lw=0.6, alpha=0.6)
+        ax.set_axisbelow(True)
+        ax.set_xlim(1, len(main["groups"]))
+        ax.set_ylim(0, main["candidates"][-1] * 1.08)
+        ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:,.0f}"))
+        ax.set_xlabel("repositories added", color=theme["muted"], fontsize=10)
+        ax.set_title(titles[level], color=theme["ink"], fontsize=11, loc="left", pad=10)
+        end = len(main["groups"]) + 1.5
+        ax.text(end, main["candidates"][-1], f"candidates\n{main['candidates'][-1]:,.0f}", color=theme["muted"], fontsize=9, va="center", clip_on=False)
+        ax.text(end, main["groups"][-1], f"distinct\n{main['groups'][-1]:,.0f}", color=theme["ink"], fontsize=9, va="center", clip_on=False)
+    fig.text(0.055, 0.97, f"Distinct tool candidates keep growing as repositories are added ({data['repositories']} repositories)", color=theme["ink"], fontsize=13, weight="bold", va="top")
+    fig.text(0.055, 0.905, "Blue: groups of candidates that do the same thing, similarity threshold 0.85 (band: 0.80 to 0.90). Dashed: all candidates. Mean of "
+                           f"{data['orders']} random orders.", color=theme["muted"], fontsize=9.5, va="top")
+    fig.savefig(path, facecolor=theme["surface"])
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     architecture(DOCS / "architecture.png")
     results(THEMES["light"], DOCS / "results.png")
+    if (ROOT / "out" / "corpus" / "saturation.json").is_file():
+        saturation(THEMES["light"], DOCS / "saturation.png")
     print("wrote", ", ".join(p.name for p in sorted(DOCS.glob("*.png"))))

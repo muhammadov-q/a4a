@@ -84,7 +84,7 @@ class Usage:
         self.classes = {name: {"built": {"docs": 0, "tests": 0}, "operators": defaultdict(lambda: {"docs": 0, "tests": 0})} for name in api.classes}
         self.files = {"docs": 0, "tests": 0}
         self.unparsed = 0
-        self.examples: list[list[str]] = []  # per documentation example that uses the API: what it uses, see uses()
+        self.examples: list[dict] = []  # per documentation example that uses the API: {"uses": [...], "code": "..."}, see uses()
 
     def scan(self, code: str, source: str, names: dict | None = None) -> dict:
         """Count the uses in one piece of code. `names` carries imports and known values on to the next piece of the same file."""
@@ -200,7 +200,7 @@ class Usage:
                 self.scan(block, source, names)
             used = sorted(self.uses(source) - before)
             if used:
-                self.examples.append(used)
+                self.examples.append({"uses": used, "code": "\n".join(group)[:1500]})
 
     def score(self, path: str, by: str) -> tuple:
         """Sort key, larger is more used. Docs and tests have very different sizes, so each is taken as a share of its total."""

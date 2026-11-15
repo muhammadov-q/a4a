@@ -1,0 +1,5872 @@
+{
+ "url": "https://github.com/jmespath/jmespath.py",
+ "commit": "2812594e69d43098ef60f81f4efc404c071b0418",
+ "package": "jmespath",
+ "model": "qwen3-coder",
+ "thinking": false,
+ "set": "jmespath.py-sample",
+ "toolset": "toolsets/generated/jmespath.py-sample",
+ "sandbox": "macOS sandbox-exec: no network, home folder unreadable, one scratch folder writable",
+ "dependencies": [],
+ "dropped_proposals": 1,
+ "pick": {
+  "usage": null,
+  "classes": true,
+  "operators": false
+ },
+ "api_scan": "re-exports followed",
+ "n_callables": 60,
+ "picked": 31,
+ "accepted": 26,
+ "verified": 25,
+ "rejected": 5,
+ "ok_on_first_try": 18,
+ "first_try_results": {
+  "ok": 18,
+  "runs": 2,
+  "differential": 6,
+  "spec": 3,
+  "static": 1,
+  "syntax": 1
+ },
+ "all_check_results": {
+  "ok": 26,
+  "runs": 8,
+  "differential": 11,
+  "static": 7,
+  "spec": 7,
+  "syntax": 2
+ },
+ "sample_results": {
+  "same": 109,
+  "both_error": 2,
+  "unstable": 5
+ },
+ "llm_tokens": {
+  "propose": 3003,
+  "spec": 26197,
+  "code": 65763
+ },
+ "llm_requests": {
+  "propose": 1,
+  "spec": 37,
+  "code": 55
+ },
+ "seconds": 58,
+ "tools": [
+  {
+   "name": "compile_jmespath_expression",
+   "wraps": "jmespath.compile",
+   "description": "Compile a JMESPath expression into an optimized form for repeated use.",
+   "accepted": true,
+   "code": "import jmespath\n\n\ndef compile_jmespath_expression(expression: str) -> str:\n    \"\"\"Compile a JMESPath expression into an optimized form for repeated use. expression: A JMESPath expression to compile, e.g. 'foo.bar' -> compiled expression string.\"\"\"\n    try:\n        compiled = jmespath.compile(expression)\n        return str(compiled)\n    except Exception as e:\n        raise ValueError(f\"invalid JMESPath expression: {expression!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expression",
+      "type": "string",
+      "description": "A JMESPath expression to compile",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.compile(expression)",
+    "samples": [
+     {
+      "expression": "name"
+     },
+     {
+      "expression": "users[*].name"
+     },
+     {
+      "expression": "foo.bar.baz"
+     },
+     {
+      "expression": ""
+     },
+     {
+      "expression": "invalid[expression"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "expression": "name"
+      },
+      "tool": "{'type': 'field', 'children': [], 'value': 'name'}",
+      "direct": "\"{'type': 'field', 'children': [], 'value': 'name'}\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "users[*].name"
+      },
+      "tool": "{'type': 'projection', 'children': [{'type': 'field', 'children': [], 'value': 'users'}, {'type': 'field', 'children': [], 'value': 'name'}]}",
+      "direct": "\"{'type': 'projection', 'children': [{'type': 'field', 'children': [], 'value': 'users'}, {'type': 'field', 'children': [], 'value': 'name'}]}\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "foo.bar.baz"
+      },
+      "tool": "{'type': 'subexpression', 'children': [{'type': 'field', 'children': [], 'value': 'foo'}, {'type': 'field', 'children': [], 'value': 'bar'}, {'type': 'field', 'children': [], 'value': 'baz'}]}",
+      "direct": "\"{'type': 'subexpression', 'children': [{'type': 'field', 'children': [], 'value': 'foo'}, {'type': 'field', 'children': [], 'value': 'bar'}, {'type': 'field', 'children': [], 'value': 'baz'}]}\"",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": ""
+      },
+      "tool": "ValueError: invalid JMESPath expression: ''",
+      "direct": "EmptyExpressionError: Invalid JMESPath expression: cannot be empty.",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "expression": "invalid[expression"
+      },
+      "tool": "ValueError: invalid JMESPath expression: 'invalid[expression'",
+      "direct": "ParseError: Expecting: star, got: unquoted_identifier: Parse error at column 8, token \"expression\" (UNQUOTED_IDENTIFIER), for expression:\n\"invalid[expression\"\n         ^",
+      "result": "both_error"
+     }
+    ],
+    "verified": true,
+    "description": "Compile a JMESPath expression into an optimized form for repeated use. expression: A JMESPath expression to compile, e.g. 'foo.bar' -> compiled expression string.",
+    "input_schema": {
+     "properties": {
+      "expression": {
+       "title": "Expression",
+       "type": "string"
+      }
+     },
+     "required": [
+      "expression"
+     ],
+     "title": "compile_jmespath_expressionArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "search_with_jmespath",
+   "wraps": "jmespath.search",
+   "description": "Search data using a JMESPath expression to extract specific information.",
+   "accepted": false,
+   "code": "import jmespath\n\n\ndef search_with_jmespath(expression: str, data: dict[str, object] | list[object]) -> object:\n    \"\"\"Search data using a JMESPath expression to extract specific information. expression: A JMESPath expression to search the data, e.g. 'name' -> 'John'. data: The data structure to search through, e.g. {'age': 30, 'name': 'John'}.\"\"\"\n    try:\n        result = jmespath.search(expression, data)\n        # jmespath.search should already return JSON-compatible types\n        # But let's explicitly handle the case where it might return a generator\n        if hasattr(result, '__iter__') and not isinstance(result, (str, bytes, dict, list)):\n            return list(result)\n        return result\n    except Exception as e:\n        raise ValueError(f\"invalid JMESPath expression or data: {expression!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expression",
+      "type": "string",
+      "description": "A JMESPath expression to search the data",
+      "required": true
+     },
+     {
+      "name": "data",
+      "type": "object",
+      "description": "The data structure to search through",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.search(expression, data, options=None)",
+    "samples": [
+     {
+      "expression": "name",
+      "data": {
+       "name": "John",
+       "age": 30
+      }
+     },
+     {
+      "expression": "people[*].name",
+      "data": {
+       "people": [
+        {
+         "name": "John"
+        },
+        {
+         "name": "Jane"
+        }
+       ]
+      }
+     },
+     {
+      "expression": "store.book[?price < 10]",
+      "data": {
+       "store": {
+        "book": [
+         {
+          "title": "Book1",
+          "price": 5
+         },
+         {
+          "title": "Book2",
+          "price": 15
+         }
+        ]
+       }
+      }
+     },
+     {
+      "expression": "items[0].name",
+      "data": {
+       "items": [
+        {
+         "name": "first"
+        },
+        {
+         "name": "second"
+        }
+       ]
+      }
+     },
+     {
+      "expression": "nested.value",
+      "data": {
+       "nested": {
+        "value": "found"
+       }
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "runs",
+    "error": "Input {\"data\": {\"age\": 30, \"name\": \"John\"}, \"expression\": \"name\"}: the tool raised output is not JSON: John, but the direct library call returned \"John\"\nInput {\"data\": {\"people\": [{\"name\": \"John\"}, {\"name\": \"Jane\"}]}, \"expression\": \"people[*].name\"}: the tool raised output is not JSON: JohnJane, but the direct library call returned [\"John\", \"Jane\"]\nInput {\"data\": {\"items\": [{\"name\": \"first\"}, {\"name\": \"second\"}]}, \"expression\": \"items[0].name\"}: the tool raised output is not JSON: first, but the direct library call returned \"first\"",
+    "samples": [
+     {
+      "arguments": {
+       "expression": "name",
+       "data": {
+        "name": "John",
+        "age": 30
+       }
+      },
+      "tool": "output is not JSON: John",
+      "direct": "\"John\"",
+      "result": "crash",
+      "why": "the tool raised output is not JSON: John, but the direct library call returned \"John\""
+     },
+     {
+      "arguments": {
+       "expression": "people[*].name",
+       "data": {
+        "people": [
+         {
+          "name": "John"
+         },
+         {
+          "name": "Jane"
+         }
+        ]
+       }
+      },
+      "tool": "output is not JSON: JohnJane",
+      "direct": "[\"John\", \"Jane\"]",
+      "result": "crash",
+      "why": "the tool raised output is not JSON: JohnJane, but the direct library call returned [\"John\", \"Jane\"]"
+     },
+     {
+      "arguments": {
+       "expression": "store.book[?price < 10]",
+       "data": {
+        "store": {
+         "book": [
+          {
+           "title": "Book1",
+           "price": 5
+          },
+          {
+           "title": "Book2",
+           "price": 15
+          }
+         ]
+        }
+       }
+      },
+      "tool": "ValueError: invalid JMESPath expression or data: 'store.book[?price < 10]'",
+      "direct": "ParseError: invalid token: Parse error at column 20, token \"10\" (NUMBER), for expression:\n\"store.book[?price < 10]\"\n                     ^",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "expression": "items[0].name",
+       "data": {
+        "items": [
+         {
+          "name": "first"
+         },
+         {
+          "name": "second"
+         }
+        ]
+       }
+      },
+      "tool": "output is not JSON: first",
+      "direct": "\"first\"",
+      "result": "crash",
+      "why": "the tool raised output is not JSON: first, but the direct library call returned \"first\""
+     },
+     {
+      "arguments": {
+       "expression": "nested.value",
+       "data": {
+        "nested": {
+         "value": "found"
+        }
+       }
+      },
+      "tool": "output is not JSON: found",
+      "direct": "\"found\"",
+      "result": "crash",
+      "why": "the tool raised output is not JSON: found, but the direct library call returned \"found\""
+     }
+    ],
+    "verified": false,
+    "description": "Search data using a JMESPath expression to extract specific information. expression: A JMESPath expression to search the data, e.g. 'name' -> 'John'. data: The data structure to search through, e.g. {'age': 30, 'name': 'John'}.",
+    "input_schema": {
+     "properties": {
+      "expression": {
+       "title": "Expression",
+       "type": "string"
+      },
+      "data": {
+       "anyOf": [
+        {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        {
+         "items": {},
+         "type": "array"
+        }
+       ],
+       "title": "Data"
+      }
+     },
+     "required": [
+      "expression",
+      "data"
+     ],
+     "title": "search_with_jmespathArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "runs",
+     "error": "Input {\"data\": {\"age\": 30, \"name\": \"John\"}, \"expression\": \"name\"}: the tool raised output is not JSON: John, but the direct library call returned \"John\"\nInput {\"data\": {\"people\": [{\"name\": \"John\"}, {\"name\": \"Jane\"}]}, \"expression\": \"people[*].name\"}: the tool raised output is not JSON: JohnJane, but the direct library call returned [\"John\", \"Jane\"]\nInput {\"data\": {\"items\": [{\"name\": \"first\"}, {\"name\": \"second\"}]}, \"expression\": \"items[0].name\"}: the tool raised output is not JSON: first, but the direct library call returned \"first\""
+    },
+    {
+     "stage": "runs",
+     "error": "Input {\"data\": {\"age\": 30, \"name\": \"John\"}, \"expression\": \"name\"}: the tool raised output is not JSON: John, but the direct library call returned \"John\"\nInput {\"data\": {\"people\": [{\"name\": \"John\"}, {\"name\": \"Jane\"}]}, \"expression\": \"people[*].name\"}: the tool raised output is not JSON: JohnJane, but the direct library call returned [\"John\", \"Jane\"]\nInput {\"data\": {\"items\": [{\"name\": \"first\"}, {\"name\": \"second\"}]}, \"expression\": \"items[0].name\"}: the tool raised output is not JSON: first, but the direct library call returned \"first\""
+    },
+    {
+     "stage": "runs",
+     "error": "Input {\"data\": {\"age\": 30, \"name\": \"John\"}, \"expression\": \"name\"}: the tool raised output is not JSON: John, but the direct library call returned \"John\"\nInput {\"data\": {\"people\": [{\"name\": \"John\"}, {\"name\": \"Jane\"}]}, \"expression\": \"people[*].name\"}: the tool raised output is not JSON: JohnJane, but the direct library call returned [\"John\", \"Jane\"]\nInput {\"data\": {\"items\": [{\"name\": \"first\"}, {\"name\": \"second\"}]}, \"expression\": \"items[0].name\"}: the tool raised output is not JSON: first, but the direct library call returned \"first\""
+    },
+    {
+     "stage": "runs",
+     "error": "Input {\"data\": {\"age\": 30, \"name\": \"John\"}, \"expression\": \"name\"}: the tool raised output is not JSON: John, but the direct library call returned \"John\"\nInput {\"data\": {\"people\": [{\"name\": \"John\"}, {\"name\": \"Jane\"}]}, \"expression\": \"people[*].name\"}: the tool raised output is not JSON: JohnJane, but the direct library call returned [\"John\", \"Jane\"]\nInput {\"data\": {\"items\": [{\"name\": \"first\"}, {\"name\": \"second\"}]}, \"expression\": \"items[0].name\"}: the tool raised output is not JSON: first, but the direct library call returned \"first\""
+    }
+   ]
+  },
+  {
+   "name": "parse_jmespath_expression",
+   "wraps": "jmespath.parser.Parser.parse",
+   "description": "Parse a JMESPath expression into an abstract syntax tree for analysis.",
+   "accepted": false,
+   "code": "import jmespath.parser\nfrom typing import Any, Dict, List, Union\n\n\ndef parse_jmespath_expression(expression: str) -> Dict[str, Any] | None:\n    \"\"\"Parse a JMESPath expression into an abstract syntax tree for analysis. expression: A JMESPath expression to parse, e.g. 'foo.bar' -> AST representation.\"\"\"\n    parser = jmespath.parser.Parser(lookahead=2)\n    try:\n        result = parser.parse(expression)\n        # Convert ParsedResult to a dictionary manually\n        if hasattr(result, '__dict__'):\n            # Handle the case where result is a custom object\n            return _convert_parsed_result_to_dict(result)\n        elif isinstance(result, dict):\n            return result\n        else:\n            return {'value': result}\n    except Exception as e:\n        raise ValueError(f\"Invalid JMESPath expression: {expression!r}\") from e\n\n\ndef _convert_parsed_result_to_dict(obj: Any) -> Dict[str, Any]:\n    \"\"\"Recursively convert a ParsedResult object to a dictionary.\"\"\"\n    if hasattr(obj, '__dict__'):\n        result = {}\n        for key, value in obj.__dict__.items():\n            if key.startswith('_'):\n                continue\n            if isinstance(value, list):\n                result[key] = [_convert_parsed_result_to_dict(item) if hasattr(item, '__dict__') else item for item in value]\n            elif hasattr(value, '__dict__'):\n                result[key] = _convert_parsed_result_to_dict(value)\n            else:\n                result[key] = value\n        return result\n    elif isinstance(obj, list):\n        return [_convert_parsed_result_to_dict(item) if hasattr(item, '__dict__') else item for item in obj]\n    else:\n        return obj\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expression",
+      "type": "string",
+      "description": "A JMESPath expression to parse",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.parser.Parser(lookahead=2).parse(expression)",
+    "samples": [
+     {
+      "expression": "foo.bar"
+     },
+     {
+      "expression": "[?status == 'active']"
+     },
+     {
+      "expression": "length(@)"
+     },
+     {
+      "expression": "sort_by(items, &name)"
+     },
+     {
+      "expression": ""
+     },
+     {
+      "expression": "invalid[expression"
+     }
+    ]
+   },
+   "check": null,
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"expression\": \"foo.bar\"}: the tool raised ValidationError: 1 validation error for parse_jmespath_expressionOutput\nresult\n  Input should be a valid dictionary [type=dict_type, input_value={'type': 'subexpression',...': [], 'value': 'bar'}]}, input_type=ParsedResult]\n    For further information visit https://errors.pydantic.dev/2.14/v/dict_ty, but the direct library call returned \"{'type': 'subexpression', 'children': [{'type': 'field', 'children': [], 'value': 'foo'}, {'type': 'field', 'children': [], 'value': 'bar'}]}\"\nInput {\"expression\": \"[?status == 'active']\"}: the tool raised ValidationError: 1 validation error for parse_jmespath_expressionOutput\nresult\n  Input should be a valid dictionary [type=dict_type, input_value={'type': 'filter_projecti...: []}], 'value': 'eq'}]}, input_type=ParsedResult]\n    For further information visit https://errors.pydantic.dev/2.14/v/dict_ty, but the direct library call returned \"{'type': 'filter_projection', 'children': [{'type': 'identity', 'children': []}, {'type': 'identity', 'children': []}, {'type': 'comparator', 'children': [{'type': 'field', 'children': [], 'value': 'status'}, {'type': 'literal', 'value': 'active', 'children': []}], 'value': 'eq'}]}\"\nInput {\"expression\": \"length(@)\"}: the tool raised ValidationError: 1 validation error for parse_jmespath_expressionOutput\nresult\n  Input should be a valid dictionary [type=dict_type, input_value={'type': 'function_expres...[]}], 'value': 'length'}, input_type=ParsedResult]\n    Fo"
+    },
+    {
+     "stage": "static",
+     "error": "do not use __dict__"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"expression\": \"foo.bar\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'jmespath.parser.ParsedResult'>, but the direct library call returned \"{'type': 'subexpression', 'children': [{'type': 'field', 'children': [], 'value': 'foo'}, {'type': 'field', 'children': [], 'value': 'bar'}]}\"\nInput {\"expression\": \"[?status == 'active']\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'jmespath.parser.ParsedResult'>, but the direct library call returned \"{'type': 'filter_projection', 'children': [{'type': 'identity', 'children': []}, {'type': 'identity', 'children': []}, {'type': 'comparator', 'children': [{'type': 'field', 'children': [], 'value': 'status'}, {'type': 'literal', 'value': 'active', 'children': []}], 'value': 'eq'}]}\"\nInput {\"expression\": \"length(@)\"}: the tool raised PydanticSerializationError: Unable to serialize unknown type: <class 'jmespath.parser.ParsedResult'>, but the direct library call returned \"{'type': 'function_expression', 'children': [{'type': 'current', 'children': []}], 'value': 'length'}\""
+    },
+    {
+     "stage": "static",
+     "error": "do not use __dict__"
+    }
+   ]
+  },
+  {
+   "name": "purge_jmespath_cache",
+   "wraps": "jmespath.parser.Parser.purge",
+   "description": "Clear the compiled JMESPath expression cache to free memory.",
+   "accepted": true,
+   "code": "import jmespath.parser\n\n\ndef purge_jmespath_cache() -> None:\n    \"\"\"Clear the compiled JMESPath expression cache. Example: purge_jmespath_cache() -> None.\"\"\"\n    jmespath.parser.Parser.purge()\n",
+   "spec": {
+    "parameters": [],
+    "direct_call": "jmespath.parser.Parser.purge()",
+    "samples": [
+     {},
+     {}
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {},
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {},
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Clear the compiled JMESPath expression cache. Example: purge_jmespath_cache() -> None.",
+    "input_schema": {
+     "properties": {},
+     "title": "purge_jmespath_cacheArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "tokenize_jmespath_expression",
+   "wraps": "jmespath.lexer.Lexer.tokenize",
+   "description": "Break down a JMESPath expression into tokens for parsing.",
+   "accepted": true,
+   "code": "import jmespath.lexer\n\n\ndef tokenize_jmespath_expression(expression: str) -> list[dict[str, str | int]]:\n    \"\"\"Break down a JMESPath expression into tokens for parsing. expression: A JMESPath expression to tokenize, e.g. 'foo.bar' -> [{'type': 'unquoted_identifier', 'value': 'foo', 'start': 0, 'end': 3}, {'type': 'literal', 'value': '.', 'start': 3, 'end': 4}, {'type': 'unquoted_identifier', 'value': 'bar', 'start': 4, 'end': 7}].\"\"\"\n    try:\n        lexer = jmespath.lexer.Lexer()\n        tokens = list(lexer.tokenize(expression))\n        return [\n            {\n                \"type\": token[\"type\"],\n                \"value\": token[\"value\"],\n                \"start\": token[\"start\"],\n                \"end\": token[\"end\"]\n            }\n            for token in tokens\n        ]\n    except Exception as e:\n        raise ValueError(f\"Failed to tokenize JMESPath expression: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expression",
+      "type": "string",
+      "description": "A JMESPath expression to tokenize",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.lexer.Lexer().tokenize(expression)",
+    "samples": [
+     {
+      "expression": "foo.bar"
+     },
+     {
+      "expression": "[?name == 'John']"
+     },
+     {
+      "expression": "items[0].name"
+     },
+     {
+      "expression": "a | b"
+     },
+     {
+      "expression": "count(items)"
+     },
+     {
+      "expression": "not_valid"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "expression": "foo.bar"
+      },
+      "tool": [
+       {
+        "type": "unquoted_identifier",
+        "value": "foo",
+        "start": 0,
+        "end": 3
+       },
+       {
+        "type": "dot",
+        "value": ".",
+        "start": 3,
+        "end": 4
+       },
+       {
+        "type": "unquoted_identifier",
+        "value": "bar",
+        "start": 4,
+        "end": 7
+       },
+       {
+        "type": "eof",
+        "value": "",
+        "start": 7,
+        "end": 7
+       }
+      ],
+      "direct": "[{\"end\": 3, \"start\": 0, \"type\": \"unquoted_identifier\", \"value\": \"foo\"}, {\"end\": 4, \"start\": 3, \"type\": \"dot\", \"value\": \".\"}, {\"end\": 7, \"start\": 4, \"type\": \"unquoted_identifier\", \"value\": \"bar\"}, {\"end\": 7, \"start\": 7, \"type\": \"eof\", \"value\": \"\"}]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "[?name == 'John']"
+      },
+      "tool": [
+       {
+        "type": "filter",
+        "value": "[?",
+        "start": 0,
+        "end": 2
+       },
+       {
+        "type": "unquoted_identifier",
+        "value": "name",
+        "start": 2,
+        "end": 6
+       },
+       {
+        "type": "eq",
+        "value": "==",
+        "start": 7,
+        "end": 8
+       },
+       {
+        "type": "literal",
+        "value": "John",
+        "start": 10,
+        "end": 6
+       },
+       {
+        "type": "rbracket",
+        "value": "]",
+        "start": 16,
+        "end": 17
+       },
+       {
+        "type": "eof",
+        "value": "",
+        "start": 17,
+        "end": 17
+       }
+      ],
+      "direct": "[{\"end\": 2, \"start\": 0, \"type\": \"filter\", \"value\": \"[?\"}, {\"end\": 6, \"start\": 2, \"type\": \"unquoted_identifier\", \"value\": \"name\"}, {\"end\": 8, \"start\": 7, \"type\": \"eq\", \"value\": \"==\"}, {\"end\": 6, \"start\": 10, \"type\": \"literal\", \"value\": \"John\"}, {\"end\": 17, \"start\": 16, \"type\": \"rbracket\", \"value\": \"]\"}, {\"end\": 17, \"start\": 17, \"type\": \"eof\", \"value\": \"\"}]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "items[0].name"
+      },
+      "tool": [
+       {
+        "type": "unquoted_identifier",
+        "value": "items",
+        "start": 0,
+        "end": 5
+       },
+       {
+        "type": "lbracket",
+        "value": "[",
+        "start": 5,
+        "end": 6
+       },
+       {
+        "type": "number",
+        "value": 0,
+        "start": 6,
+        "end": 7
+       },
+       {
+        "type": "rbracket",
+        "value": "]",
+        "start": 7,
+        "end": 8
+       },
+       {
+        "type": "dot",
+        "value": ".",
+        "start": 8,
+        "end": 9
+       },
+       {
+        "type": "unquoted_identifier",
+        "value": "name",
+        "start": 9,
+        "end": 13
+       },
+       {
+        "type": "eof",
+        "value": "",
+        "start": 13,
+        "end": 13
+       }
+      ],
+      "direct": "[{\"end\": 5, \"start\": 0, \"type\": \"unquoted_identifier\", \"value\": \"items\"}, {\"end\": 6, \"start\": 5, \"type\": \"lbracket\", \"value\": \"[\"}, {\"end\": 7, \"start\": 6, \"type\": \"number\", \"value\": 0}, {\"end\": 8, \"start\": 7, \"type\": \"rbracket\", \"value\": \"]\"}, {\"end\": 9, \"start\": 8, \"type\": \"dot\", \"value\": \".\"}, {\"end\": 13, \"start\": 9, \"type\": \"unquoted_identifier\", \"value\": \"name\"}, {\"end\": 13, \"start\": 13, \"type\": \"eof\", \"value\": \"\"}]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "a | b"
+      },
+      "tool": [
+       {
+        "type": "unquoted_identifier",
+        "value": "a",
+        "start": 0,
+        "end": 1
+       },
+       {
+        "type": "pipe",
+        "value": "|",
+        "start": 2,
+        "end": 2
+       },
+       {
+        "type": "unquoted_identifier",
+        "value": "b",
+        "start": 4,
+        "end": 5
+       },
+       {
+        "type": "eof",
+        "value": "",
+        "start": 5,
+        "end": 5
+       }
+      ],
+      "direct": "[{\"end\": 1, \"start\": 0, \"type\": \"unquoted_identifier\", \"value\": \"a\"}, {\"end\": 2, \"start\": 2, \"type\": \"pipe\", \"value\": \"|\"}, {\"end\": 5, \"start\": 4, \"type\": \"unquoted_identifier\", \"value\": \"b\"}, {\"end\": 5, \"start\": 5, \"type\": \"eof\", \"value\": \"\"}]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "count(items)"
+      },
+      "tool": [
+       {
+        "type": "unquoted_identifier",
+        "value": "count",
+        "start": 0,
+        "end": 5
+       },
+       {
+        "type": "lparen",
+        "value": "(",
+        "start": 5,
+        "end": 6
+       },
+       {
+        "type": "unquoted_identifier",
+        "value": "items",
+        "start": 6,
+        "end": 11
+       },
+       {
+        "type": "rparen",
+        "value": ")",
+        "start": 11,
+        "end": 12
+       },
+       {
+        "type": "eof",
+        "value": "",
+        "start": 12,
+        "end": 12
+       }
+      ],
+      "direct": "[{\"end\": 5, \"start\": 0, \"type\": \"unquoted_identifier\", \"value\": \"count\"}, {\"end\": 6, \"start\": 5, \"type\": \"lparen\", \"value\": \"(\"}, {\"end\": 11, \"start\": 6, \"type\": \"unquoted_identifier\", \"value\": \"items\"}, {\"end\": 12, \"start\": 11, \"type\": \"rparen\", \"value\": \")\"}, {\"end\": 12, \"start\": 12, \"type\": \"eof\", \"value\": \"\"}]",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "not_valid"
+      },
+      "tool": [
+       {
+        "type": "unquoted_identifier",
+        "value": "not_valid",
+        "start": 0,
+        "end": 9
+       },
+       {
+        "type": "eof",
+        "value": "",
+        "start": 9,
+        "end": 9
+       }
+      ],
+      "direct": "[{\"end\": 9, \"start\": 0, \"type\": \"unquoted_identifier\", \"value\": \"not_valid\"}, {\"end\": 9, \"start\": 9, \"type\": \"eof\", \"value\": \"\"}]",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Break down a JMESPath expression into tokens for parsing. expression: A JMESPath expression to tokenize, e.g. 'foo.bar' -> [{'type': 'unquoted_identifier', 'value': 'foo', 'start': 0, 'end': 3}, {'type': 'literal', 'value': '.', 'start': 3, 'end': 4}, {'type': 'unquoted_identifier', 'value': 'bar', 'start': 4, 'end': 7}].",
+    "input_schema": {
+     "properties": {
+      "expression": {
+       "title": "Expression",
+       "type": "string"
+      }
+     },
+     "required": [
+      "expression"
+     ],
+     "title": "tokenize_jmespath_expressionArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "default_jmespath_visit",
+   "wraps": "jmespath.visitor.TreeInterpreter.default_visit",
+   "description": "Handle default visiting behavior for JMESPath AST nodes during evaluation.",
+   "accepted": false,
+   "code": "import jmespath.visitor\n\n\ndef default_jmespath_visit(node: dict[str, object], options: dict[str, object] | None = None) -> None:\n    \"\"\"Handle default visiting behavior for JMESPath AST nodes during evaluation. node: A JMESPath AST node as a dictionary, options: Optional configuration for the TreeInterpreter. Example: default_jmespath_visit({'type': 'Identifier', 'value': 'foo'}) -> None.\"\"\"\n    try:\n        interpreter = jmespath.visitor.TreeInterpreter(options=options)\n        interpreter.default_visit(node)\n    except NotImplementedError as e:\n        raise ValueError(f\"Node type not implemented: {node.get('type', 'unknown')!r}\") from e\n    except Exception as e:\n        raise ValueError(f\"Error during JMESPath node visit: {str(e)!r}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "node",
+      "type": "object",
+      "description": "A JMESPath AST node represented as a dictionary",
+      "required": true
+     },
+     {
+      "name": "options",
+      "type": "object",
+      "description": "Options for the TreeInterpreter",
+      "required": false,
+      "default": null
+     }
+    ],
+    "direct_call": "jmespath.visitor.TreeInterpreter(options=options).default_visit(node)",
+    "samples": [
+     {
+      "node": {
+       "type": "Identifier",
+       "value": "foo"
+      },
+      "options": null
+     },
+     {
+      "node": {
+       "type": "Literal",
+       "value": "hello"
+      },
+      "options": {}
+     },
+     {
+      "node": {
+       "type": "Array",
+       "children": []
+      },
+      "options": {
+       "custom_option": "value"
+      }
+     },
+     {
+      "node": {
+       "type": "Object",
+       "children": []
+      },
+      "options": null
+     },
+     {
+      "node": {
+       "type": "InvalidNodeType",
+       "value": "invalid"
+      },
+      "options": null
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "spec",
+    "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'dict_cls'",
+    "samples": [
+     {
+      "arguments": {
+       "node": {
+        "type": "Identifier",
+        "value": "foo"
+       },
+       "options": null
+      },
+      "tool": "ValueError: Node type not implemented: 'Identifier'",
+      "direct": "NotImplementedError: Identifier",
+      "result": "both_error",
+      "direct_error": {
+       "error": "NotImplementedError: Identifier",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "Literal",
+        "value": "hello"
+       },
+       "options": {}
+      },
+      "tool": "ValueError: Error during JMESPath node visit: \"'dict' object has no attribute 'dict_cls'\"",
+      "direct": "AttributeError: 'dict' object has no attribute 'dict_cls'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'dict_cls'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "Array",
+        "children": []
+       },
+       "options": {
+        "custom_option": "value"
+       }
+      },
+      "tool": "ValueError: Error during JMESPath node visit: \"'dict' object has no attribute 'dict_cls'\"",
+      "direct": "AttributeError: 'dict' object has no attribute 'dict_cls'",
+      "result": "both_error",
+      "direct_error": {
+       "error": "AttributeError: 'dict' object has no attribute 'dict_cls'",
+       "broken": true,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "Object",
+        "children": []
+       },
+       "options": null
+      },
+      "tool": "ValueError: Node type not implemented: 'Object'",
+      "direct": "NotImplementedError: Object",
+      "result": "both_error",
+      "direct_error": {
+       "error": "NotImplementedError: Object",
+       "broken": false,
+       "type_error": false
+      }
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "InvalidNodeType",
+        "value": "invalid"
+       },
+       "options": null
+      },
+      "tool": "ValueError: Node type not implemented: 'InvalidNodeType'",
+      "direct": "NotImplementedError: InvalidNodeType",
+      "result": "both_error",
+      "direct_error": {
+       "error": "NotImplementedError: InvalidNodeType",
+       "broken": false,
+       "type_error": false
+      }
+     }
+    ],
+    "verified": false,
+    "description": "Handle default visiting behavior for JMESPath AST nodes during evaluation. node: A JMESPath AST node as a dictionary, options: Optional configuration for the TreeInterpreter. Example: default_jmespath_visit({'type': 'Identifier', 'value': 'foo'}) -> None.",
+    "input_schema": {
+     "properties": {
+      "node": {
+       "additionalProperties": true,
+       "title": "Node",
+       "type": "object"
+      },
+      "options": {
+       "anyOf": [
+        {
+         "additionalProperties": true,
+         "type": "object"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "default": null,
+       "title": "Options"
+      }
+     },
+     "required": [
+      "node"
+     ],
+     "title": "default_jmespath_visitArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'dict_cls'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'dict_cls'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'dict_cls'"
+    },
+    {
+     "stage": "spec",
+     "error": "the direct_call expression is wrong: AttributeError: 'dict' object has no attribute 'dict_cls'"
+    }
+   ]
+  },
+  {
+   "name": "call_jmespath_function",
+   "wraps": "jmespath.functions.Functions.call_function",
+   "description": "Execute a named JMESPath function with provided arguments.",
+   "accepted": false,
+   "code": "import jmespath.functions\nfrom typing import List, Any, Dict, Union\n\n\ndef call_jmespath_function(function_name: str, resolved_args: List[Any]) -> Any:\n    \"\"\"Execute a named JMESPath function with provided arguments.\n    \n    Args:\n        function_name: The name of the JMESPath function to call, e.g. 'length'\n        resolved_args: The arguments to pass to the function, e.g. ['hello']\n        \n    Returns:\n        The result of calling the JMESPath function with the given arguments\n        \n    Example:\n        >>> call_jmespath_function('length', ['hello'])\n        5\n    \"\"\"\n    try:\n        functions = jmespath.functions.Functions()\n        result = functions.call_function(function_name, resolved_args)\n        # Convert to JSON-compatible types\n        if isinstance(result, (str, int, float, bool)) or result is None:\n            return result\n        elif isinstance(result, bytes):\n            return result.decode('utf-8')\n        elif hasattr(result, '__iter__') and not isinstance(result, (str, bytes, dict)):\n            # Convert iterables to lists\n            return list(result)\n        else:\n            return str(result)\n    except KeyError:\n        raise ValueError(f\"Unknown JMESPath function: {function_name}\")\n    except Exception as e:\n        raise ValueError(f\"Error calling JMESPath function {function_name}: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "function_name",
+      "type": "string",
+      "description": "The name of the JMESPath function to call",
+      "required": true
+     },
+     {
+      "name": "resolved_args",
+      "type": "array",
+      "description": "The arguments to pass to the function",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.functions.Functions().call_function(function_name, resolved_args)",
+    "samples": [
+     {
+      "function_name": "length",
+      "resolved_args": [
+       "hello"
+      ]
+     },
+     {
+      "function_name": "upper",
+      "resolved_args": [
+       "world"
+      ]
+     },
+     {
+      "function_name": "join",
+      "resolved_args": [
+       ",",
+       [
+        "a",
+        "b",
+        "c"
+       ]
+      ]
+     },
+     {
+      "function_name": "unknown_function",
+      "resolved_args": []
+     }
+    ]
+   },
+   "check": {
+    "ok": false,
+    "stage": "runs",
+    "error": "Input {\"function_name\": \"join\", \"resolved_args\": [\",\", [\"a\", \"b\", \"c\"]]}: the tool raised output is not JSON: a,b,c, but the direct library call returned \"a,b,c\"",
+    "samples": [
+     {
+      "arguments": {
+       "function_name": "length",
+       "resolved_args": [
+        "hello"
+       ]
+      },
+      "tool": 5,
+      "direct": "5",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "function_name": "upper",
+       "resolved_args": [
+        "world"
+       ]
+      },
+      "tool": "ValueError: Error calling JMESPath function upper: Unknown function: upper()",
+      "direct": "UnknownFunctionError: Unknown function: upper()",
+      "result": "both_error"
+     },
+     {
+      "arguments": {
+       "function_name": "join",
+       "resolved_args": [
+        ",",
+        [
+         "a",
+         "b",
+         "c"
+        ]
+       ]
+      },
+      "tool": "output is not JSON: a,b,c",
+      "direct": "\"a,b,c\"",
+      "result": "crash",
+      "why": "the tool raised output is not JSON: a,b,c, but the direct library call returned \"a,b,c\""
+     },
+     {
+      "arguments": {
+       "function_name": "unknown_function",
+       "resolved_args": []
+      },
+      "tool": "ValueError: Error calling JMESPath function unknown_function: Unknown function: unknown_function()",
+      "direct": "UnknownFunctionError: Unknown function: unknown_function()",
+      "result": "both_error"
+     }
+    ],
+    "verified": false,
+    "description": "Execute a named JMESPath function with provided arguments.\n    \n    Args:\n        function_name: The name of the JMESPath function to call, e.g. 'length'\n        resolved_args: The arguments to pass to the function, e.g. ['hello']\n        \n    Returns:\n        The result of calling the JMESPath function with the given arguments\n        \n    Example:\n        >>> call_jmespath_function('length', ['hello'])\n        5\n    ",
+    "input_schema": {
+     "properties": {
+      "function_name": {
+       "title": "Function Name",
+       "type": "string"
+      },
+      "resolved_args": {
+       "items": {},
+       "title": "Resolved Args",
+       "type": "array"
+      }
+     },
+     "required": [
+      "function_name",
+      "resolved_args"
+     ],
+     "title": "call_jmespath_functionArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "runs",
+     "error": "Input {\"function_name\": \"join\", \"resolved_args\": [\",\", [\"a\", \"b\", \"c\"]]}: the tool raised output is not JSON: a,b,c, but the direct library call returned \"a,b,c\""
+    },
+    {
+     "stage": "runs",
+     "error": "Input {\"function_name\": \"join\", \"resolved_args\": [\",\", [\"a\", \"b\", \"c\"]]}: the tool raised output is not JSON: a,b,c, but the direct library call returned \"a,b,c\""
+    },
+    {
+     "stage": "runs",
+     "error": "Input {\"function_name\": \"join\", \"resolved_args\": [\",\", [\"a\", \"b\", \"c\"]]}: the tool raised output is not JSON: a,b,c, but the direct library call returned \"a,b,c\""
+    },
+    {
+     "stage": "runs",
+     "error": "Input {\"function_name\": \"join\", \"resolved_args\": [\",\", [\"a\", \"b\", \"c\"]]}: the tool raised output is not JSON: a,b,c, but the direct library call returned \"a,b,c\""
+    }
+   ]
+  },
+  {
+   "name": "define_jmespath_function_signature",
+   "wraps": "jmespath.functions.signature",
+   "description": "Define the expected argument types and count for a JMESPath function.",
+   "accepted": true,
+   "code": "def define_jmespath_function_signature(arguments: list[str]) -> None:\n    \"\"\"Define the expected argument types and count for a JMESPath function signature.\n    \n    Args:\n        arguments: An array of expected argument types and count for a JMESPath function signature\n        \n    Example:\n        define_jmespath_function_signature([\"string\", \"number\"]) -> None\n    \"\"\"\n    try:\n        # Convert arguments to tuple for the signature function\n        _record_signature = _signature(*arguments)\n        # Since we're just defining the signature, we don't need to apply it to a function\n        # but we validate the arguments are acceptable\n        if not isinstance(arguments, list):\n            raise ValueError(\"arguments must be a list\")\n        for arg in arguments:\n            if not isinstance(arg, str):\n                raise ValueError(\"all argument types must be strings\")\n    except Exception as e:\n        raise ValueError(f\"invalid arguments for JMESPath function signature: {str(e)}\")\n\n\ndef _signature(*arguments):\n    def _record_signature(func):\n        func.signature = arguments\n        return func\n    return _record_signature\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "arguments",
+      "type": "array",
+      "description": "The expected argument types and count for a JMESPath function signature",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.functions.signature(arguments)",
+    "samples": [
+     {
+      "arguments": [
+       "string"
+      ]
+     },
+     {
+      "arguments": [
+       "number",
+       "string"
+      ]
+     },
+     {
+      "arguments": [
+       "boolean",
+       "array",
+       "object"
+      ]
+     },
+     {
+      "arguments": []
+     },
+     {
+      "arguments": [
+       "integer",
+       "number",
+       "string",
+       "boolean",
+       "array",
+       "object"
+      ]
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "arguments": [
+        "string"
+       ]
+      },
+      "tool": null,
+      "direct": "\"<function signature.<locals>._record_signature at 0x107a65080>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "arguments": [
+        "number",
+        "string"
+       ]
+      },
+      "tool": null,
+      "direct": "\"<function signature.<locals>._record_signature at 0x107a653a0>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "arguments": [
+        "boolean",
+        "array",
+        "object"
+       ]
+      },
+      "tool": null,
+      "direct": "\"<function signature.<locals>._record_signature at 0x107a65260>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "arguments": []
+      },
+      "tool": null,
+      "direct": "\"<function signature.<locals>._record_signature at 0x107a64f40>\"",
+      "result": "unstable"
+     },
+     {
+      "arguments": {
+       "arguments": [
+        "integer",
+        "number",
+        "string",
+        "boolean",
+        "array",
+        "object"
+       ]
+      },
+      "tool": null,
+      "direct": "\"<function signature.<locals>._record_signature at 0x104d7c720>\"",
+      "result": "unstable"
+     }
+    ],
+    "verified": false,
+    "description": "Define the expected argument types and count for a JMESPath function signature.\n    \n    Args:\n        arguments: An array of expected argument types and count for a JMESPath function signature\n        \n    Example:\n        define_jmespath_function_signature([\"string\", \"number\"]) -> None\n    ",
+    "input_schema": {
+     "properties": {
+      "arguments": {
+       "items": {
+        "type": "string"
+       },
+       "title": "Arguments",
+       "type": "array"
+      }
+     },
+     "required": [
+      "arguments"
+     ],
+     "title": "define_jmespath_function_signatureArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "direct_call may not use Starred: only calls, attributes, names, constants and simple conditions"
+    },
+    {
+     "stage": "spec",
+     "error": "direct_call must use every tool parameter; it does not use: arguments"
+    },
+    {
+     "stage": "static",
+     "error": "only define_jmespath_function_signature may be public; helpers must start with an underscore. Found: ['define_jmespath_function_signature', 'signature']"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "set_incomplete_expression_error",
+   "wraps": "jmespath.exceptions.IncompleteExpressionError.set_expression",
+   "description": "Set the expression that caused an incomplete JMESPath expression error.",
+   "accepted": true,
+   "code": "import jmespath.exceptions\n\n\ndef set_incomplete_expression_error(expression: str) -> None:\n    \"\"\"Set the expression that caused an incomplete JMESPath expression error.\n    \n    Args:\n        expression: The JMESPath expression that caused the incomplete expression error\n        \n    Example:\n        >>> set_incomplete_expression_error(\"foo.\")\n    \"\"\"\n    try:\n        # Create an IncompleteExpressionError instance with proper initialization\n        error = jmespath.exceptions.IncompleteExpressionError(\n            lex_position=len(expression),\n            token_value=\"\",\n            token_type=\"\"\n        )\n        # Set the expression using the wrapped method\n        error.set_expression(expression)\n    except Exception as e:\n        raise ValueError(f\"Failed to set expression on IncompleteExpressionError: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expression",
+      "type": "string",
+      "description": "The JMESPath expression that caused the incomplete expression error",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.exceptions.IncompleteExpressionError('test', 'test', 'test').set_expression(expression)",
+    "samples": [
+     {
+      "expression": "foo.bar"
+     },
+     {
+      "expression": "sum(`"
+     },
+     {
+      "expression": ""
+     },
+     {
+      "expression": "filter(@, &)"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "expression": "foo.bar"
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "sum(`"
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": ""
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": "filter(@, &)"
+      },
+      "tool": null,
+      "direct": "null",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Set the expression that caused an incomplete JMESPath expression error.\n    \n    Args:\n        expression: The JMESPath expression that caused the incomplete expression error\n        \n    Example:\n        >>> set_incomplete_expression_error(\"foo.\")\n    ",
+    "input_schema": {
+     "properties": {
+      "expression": {
+       "title": "Expression",
+       "type": "string"
+      }
+     },
+     "required": [
+      "expression"
+     ],
+     "title": "set_incomplete_expression_errorArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "spec",
+     "error": "the direct call failed on every sample, so nothing can be compared. Errors: [\"TypeError: ParseError.__init__() missing 2 required positional arguments: 'token_value' and 'token_type'\"]. Use samples that are valid for the library."
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"expression\": \"foo.bar\"}: the tool raised ValueError: Failed to set expression on IncompleteExpressionError: ParseError.__init__() missing 3 required positional arguments: 'lex_position', 'token_value', and 'token_type', but the direct library call returned null\nInput {\"expression\": \"sum(`\"}: the tool raised ValueError: Failed to set expression on IncompleteExpressionError: ParseError.__init__() missing 3 required positional arguments: 'lex_position', 'token_value', and 'token_type', but the direct library call returned null\nInput {\"expression\": \"\"}: the tool raised ValueError: Failed to set expression on IncompleteExpressionError: ParseError.__init__() missing 3 required positional arguments: 'lex_position', 'token_value', and 'token_type', but the direct library call returned null"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"expression\": \"foo.bar\"}: the tool raised ValueError: Failed to set expression on IncompleteExpressionError: 'NoneType' object has no attribute 'upper', but the direct library call returned null\nInput {\"expression\": \"sum(`\"}: the tool raised ValueError: Failed to set expression on IncompleteExpressionError: 'NoneType' object has no attribute 'upper', but the direct library call returned null\nInput {\"expression\": \"\"}: the tool raised ValueError: Failed to set expression on IncompleteExpressionError: 'NoneType' object has no attribute 'upper', but the direct library call returned null"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_field_ast_node",
+   "wraps": "jmespath.ast.field",
+   "description": "Create an AST node representing a field access in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_field_ast_node(name: str) -> dict[str, str | list[dict] | None]:\n    \"\"\"Create an AST node representing a field access in a JMESPath expression. name: The name of the field to access, e.g. 'name' -> {'type': 'field', 'children': [], 'value': 'name'}.\"\"\"\n    if not isinstance(name, str):\n        raise ValueError(\"name must be a string\")\n    \n    return {\"type\": \"field\", \"children\": [], \"value\": name}\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "name",
+      "type": "string",
+      "description": "The name of the field to access",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.field(name)",
+    "samples": [
+     {
+      "name": "name"
+     },
+     {
+      "name": "age"
+     },
+     {
+      "name": "user.name"
+     },
+     {
+      "name": ""
+     },
+     {
+      "name": "nested.field.value"
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "name": "name"
+      },
+      "tool": {
+       "type": "field",
+       "children": [],
+       "value": "name"
+      },
+      "direct": "{\"children\": [], \"type\": \"field\", \"value\": \"name\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "age"
+      },
+      "tool": {
+       "type": "field",
+       "children": [],
+       "value": "age"
+      },
+      "direct": "{\"children\": [], \"type\": \"field\", \"value\": \"age\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "user.name"
+      },
+      "tool": {
+       "type": "field",
+       "children": [],
+       "value": "user.name"
+      },
+      "direct": "{\"children\": [], \"type\": \"field\", \"value\": \"user.name\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": ""
+      },
+      "tool": {
+       "type": "field",
+       "children": [],
+       "value": ""
+      },
+      "direct": "{\"children\": [], \"type\": \"field\", \"value\": \"\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "nested.field.value"
+      },
+      "tool": {
+       "type": "field",
+       "children": [],
+       "value": "nested.field.value"
+      },
+      "direct": "{\"children\": [], \"type\": \"field\", \"value\": \"nested.field.value\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a field access in a JMESPath expression. name: The name of the field to access, e.g. 'name' -> {'type': 'field', 'children': [], 'value': 'name'}.",
+    "input_schema": {
+     "properties": {
+      "name": {
+       "title": "Name",
+       "type": "string"
+      }
+     },
+     "required": [
+      "name"
+     ],
+     "title": "create_field_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_literal_ast_node",
+   "wraps": "jmespath.ast.literal",
+   "description": "Create an AST node representing a literal value in a JMESPath expression.",
+   "accepted": true,
+   "code": "import jmespath.ast\n\n\ndef create_literal_ast_node(literal_value: object) -> dict[str, object | list[dict[str, object]]]:\n    \"\"\"Create an AST node representing a literal value in a JMESPath expression. literal_value: The literal value to be represented in the AST node, e.g. [\"a\", \"b\", \"c\"] -> {'type': 'literal', 'value': ['a', 'b', 'c'], 'children': []}.\"\"\"\n    try:\n        # Convert to string for library call, but preserve original value\n        if literal_value is None:\n            lib_result = jmespath.ast.literal(\"null\")\n            lib_result['value'] = None\n        elif isinstance(literal_value, (int, float, bool)):\n            lib_result = jmespath.ast.literal(str(literal_value))\n            lib_result['value'] = literal_value\n        elif isinstance(literal_value, str):\n            lib_result = jmespath.ast.literal(literal_value)\n        else:\n            # For other types like lists, convert to string representation\n            lib_result = jmespath.ast.literal(str(literal_value))\n            lib_result['value'] = literal_value\n        return lib_result\n    except Exception as e:\n        raise ValueError(f\"Failed to create literal AST node: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "literal_value",
+      "type": "string",
+      "description": "The literal value to be represented in the AST node",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.literal(literal_value)",
+    "samples": [
+     {
+      "literal_value": "hello"
+     },
+     {
+      "literal_value": 42
+     },
+     {
+      "literal_value": 3.14
+     },
+     {
+      "literal_value": true
+     },
+     {
+      "literal_value": null
+     },
+     {
+      "literal_value": [
+       "a",
+       "b",
+       "c"
+      ]
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "literal_value": "hello"
+      },
+      "tool": {
+       "type": "literal",
+       "value": "hello",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"literal\", \"value\": \"hello\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "literal_value": 42
+      },
+      "tool": {
+       "type": "literal",
+       "value": 42,
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"literal\", \"value\": 42}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "literal_value": 3.14
+      },
+      "tool": {
+       "type": "literal",
+       "value": 3.14,
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"literal\", \"value\": 3.14}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "literal_value": true
+      },
+      "tool": {
+       "type": "literal",
+       "value": true,
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"literal\", \"value\": true}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "literal_value": null
+      },
+      "tool": {
+       "type": "literal",
+       "value": null,
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"literal\", \"value\": null}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "literal_value": [
+        "a",
+        "b",
+        "c"
+       ]
+      },
+      "tool": {
+       "type": "literal",
+       "value": [
+        "a",
+        "b",
+        "c"
+       ],
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"literal\", \"value\": [\"a\", \"b\", \"c\"]}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a literal value in a JMESPath expression. literal_value: The literal value to be represented in the AST node, e.g. [\"a\", \"b\", \"c\"] -> {'type': 'literal', 'value': ['a', 'b', 'c'], 'children': []}.",
+    "input_schema": {
+     "properties": {
+      "literal_value": {
+       "title": "Literal Value"
+      }
+     },
+     "required": [
+      "literal_value"
+     ],
+     "title": "create_literal_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"literal_value\": 42}: the tool raised ValidationError: 1 validation error for create_literal_ast_nodeArguments\nliteral_value\n  Input should be a valid string [type=string_type, input_value=42, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type, but the direct library call returned {\"children\": [], \"type\": \"literal\", \"value\": 42}\nInput {\"literal_value\": 3.14}: the tool raised ValidationError: 1 validation error for create_literal_ast_nodeArguments\nliteral_value\n  Input should be a valid string [type=string_type, input_value=3.14, input_type=float]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type, but the direct library call returned {\"children\": [], \"type\": \"literal\", \"value\": 3.14}\nInput {\"literal_value\": true}: the tool raised ValidationError: 1 validation error for create_literal_ast_nodeArguments\nliteral_value\n  Input should be a valid string [type=string_type, input_value=True, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type, but the direct library call returned {\"children\": [], \"type\": \"literal\", \"value\": true}"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"literal_value\": null}: the tool raised ValidationError: 4 validation errors for create_literal_ast_nodeArguments\nliteral_value.str\n  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type\nliteral_value.int\n  Input should be , but the direct library call returned {\"children\": [], \"type\": \"literal\", \"value\": null}\nInput {\"literal_value\": [\"a\", \"b\", \"c\"]}: the tool raised ValidationError: 4 validation errors for create_literal_ast_nodeArguments\nliteral_value.str\n  Input should be a valid string [type=string_type, input_value=['a', 'b', 'c'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type\nliteral_value.int\n  Input sho, but the direct library call returned {\"children\": [], \"type\": \"literal\", \"value\": [\"a\", \"b\", \"c\"]}"
+    },
+    {
+     "stage": "differential",
+     "error": "Input {\"literal_value\": [\"a\", \"b\", \"c\"]}: the tool raised ValidationError: 4 validation errors for create_literal_ast_nodeArguments\nliteral_value.str\n  Input should be a valid string [type=string_type, input_value=['a', 'b', 'c'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type\nliteral_value.int\n  Input sho, but the direct library call returned {\"children\": [], \"type\": \"literal\", \"value\": [\"a\", \"b\", \"c\"]}"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_function_expression_ast_node",
+   "wraps": "jmespath.ast.function_expression",
+   "description": "Create an AST node representing a function call in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_function_expression_ast_node(name: str, args: list) -> dict[str, str | list]:\n    \"\"\"Create an AST node representing a function call in a JMESPath expression. name: The name of the function to create an AST node for, e.g. 'length' -> {'type': 'function_expression', 'children': [], 'value': 'length'}. args: The arguments passed to the function as AST nodes, e.g. [{'type': 'field', 'value': 'name'}] -> {'type': 'function_expression', 'children': [{'type': 'field', 'value': 'name'}], 'value': 'length'}.\"\"\"\n    if not isinstance(name, str):\n        raise ValueError(\"name must be a string\")\n    if not isinstance(args, list):\n        raise ValueError(\"args must be a list\")\n    \n    try:\n        result = {'type': 'function_expression', 'children': args, 'value': name}\n        return result\n    except Exception as e:\n        raise ValueError(f\"Failed to create function expression AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "name",
+      "type": "string",
+      "description": "The name of the function to create an AST node for",
+      "required": true
+     },
+     {
+      "name": "args",
+      "type": "array",
+      "description": "The arguments passed to the function as AST nodes",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.function_expression(name, args)",
+    "samples": [
+     {
+      "name": "upper",
+      "args": [
+       {
+        "type": "variable",
+        "value": "text"
+       }
+      ]
+     },
+     {
+      "name": "concat",
+      "args": [
+       {
+        "type": "literal",
+        "value": "Hello"
+       },
+       {
+        "type": "literal",
+        "value": "World"
+       }
+      ]
+     },
+     {
+      "name": "length",
+      "args": [
+       {
+        "type": "variable",
+        "value": "items"
+       }
+      ]
+     },
+     {
+      "name": "map",
+      "args": [
+       {
+        "type": "function_expression",
+        "value": "upper",
+        "children": [
+         {
+          "type": "variable",
+          "value": "item"
+         }
+        ]
+       },
+       {
+        "type": "variable",
+        "value": "list"
+       }
+      ]
+     },
+     {
+      "name": "sum",
+      "args": []
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "name": "upper",
+       "args": [
+        {
+         "type": "variable",
+         "value": "text"
+        }
+       ]
+      },
+      "tool": {
+       "type": "function_expression",
+       "children": [
+        {
+         "type": "variable",
+         "value": "text"
+        }
+       ],
+       "value": "upper"
+      },
+      "direct": "{\"children\": [{\"type\": \"variable\", \"value\": \"text\"}], \"type\": \"function_expression\", \"value\": \"upper\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "concat",
+       "args": [
+        {
+         "type": "literal",
+         "value": "Hello"
+        },
+        {
+         "type": "literal",
+         "value": "World"
+        }
+       ]
+      },
+      "tool": {
+       "type": "function_expression",
+       "children": [
+        {
+         "type": "literal",
+         "value": "Hello"
+        },
+        {
+         "type": "literal",
+         "value": "World"
+        }
+       ],
+       "value": "concat"
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"Hello\"}, {\"type\": \"literal\", \"value\": \"World\"}], \"type\": \"function_expression\", \"value\": \"concat\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "length",
+       "args": [
+        {
+         "type": "variable",
+         "value": "items"
+        }
+       ]
+      },
+      "tool": {
+       "type": "function_expression",
+       "children": [
+        {
+         "type": "variable",
+         "value": "items"
+        }
+       ],
+       "value": "length"
+      },
+      "direct": "{\"children\": [{\"type\": \"variable\", \"value\": \"items\"}], \"type\": \"function_expression\", \"value\": \"length\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "map",
+       "args": [
+        {
+         "type": "function_expression",
+         "value": "upper",
+         "children": [
+          {
+           "type": "variable",
+           "value": "item"
+          }
+         ]
+        },
+        {
+         "type": "variable",
+         "value": "list"
+        }
+       ]
+      },
+      "tool": {
+       "type": "function_expression",
+       "children": [
+        {
+         "type": "function_expression",
+         "value": "upper",
+         "children": [
+          {
+           "type": "variable",
+           "value": "item"
+          }
+         ]
+        },
+        {
+         "type": "variable",
+         "value": "list"
+        }
+       ],
+       "value": "map"
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"variable\", \"value\": \"item\"}], \"type\": \"function_expression\", \"value\": \"upper\"}, {\"type\": \"variable\", \"value\": \"list\"}], \"type\": \"function_expression\", \"value\": \"map\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "sum",
+       "args": []
+      },
+      "tool": {
+       "type": "function_expression",
+       "children": [],
+       "value": "sum"
+      },
+      "direct": "{\"children\": [], \"type\": \"function_expression\", \"value\": \"sum\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a function call in a JMESPath expression. name: The name of the function to create an AST node for, e.g. 'length' -> {'type': 'function_expression', 'children': [], 'value': 'length'}. args: The arguments passed to the function as AST nodes, e.g. [{'type': 'field', 'value': 'name'}] -> {'type': 'function_expression', 'children': [{'type': 'field', 'value': 'name'}], 'value': 'length'}.",
+    "input_schema": {
+     "properties": {
+      "name": {
+       "title": "Name",
+       "type": "string"
+      },
+      "args": {
+       "items": {},
+       "title": "Args",
+       "type": "array"
+      }
+     },
+     "required": [
+      "name",
+      "args"
+     ],
+     "title": "create_function_expression_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_projection_ast_node",
+   "wraps": "jmespath.ast.projection",
+   "description": "Create an AST node representing a projection operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_projection_ast_node(left: object, right: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a projection operation in a JMESPath expression. left: The left side of the projection operation, right: The right side of the projection operation. Example: create_projection_ast_node({\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"literal\", \"value\": 1}) -> {'type': 'projection', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 1}]}.\"\"\"\n    try:\n        return {'type': 'projection', 'children': [left, right]}\n    except Exception as e:\n        raise ValueError(f\"Failed to create projection AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "left",
+      "type": "object",
+      "description": "The left side of the projection operation",
+      "required": true
+     },
+     {
+      "name": "right",
+      "type": "object",
+      "description": "The right side of the projection operation",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.projection(left, right)",
+    "samples": [
+     {
+      "left": {
+       "type": "field",
+       "value": "items"
+      },
+      "right": {
+       "type": "identifier",
+       "value": "name"
+      }
+     },
+     {
+      "left": {
+       "type": "array",
+       "value": [
+        1,
+        2,
+        3
+       ]
+      },
+      "right": {
+       "type": "wildcard",
+       "value": "*"
+      }
+     },
+     {
+      "left": {
+       "type": "literal",
+       "value": "hello"
+      },
+      "right": {
+       "type": "field",
+       "value": "world"
+      }
+     },
+     {
+      "left": {
+       "type": "expression",
+       "value": "foo.bar"
+      },
+      "right": {
+       "type": "function",
+       "name": "length"
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "items"
+       },
+       "right": {
+        "type": "identifier",
+        "value": "name"
+       }
+      },
+      "tool": {
+       "type": "projection",
+       "children": [
+        {
+         "type": "field",
+         "value": "items"
+        },
+        {
+         "type": "identifier",
+         "value": "name"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"items\"}, {\"type\": \"identifier\", \"value\": \"name\"}], \"type\": \"projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "array",
+        "value": [
+         1,
+         2,
+         3
+        ]
+       },
+       "right": {
+        "type": "wildcard",
+        "value": "*"
+       }
+      },
+      "tool": {
+       "type": "projection",
+       "children": [
+        {
+         "type": "array",
+         "value": [
+          1,
+          2,
+          3
+         ]
+        },
+        {
+         "type": "wildcard",
+         "value": "*"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"array\", \"value\": [1, 2, 3]}, {\"type\": \"wildcard\", \"value\": \"*\"}], \"type\": \"projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "literal",
+        "value": "hello"
+       },
+       "right": {
+        "type": "field",
+        "value": "world"
+       }
+      },
+      "tool": {
+       "type": "projection",
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        },
+        {
+         "type": "field",
+         "value": "world"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"hello\"}, {\"type\": \"field\", \"value\": \"world\"}], \"type\": \"projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "expression",
+        "value": "foo.bar"
+       },
+       "right": {
+        "type": "function",
+        "name": "length"
+       }
+      },
+      "tool": {
+       "type": "projection",
+       "children": [
+        {
+         "type": "expression",
+         "value": "foo.bar"
+        },
+        {
+         "type": "function",
+         "name": "length"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"expression\", \"value\": \"foo.bar\"}, {\"name\": \"length\", \"type\": \"function\"}], \"type\": \"projection\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a projection operation in a JMESPath expression. left: The left side of the projection operation, right: The right side of the projection operation. Example: create_projection_ast_node({\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"literal\", \"value\": 1}) -> {'type': 'projection', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 1}]}.",
+    "input_schema": {
+     "properties": {
+      "left": {
+       "title": "Left"
+      },
+      "right": {
+       "title": "Right"
+      }
+     },
+     "required": [
+      "left",
+      "right"
+     ],
+     "title": "create_projection_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_value_projection_ast_node",
+   "wraps": "jmespath.ast.value_projection",
+   "description": "Create an AST node representing a value projection operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_value_projection_ast_node(left: object, right: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a value projection operation in a JMESPath expression. left: The left operand of the value projection operation, right: The right operand of the value projection operation, e.g. create_value_projection_ast_node({\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}) -> {\"type\": \"value_projection\", \"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}]}.\"\"\"\n    try:\n        result = {'type': 'value_projection', 'children': [left, right]}\n        return result\n    except Exception as e:\n        raise ValueError(f\"Failed to create value projection AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "left",
+      "type": "object",
+      "description": "The left operand of the value projection operation",
+      "required": true
+     },
+     {
+      "name": "right",
+      "type": "object",
+      "description": "The right operand of the value projection operation",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.value_projection(left, right)",
+    "samples": [
+     {
+      "left": {
+       "type": "field",
+       "value": "items"
+      },
+      "right": {
+       "type": "identifier",
+       "value": "name"
+      }
+     },
+     {
+      "left": {
+       "type": "array",
+       "value": [
+        1,
+        2,
+        3
+       ]
+      },
+      "right": {
+       "type": "literal",
+       "value": "test"
+      }
+     },
+     {
+      "left": {
+       "type": "expression",
+       "value": "foo.bar"
+      },
+      "right": {
+       "type": "function",
+       "name": "length"
+      }
+     },
+     {
+      "left": {
+       "type": "wildcard",
+       "value": "*"
+      },
+      "right": {
+       "type": "filter",
+       "condition": "true"
+      }
+     },
+     {
+      "left": {
+       "type": "subexpression",
+       "value": "a.b.c"
+      },
+      "right": {
+       "type": "pipe",
+       "operations": [
+        "upper",
+        "reverse"
+       ]
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "items"
+       },
+       "right": {
+        "type": "identifier",
+        "value": "name"
+       }
+      },
+      "tool": {
+       "type": "value_projection",
+       "children": [
+        {
+         "type": "field",
+         "value": "items"
+        },
+        {
+         "type": "identifier",
+         "value": "name"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"items\"}, {\"type\": \"identifier\", \"value\": \"name\"}], \"type\": \"value_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "array",
+        "value": [
+         1,
+         2,
+         3
+        ]
+       },
+       "right": {
+        "type": "literal",
+        "value": "test"
+       }
+      },
+      "tool": {
+       "type": "value_projection",
+       "children": [
+        {
+         "type": "array",
+         "value": [
+          1,
+          2,
+          3
+         ]
+        },
+        {
+         "type": "literal",
+         "value": "test"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"array\", \"value\": [1, 2, 3]}, {\"type\": \"literal\", \"value\": \"test\"}], \"type\": \"value_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "expression",
+        "value": "foo.bar"
+       },
+       "right": {
+        "type": "function",
+        "name": "length"
+       }
+      },
+      "tool": {
+       "type": "value_projection",
+       "children": [
+        {
+         "type": "expression",
+         "value": "foo.bar"
+        },
+        {
+         "type": "function",
+         "name": "length"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"expression\", \"value\": \"foo.bar\"}, {\"name\": \"length\", \"type\": \"function\"}], \"type\": \"value_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "wildcard",
+        "value": "*"
+       },
+       "right": {
+        "type": "filter",
+        "condition": "true"
+       }
+      },
+      "tool": {
+       "type": "value_projection",
+       "children": [
+        {
+         "type": "wildcard",
+         "value": "*"
+        },
+        {
+         "type": "filter",
+         "condition": "true"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"wildcard\", \"value\": \"*\"}, {\"condition\": \"true\", \"type\": \"filter\"}], \"type\": \"value_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "subexpression",
+        "value": "a.b.c"
+       },
+       "right": {
+        "type": "pipe",
+        "operations": [
+         "upper",
+         "reverse"
+        ]
+       }
+      },
+      "tool": {
+       "type": "value_projection",
+       "children": [
+        {
+         "type": "subexpression",
+         "value": "a.b.c"
+        },
+        {
+         "type": "pipe",
+         "operations": [
+          "upper",
+          "reverse"
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"subexpression\", \"value\": \"a.b.c\"}, {\"operations\": [\"upper\", \"reverse\"], \"type\": \"pipe\"}], \"type\": \"value_projection\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a value projection operation in a JMESPath expression. left: The left operand of the value projection operation, right: The right operand of the value projection operation, e.g. create_value_projection_ast_node({\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}) -> {\"type\": \"value_projection\", \"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}]}.",
+    "input_schema": {
+     "properties": {
+      "left": {
+       "title": "Left"
+      },
+      "right": {
+       "title": "Right"
+      }
+     },
+     "required": [
+      "left",
+      "right"
+     ],
+     "title": "create_value_projection_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_filter_projection_ast_node",
+   "wraps": "jmespath.ast.filter_projection",
+   "description": "Create an AST node representing a filter projection operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_filter_projection_ast_node(left: object, right: object, comparator: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a filter projection operation in a JMESPath expression. left: the left operand of the filter projection, right: the right operand of the filter projection, comparator: the comparator used in the filter projection. Example: create_filter_projection_ast_node({'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 'John'}, {'type': 'eq'}) -> {'type': 'filter_projection', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 'John'}, {'type': 'eq'}]}.\"\"\"\n    try:\n        result = {'type': 'filter_projection', 'children': [left, right, comparator]}\n        return result\n    except Exception as e:\n        raise ValueError(f\"Failed to create filter projection AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "left",
+      "type": "object",
+      "description": "The left operand of the filter projection",
+      "required": true
+     },
+     {
+      "name": "right",
+      "type": "object",
+      "description": "The right operand of the filter projection",
+      "required": true
+     },
+     {
+      "name": "comparator",
+      "type": "object",
+      "description": "The comparator used in the filter projection",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.filter_projection(left, right, comparator)",
+    "samples": [
+     {
+      "left": {
+       "type": "identifier",
+       "value": "items"
+      },
+      "right": {
+       "type": "literal",
+       "value": "test"
+      },
+      "comparator": {
+       "type": "eq",
+       "children": []
+      }
+     },
+     {
+      "left": {
+       "type": "array",
+       "children": [
+        {
+         "type": "literal",
+         "value": 1
+        }
+       ]
+      },
+      "right": {
+       "type": "identifier",
+       "value": "data"
+      },
+      "comparator": {
+       "type": "gt",
+       "children": []
+      }
+     },
+     {
+      "left": {
+       "type": "expression",
+       "children": []
+      },
+      "right": {
+       "type": "function",
+       "name": "length"
+      },
+      "comparator": {
+       "type": "lt",
+       "children": []
+      }
+     },
+     {
+      "left": {
+       "type": "identifier",
+       "value": "users"
+      },
+      "right": {
+       "type": "literal",
+       "value": "admin"
+      },
+      "comparator": {
+       "type": "ne",
+       "children": []
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "left": {
+        "type": "identifier",
+        "value": "items"
+       },
+       "right": {
+        "type": "literal",
+        "value": "test"
+       },
+       "comparator": {
+        "type": "eq",
+        "children": []
+       }
+      },
+      "tool": {
+       "type": "filter_projection",
+       "children": [
+        {
+         "type": "identifier",
+         "value": "items"
+        },
+        {
+         "type": "literal",
+         "value": "test"
+        },
+        {
+         "type": "eq",
+         "children": []
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"identifier\", \"value\": \"items\"}, {\"type\": \"literal\", \"value\": \"test\"}, {\"children\": [], \"type\": \"eq\"}], \"type\": \"filter_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "array",
+        "children": [
+         {
+          "type": "literal",
+          "value": 1
+         }
+        ]
+       },
+       "right": {
+        "type": "identifier",
+        "value": "data"
+       },
+       "comparator": {
+        "type": "gt",
+        "children": []
+       }
+      },
+      "tool": {
+       "type": "filter_projection",
+       "children": [
+        {
+         "type": "array",
+         "children": [
+          {
+           "type": "literal",
+           "value": 1
+          }
+         ]
+        },
+        {
+         "type": "identifier",
+         "value": "data"
+        },
+        {
+         "type": "gt",
+         "children": []
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"literal\", \"value\": 1}], \"type\": \"array\"}, {\"type\": \"identifier\", \"value\": \"data\"}, {\"children\": [], \"type\": \"gt\"}], \"type\": \"filter_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "expression",
+        "children": []
+       },
+       "right": {
+        "type": "function",
+        "name": "length"
+       },
+       "comparator": {
+        "type": "lt",
+        "children": []
+       }
+      },
+      "tool": {
+       "type": "filter_projection",
+       "children": [
+        {
+         "type": "expression",
+         "children": []
+        },
+        {
+         "type": "function",
+         "name": "length"
+        },
+        {
+         "type": "lt",
+         "children": []
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [], \"type\": \"expression\"}, {\"name\": \"length\", \"type\": \"function\"}, {\"children\": [], \"type\": \"lt\"}], \"type\": \"filter_projection\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "identifier",
+        "value": "users"
+       },
+       "right": {
+        "type": "literal",
+        "value": "admin"
+       },
+       "comparator": {
+        "type": "ne",
+        "children": []
+       }
+      },
+      "tool": {
+       "type": "filter_projection",
+       "children": [
+        {
+         "type": "identifier",
+         "value": "users"
+        },
+        {
+         "type": "literal",
+         "value": "admin"
+        },
+        {
+         "type": "ne",
+         "children": []
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"identifier\", \"value\": \"users\"}, {\"type\": \"literal\", \"value\": \"admin\"}, {\"children\": [], \"type\": \"ne\"}], \"type\": \"filter_projection\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a filter projection operation in a JMESPath expression. left: the left operand of the filter projection, right: the right operand of the filter projection, comparator: the comparator used in the filter projection. Example: create_filter_projection_ast_node({'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 'John'}, {'type': 'eq'}) -> {'type': 'filter_projection', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'literal', 'value': 'John'}, {'type': 'eq'}]}.",
+    "input_schema": {
+     "properties": {
+      "left": {
+       "title": "Left"
+      },
+      "right": {
+       "title": "Right"
+      },
+      "comparator": {
+       "title": "Comparator"
+      }
+     },
+     "required": [
+      "left",
+      "right",
+      "comparator"
+     ],
+     "title": "create_filter_projection_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_multi_select_list_ast_node",
+   "wraps": "jmespath.ast.multi_select_list",
+   "description": "Create an AST node representing a multi-select list operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_multi_select_list_ast_node(nodes: list[dict[str, object]]) -> dict[str, object]:\n    \"\"\"Create an AST node representing a multi-select list operation in a JMESPath expression. nodes: Array of AST nodes to include in the multi-select list, e.g. [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}] -> {\"type\": \"multi_select_list\", \"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}]}.\"\"\"\n    if not isinstance(nodes, list):\n        raise ValueError(\"nodes must be an array\")\n    \n    # Validate each node is a dictionary\n    for i, node in enumerate(nodes):\n        if not isinstance(node, dict):\n            raise ValueError(f\"each node must be a dictionary, found {type(node)} at index {i}\")\n    \n    return {\"type\": \"multi_select_list\", \"children\": nodes}\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nodes",
+      "type": "array",
+      "description": "Array of AST nodes to include in the multi-select list",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.multi_select_list(nodes)",
+    "samples": [
+     {
+      "nodes": [
+       {
+        "type": "field",
+        "value": "name"
+       },
+       {
+        "type": "field",
+        "value": "age"
+       }
+      ]
+     },
+     {
+      "nodes": [
+       {
+        "type": "literal",
+        "value": "foo"
+       },
+       {
+        "type": "literal",
+        "value": "bar"
+       },
+       {
+        "type": "literal",
+        "value": "baz"
+       }
+      ]
+     },
+     {
+      "nodes": []
+     },
+     {
+      "nodes": [
+       {
+        "type": "identifier",
+        "value": "items"
+       }
+      ]
+     },
+     {
+      "nodes": [
+       {
+        "type": "subexpression",
+        "children": [
+         {
+          "type": "field",
+          "value": "nested"
+         }
+        ]
+       },
+       {
+        "type": "field",
+        "value": "top_level"
+       }
+      ]
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "field",
+         "value": "age"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_list",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "field",
+         "value": "age"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"field\", \"value\": \"age\"}], \"type\": \"multi_select_list\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "literal",
+         "value": "foo"
+        },
+        {
+         "type": "literal",
+         "value": "bar"
+        },
+        {
+         "type": "literal",
+         "value": "baz"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_list",
+       "children": [
+        {
+         "type": "literal",
+         "value": "foo"
+        },
+        {
+         "type": "literal",
+         "value": "bar"
+        },
+        {
+         "type": "literal",
+         "value": "baz"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"foo\"}, {\"type\": \"literal\", \"value\": \"bar\"}, {\"type\": \"literal\", \"value\": \"baz\"}], \"type\": \"multi_select_list\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": []
+      },
+      "tool": {
+       "type": "multi_select_list",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"multi_select_list\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "identifier",
+         "value": "items"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_list",
+       "children": [
+        {
+         "type": "identifier",
+         "value": "items"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"identifier\", \"value\": \"items\"}], \"type\": \"multi_select_list\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "subexpression",
+         "children": [
+          {
+           "type": "field",
+           "value": "nested"
+          }
+         ]
+        },
+        {
+         "type": "field",
+         "value": "top_level"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_list",
+       "children": [
+        {
+         "type": "subexpression",
+         "children": [
+          {
+           "type": "field",
+           "value": "nested"
+          }
+         ]
+        },
+        {
+         "type": "field",
+         "value": "top_level"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"nested\"}], \"type\": \"subexpression\"}, {\"type\": \"field\", \"value\": \"top_level\"}], \"type\": \"multi_select_list\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a multi-select list operation in a JMESPath expression. nodes: Array of AST nodes to include in the multi-select list, e.g. [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}] -> {\"type\": \"multi_select_list\", \"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}]}.",
+    "input_schema": {
+     "properties": {
+      "nodes": {
+       "items": {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       "title": "Nodes",
+       "type": "array"
+      }
+     },
+     "required": [
+      "nodes"
+     ],
+     "title": "create_multi_select_list_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_multi_select_dict_ast_node",
+   "wraps": "jmespath.ast.multi_select_dict",
+   "description": "Create an AST node representing a multi-select dictionary operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_multi_select_dict_ast_node(nodes: list) -> dict[str, str | list]:\n    \"\"\"Create an AST node representing a multi-select dictionary operation. nodes: Array of child nodes for the multi-select dictionary operation, e.g. [{'type': 'field', 'value': 'name'}, {'type': 'field', 'value': 'age'}] -> {'type': 'multi_select_dict', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'field', 'value': 'age'}]}.\"\"\"\n    if not isinstance(nodes, list):\n        raise ValueError(\"nodes must be an array\")\n    \n    try:\n        result = {\"type\": \"multi_select_dict\", \"children\": nodes}\n        return result\n    except Exception as e:\n        raise ValueError(f\"failed to create multi-select dictionary AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "nodes",
+      "type": "array",
+      "description": "Array of child nodes for the multi-select dictionary operation",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.multi_select_dict(nodes)",
+    "samples": [
+     {
+      "nodes": [
+       {
+        "type": "field",
+        "value": "name"
+       },
+       {
+        "type": "field",
+        "value": "age"
+       }
+      ]
+     },
+     {
+      "nodes": []
+     },
+     {
+      "nodes": [
+       {
+        "type": "literal",
+        "value": "test"
+       }
+      ]
+     },
+     {
+      "nodes": [
+       {
+        "type": "subexpression",
+        "children": [
+         {
+          "type": "field",
+          "value": "nested"
+         }
+        ]
+       },
+       {
+        "type": "field",
+        "value": "top_level"
+       }
+      ]
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "field",
+         "value": "age"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_dict",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "field",
+         "value": "age"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"field\", \"value\": \"age\"}], \"type\": \"multi_select_dict\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": []
+      },
+      "tool": {
+       "type": "multi_select_dict",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"multi_select_dict\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "literal",
+         "value": "test"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_dict",
+       "children": [
+        {
+         "type": "literal",
+         "value": "test"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"test\"}], \"type\": \"multi_select_dict\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "nodes": [
+        {
+         "type": "subexpression",
+         "children": [
+          {
+           "type": "field",
+           "value": "nested"
+          }
+         ]
+        },
+        {
+         "type": "field",
+         "value": "top_level"
+        }
+       ]
+      },
+      "tool": {
+       "type": "multi_select_dict",
+       "children": [
+        {
+         "type": "subexpression",
+         "children": [
+          {
+           "type": "field",
+           "value": "nested"
+          }
+         ]
+        },
+        {
+         "type": "field",
+         "value": "top_level"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"nested\"}], \"type\": \"subexpression\"}, {\"type\": \"field\", \"value\": \"top_level\"}], \"type\": \"multi_select_dict\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a multi-select dictionary operation. nodes: Array of child nodes for the multi-select dictionary operation, e.g. [{'type': 'field', 'value': 'name'}, {'type': 'field', 'value': 'age'}] -> {'type': 'multi_select_dict', 'children': [{'type': 'field', 'value': 'name'}, {'type': 'field', 'value': 'age'}]}.",
+    "input_schema": {
+     "properties": {
+      "nodes": {
+       "items": {},
+       "title": "Nodes",
+       "type": "array"
+      }
+     },
+     "required": [
+      "nodes"
+     ],
+     "title": "create_multi_select_dict_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"nodes\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"field\", \"value\": \"age\"}]}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='multi_select_dict', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"field\", \"value\": \"age\"}], \"type\": \"multi_select_dict\"}\nInput {\"nodes\": []}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='multi_select_dict', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [], \"type\": \"multi_select_dict\"}\nInput {\"nodes\": [{\"type\": \"literal\", \"value\": \"test\"}]}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='multi_select_dict', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [{\"type\": \"literal\", \"value\": \"test\"}], \"type\": \"multi_select_dict\"}"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_and_expression_ast_node",
+   "wraps": "jmespath.ast.and_expression",
+   "description": "Create an AST node representing an AND logical operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_and_expression_ast_node(left: object, right: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing an AND logical operation in a JMESPath expression. left: The left operand of the AND expression. right: The right operand of the AND expression. Example: create_and_expression_ast_node({\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"}) -> {\"type\": \"and_expression\", \"children\": [{\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"}]}\"\"\"\n    try:\n        return {\"type\": \"and_expression\", \"children\": [left, right]}\n    except Exception as e:\n        raise ValueError(f\"Failed to create AND expression AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "left",
+      "type": "object",
+      "description": "The left operand of the AND expression",
+      "required": true
+     },
+     {
+      "name": "right",
+      "type": "object",
+      "description": "The right operand of the AND expression",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.and_expression(left, right)",
+    "samples": [
+     {
+      "left": {
+       "type": "field",
+       "value": "name"
+      },
+      "right": {
+       "type": "field",
+       "value": "age"
+      }
+     },
+     {
+      "left": {
+       "type": "comparison",
+       "operator": "==",
+       "left": {
+        "type": "field",
+        "value": "status"
+       },
+       "right": {
+        "type": "literal",
+        "value": "active"
+       }
+      },
+      "right": {
+       "type": "comparison",
+       "operator": "!=",
+       "left": {
+        "type": "field",
+        "value": "deleted"
+       },
+       "right": {
+        "type": "literal",
+        "value": true
+       }
+      }
+     },
+     {
+      "left": {
+       "type": "function",
+       "name": "starts_with",
+       "arguments": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "literal",
+         "value": "A"
+        }
+       ]
+      },
+      "right": {
+       "type": "function",
+       "name": "ends_with",
+       "arguments": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "literal",
+         "value": "z"
+        }
+       ]
+      }
+     },
+     {
+      "left": {
+       "type": "literal",
+       "value": true
+      },
+      "right": {
+       "type": "literal",
+       "value": false
+      }
+     },
+     {
+      "left": {
+       "type": "field",
+       "value": "x"
+      },
+      "right": {
+       "type": "field",
+       "value": "y"
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "name"
+       },
+       "right": {
+        "type": "field",
+        "value": "age"
+       }
+      },
+      "tool": {
+       "type": "and_expression",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "field",
+         "value": "age"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"field\", \"value\": \"age\"}], \"type\": \"and_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "comparison",
+        "operator": "==",
+        "left": {
+         "type": "field",
+         "value": "status"
+        },
+        "right": {
+         "type": "literal",
+         "value": "active"
+        }
+       },
+       "right": {
+        "type": "comparison",
+        "operator": "!=",
+        "left": {
+         "type": "field",
+         "value": "deleted"
+        },
+        "right": {
+         "type": "literal",
+         "value": true
+        }
+       }
+      },
+      "tool": {
+       "type": "and_expression",
+       "children": [
+        {
+         "type": "comparison",
+         "operator": "==",
+         "left": {
+          "type": "field",
+          "value": "status"
+         },
+         "right": {
+          "type": "literal",
+          "value": "active"
+         }
+        },
+        {
+         "type": "comparison",
+         "operator": "!=",
+         "left": {
+          "type": "field",
+          "value": "deleted"
+         },
+         "right": {
+          "type": "literal",
+          "value": true
+         }
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"left\": {\"type\": \"field\", \"value\": \"status\"}, \"operator\": \"==\", \"right\": {\"type\": \"literal\", \"value\": \"active\"}, \"type\": \"comparison\"}, {\"left\": {\"type\": \"field\", \"value\": \"deleted\"}, \"operator\": \"!=\", \"right\": {\"type\": \"literal\", \"value\": true}, \"type\": \"comparison\"}], \"type\": \"and_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "function",
+        "name": "starts_with",
+        "arguments": [
+         {
+          "type": "field",
+          "value": "name"
+         },
+         {
+          "type": "literal",
+          "value": "A"
+         }
+        ]
+       },
+       "right": {
+        "type": "function",
+        "name": "ends_with",
+        "arguments": [
+         {
+          "type": "field",
+          "value": "name"
+         },
+         {
+          "type": "literal",
+          "value": "z"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "and_expression",
+       "children": [
+        {
+         "type": "function",
+         "name": "starts_with",
+         "arguments": [
+          {
+           "type": "field",
+           "value": "name"
+          },
+          {
+           "type": "literal",
+           "value": "A"
+          }
+         ]
+        },
+        {
+         "type": "function",
+         "name": "ends_with",
+         "arguments": [
+          {
+           "type": "field",
+           "value": "name"
+          },
+          {
+           "type": "literal",
+           "value": "z"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"arguments\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"literal\", \"value\": \"A\"}], \"name\": \"starts_with\", \"type\": \"function\"}, {\"arguments\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"literal\", \"value\": \"z\"}], \"name\": \"ends_with\", \"type\": \"function\"}], \"type\": \"and_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "literal",
+        "value": true
+       },
+       "right": {
+        "type": "literal",
+        "value": false
+       }
+      },
+      "tool": {
+       "type": "and_expression",
+       "children": [
+        {
+         "type": "literal",
+         "value": true
+        },
+        {
+         "type": "literal",
+         "value": false
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": true}, {\"type\": \"literal\", \"value\": false}], \"type\": \"and_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "x"
+       },
+       "right": {
+        "type": "field",
+        "value": "y"
+       }
+      },
+      "tool": {
+       "type": "and_expression",
+       "children": [
+        {
+         "type": "field",
+         "value": "x"
+        },
+        {
+         "type": "field",
+         "value": "y"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"x\"}, {\"type\": \"field\", \"value\": \"y\"}], \"type\": \"and_expression\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing an AND logical operation in a JMESPath expression. left: The left operand of the AND expression. right: The right operand of the AND expression. Example: create_and_expression_ast_node({\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"}) -> {\"type\": \"and_expression\", \"children\": [{\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"}]}",
+    "input_schema": {
+     "properties": {
+      "left": {
+       "title": "Left"
+      },
+      "right": {
+       "title": "Right"
+      }
+     },
+     "required": [
+      "left",
+      "right"
+     ],
+     "title": "create_and_expression_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_or_expression_ast_node",
+   "wraps": "jmespath.ast.or_expression",
+   "description": "Create an AST node representing an OR logical operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_or_expression_ast_node(left: object, right: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing an OR logical operation in a JMESPath expression.\n    \n    Args:\n        left: The left operand of the OR expression\n        right: The right operand of the OR expression\n    \n    Returns:\n        A dictionary representing the OR expression AST node\n    \n    Example:\n        >>> create_or_expression_ast_node({\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"})\n        {'type': 'or_expression', 'children': [{'type': 'field', 'name': 'a'}, {'type': 'field', 'name': 'b'}]}\n    \"\"\"\n    try:\n        return {\"type\": \"or_expression\", \"children\": [left, right]}\n    except Exception as e:\n        raise ValueError(f\"Failed to create OR expression AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "left",
+      "type": "object",
+      "description": "The left operand of the OR expression",
+      "required": true
+     },
+     {
+      "name": "right",
+      "type": "object",
+      "description": "The right operand of the OR expression",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.or_expression(left, right)",
+    "samples": [
+     {
+      "left": {
+       "type": "field",
+       "value": "name"
+      },
+      "right": {
+       "type": "field",
+       "value": "title"
+      }
+     },
+     {
+      "left": {
+       "type": "literal",
+       "value": "hello"
+      },
+      "right": {
+       "type": "literal",
+       "value": "world"
+      }
+     },
+     {
+      "left": {
+       "type": "comparison",
+       "operator": "==",
+       "left": {
+        "type": "field",
+        "value": "age"
+       },
+       "right": {
+        "type": "literal",
+        "value": 25
+       }
+      },
+      "right": {
+       "type": "comparison",
+       "operator": "!=",
+       "left": {
+        "type": "field",
+        "value": "status"
+       },
+       "right": {
+        "type": "literal",
+        "value": "inactive"
+       }
+      }
+     },
+     {
+      "left": {
+       "type": "function",
+       "name": "length",
+       "arguments": [
+        {
+         "type": "field",
+         "value": "items"
+        }
+       ]
+      },
+      "right": {
+       "type": "function",
+       "name": "size",
+       "arguments": [
+        {
+         "type": "field",
+         "value": "data"
+        }
+       ]
+      }
+     },
+     {
+      "left": {
+       "type": "wildcard",
+       "value": "*"
+      },
+      "right": {
+       "type": "subexpression",
+       "value": {
+        "type": "field",
+        "value": "nested"
+       }
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "name"
+       },
+       "right": {
+        "type": "field",
+        "value": "title"
+       }
+      },
+      "tool": {
+       "type": "or_expression",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "field",
+         "value": "title"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"field\", \"value\": \"title\"}], \"type\": \"or_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "literal",
+        "value": "hello"
+       },
+       "right": {
+        "type": "literal",
+        "value": "world"
+       }
+      },
+      "tool": {
+       "type": "or_expression",
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        },
+        {
+         "type": "literal",
+         "value": "world"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"hello\"}, {\"type\": \"literal\", \"value\": \"world\"}], \"type\": \"or_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "comparison",
+        "operator": "==",
+        "left": {
+         "type": "field",
+         "value": "age"
+        },
+        "right": {
+         "type": "literal",
+         "value": 25
+        }
+       },
+       "right": {
+        "type": "comparison",
+        "operator": "!=",
+        "left": {
+         "type": "field",
+         "value": "status"
+        },
+        "right": {
+         "type": "literal",
+         "value": "inactive"
+        }
+       }
+      },
+      "tool": {
+       "type": "or_expression",
+       "children": [
+        {
+         "type": "comparison",
+         "operator": "==",
+         "left": {
+          "type": "field",
+          "value": "age"
+         },
+         "right": {
+          "type": "literal",
+          "value": 25
+         }
+        },
+        {
+         "type": "comparison",
+         "operator": "!=",
+         "left": {
+          "type": "field",
+          "value": "status"
+         },
+         "right": {
+          "type": "literal",
+          "value": "inactive"
+         }
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"left\": {\"type\": \"field\", \"value\": \"age\"}, \"operator\": \"==\", \"right\": {\"type\": \"literal\", \"value\": 25}, \"type\": \"comparison\"}, {\"left\": {\"type\": \"field\", \"value\": \"status\"}, \"operator\": \"!=\", \"right\": {\"type\": \"literal\", \"value\": \"inactive\"}, \"type\": \"comparison\"}], \"type\": \"or_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "function",
+        "name": "length",
+        "arguments": [
+         {
+          "type": "field",
+          "value": "items"
+         }
+        ]
+       },
+       "right": {
+        "type": "function",
+        "name": "size",
+        "arguments": [
+         {
+          "type": "field",
+          "value": "data"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "or_expression",
+       "children": [
+        {
+         "type": "function",
+         "name": "length",
+         "arguments": [
+          {
+           "type": "field",
+           "value": "items"
+          }
+         ]
+        },
+        {
+         "type": "function",
+         "name": "size",
+         "arguments": [
+          {
+           "type": "field",
+           "value": "data"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"arguments\": [{\"type\": \"field\", \"value\": \"items\"}], \"name\": \"length\", \"type\": \"function\"}, {\"arguments\": [{\"type\": \"field\", \"value\": \"data\"}], \"name\": \"size\", \"type\": \"function\"}], \"type\": \"or_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "wildcard",
+        "value": "*"
+       },
+       "right": {
+        "type": "subexpression",
+        "value": {
+         "type": "field",
+         "value": "nested"
+        }
+       }
+      },
+      "tool": {
+       "type": "or_expression",
+       "children": [
+        {
+         "type": "wildcard",
+         "value": "*"
+        },
+        {
+         "type": "subexpression",
+         "value": {
+          "type": "field",
+          "value": "nested"
+         }
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"wildcard\", \"value\": \"*\"}, {\"type\": \"subexpression\", \"value\": {\"type\": \"field\", \"value\": \"nested\"}}], \"type\": \"or_expression\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing an OR logical operation in a JMESPath expression.\n    \n    Args:\n        left: The left operand of the OR expression\n        right: The right operand of the OR expression\n    \n    Returns:\n        A dictionary representing the OR expression AST node\n    \n    Example:\n        >>> create_or_expression_ast_node({\"type\": \"field\", \"name\": \"a\"}, {\"type\": \"field\", \"name\": \"b\"})\n        {'type': 'or_expression', 'children': [{'type': 'field', 'name': 'a'}, {'type': 'field', 'name': 'b'}]}\n    ",
+    "input_schema": {
+     "properties": {
+      "left": {
+       "title": "Left"
+      },
+      "right": {
+       "title": "Right"
+      }
+     },
+     "required": [
+      "left",
+      "right"
+     ],
+     "title": "create_or_expression_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_not_expression_ast_node",
+   "wraps": "jmespath.ast.not_expression",
+   "description": "Create an AST node representing a NOT logical operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_not_expression_ast_node(expr: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a NOT logical operation. expr: the expression to be negated\"\"\"\n    try:\n        return {\"type\": \"not_expression\", \"children\": [expr]}\n    except Exception as e:\n        raise ValueError(f\"Failed to create NOT expression AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expr",
+      "type": "object",
+      "description": "The expression to be negated by the NOT operation",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.not_expression(expr)",
+    "samples": [
+     {
+      "expr": {
+       "type": "field",
+       "value": "name"
+      }
+     },
+     {
+      "expr": {
+       "type": "comparison",
+       "left": {
+        "type": "field",
+        "value": "age"
+       },
+       "operator": ">",
+       "right": {
+        "type": "literal",
+        "value": 18
+       }
+      }
+     },
+     {
+      "expr": {
+       "type": "array_projection",
+       "left": {
+        "type": "field",
+        "value": "items"
+       },
+       "right": {
+        "type": "field",
+        "value": "value"
+       }
+      }
+     },
+     {
+      "expr": {
+       "type": "literal",
+       "value": true
+      }
+     },
+     {
+      "expr": {
+       "type": "function_expression",
+       "name": "length",
+       "arguments": [
+        {
+         "type": "field",
+         "value": "tags"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "expr": {
+        "type": "field",
+        "value": "name"
+       }
+      },
+      "tool": {
+       "type": "not_expression",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"not_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expr": {
+        "type": "comparison",
+        "left": {
+         "type": "field",
+         "value": "age"
+        },
+        "operator": ">",
+        "right": {
+         "type": "literal",
+         "value": 18
+        }
+       }
+      },
+      "tool": {
+       "type": "not_expression",
+       "children": [
+        {
+         "type": "comparison",
+         "left": {
+          "type": "field",
+          "value": "age"
+         },
+         "operator": ">",
+         "right": {
+          "type": "literal",
+          "value": 18
+         }
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"left\": {\"type\": \"field\", \"value\": \"age\"}, \"operator\": \">\", \"right\": {\"type\": \"literal\", \"value\": 18}, \"type\": \"comparison\"}], \"type\": \"not_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expr": {
+        "type": "array_projection",
+        "left": {
+         "type": "field",
+         "value": "items"
+        },
+        "right": {
+         "type": "field",
+         "value": "value"
+        }
+       }
+      },
+      "tool": {
+       "type": "not_expression",
+       "children": [
+        {
+         "type": "array_projection",
+         "left": {
+          "type": "field",
+          "value": "items"
+         },
+         "right": {
+          "type": "field",
+          "value": "value"
+         }
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"left\": {\"type\": \"field\", \"value\": \"items\"}, \"right\": {\"type\": \"field\", \"value\": \"value\"}, \"type\": \"array_projection\"}], \"type\": \"not_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expr": {
+        "type": "literal",
+        "value": true
+       }
+      },
+      "tool": {
+       "type": "not_expression",
+       "children": [
+        {
+         "type": "literal",
+         "value": true
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": true}], \"type\": \"not_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expr": {
+        "type": "function_expression",
+        "name": "length",
+        "arguments": [
+         {
+          "type": "field",
+          "value": "tags"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "not_expression",
+       "children": [
+        {
+         "type": "function_expression",
+         "name": "length",
+         "arguments": [
+          {
+           "type": "field",
+           "value": "tags"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"arguments\": [{\"type\": \"field\", \"value\": \"tags\"}], \"name\": \"length\", \"type\": \"function_expression\"}], \"type\": \"not_expression\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a NOT logical operation. expr: the expression to be negated",
+    "input_schema": {
+     "properties": {
+      "expr": {
+       "title": "Expr"
+      }
+     },
+     "required": [
+      "expr"
+     ],
+     "title": "create_not_expression_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_pipe_ast_node",
+   "wraps": "jmespath.ast.pipe",
+   "description": "Create an AST node representing a pipe operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_pipe_ast_node(left: object, right: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a pipe operation in a JMESPath expression. left: The left-hand side AST node of the pipe operation. right: The right-hand side AST node of the pipe operation. Example: create_pipe_ast_node({'type': 'field', 'value': 'a'}, {'type': 'field', 'value': 'b'}) -> {'type': 'pipe', 'children': [{'type': 'field', 'value': 'a'}, {'type': 'field', 'value': 'b'}]}\"\"\"\n    try:\n        return {'type': 'pipe', 'children': [left, right]}\n    except Exception as e:\n        raise ValueError(f\"Failed to create pipe AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "left",
+      "type": "object",
+      "description": "The left-hand side AST node of the pipe operation",
+      "required": true
+     },
+     {
+      "name": "right",
+      "type": "object",
+      "description": "The right-hand side AST node of the pipe operation",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.pipe(left, right)",
+    "samples": [
+     {
+      "left": {
+       "type": "field",
+       "value": "name"
+      },
+      "right": {
+       "type": "method",
+       "value": "upper"
+      }
+     },
+     {
+      "left": {
+       "type": "literal",
+       "value": "hello"
+      },
+      "right": {
+       "type": "field",
+       "value": "world"
+      }
+     },
+     {
+      "left": {
+       "type": "pipe",
+       "children": [
+        {
+         "type": "field",
+         "value": "a"
+        },
+        {
+         "type": "field",
+         "value": "b"
+        }
+       ]
+      },
+      "right": {
+       "type": "field",
+       "value": "c"
+      }
+     },
+     {
+      "left": {
+       "type": "field",
+       "value": "data"
+      },
+      "right": {
+       "type": "filter",
+       "children": [
+        {
+         "type": "field",
+         "value": "items"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "name"
+       },
+       "right": {
+        "type": "method",
+        "value": "upper"
+       }
+      },
+      "tool": {
+       "type": "pipe",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "method",
+         "value": "upper"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"method\", \"value\": \"upper\"}], \"type\": \"pipe\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "literal",
+        "value": "hello"
+       },
+       "right": {
+        "type": "field",
+        "value": "world"
+       }
+      },
+      "tool": {
+       "type": "pipe",
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        },
+        {
+         "type": "field",
+         "value": "world"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"hello\"}, {\"type\": \"field\", \"value\": \"world\"}], \"type\": \"pipe\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "pipe",
+        "children": [
+         {
+          "type": "field",
+          "value": "a"
+         },
+         {
+          "type": "field",
+          "value": "b"
+         }
+        ]
+       },
+       "right": {
+        "type": "field",
+        "value": "c"
+       }
+      },
+      "tool": {
+       "type": "pipe",
+       "children": [
+        {
+         "type": "pipe",
+         "children": [
+          {
+           "type": "field",
+           "value": "a"
+          },
+          {
+           "type": "field",
+           "value": "b"
+          }
+         ]
+        },
+        {
+         "type": "field",
+         "value": "c"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"a\"}, {\"type\": \"field\", \"value\": \"b\"}], \"type\": \"pipe\"}, {\"type\": \"field\", \"value\": \"c\"}], \"type\": \"pipe\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "left": {
+        "type": "field",
+        "value": "data"
+       },
+       "right": {
+        "type": "filter",
+        "children": [
+         {
+          "type": "field",
+          "value": "items"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "pipe",
+       "children": [
+        {
+         "type": "field",
+         "value": "data"
+        },
+        {
+         "type": "filter",
+         "children": [
+          {
+           "type": "field",
+           "value": "items"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"data\"}, {\"children\": [{\"type\": \"field\", \"value\": \"items\"}], \"type\": \"filter\"}], \"type\": \"pipe\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a pipe operation in a JMESPath expression. left: The left-hand side AST node of the pipe operation. right: The right-hand side AST node of the pipe operation. Example: create_pipe_ast_node({'type': 'field', 'value': 'a'}, {'type': 'field', 'value': 'b'}) -> {'type': 'pipe', 'children': [{'type': 'field', 'value': 'a'}, {'type': 'field', 'value': 'b'}]}",
+    "input_schema": {
+     "properties": {
+      "left": {
+       "title": "Left"
+      },
+      "right": {
+       "title": "Right"
+      }
+     },
+     "required": [
+      "left",
+      "right"
+     ],
+     "title": "create_pipe_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_comparator_ast_node",
+   "wraps": "jmespath.ast.comparator",
+   "description": "Create an AST node representing a comparison operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_comparator_ast_node(name: str, first: object, second: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a comparison operation in a JMESPath expression. name: The comparison operator name (e.g., 'eq', 'lt', 'gt'), first: The first operand in the comparison, second: The second operand in the comparison. Example: create_comparator_ast_node('eq', {'type': 'field', 'value': 'name'}, 'John') -> {'type': 'comparator', 'children': [{'type': 'field', 'value': 'name'}, 'John'], 'value': 'eq'}.\"\"\"\n    try:\n        return {'type': 'comparator', 'children': [first, second], 'value': name}\n    except Exception as e:\n        raise ValueError(f\"Failed to create comparator AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "name",
+      "type": "string",
+      "description": "The comparison operator name (e.g., 'eq', 'lt', 'gt')",
+      "required": true
+     },
+     {
+      "name": "first",
+      "type": "object",
+      "description": "The first operand in the comparison",
+      "required": true
+     },
+     {
+      "name": "second",
+      "type": "object",
+      "description": "The second operand in the comparison",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.comparator(name, first, second)",
+    "samples": [
+     {
+      "name": "eq",
+      "first": {
+       "type": "field",
+       "value": "name"
+      },
+      "second": {
+       "type": "literal",
+       "value": "John"
+      }
+     },
+     {
+      "name": "lt",
+      "first": {
+       "type": "field",
+       "value": "age"
+      },
+      "second": {
+       "type": "literal",
+       "value": 30
+      }
+     },
+     {
+      "name": "gt",
+      "first": {
+       "type": "field",
+       "value": "score"
+      },
+      "second": {
+       "type": "literal",
+       "value": 90
+      }
+     },
+     {
+      "name": "ne",
+      "first": {
+       "type": "field",
+       "value": "status"
+      },
+      "second": {
+       "type": "literal",
+       "value": "inactive"
+      }
+     },
+     {
+      "name": "le",
+      "first": {
+       "type": "field",
+       "value": "count"
+      },
+      "second": {
+       "type": "literal",
+       "value": 100
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "name": "eq",
+       "first": {
+        "type": "field",
+        "value": "name"
+       },
+       "second": {
+        "type": "literal",
+        "value": "John"
+       }
+      },
+      "tool": {
+       "type": "comparator",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        },
+        {
+         "type": "literal",
+         "value": "John"
+        }
+       ],
+       "value": "eq"
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}, {\"type\": \"literal\", \"value\": \"John\"}], \"type\": \"comparator\", \"value\": \"eq\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "lt",
+       "first": {
+        "type": "field",
+        "value": "age"
+       },
+       "second": {
+        "type": "literal",
+        "value": 30
+       }
+      },
+      "tool": {
+       "type": "comparator",
+       "children": [
+        {
+         "type": "field",
+         "value": "age"
+        },
+        {
+         "type": "literal",
+         "value": 30
+        }
+       ],
+       "value": "lt"
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"age\"}, {\"type\": \"literal\", \"value\": 30}], \"type\": \"comparator\", \"value\": \"lt\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "gt",
+       "first": {
+        "type": "field",
+        "value": "score"
+       },
+       "second": {
+        "type": "literal",
+        "value": 90
+       }
+      },
+      "tool": {
+       "type": "comparator",
+       "children": [
+        {
+         "type": "field",
+         "value": "score"
+        },
+        {
+         "type": "literal",
+         "value": 90
+        }
+       ],
+       "value": "gt"
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"score\"}, {\"type\": \"literal\", \"value\": 90}], \"type\": \"comparator\", \"value\": \"gt\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "ne",
+       "first": {
+        "type": "field",
+        "value": "status"
+       },
+       "second": {
+        "type": "literal",
+        "value": "inactive"
+       }
+      },
+      "tool": {
+       "type": "comparator",
+       "children": [
+        {
+         "type": "field",
+         "value": "status"
+        },
+        {
+         "type": "literal",
+         "value": "inactive"
+        }
+       ],
+       "value": "ne"
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"status\"}, {\"type\": \"literal\", \"value\": \"inactive\"}], \"type\": \"comparator\", \"value\": \"ne\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "name": "le",
+       "first": {
+        "type": "field",
+        "value": "count"
+       },
+       "second": {
+        "type": "literal",
+        "value": 100
+       }
+      },
+      "tool": {
+       "type": "comparator",
+       "children": [
+        {
+         "type": "field",
+         "value": "count"
+        },
+        {
+         "type": "literal",
+         "value": 100
+        }
+       ],
+       "value": "le"
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"count\"}, {\"type\": \"literal\", \"value\": 100}], \"type\": \"comparator\", \"value\": \"le\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a comparison operation in a JMESPath expression. name: The comparison operator name (e.g., 'eq', 'lt', 'gt'), first: The first operand in the comparison, second: The second operand in the comparison. Example: create_comparator_ast_node('eq', {'type': 'field', 'value': 'name'}, 'John') -> {'type': 'comparator', 'children': [{'type': 'field', 'value': 'name'}, 'John'], 'value': 'eq'}.",
+    "input_schema": {
+     "properties": {
+      "name": {
+       "title": "Name",
+       "type": "string"
+      },
+      "first": {
+       "title": "First"
+      },
+      "second": {
+       "title": "Second"
+      }
+     },
+     "required": [
+      "name",
+      "first",
+      "second"
+     ],
+     "title": "create_comparator_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_slice_ast_node",
+   "wraps": "jmespath.ast.slice",
+   "description": "Create an AST node representing a slice operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_slice_ast_node(start: int | None, end: int | None, step: int | None) -> dict[str, str | list[int | None]]:\n    \"\"\"Create an AST node representing a slice operation in a JMESPath expression. start: The start index of the slice, or None if omitted. end: The end index of the slice, or None if omitted. step: The step value of the slice, or None if omitted. Example: create_slice_ast_node(1, 5, 2) -> {'type': 'slice', 'children': [1, 5, 2]}.\"\"\"\n    try:\n        result = {\"type\": \"slice\", \"children\": [start, end, step]}\n        return result\n    except Exception as e:\n        raise ValueError(f\"Failed to create slice AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "start",
+      "type": "number",
+      "description": "The start index of the slice",
+      "required": true
+     },
+     {
+      "name": "end",
+      "type": "number",
+      "description": "The end index of the slice",
+      "required": true
+     },
+     {
+      "name": "step",
+      "type": "number",
+      "description": "The step value of the slice",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.slice(start, end, step)",
+    "samples": [
+     {
+      "start": 1,
+      "end": 5,
+      "step": 1
+     },
+     {
+      "start": 0,
+      "end": 10,
+      "step": 2
+     },
+     {
+      "start": -1,
+      "end": -5,
+      "step": -1
+     },
+     {
+      "start": 2,
+      "end": 8,
+      "step": 3
+     },
+     {
+      "start": 0,
+      "end": 0,
+      "step": 1
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "start": 1,
+       "end": 5,
+       "step": 1
+      },
+      "tool": {
+       "type": "slice",
+       "children": [
+        1,
+        5,
+        1
+       ]
+      },
+      "direct": "{\"children\": [1, 5, 1], \"type\": \"slice\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "start": 0,
+       "end": 10,
+       "step": 2
+      },
+      "tool": {
+       "type": "slice",
+       "children": [
+        0,
+        10,
+        2
+       ]
+      },
+      "direct": "{\"children\": [0, 10, 2], \"type\": \"slice\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "start": -1,
+       "end": -5,
+       "step": -1
+      },
+      "tool": {
+       "type": "slice",
+       "children": [
+        -1,
+        -5,
+        -1
+       ]
+      },
+      "direct": "{\"children\": [-1, -5, -1], \"type\": \"slice\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "start": 2,
+       "end": 8,
+       "step": 3
+      },
+      "tool": {
+       "type": "slice",
+       "children": [
+        2,
+        8,
+        3
+       ]
+      },
+      "direct": "{\"children\": [2, 8, 3], \"type\": \"slice\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "start": 0,
+       "end": 0,
+       "step": 1
+      },
+      "tool": {
+       "type": "slice",
+       "children": [
+        0,
+        0,
+        1
+       ]
+      },
+      "direct": "{\"children\": [0, 0, 1], \"type\": \"slice\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a slice operation in a JMESPath expression. start: The start index of the slice, or None if omitted. end: The end index of the slice, or None if omitted. step: The step value of the slice, or None if omitted. Example: create_slice_ast_node(1, 5, 2) -> {'type': 'slice', 'children': [1, 5, 2]}.",
+    "input_schema": {
+     "properties": {
+      "start": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Start"
+      },
+      "end": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "End"
+      },
+      "step": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Step"
+      }
+     },
+     "required": [
+      "start",
+      "end",
+      "step"
+     ],
+     "title": "create_slice_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"end\": 5, \"start\": 1, \"step\": 1}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='slice', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [1, 5, 1], \"type\": \"slice\"}\nInput {\"end\": 10, \"start\": 0, \"step\": 2}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='slice', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [0, 10, 2], \"type\": \"slice\"}\nInput {\"end\": -5, \"start\": -1, \"step\": -1}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='slice', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [-1, -5, -1], \"type\": \"slice\"}"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_index_ast_node",
+   "wraps": "jmespath.ast.index",
+   "description": "Create an AST node representing an index operation in a JMESPath expression.",
+   "accepted": false,
+   "code": "def create_index_ast_node(index: int) -> dict[str, int | list[dict[str, int]]]:\n    \"\"\"Create an AST node representing an index operation in a JMESPath expression. index: The index value for the AST node, e.g. 2 -> {\"type\": \"index\", \"value\": 2, \"children\": []}.\"\"\"\n    if not isinstance(index, int):\n        raise ValueError(f\"index must be an integer, got {type(index).__name__}\")\n    \n    return {\"type\": \"index\", \"value\": index, \"children\": []}\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "index",
+      "type": "integer",
+      "description": "The index value for the AST node",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.index(index)",
+    "samples": [
+     {
+      "index": 0
+     },
+     {
+      "index": 5
+     },
+     {
+      "index": -1
+     },
+     {
+      "index": 100
+     },
+     {
+      "index": 42
+     }
+    ]
+   },
+   "check": null,
+   "attempts": [
+    {
+     "stage": "static",
+     "error": "do not use __name__"
+    },
+    {
+     "stage": "static",
+     "error": "do not use __name__"
+    },
+    {
+     "stage": "static",
+     "error": "do not use __name__"
+    },
+    {
+     "stage": "static",
+     "error": "do not use __name__"
+    }
+   ]
+  },
+  {
+   "name": "create_flatten_ast_node",
+   "wraps": "jmespath.ast.flatten",
+   "description": "Create an AST node representing a flatten operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_flatten_ast_node(node: object) -> dict[str, object]:\n    \"\"\"Create an AST node representing a flatten operation in a JMESPath expression. node: The AST node to be wrapped in a flatten operation, e.g. create_flatten_ast_node({\"type\": \"field\", \"value\": \"name\"}) -> {\"type\": \"flatten\", \"children\": [{\"type\": \"field\", \"value\": \"name\"}]}.\"\"\"\n    try:\n        return {\"type\": \"flatten\", \"children\": [node]}\n    except Exception as e:\n        raise ValueError(f\"Failed to create flatten AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "node",
+      "type": "object",
+      "description": "The AST node to be wrapped in a flatten operation",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.flatten(node)",
+    "samples": [
+     {
+      "node": {
+       "type": "field",
+       "value": "name"
+      }
+     },
+     {
+      "node": {
+       "type": "literal",
+       "value": "hello"
+      }
+     },
+     {
+      "node": {
+       "type": "array",
+       "children": [
+        {
+         "type": "field",
+         "value": "items"
+        }
+       ]
+      }
+     },
+     {
+      "node": {
+       "type": "expression",
+       "children": [
+        {
+         "type": "field",
+         "value": "data"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "node": {
+        "type": "field",
+        "value": "name"
+       }
+      },
+      "tool": {
+       "type": "flatten",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"flatten\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "literal",
+        "value": "hello"
+       }
+      },
+      "tool": {
+       "type": "flatten",
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"hello\"}], \"type\": \"flatten\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "array",
+        "children": [
+         {
+          "type": "field",
+          "value": "items"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "flatten",
+       "children": [
+        {
+         "type": "array",
+         "children": [
+          {
+           "type": "field",
+           "value": "items"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"items\"}], \"type\": \"array\"}], \"type\": \"flatten\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "node": {
+        "type": "expression",
+        "children": [
+         {
+          "type": "field",
+          "value": "data"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "flatten",
+       "children": [
+        {
+         "type": "expression",
+         "children": [
+          {
+           "type": "field",
+           "value": "data"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"data\"}], \"type\": \"expression\"}], \"type\": \"flatten\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a flatten operation in a JMESPath expression. node: The AST node to be wrapped in a flatten operation, e.g. create_flatten_ast_node({\"type\": \"field\", \"value\": \"name\"}) -> {\"type\": \"flatten\", \"children\": [{\"type\": \"field\", \"value\": \"name\"}]}.",
+    "input_schema": {
+     "properties": {
+      "node": {
+       "title": "Node"
+      }
+     },
+     "required": [
+      "node"
+     ],
+     "title": "create_flatten_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_identity_ast_node",
+   "wraps": "jmespath.ast.identity",
+   "description": "Create an AST node representing an identity operation in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_identity_ast_node() -> dict[str, str | list[dict[str, object]]]:\n    \"\"\"Create an AST node representing an identity operation in a JMESPath expression. Returns a dictionary with type 'identity' and empty children list.\"\"\"\n    return {\"type\": \"identity\", \"children\": []}\n",
+   "spec": {
+    "parameters": [],
+    "direct_call": "jmespath.ast.identity()",
+    "samples": [
+     {},
+     {}
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {},
+      "tool": {
+       "type": "identity",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"identity\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {},
+      "tool": {
+       "type": "identity",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"identity\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing an identity operation in a JMESPath expression. Returns a dictionary with type 'identity' and empty children list.",
+    "input_schema": {
+     "properties": {},
+     "title": "create_identity_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_current_node_ast_node",
+   "wraps": "jmespath.ast.current_node",
+   "description": "Create an AST node representing the current node in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_current_node_ast_node() -> dict[str, str | list]:\n    \"\"\"Create an AST node representing the current node in a JMESPath expression. -> A dictionary with type 'current' and empty children list.\"\"\"\n    return {'type': 'current', 'children': []}\n",
+   "spec": {
+    "parameters": [],
+    "direct_call": "jmespath.ast.current_node()",
+    "samples": [
+     {},
+     {}
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {},
+      "tool": {
+       "type": "current",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"current\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {},
+      "tool": {
+       "type": "current",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"current\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing the current node in a JMESPath expression. -> A dictionary with type 'current' and empty children list.",
+    "input_schema": {
+     "properties": {},
+     "title": "create_current_node_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "syntax",
+     "error": "line 2: too many nested parentheses"
+    },
+    {
+     "stage": "syntax",
+     "error": "line 2: too many nested parentheses"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_expression_reference_ast_node",
+   "wraps": "jmespath.ast.expref",
+   "description": "Create an AST node representing an expression reference in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_expression_reference_ast_node(expression: object) -> dict[str, str | list[object]]:\n    \"\"\"Create an AST node representing an expression reference in a JMESPath expression. expression: The expression to create an expression reference for, e.g. {'type': 'field', 'value': 'name'} -> {'type': 'expref', 'children': [{'type': 'field', 'value': 'name'}]}.\"\"\"\n    try:\n        result = {'type': 'expref', 'children': [expression]}\n        return result\n    except Exception as e:\n        raise ValueError(f\"Failed to create expression reference AST node: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "expression",
+      "type": "object",
+      "description": "The expression to create an expression reference for",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.expref(expression)",
+    "samples": [
+     {
+      "expression": {
+       "type": "field",
+       "value": "name"
+      }
+     },
+     {
+      "expression": {
+       "type": "literal",
+       "value": "hello"
+      }
+     },
+     {
+      "expression": {
+       "type": "array",
+       "children": []
+      }
+     },
+     {
+      "expression": {
+       "type": "function",
+       "name": "length",
+       "children": [
+        {
+         "type": "field",
+         "value": "items"
+        }
+       ]
+      }
+     },
+     {
+      "expression": null
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "expression": {
+        "type": "field",
+        "value": "name"
+       }
+      },
+      "tool": {
+       "type": "expref",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"expref\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": {
+        "type": "literal",
+        "value": "hello"
+       }
+      },
+      "tool": {
+       "type": "expref",
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"hello\"}], \"type\": \"expref\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": {
+        "type": "array",
+        "children": []
+       }
+      },
+      "tool": {
+       "type": "expref",
+       "children": [
+        {
+         "type": "array",
+         "children": []
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [], \"type\": \"array\"}], \"type\": \"expref\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": {
+        "type": "function",
+        "name": "length",
+        "children": [
+         {
+          "type": "field",
+          "value": "items"
+         }
+        ]
+       }
+      },
+      "tool": {
+       "type": "expref",
+       "children": [
+        {
+         "type": "function",
+         "name": "length",
+         "children": [
+          {
+           "type": "field",
+           "value": "items"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"items\"}], \"name\": \"length\", \"type\": \"function\"}], \"type\": \"expref\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "expression": null
+      },
+      "tool": {
+       "type": "expref",
+       "children": [
+        null
+       ]
+      },
+      "direct": "{\"children\": [null], \"type\": \"expref\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing an expression reference in a JMESPath expression. expression: The expression to create an expression reference for, e.g. {'type': 'field', 'value': 'name'} -> {'type': 'expref', 'children': [{'type': 'field', 'value': 'name'}]}.",
+    "input_schema": {
+     "properties": {
+      "expression": {
+       "title": "Expression"
+      }
+     },
+     "required": [
+      "expression"
+     ],
+     "title": "create_expression_reference_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_subexpression_ast_node",
+   "wraps": "jmespath.ast.subexpression",
+   "description": "Create an AST node representing a subexpression in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_subexpression_ast_node(children: list) -> dict[str, str | list]:\n    \"\"\"Create an AST node representing a subexpression in a JMESPath expression. children: Array of child nodes that form the subexpression, e.g. [{'type': 'field', 'value': 'name'}] -> {'type': 'subexpression', 'children': [{'type': 'field', 'value': 'name'}]}.\"\"\"\n    if not isinstance(children, list):\n        raise ValueError(\"children must be an array\")\n    \n    try:\n        result = {\"type\": \"subexpression\", 'children': children}\n        return result\n    except Exception as e:\n        raise ValueError(f\"failed to create subexpression AST node: {str(e)}\") from e\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "children",
+      "type": "array",
+      "description": "Array of child nodes that form the subexpression",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.subexpression(children)",
+    "samples": [
+     {
+      "children": []
+     },
+     {
+      "children": [
+       {
+        "type": "field",
+        "value": "name"
+       }
+      ]
+     },
+     {
+      "children": [
+       {
+        "type": "field",
+        "value": "users"
+       },
+       {
+        "type": "array_projection",
+        "children": [
+         {
+          "type": "field",
+          "value": "name"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "children": [
+       {
+        "type": "literal",
+        "value": "hello"
+       },
+       {
+        "type": "field",
+        "value": "world"
+       }
+      ]
+     },
+     {
+      "children": [
+       {
+        "type": "subexpression",
+        "children": [
+         {
+          "type": "field",
+          "value": "nested"
+         }
+        ]
+       },
+       {
+        "type": "function_expression",
+        "name": "length",
+        "children": []
+       }
+      ]
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "children": []
+      },
+      "tool": {
+       "type": "subexpression",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"subexpression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        }
+       ]
+      },
+      "tool": {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "field",
+         "value": "name"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"subexpression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": [
+        {
+         "type": "field",
+         "value": "users"
+        },
+        {
+         "type": "array_projection",
+         "children": [
+          {
+           "type": "field",
+           "value": "name"
+          }
+         ]
+        }
+       ]
+      },
+      "tool": {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "field",
+         "value": "users"
+        },
+        {
+         "type": "array_projection",
+         "children": [
+          {
+           "type": "field",
+           "value": "name"
+          }
+         ]
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"field\", \"value\": \"users\"}, {\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"array_projection\"}], \"type\": \"subexpression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        },
+        {
+         "type": "field",
+         "value": "world"
+        }
+       ]
+      },
+      "tool": {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "literal",
+         "value": "hello"
+        },
+        {
+         "type": "field",
+         "value": "world"
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"hello\"}, {\"type\": \"field\", \"value\": \"world\"}], \"type\": \"subexpression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": [
+        {
+         "type": "subexpression",
+         "children": [
+          {
+           "type": "field",
+           "value": "nested"
+          }
+         ]
+        },
+        {
+         "type": "function_expression",
+         "name": "length",
+         "children": []
+        }
+       ]
+      },
+      "tool": {
+       "type": "subexpression",
+       "children": [
+        {
+         "type": "subexpression",
+         "children": [
+          {
+           "type": "field",
+           "value": "nested"
+          }
+         ]
+        },
+        {
+         "type": "function_expression",
+         "name": "length",
+         "children": []
+        }
+       ]
+      },
+      "direct": "{\"children\": [{\"children\": [{\"type\": \"field\", \"value\": \"nested\"}], \"type\": \"subexpression\"}, {\"children\": [], \"name\": \"length\", \"type\": \"function_expression\"}], \"type\": \"subexpression\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a subexpression in a JMESPath expression. children: Array of child nodes that form the subexpression, e.g. [{'type': 'field', 'value': 'name'}] -> {'type': 'subexpression', 'children': [{'type': 'field', 'value': 'name'}]}.",
+    "input_schema": {
+     "properties": {
+      "children": {
+       "items": {},
+       "title": "Children",
+       "type": "array"
+      }
+     },
+     "required": [
+      "children"
+     ],
+     "title": "create_subexpression_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"children\": []}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='subexpression', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [], \"type\": \"subexpression\"}\nInput {\"children\": [{\"type\": \"field\", \"value\": \"name\"}]}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='subexpression', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"subexpression\"}\nInput {\"children\": [{\"type\": \"field\", \"value\": \"users\"}, {\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"array_projection\"}]}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='subexpression', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [{\"type\": \"field\", \"value\": \"users\"}, {\"children\": [{\"type\": \"field\", \"value\": \"name\"}], \"type\": \"array_projection\"}], \"type\": \"subexpression\"}"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_index_expression_ast_node",
+   "wraps": "jmespath.ast.index_expression",
+   "description": "Create an AST node representing an index expression in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_index_expression_ast_node(children: list) -> dict[str, str | list]:\n    \"\"\"Create an AST node representing an index expression in a JMESPath expression. children: Array of child nodes for the index expression, e.g. [1, 2] -> {\"type\": \"index_expression\", \"children\": [1, 2]}.\"\"\"\n    try:\n        result = {\"type\": \"index_expression\", 'children': children}\n        return result\n    except Exception as e:\n        raise ValueError(f\"Failed to create index expression AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "children",
+      "type": "array",
+      "description": "Array of child nodes for the index expression",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.index_expression(children)",
+    "samples": [
+     {
+      "children": [
+       "array",
+       "index"
+      ]
+     },
+     {
+      "children": [
+       "variable",
+       0
+      ]
+     },
+     {
+      "children": []
+     },
+     {
+      "children": [
+       "nested",
+       [
+        "array",
+        "access"
+       ]
+      ]
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "children": [
+        "array",
+        "index"
+       ]
+      },
+      "tool": {
+       "type": "index_expression",
+       "children": [
+        "array",
+        "index"
+       ]
+      },
+      "direct": "{\"children\": [\"array\", \"index\"], \"type\": \"index_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": [
+        "variable",
+        0
+       ]
+      },
+      "tool": {
+       "type": "index_expression",
+       "children": [
+        "variable",
+        0
+       ]
+      },
+      "direct": "{\"children\": [\"variable\", 0], \"type\": \"index_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": []
+      },
+      "tool": {
+       "type": "index_expression",
+       "children": []
+      },
+      "direct": "{\"children\": [], \"type\": \"index_expression\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "children": [
+        "nested",
+        [
+         "array",
+         "access"
+        ]
+       ]
+      },
+      "tool": {
+       "type": "index_expression",
+       "children": [
+        "nested",
+        [
+         "array",
+         "access"
+        ]
+       ]
+      },
+      "direct": "{\"children\": [\"nested\", [\"array\", \"access\"]], \"type\": \"index_expression\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing an index expression in a JMESPath expression. children: Array of child nodes for the index expression, e.g. [1, 2] -> {\"type\": \"index_expression\", \"children\": [1, 2]}.",
+    "input_schema": {
+     "properties": {
+      "children": {
+       "items": {},
+       "title": "Children",
+       "type": "array"
+      }
+     },
+     "required": [
+      "children"
+     ],
+     "title": "create_index_expression_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "differential",
+     "error": "Input {\"children\": [\"array\", \"index\"]}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='index_expression', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [\"array\", \"index\"], \"type\": \"index_expression\"}\nInput {\"children\": [\"variable\", 0]}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='index_expression', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [\"variable\", 0], \"type\": \"index_expression\"}\nInput {\"children\": []}: the tool raised ValidationError: 1 validation error for DictModel\ntype\n  Input should be a valid list [type=list_type, input_value='index_expression', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/list_type, but the direct library call returned {\"children\": [], \"type\": \"index_expression\"}"
+    },
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  },
+  {
+   "name": "create_key_value_pair_ast_node",
+   "wraps": "jmespath.ast.key_val_pair",
+   "description": "Create an AST node representing a key-value pair in a JMESPath expression.",
+   "accepted": true,
+   "code": "def create_key_value_pair_ast_node(key_name: str, node: object) -> dict[str, str | list[object]]:\n    \"\"\"Create an AST node representing a key-value pair in a JMESPath expression. key_name: The name of the key in the key-value pair, node: The AST node representing the value part of the key-value pair. Example: create_key_value_pair_ast_node('name', {'type': 'literal', 'value': 'John'}) -> {'type': 'key_val_pair', 'children': [{'type': 'literal', 'value': 'John'}], 'value': 'name'}.\"\"\"\n    try:\n        return {\"type\": \"key_val_pair\", 'children': [node], \"value\": key_name}\n    except Exception as e:\n        raise ValueError(f\"Failed to create key-value pair AST node: {str(e)}\")\n",
+   "spec": {
+    "parameters": [
+     {
+      "name": "key_name",
+      "type": "string",
+      "description": "The name of the key in the key-value pair",
+      "required": true
+     },
+     {
+      "name": "node",
+      "type": "object",
+      "description": "The AST node representing the value part of the key-value pair",
+      "required": true
+     }
+    ],
+    "direct_call": "jmespath.ast.key_val_pair(key_name, node)",
+    "samples": [
+     {
+      "key_name": "name",
+      "node": {
+       "type": "literal",
+       "value": "John"
+      }
+     },
+     {
+      "key_name": "age",
+      "node": {
+       "type": "literal",
+       "value": 30
+      }
+     },
+     {
+      "key_name": "active",
+      "node": {
+       "type": "boolean",
+       "value": true
+      }
+     },
+     {
+      "key_name": "items",
+      "node": {
+       "type": "array",
+       "children": []
+      }
+     },
+     {
+      "key_name": "",
+      "node": {
+       "type": "literal",
+       "value": "empty key"
+      }
+     }
+    ]
+   },
+   "check": {
+    "ok": true,
+    "stage": "ok",
+    "error": null,
+    "samples": [
+     {
+      "arguments": {
+       "key_name": "name",
+       "node": {
+        "type": "literal",
+        "value": "John"
+       }
+      },
+      "tool": {
+       "type": "key_val_pair",
+       "children": [
+        {
+         "type": "literal",
+         "value": "John"
+        }
+       ],
+       "value": "name"
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"John\"}], \"type\": \"key_val_pair\", \"value\": \"name\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "key_name": "age",
+       "node": {
+        "type": "literal",
+        "value": 30
+       }
+      },
+      "tool": {
+       "type": "key_val_pair",
+       "children": [
+        {
+         "type": "literal",
+         "value": 30
+        }
+       ],
+       "value": "age"
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": 30}], \"type\": \"key_val_pair\", \"value\": \"age\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "key_name": "active",
+       "node": {
+        "type": "boolean",
+        "value": true
+       }
+      },
+      "tool": {
+       "type": "key_val_pair",
+       "children": [
+        {
+         "type": "boolean",
+         "value": true
+        }
+       ],
+       "value": "active"
+      },
+      "direct": "{\"children\": [{\"type\": \"boolean\", \"value\": true}], \"type\": \"key_val_pair\", \"value\": \"active\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "key_name": "items",
+       "node": {
+        "type": "array",
+        "children": []
+       }
+      },
+      "tool": {
+       "type": "key_val_pair",
+       "children": [
+        {
+         "type": "array",
+         "children": []
+        }
+       ],
+       "value": "items"
+      },
+      "direct": "{\"children\": [{\"children\": [], \"type\": \"array\"}], \"type\": \"key_val_pair\", \"value\": \"items\"}",
+      "result": "same"
+     },
+     {
+      "arguments": {
+       "key_name": "",
+       "node": {
+        "type": "literal",
+        "value": "empty key"
+       }
+      },
+      "tool": {
+       "type": "key_val_pair",
+       "children": [
+        {
+         "type": "literal",
+         "value": "empty key"
+        }
+       ],
+       "value": ""
+      },
+      "direct": "{\"children\": [{\"type\": \"literal\", \"value\": \"empty key\"}], \"type\": \"key_val_pair\", \"value\": \"\"}",
+      "result": "same"
+     }
+    ],
+    "verified": true,
+    "description": "Create an AST node representing a key-value pair in a JMESPath expression. key_name: The name of the key in the key-value pair, node: The AST node representing the value part of the key-value pair. Example: create_key_value_pair_ast_node('name', {'type': 'literal', 'value': 'John'}) -> {'type': 'key_val_pair', 'children': [{'type': 'literal', 'value': 'John'}], 'value': 'name'}.",
+    "input_schema": {
+     "properties": {
+      "key_name": {
+       "title": "Key Name",
+       "type": "string"
+      },
+      "node": {
+       "title": "Node"
+      }
+     },
+     "required": [
+      "key_name",
+      "node"
+     ],
+     "title": "create_key_value_pair_ast_nodeArguments",
+     "type": "object"
+    }
+   },
+   "attempts": [
+    {
+     "stage": "ok",
+     "error": null
+    }
+   ]
+  }
+ ]
+}

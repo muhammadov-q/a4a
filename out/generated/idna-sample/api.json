@@ -1,0 +1,740 @@
+{
+  "repo": "https://github.com/kjd/idna",
+  "package": "idna",
+  "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a",
+  "n_callables": 29,
+  "callables": [
+    {
+      "qualname": "alabel",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Convert a single U-label into its A-label form.",
+      "docstring": "Convert a single U-label into its A-label form.\n\nThe result is the ASCII-Compatible Encoding (ACE) form per :rfc:`5891`\n\u00a74: the label is validated, Punycode-encoded, and prefixed with\n``xn--``. Pure ASCII labels that are already valid IDNA labels are\nreturned unchanged (as :class:`bytes`).\n\n:param label: The label to convert, as a Unicode string.\n:returns: The A-label as ASCII-encoded :class:`bytes`.\n:raises IDNAError: If the label is invalid or the resulting A-label\n    exceeds 63 octets.",
+      "file": "idna/core.py",
+      "line": 526,
+      "loc": 32,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "check_bidi",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "check_ltr",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Validate the Bidi Rule from :rfc:`5893` for a single label.",
+      "docstring": "Validate the Bidi Rule from :rfc:`5893` for a single label.\n\nThe Bidi Rule constrains how bidirectional characters (Hebrew, Arabic,\netc.) may appear within a label. By default the check is only applied\nwhen the label contains at least one right-to-left character (Unicode\nbidirectional categories ``R``, ``AL``, or ``AN``); set ``check_ltr``\nto ``True`` to apply it to LTR-only labels as well.\n\n:param label: The label to validate, as a Unicode string.\n:param check_ltr: If ``True``, apply the rules even when the label\n    contains no RTL characters.\n:returns: ``True`` if the label satisfies the Bidi Rule.\n:raises IDNABidiError: If any of Bidi Rule conditions 1-6 are violated,\n    or if the directional category of a codepoint cannot be determined.",
+      "file": "idna/core.py",
+      "line": 170,
+      "loc": 116,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "check_hyphen_ok",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Validate the hyphen restrictions for a label.",
+      "docstring": "Validate the hyphen restrictions for a label.\n\nPer :rfc:`5891` \u00a74.2.3.1 a label must not start or end with a hyphen\n(``U+002D``), and must not have hyphens in both the third and fourth\npositions (the prefix reserved for A-labels).\n\n:param label: The label to check.\n:returns: ``True`` if the hyphen restrictions are satisfied.\n:raises IDNAError: If any of the hyphen restrictions are violated.",
+      "file": "idna/core.py",
+      "line": 309,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "check_initial_combiner",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Reject labels that begin with a combining mark.",
+      "docstring": "Reject labels that begin with a combining mark.\n\nPer :rfc:`5891` \u00a74.2.3.2 a label must not start with a character of\nUnicode general category ``M`` (Mark).\n\n:param label: The label to check.\n:returns: ``True`` if the first character is not a combining mark.\n:raises IDNAError: If the label begins with a combining character.",
+      "file": "idna/core.py",
+      "line": 288,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "check_label",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str | bytes | bytearray",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Run the full set of IDNA 2008 validity checks on a single label.",
+      "docstring": "Run the full set of IDNA 2008 validity checks on a single label.\n\nApplies, in order: NFC normalisation (:func:`check_nfc`), hyphen\nrestrictions (:func:`check_hyphen_ok`), the no-leading-combiner rule\n(:func:`check_initial_combiner`), per-codepoint validity (PVALID,\nCONTEXTJ, CONTEXTO classes from :rfc:`5892`), and the Bidi Rule\n(:func:`check_bidi`).\n\n:param label: The label to validate. ``bytes`` or ``bytearray`` input\n    is decoded as UTF-8 first.\n:raises IDNAError: If the label is empty or fails a structural rule.\n:raises InvalidCodepoint: If the label contains a DISALLOWED or\n    UNASSIGNED codepoint.\n:raises InvalidCodepointContext: If a CONTEXTJ or CONTEXTO codepoint\n    is not valid in its context.\n:raises IDNABidiError: If the Bidi Rule is violated.",
+      "file": "idna/core.py",
+      "line": 442,
+      "loc": 82,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "check_nfc",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Require that a label is in Unicode Normalization Form C.",
+      "docstring": "Require that a label is in Unicode Normalization Form C.\n\n:param label: The label to check.\n:raises IDNAError: If ``label`` differs from its NFC normalisation.",
+      "file": "idna/core.py",
+      "line": 327,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "decode",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes | bytearray",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "strict",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "uts46",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "std3_rules",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "display",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Decode an A-label-encoded domain name back to Unicode.",
+      "docstring": "Decode an A-label-encoded domain name back to Unicode.\n\nSplits the input on label separators (see :func:`encode` for the\nrules), decodes each label with :func:`ulabel`, and rejoins them\nwith ``.``. Optionally pre-processes the input through\n:func:`uts46_remap`.\n\n:param s: The domain name to decode.\n:param strict: If ``True``, only ``U+002E`` is recognised as a label\n    separator.\n:param uts46: If ``True``, apply UTS #46 mapping before decoding.\n:param std3_rules: Forwarded to :func:`uts46_remap` when ``uts46`` is\n    ``True``.\n:param display: If ``True``, any ``xn--`` label that fails IDNA\n    validation is passed through unchanged (lowercased) rather than\n    aborting the whole call. Intended for \"decode for display\"\n    consumers (e.g. URL libraries, HTTP clients) that want to show\n    the user the label as it appears on the wire when it cannot be\n    rendered as Unicode. Matches the per-label recovery prescribed\n    by UTS #46 \u00a74 and the WHATWG URL \"domain to Unicode\" algorithm.\n:returns: The decoded domain as a Unicode string.\n:raises IDNAError: If the input is not valid ASCII, contains an\n    invalid label, or is empty.",
+      "file": "idna/core.py",
+      "line": 803,
+      "loc": 67,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "encode",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "str | bytes | bytearray",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "strict",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "uts46",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "std3_rules",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        },
+        {
+          "name": "transitional",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Encode a Unicode domain name into its ASCII (A-label) form.",
+      "docstring": "Encode a Unicode domain name into its ASCII (A-label) form.\n\nSplits the input on label separators (only ``U+002E`` if ``strict`` is\nset; otherwise also IDEOGRAPHIC FULL STOP ``U+3002``, FULLWIDTH FULL\nSTOP ``U+FF0E``, and HALFWIDTH IDEOGRAPHIC FULL STOP ``U+FF61``),\nencodes each label with :func:`alabel`, and rejoins them with ``.``.\nOptionally pre-processes the input through :func:`uts46_remap`.\n\n:param s: The domain name to encode.\n:param strict: If ``True``, only ``U+002E`` is recognised as a label\n    separator.\n:param uts46: If ``True``, apply UTS #46 mapping before encoding.\n:param std3_rules: Forwarded to :func:`uts46_remap` when ``uts46`` is\n    ``True``.\n:param transitional: Deprecated and ignored (see :func:`uts46_remap`):\n    emits a :class:`DeprecationWarning` and will be removed in a\n    future version.\n:returns: The encoded domain as ASCII :class:`bytes`.\n:raises IDNAError: If the domain is empty, contains an invalid label,\n    or exceeds the maximum domain length.",
+      "file": "idna/core.py",
+      "line": 734,
+      "loc": 67,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "intranges_contain",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "int_",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "ranges",
+          "annotation": "tuple[int, ...]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Determine if `int_` falls into one of the ranges in `ranges`.",
+      "docstring": "Determine if `int_` falls into one of the ranges in `ranges`.",
+      "file": "idna/intranges.py",
+      "line": 40,
+      "loc": 16,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ulabel",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str | bytes | bytearray",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Convert a single A-label into its U-label form.",
+      "docstring": "Convert a single A-label into its U-label form.\n\nPerforms the inverse of :func:`alabel`: an ``xn--``-prefixed label is\nPunycode-decoded and validated, and is rejected unless it is the\ncanonical A-label for the decoded U-label (:rfc:`5891` \u00a75.3). Labels\nthat are already Unicode (or plain ASCII without the ACE prefix) are\nvalidated and returned as a Unicode string.\n\n:param label: The label to convert. ``bytes`` or ``bytearray`` input\n    is treated as ASCII.\n:returns: The U-label as a Unicode string.\n:raises IDNAError: If the label is malformed or fails validation.",
+      "file": "idna/core.py",
+      "line": 560,
+      "loc": 51,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "uts46_remap",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "domain",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "std3_rules",
+          "annotation": "bool",
+          "default": "True",
+          "kind": "positional"
+        },
+        {
+          "name": "transitional",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Apply the UTS #46 character mapping to a domain string.",
+      "docstring": "Apply the UTS #46 character mapping to a domain string.\n\nImplements the mapping table from `UTS #46 \u00a74\n<https://www.unicode.org/reports/tr46/>`_: each character is kept,\nreplaced, or rejected based on its status (``V``, ``M``, ``D``,\n``I``, ``X``). The result is returned in Normalisation Form C.\n\n:param domain: The full domain name to remap.\n:param std3_rules: If ``True``, apply UTS #46's ``UseSTD3ASCIIRules``:\n    after mapping, any ASCII character other than a lowercase letter,\n    digit, hyphen or the label separator ``.`` is rejected, whether it\n    appeared in the input or was produced by a mapping (e.g. U+FF01\n    FULLWIDTH EXCLAMATION MARK maps to ``!``). If ``False``, such\n    characters are passed through.\n:param transitional: Deprecated and ignored. UTS #46 deprecated\n    transitional processing in Unicode 15.1 and deviation (status\n    ``D``) codepoints are now always kept, so this has no effect\n    beyond emitting a :class:`DeprecationWarning`. It will be removed\n    in a future version.\n:returns: The remapped domain, in Normalisation Form C.\n:raises InvalidCodepoint: If the domain contains a disallowed\n    codepoint under the chosen rules.\n:raises IDNAError: If ``domain`` exceeds the defensive input length limit.",
+      "file": "idna/core.py",
+      "line": 639,
+      "loc": 93,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "valid_contextj",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pos",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Validate the CONTEXTJ rules from :rfc:`5892` Appendix A.",
+      "docstring": "Validate the CONTEXTJ rules from :rfc:`5892` Appendix A.\n\nThese rules govern the contextual use of the joiner codepoints\n``U+200C`` (ZERO WIDTH NON-JOINER, Appendix A.1) and ``U+200D``\n(ZERO WIDTH JOINER, Appendix A.2) within a label.\n\n:param label: The label containing the codepoint.\n:param pos: Index of the joiner codepoint within ``label``.\n:returns: ``True`` if the codepoint at ``pos`` satisfies its CONTEXTJ\n    rule, ``False`` otherwise (including when the codepoint at\n    ``pos`` is not a recognised joiner).\n:raises ValueError: If an adjacent codepoint has no Unicode name when\n    determining its combining class.\n:raises IDNAError: If ``label`` exceeds the defensive input length limit.",
+      "file": "idna/core.py",
+      "line": 339,
+      "loc": 52,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "valid_contexto",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "pos",
+          "annotation": "int",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "exception",
+          "annotation": "bool",
+          "default": "False",
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Validate the CONTEXTO rules from :rfc:`5892` Appendix A.",
+      "docstring": "Validate the CONTEXTO rules from :rfc:`5892` Appendix A.\n\nCovers the contextual rules for codepoints such as MIDDLE DOT\n(``U+00B7``), Greek lower numeral sign, Hebrew punctuation, Katakana\nmiddle dot, and the Arabic-Indic / Extended Arabic-Indic digit ranges.\n\n:param label: The label containing the codepoint.\n:param pos: Index of the codepoint within ``label``.\n:param exception: Reserved for forward compatibility; currently unused.\n:returns: ``True`` if the codepoint at ``pos`` satisfies its CONTEXTO\n    rule, ``False`` otherwise (including when the codepoint is not a\n    recognised CONTEXTO codepoint).\n:raises IDNAError: If ``label`` exceeds the defensive input length limit.",
+      "file": "idna/core.py",
+      "line": 393,
+      "loc": 47,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "valid_label_length",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "bytes | str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Check that a label does not exceed the maximum permitted length.",
+      "docstring": "Check that a label does not exceed the maximum permitted length.\n\nPer :rfc:`1035` (and :rfc:`5891` \u00a74.2.4) a DNS label must not exceed\n63 octets. The argument may be either a :class:`str` (a U-label, where\nlength is measured in characters) or :class:`bytes` (an A-label, where\nlength is measured in octets).\n\n:param label: The label to check.\n:returns: ``True`` if the label is within the length limit, otherwise\n    ``False``.",
+      "file": "idna/core.py",
+      "line": 141,
+      "loc": 13,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "valid_string_length",
+      "module": "idna",
+      "kind": "function",
+      "params": [
+        {
+          "name": "domain",
+          "annotation": "bytes | str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "trailing_dot",
+          "annotation": "bool",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bool",
+      "summary": "Check that a full domain name does not exceed the maximum length.",
+      "docstring": "Check that a full domain name does not exceed the maximum length.\n\nPer :rfc:`1035`, a domain name is limited to 253 octets when no trailing\ndot is present, or 254 octets when one is included.\n\n:param domain: The full (possibly multi-label) domain name.\n:param trailing_dot: ``True`` if ``domain`` includes a trailing ``.``.\n:returns: ``True`` if the domain is within the length limit, otherwise\n    ``False``.",
+      "file": "idna/core.py",
+      "line": 156,
+      "loc": 12,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "main",
+      "module": "idna.cli",
+      "kind": "function",
+      "params": [
+        {
+          "name": "argv",
+          "annotation": "list[str] | None",
+          "default": "None",
+          "kind": "positional"
+        }
+      ],
+      "returns": "int",
+      "summary": "Entry point for ``python -m idna``.",
+      "docstring": "Entry point for ``python -m idna``.\n\nWhen more than one domain is supplied (via positional arguments or\npiped stdin) and no mode flag is given, the first input determines\nthe direction and that mode is applied uniformly to the rest.\n\n:param argv: Argument list excluding the program name. Defaults to\n    :data:`sys.argv` when ``None``.\n:returns: ``0`` on success, ``1`` if any conversion fails.",
+      "file": "idna/cli.py",
+      "line": 98,
+      "loc": 31,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Codec.encode",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [
+        {
+          "name": "data",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "errors",
+          "annotation": "str",
+          "default": "'strict'",
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[bytes, int]",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 20,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "Codec.decode",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [
+        {
+          "name": "data",
+          "annotation": "bytes",
+          "default": null,
+          "kind": "positional"
+        },
+        {
+          "name": "errors",
+          "annotation": "str",
+          "default": "'strict'",
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[str, int]",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 29,
+      "loc": 8,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncrementalEncoder.reset",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 61,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncrementalEncoder.getstate",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [],
+      "returns": "Any",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 66,
+      "loc": 4,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncrementalEncoder.setstate",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [
+        {
+          "name": "state",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 71,
+      "loc": 5,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncrementalDecoder.reset",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 137,
+      "loc": 3,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncrementalDecoder.getstate",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [],
+      "returns": "tuple[bytes, int]",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 141,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "IncrementalDecoder.setstate",
+      "module": "idna.codec",
+      "kind": "method",
+      "params": [
+        {
+          "name": "state",
+          "annotation": "tuple[bytes, int]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "",
+      "docstring": "",
+      "file": "idna/codec.py",
+      "line": 144,
+      "loc": 2,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "search_function",
+      "module": "idna.codec",
+      "kind": "function",
+      "params": [
+        {
+          "name": "name",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "codecs.CodecInfo | None",
+      "summary": "Codec search function registered with :mod:`codecs`.",
+      "docstring": "Codec search function registered with :mod:`codecs`.\n\nReturns a :class:`codecs.CodecInfo` for the ``\"idna2008\"`` codec name\nso that ``str.encode(\"idna2008\")`` and ``bytes.decode(\"idna2008\")``\ninvoke the IDNA 2008 codec defined in this module.\n\n:param name: The codec name being looked up.\n:returns: A :class:`codecs.CodecInfo` instance if ``name`` is\n    ``\"idna2008\"``, otherwise ``None``.",
+      "file": "idna/codec.py",
+      "line": 201,
+      "loc": 22,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ToASCII",
+      "module": "idna.compat",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "str",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "bytes",
+      "summary": "Compatibility shim for :rfc:`3490` ``ToASCII``.",
+      "docstring": "Compatibility shim for :rfc:`3490` ``ToASCII``.\n\nDelegates to :func:`idna.encode` (IDNA 2008). Provided to ease porting\nof code written against the legacy :mod:`encodings.idna` API; new code\nshould call :func:`idna.encode` directly.\n\n:param label: The label or domain to encode.\n:returns: The encoded form as ASCII :class:`bytes`.",
+      "file": "idna/compat.py",
+      "line": 8,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "ToUnicode",
+      "module": "idna.compat",
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "annotation": "bytes | bytearray",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "str",
+      "summary": "Compatibility shim for :rfc:`3490` ``ToUnicode``.",
+      "docstring": "Compatibility shim for :rfc:`3490` ``ToUnicode``.\n\nDelegates to :func:`idna.decode` (IDNA 2008). Provided to ease porting\nof code written against the legacy :mod:`encodings.idna` API; new code\nshould call :func:`idna.decode` directly.\n\n:param label: The label or domain to decode.\n:returns: The decoded Unicode form.",
+      "file": "idna/compat.py",
+      "line": 21,
+      "loc": 11,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "nameprep",
+      "module": "idna.compat",
+      "kind": "function",
+      "params": [
+        {
+          "name": "s",
+          "annotation": "Any",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "None",
+      "summary": "Stub for :rfc:`3491` Nameprep, which is not used by IDNA 2008.",
+      "docstring": "Stub for :rfc:`3491` Nameprep, which is not used by IDNA 2008.\n\nIDNA 2008 (:rfc:`5891`) replaces Nameprep with the per-codepoint\nvalidity classes from :rfc:`5892`; this function exists only to\nreturn a clear error if legacy code attempts to call it.\n\n:raises NotImplementedError: Always.",
+      "file": "idna/compat.py",
+      "line": 34,
+      "loc": 10,
+      "n_overloads": 0,
+      "decorators": []
+    },
+    {
+      "qualname": "intranges_from_list",
+      "module": "idna.intranges",
+      "kind": "function",
+      "params": [
+        {
+          "name": "list_",
+          "annotation": "list[int]",
+          "default": null,
+          "kind": "positional"
+        }
+      ],
+      "returns": "tuple[int, ...]",
+      "summary": "Represent a list of integers as a sequence of ranges: ((start_0, end_0), (start_1, end_1), ...), such that the original integers are exactly those x such that start_i <= x < end_i for some i.",
+      "docstring": "Represent a list of integers as a sequence of ranges:\n((start_0, end_0), (start_1, end_1), ...), such that the original\nintegers are exactly those x such that start_i <= x < end_i for some i.\n\nRanges are encoded as single integers (start << 32 | end), not as tuples.",
+      "file": "idna/intranges.py",
+      "line": 11,
+      "loc": 19,
+      "n_overloads": 0,
+      "decorators": []
+    }
+  ],
+  "classes": {
+    "Codec": {
+      "module": "idna.codec",
+      "params": null,
+      "summary": "Stateless IDNA 2008 codec.",
+      "docstring": "Stateless IDNA 2008 codec.\n\nImplements the :class:`codecs.Codec` protocol so that the whole-domain\nencoder (:func:`idna.encode`) and decoder (:func:`idna.decode`) are\naccessible through the standard codec machinery as ``\"idna2008\"``.\n\nOnly the ``\"strict\"`` error handler is supported; any other handler\nraises :exc:`~idna.IDNAError`.",
+      "file": "idna/codec.py",
+      "line": 9,
+      "loc": 28
+    },
+    "IncrementalEncoder": {
+      "module": "idna.codec",
+      "params": [
+        {
+          "name": "errors",
+          "annotation": "str",
+          "default": "'strict'",
+          "kind": "positional"
+        }
+      ],
+      "summary": "Incremental IDNA 2008 encoder.",
+      "docstring": "Incremental IDNA 2008 encoder.\n\nBuffers a partial trailing label across calls until either the next\nlabel separator is seen or ``final=True``, so that streamed input is\nencoded one whole label at a time. Any of the four Unicode label\nseparators (``U+002E``, ``U+3002``, ``U+FF0E``, ``U+FF61``) ends a\nlabel; the result always uses ``U+002E`` as the separator.\n\nThe 253-octet domain length limit (254 with a trailing dot) that\n:func:`idna.encode` enforces is applied to the accumulated output, so\nthat streaming a name and encoding it in one shot either both succeed\nwith the same result or both raise :exc:`~idna.IDNAError`.\n\nOnly the ``\"strict\"`` error handler is supported.",
+      "file": "idna/codec.py",
+      "line": 39,
+      "loc": 77
+    },
+    "IncrementalDecoder": {
+      "module": "idna.codec",
+      "params": [
+        {
+          "name": "errors",
+          "annotation": "str",
+          "default": "'strict'",
+          "kind": "positional"
+        }
+      ],
+      "summary": "Incremental IDNA 2008 decoder.",
+      "docstring": "Incremental IDNA 2008 decoder.\n\nBuffers a partial trailing label across calls until either the next\nlabel separator is seen or ``final=True``, so that streamed input is\ndecoded one whole label at a time.\n\nThe 254-octet input length limit that :func:`idna.decode` enforces is\napplied to the accumulated input, so that streaming a name and decoding\nit in one shot either both succeed with the same result or both raise\n:exc:`~idna.IDNAError`.\n\nOnly the ``\"strict\"`` error handler is supported.",
+      "file": "idna/codec.py",
+      "line": 118,
+      "loc": 73
+    }
+  }
+}

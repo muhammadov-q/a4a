@@ -290,6 +290,45 @@ What these numbers are and are not:
 - The same thing in two repositories counts twice. Counting distinct tools across repositories is the next step.
 - A static scan sees only what is written out: functions made at run time, lazy imports through `__getattr__`, and classes without public methods are missed.
 
+### Do the distinct tools saturate?
+
+```sh
+uv run --group analysis repo2tools corpus-saturation --base-url http://127.0.0.1:18002/v1 --model qwen3-embedding-4b
+uv run --with matplotlib python docs/make_figures.py
+```
+
+Every candidate gets a short text that says what the tool would do, without the name of its library, and a text-embedding model (Qwen3-Embedding-4B, served like the other models, `cluster/serve_qwen3_embedding.sbatch`) turns it into a vector. Repositories are then added one by one, in random order: a candidate joins the most similar group seen so far if its cosine similarity to the group's first member is at least a threshold, and starts a new group otherwise. The vectors are saved, so the command runs again without the model.
+
+![Tool candidates and distinct tools as repositories are added](docs/saturation.png)
+
+At threshold 0.85, 97 repositories, mean of 10 random orders:
+
+| Level | Candidates | Distinct inside the repositories | Distinct over all | Exponent | Seen before, early | Seen before, late |
+| --- | --- | --- | --- | --- | --- | --- |
+| low | 17,362 | 11,324 | 11,073 | 0.983 | 1% | 6% |
+| medium | 19,140 | 12,938 | 12,606 | 0.985 | 1% | 6% |
+| high | 1,112 | 769 | 766 | 1.004 | 0% | 0% |
+
+- **No saturation at 97 repositories.** The number of distinct tools grows in step with the candidates: the exponent b in `distinct = a * candidates^b` is 0.98 to 1.0 at every level and threshold (1 means no repetition).
+- **The repetition there is sits inside repositories, not between them.** Of 17,362 low-level candidates, 11,324 are distinct inside their own repository, and 11,073 over all repositories: sharing between repositories removes 2%.
+- **Later repositories repeat a little more.** "Seen before" is the share of a repository's distinct things that an earlier repository already had: under 1% for repositories added early, 6% for those added last at the low and medium level. So the curve does bend, slowly. At the high level nothing repeats: a documented example belongs to its library.
+- **The threshold was chosen by reading pairs** (`out/corpus/saturation_pairs.md`): from about 0.85 up, two candidates from different repositories do the same job (`canonicalize_name` and `normalize_name`, two `Stack.push`); below 0.80 mostly not. The reading covered six pairs per band and is a first look, not a labelled set. The table for 0.80 and 0.90 is in `out/corpus/saturation.md`.
+- **What this is not:** a count of working tools, or of useful ones. And these are the 100 most downloaded pure-Python packages, which are chosen to be different from each other; a sample from one field (say, date libraries) would repeat more.
+
+### Does the pipeline work on these repositories?
+
+A sample check with real generation, one run each, on five of the scanned repositories (`repo2tools generate <repo> --commit <scanned commit> --follow-reexports --classes --max-tools 60`, Qwen3-Coder):
+
+| Repository | API elements | Picked by the LLM | Accepted by the checks | On the first try |
+| --- | --- | --- | --- | --- |
+| `python-dateutil` | 66 | 1 | 1 | 1 |
+| `idna` | 29 | 20 | 16 | 11 |
+| `jmespath` | 60 | 31 | 26 | 18 |
+| `tomlkit` | 183 | 59 | 23 | 15 |
+| `itsdangerous` | 38 | 15 | 8 | 5 |
+
+74 of 126 picked tools pass every check (59%). The pick varies a lot: one tool for `python-dateutil`, 59 for `tomlkit`. On `tomlkit` most failures are at the test itself or at the comparison with the library: its functions return document objects, not plain values. These sets are in `toolsets/generated/*-sample/`; no exercises exist for them, so nothing here says the tools are useful.
+
 ## Usability: can a small model call the tools
 
 A tool that agrees with the library is still of no use if the model can't pick it or call it. `repo2tools usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
@@ -469,7 +508,9 @@ src/repo2tools/
 │   └── analyze.py           analyze-traces     what repeats, and what compression would save
 ├── corpus/                  many repositories at once
 │   ├── candidates.py        corpus-candidates  pure-Python PyPI packages with a GitHub repository, for a person to approve
-│   └── scan.py              corpus-scan        clone the approved repositories and scan them; nothing is run
+│   ├── scan.py              corpus-scan        clone the approved repositories and scan them; nothing is run
+│   ├── granularity.py                          tool candidates at three levels, each with a short description
+│   └── saturation.py        corpus-saturation  group similar candidates across repositories; do the distinct ones saturate?
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server
@@ -482,7 +523,7 @@ src/repo2tools/
 
 | Path | What is there |
 | --- | --- |
-| `tests/` | 162 tests. `helpers.py` holds the scripted LLM they share. |
+| `tests/` | 167 tests. `helpers.py` holds the scripted LLM they share. |
 | `toolsets/pypa_packaging/` | The reference tool set (called "hand-made"), written in a chat session with an LLM before the pipeline existed: 21 tools over pypa/packaging (`tools.py`), a coarser cut (`coarse_tools.py`), the MCP server (`server.py`, stdio or `--http PORT`; `--level function\|feature\|workflow\|all`), and its ToolGym types. These files stay flat so that they can be handed to other harnesses as they are. |
 | `toolsets/generated/` | Generated tool sets, one folder per run and one file per tool, each with `server.py`, `run_server.sh` and `manifest.json`. Not reviewed by a person. |
 | `out/` | Results: `corpus/` (candidate repositories for the many-repo experiments), `baseline/` (ToolGym's catalog today), `packaging/` (API, exercises, tool check), `packaging_toolgym/` (ToolGym's view of our tools), `usage/` (usage scans), `runs/` (model runs), `traces/` (full traces and their analysis), `generated/` (reports and LLM logs of generated tool sets), `toolgym_exercises/` (ToolGym tasks as exercises), `toolgym_runs/` (summaries of ToolGym pipeline runs). |

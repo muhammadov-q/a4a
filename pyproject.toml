@@ -16,7 +16,7 @@ dependencies = [
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
 # counting tokens with the model's own tokenizer and chat template; no torch needed
-analysis = ["transformers>=4.51", "jinja2>=3.1"]
+analysis = ["transformers>=4.51", "jinja2>=3.1", "numpy>=2"]
 
 [project.scripts]
 repo2tools = "repo2tools.cli:main"
