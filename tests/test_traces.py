@@ -312,3 +312,26 @@ def test_examples_go_between_the_system_prompt_and_the_task(tmp_path):
 def test_always_gives_up_at_max_steps():
     result, endpoint = solve([completion(calls=[("add", {"x": 41})])] * 4, "always")
     assert not result["passed"] and result["finish"] == "max_steps" and len(endpoint.requests) == 4
+
+
+def test_a_sentence_gets_one_reminder_and_a_huge_output_is_cut():
+    args = Namespace(mode="tools", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=5, remind=True, max_output=30, topic="the Python library adder")
+    endpoint = Endpoint([completion(calls=[("add", {"x": 41})]), completion(content="The result is 42."), completion(content="42")])
+
+    class Wordy:
+        async def call_tool(self, name, arguments):
+            return SimpleNamespace(isError=False, structuredContent={"result": "x" * 500})
+
+    result = asyncio.run(run_model.solve(EXERCISE, args, endpoint, Wordy(), TOOL_LIST))
+    assert result["passed"] and result["reminded"] and result["answer"] == 42
+    assert endpoint.requests[2]["messages"][-1] == {"role": "user", "content": run_model.REMINDER}
+    assert endpoint.requests[0]["messages"][0]["content"].startswith("You solve tasks about the Python library adder.")
+    shown = endpoint.requests[1]["messages"][-1]["content"]
+    assert len(shown) < 80 and shown.endswith("[output cut: 502 characters in all]")
+    # only one reminder, and none unless asked for
+    twice = Endpoint([completion(content="It is 42."), completion(content="Still 42, I think.")])
+    assert not asyncio.run(run_model.solve(EXERCISE, args, twice, Wordy(), TOOL_LIST))["passed"] and len(twice.requests) == 2
+    plain = Namespace(mode="none", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=5)
+    once = Endpoint([completion(content="It is 42.")])
+    result = asyncio.run(run_model.solve(EXERCISE, plain, once, None, []))
+    assert not result["passed"] and not result["reminded"] and len(once.requests) == 1
