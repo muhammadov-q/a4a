@@ -364,29 +364,51 @@ Read on 15 November 2026, 97 repositories:
 
 ```sh
 uv run repo2tools corpus-benchmark --writer-base-url http://127.0.0.1:18000/v1 --writer-model qwen3-coder \
-    --base-url http://127.0.0.1:18001/v1 --model qwen3-8b --tag <name>
+    --base-url http://127.0.0.1:18001/v1 --model qwen3-8b --tag <name> --runs 3
 ```
 
-For every repository with at least 8 kept questions: generate a tool set at the low level (one tool per function), then let Qwen3-8B answer the repository's questions without tools and with them. Same instruction in both runs, one reminder if the reply is not a bare value, tool outputs cut at 20,000 characters.
+For every repository with at least 8 kept questions, a model answers the repository's questions under three conditions:
 
-First run, 15 November 2026 (`--tag bench2`; one run):
+| Condition | The model has |
+| --- | --- |
+| no tools | nothing: it answers from what it knows |
+| generated tools | a tool set generated from the repository at the low level (one tool per function) |
+| one Python tool | `run_python`: one tool that runs code in a new interpreter where the library is installed (`corpus/python_tool.py`, inside the library's sandbox). It gets no documentation. This is the baseline a generated tool set has to beat |
 
-| Package | Questions | Tools accepted | Right without tools | Right with the generated tools |
-| --- | --- | --- | --- | --- |
-| `dateutil` | 11 | 1 of 1 | 4 | 3 |
-| `mcp` | 15 | 0 of 54 | 10 | no tool passed |
-| `more_itertools` | 19 | 25 of 59 | 10 | 9 |
-| `networkx` | 20 | 3 of 45 | 6 | 0 |
-| `jinja2` | 9 | 11 of 58 | 6 | 6 |
-| `werkzeug` | 16 | 26 of 60 | 7 | 4 |
-| `packaging` | 28 | 41 of 60 | 14 | 8 |
-| `rsa` | 17 | 11 of 24 | 7 | 4 |
-| **7 repositories with both runs** | **120** | | **54 (45%)** | **34 (28%)** |
+The instruction, one reminder if the reply is not a bare value, and the cut of tool outputs at 20,000 characters are the same in all three. A run that is already saved is not repeated, and `--report-only` builds the report again from the saved runs. The tool sets are generated once per tag (here by Qwen3-Coder); later runs only rebuild their environment.
 
-- **With the generated tools the model is worse in six of seven libraries and equal in one.** This is the packaging result again (124 against 133 of 222), now on questions that come from each library's own documentation.
-- Many questions are small workflows on an object (build a graph, add edges, compute a measure). A tool per function takes and returns plain JSON, so it cannot carry the object from one call to the next. networkx shows it most clearly: 44 tool errors and no right answer with tools.
-- What is missing for a fair picture: more than one run; tools at the medium and high level; a larger model; and a baseline where the model gets one tool that runs Python with the library installed.
-- The first attempt of the day used questions written without the solvability check and without the reminder: 101 of 263 right without tools, 53 with. Its questions were often too vague to answer ("a request created with specific input values"), so those numbers are not used.
+Read on 15 November 2026 (`--tag bench2`), right answers as the mean of 3 runs, 7 repositories, 120 questions:
+
+| Package | Questions | Tools accepted | 8B: no tools | 8B: generated tools | 8B: Python tool | 32B: no tools | 32B: generated tools | 32B: Python tool |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `dateutil` | 11 | 1 of 1 | 4.0 | 4.0 | 6.7 | 5.0 | 5.0 | 9.0 |
+| `mcp` | 15 | 0 of 54 | 10.0 | none | none | 12.0 | none | none |
+| `more_itertools` | 19 | 25 of 59 | 10.0 | 10.3 | 13.0 | 11.0 | 10.0 | 11.0 |
+| `networkx` | 20 | 3 of 45 | 6.0 | 0.0 | 13.0 | 6.0 | 3.0 | 16.0 |
+| `jinja2` | 9 | 11 of 58 | 6.0 | 6.0 | 4.0 | 7.0 | 6.0 | 3.0 |
+| `werkzeug` | 16 | 26 of 60 | 7.0 | 6.3 | 14.0 | 14.0 | 11.0 | 15.0 |
+| `packaging` | 28 | 41 of 60 | 14.0 | 9.7 | 9.3 | 19.0 | 19.0 | 15.0 |
+| `rsa` | 17 | 11 of 24 | 7.0 | 7.0 | 10.0 | 8.0 | 9.7 | 12.0 |
+| **7 repositories with every condition** | **120** | | **54.0 (45%)** | **43.3 (36%)** | **70.0 (58%)** | **70.0 (58%)** | **63.7 (53%)** | **81.0 (68%)** |
+
+8B is Qwen3-8B, 32B is Qwen3-32B, both without thinking. `mcp` has no generated tool that passed, and the Python tool cannot start there, because the library under test is the one the tool server itself is built on.
+
+- **The order is the same for both models: one Python tool, then no tools, then generated tools.** Question by question (first run, exact sign test on the questions only one condition got right): Python tool against generated tools, 8B 38 to 12 (p = 0.00031), 32B 36 to 19 (p = 0.03); Python tool against no tools, 8B 30 to 14 (p = 0.023), 32B 28 to 17 (p = 0.14).
+- **Generated low-level tools do not help, but "they make it worse" is not shown.** No tools against generated tools: 8B 25 against 15, p = 0.15; 32B 18 against 12, p = 0.36. With 120 questions that difference can be chance.
+- **44 of the 120 questions have the answer true or false, and a model can guess those.** Split by kind of answer (first run):
+
+  | The answer is | Questions | 8B: no tools | 8B: generated tools | 8B: Python tool | 32B: no tools | 32B: generated tools | 32B: Python tool |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | true or false | 44 | 27 (61%) | 18 (41%) | 19 (43%) | 33 (75%) | 29 (66%) | 26 (59%) |
+  | another value | 76 | 27 (36%) | 26 (34%) | 51 (67%) | 37 (49%) | 35 (46%) | 55 (72%) |
+
+  On the questions that cannot be guessed, the Python tool nearly doubles the right answers of the small model, and generated tools are level with no tools. On true-or-false questions every kind of tool is below no tools: a model that calls a tool and gets an error, or computes something else than was asked, loses the half it would have guessed. The next set of questions should have few true-or-false answers.
+- **Why the low-level tools fail:** many questions are small workflows on an object (build a graph, add edges, compute a measure). A tool per function takes and returns plain JSON, so it cannot carry the object from one call to the next. networkx shows it most clearly: no right answer with the 8B model, 3 of 20 with the 32B model, against 13 and 16 with the Python tool.
+- **Where the Python tool fails:** it runs code but tells the model nothing about the library. On packaging and jinja2 it is below no tools for both models: the models call things that do not exist (`packaging.version.Specifier`, their own `modifies_known_mutable`) and the 32B model then reports the error as its answer. A generated tool carries the name and description of the real function. So the two fail in opposite ways, and what is still untested is the combination: the Python tool together with a reference of the API.
+- **The harness decided a quarter of the small model's first results with generated tools.** In the first runs of the day (`--strict`, reports `benchmark-bench2-<model>-strict.md`) the totals were 8B 54.0 (45%) / 35.0 (29%) / 63.3 (53%) and 32B 70.0 (58%) / 62.0 (52%) / 77.0 (64%). With the 8B model, 29 of 120 runs with generated tools and 16 with the Python tool ended with a tool call that the model had written as plain text, which was taken as its final answer. The numbers above run such a call (`run-model --repair-calls`) and show the Python tool's output as text and not as a quoted JSON string (`--plain-text`). The first single run of generated tools (34 of 120 against 54) overstated the damage for this reason.
+- **Runs barely differ:** the models answer at temperature 0, so three runs give almost the same numbers. The uncertainty is in the sample of 120 questions, which is what the sign test measures.
+- What is missing for a fair picture: tools at the medium and high level; the Python tool with an API reference; more questions per repository, with fewer true-or-false answers; more repositories.
+- A first attempt used questions written without the solvability check and without the reminder: 101 of 263 right without tools, 53 with. Its questions were often too vague to answer ("a request created with specific input values"), so those numbers are not used.
 
 ## Usability: can a small model call the tools
 
@@ -573,7 +595,8 @@ src/repo2tools/
 │   ├── exercises.py         corpus-exercises   documentation examples as exercises, verified by two sandboxed runs
 │   ├── example_worker.py                       runs those examples; inside the library's own environment and sandbox
 │   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
-│   └── benchmark.py         corpus-benchmark   per repository: generate tools, score a model without and with them
+│   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
+│   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server

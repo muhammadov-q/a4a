@@ -186,13 +186,13 @@ def dependencies_of(root: Path, package: str) -> list[str]:
         return []
 
 
-def box_for(candidate: dict, set_name: str, clones: Path = CLONES):
-    """The sandboxed environment of a scanned repository: its package and what it needs, and this module's worker allowed to run in it."""
+def box_for(candidate: dict, set_name: str, clones: Path = CLONES, readable: Path = WORKER):
+    """The sandboxed environment of a scanned repository: its package and what it needs, and one file of ours that may run in it (the worker here)."""
     root = clones / folder_name(candidate["repo"])
     base, package, single_file = locate(root, likely_names(candidate))
     if not single_file and native_code(base / package):
         raise RuntimeError("the package has compiled code")
-    return pipeline.make_box(set_name, base, package, dependencies_of(root, candidate["package"]), WORKER)
+    return pipeline.make_box(set_name, base, package, dependencies_of(root, candidate["package"]), readable)
 
 
 def drop_box(set_name: str) -> None:
