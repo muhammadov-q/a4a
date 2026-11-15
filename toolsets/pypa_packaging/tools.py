@@ -1,7 +1,7 @@
 """Tools synthesized from pypa/packaging, version 0: about one tool per library function.
 
-Written by Claude in a chat session on 2026-10-23 as the per-function granularity level and
-as a reference set; later versions come from the automated LLM pipeline. Every tool takes and
+Written in a chat session with an LLM on 2026-10-23, before the automated pipeline existed, as
+the per-function granularity level and as a reference set; later versions come from the pipeline. Every tool takes and
 returns plain JSON values (strings, booleans, lists, small objects), so one tool's output can
 be passed to the next. Invalid input raises ValueError, which MCP reports as a tool error.
 

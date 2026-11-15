@@ -5,7 +5,7 @@ The same library cut at three granularities:
 - feature:  check_requirement, one call per dependency line
 - workflow: check_requirements, one call for a whole requirements list
 
-Written by Claude in a chat session, like version 0 of tools.py. Same conventions: plain JSON in
+Written in a chat session with an LLM, like version 0 of tools.py. Same conventions: plain JSON in
 and out, invalid input raises ValueError, unset marker variables come from BASELINE_ENVIRONMENT.
 """
 
