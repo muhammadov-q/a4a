@@ -42,7 +42,7 @@ from repo2tools.corpus.scan import CLONES, OUT, folder_name, likely_names, locat
 from repo2tools.paths import REPO_ROOT
 from repo2tools.synthesis import pipeline
 from repo2tools.synthesis.pipeline import native_code, project_metadata
-from repo2tools.synthesis.usage import DOC_SUFFIXES, SKIP_DIRS, Api, Usage, is_test_file
+from repo2tools.synthesis.usage import DOC_SUFFIXES, SKIP_DIRS, Api, Usage, absolute_imports, is_test_file
 
 WORKER = Path(__file__).resolve().parent / "example_worker.py"
 MAX_STEPS, MAX_CODE, MAX_EXPRESSION, MAX_DRAFTS = 12, 1500, 300, 400
@@ -185,6 +185,23 @@ def dependencies_of(root: Path, package: str) -> list[str]:
         return []
 
 
+def uses_of(draft: dict, api: dict, root: Path) -> list[str]:
+    """What of the public API a draft's code uses, in the names of the usage scan (a function's path, `Class()`, `Class <`)."""
+    usage = Usage(Api(api))
+    names: dict = {}
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", SyntaxWarning)
+        if draft["module"]:  # a docstring example sees its module's names
+            names = usage.own_names()
+            try:
+                names = usage.scan(absolute_imports(ast.parse((root / draft["file"]).read_text(encoding="utf-8", errors="replace"))), "docs", names)
+            except (SyntaxError, ValueError, OSError):
+                pass
+        before = usage.uses("docs")
+        usage.scan("\n".join([*draft["steps"], draft["expression"]]), "docs", names)
+    return sorted(usage.uses("docs") - before)
+
+
 def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = None, keep_environment: bool = False) -> tuple[dict, list[dict]]:
     """(record of what happened, verified exercises) for one scanned repository. Never raises."""
     name = folder_name(candidate["repo"])
@@ -217,16 +234,7 @@ def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = N
                 errors[a["error"].split(":")[0]] += 1
             if outcome != "verified":
                 continue
-            uses = []
-            if api:
-                usage = Usage(Api(api))
-                names = {}
-                if draft["module"]:
-                    names |= {n: ("function", p) for n, p in usage.api.unique_functions.items()} | {n: ("class", n) for n in usage.api.classes}
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore", SyntaxWarning)
-                    usage.scan("\n".join([*draft["steps"], draft["expression"]]), "docs", names)
-                uses = sorted(usage.uses("docs"))
+            uses = uses_of(draft, api, root) if api else []
             verified.append({"id": f"{name}-{len(verified) + 1:03d}", "repo": candidate["repo"], "commit": candidate.get("commit"), "package": package,
                              "file": draft["file"], "module": draft["module"], "steps": draft["steps"], "expression": draft["expression"],
                              "answer": a["value"], "answer_kinds": a.get("kinds", []), "documented": draft["documented"], "uses": uses})

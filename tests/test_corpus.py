@@ -1,5 +1,6 @@
 """Tests for the candidate list of the many-repo experiments. No network: PyPI's answers are written here."""
 
+import asyncio
 import json
 import shutil
 import subprocess
@@ -8,11 +9,14 @@ from types import SimpleNamespace
 
 import pytest
 
+from helpers import ScriptedLLM
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
 from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
 from repo2tools.corpus.granularity import level_counts, tool_candidates
 from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from repo2tools.corpus.scan import likely_names, report, scan_one
+from repo2tools.corpus.tasks import answer_form, as_exercise, choose, literals_of, report as tasks_report, task_problem, write_tasks
+from repo2tools.evaluation.exercise_check import check as exercise_check
 from repo2tools.synthesis import pipeline
 from repo2tools.synthesis.scrape import public_api
 
@@ -367,3 +371,58 @@ def test_standard_types_get_one_plain_form():
     for not_plain in (object(), float("nan"), {1: "a"}, {1, "a"}):
         with pytest.raises(TypeError):
             plain(not_plain, set())
+
+
+# --- questions in plain words ------------------------------------------------------------------
+
+
+def example(n, uses, steps=("from shapes import parse",), expression='parse("2").area', answer=4.0, kinds=()):
+    return {"id": f"me__shapes-{n:03d}", "repo": "https://github.com/me/shapes", "commit": "abcdef1234", "package": "shapes", "file": "README.rst", "module": None,
+            "steps": list(steps), "expression": expression, "answer": answer, "answer_kinds": list(kinds), "documented": "4.0", "uses": uses}
+
+
+def test_examples_are_chosen_across_the_number_of_uses():
+    pool = [example(i, ["a"]) for i in range(1, 7)] + [example(7, ["a", "b"]), example(8, ["a", "b", "c"]), example(9, []), example(10, ["a"], answer=None),
+                                                         example(11, ["a"], expression='parse("' + "x" * 200 + '")')]
+    chosen = choose(pool, per_repo=4)
+    assert len(chosen) == 4 and {len(e["uses"]) for e in chosen} == {1, 2, 3}  # one, two and three uses each take a turn; no uses, no answer and a huge input are left out
+    assert all(e["id"] not in ("me__shapes-009", "me__shapes-010", "me__shapes-011") for e in choose(pool, per_repo=20)) and len(choose(pool, per_repo=20)) == 8
+    assert literals_of('x = parse("2", scale=1.5)\nx.area') == ["2", "1.5"]
+
+
+def test_a_request_must_carry_the_inputs_and_hide_the_code_and_the_answer():
+    e = example(1, ["shapes.parse", "shapes.Square.area"])
+    assert task_problem("What is the area of the square with side 2? Answer with a number.", e) is None
+    assert "must appear exactly" in task_problem("What is the area of the square? Answer with a number.", e)
+    assert "no code" in task_problem("What does parse(2) give for the area? Answer with a number.", e)
+    named = example(2, ["shapes.name"], expression='name("2")', answer="square")
+    assert "gives away" in task_problem("What kind of shape has side 2? It is a square. Answer with a text.", named)
+    assert task_problem(None, e) == 'reply with {"task": "..."}'
+    assert answer_form(e) == "a number" and answer_form(example(3, ["a"], answer=True)) == "true or false"
+    assert answer_form(example(4, ["a"], answer="2003-09-25", kinds=["date"])) == "a date as ISO 8601 text, like 2003-09-25"
+    assert answer_form(example(5, ["a"], answer=["a", "b"], kinds=["set"])) == "a JSON list in sorted order"
+
+
+def test_tasks_are_written_repaired_or_dropped_and_the_answer_stays_the_verified_one():
+    good = json.dumps({"task": "What is the area of the square with side 2? Answer with a number."})
+    llm = ScriptedLLM({("task", "me__shapes-001"): [good],
+                       ("task", "me__shapes-002"): [json.dumps({"task": "What is the area of the square? Answer with a number."}), good],
+                       ("task", "me__shapes-003"): ["not json"]})
+    written, outcomes = asyncio.run(write_tasks([example(1, ["shapes.parse"]), example(2, ["shapes.parse", "shapes.Square.area"]), example(3, ["shapes.parse"])], llm))
+    assert [e["id"] for e in written] == ["me__shapes-001", "me__shapes-002"] and outcomes == {"written": 2, 'reply with {"task"': 1}
+    first = written[0]
+    assert first["answer"] == 4.0 and first["check"] == {"kind": "number"} and first["kind"] == "shapes" and first["horizon"] == "short"
+    assert first["source_repo"] == "me/shapes@abcdef1" and first["reference_code"] == ["from shapes import parse", 'parse("2").area'] and first["reference_calls"] == []
+    assert written[1]["reference_call_count"] == 2 and written[1]["library_functions"] == ["shapes.parse", "shapes.Square.area"]
+    assert "Not usable: these input values must appear exactly" in llm.chats[2][2][-1]["content"]  # the reason goes back to the writer
+    assert "Answer: 4.0" in llm.chats[0][2][1]["content"] and 'character for character: ["2"]' in llm.chats[0][2][1]["content"]
+    assert as_exercise(example(6, ["a"], answer=["b", "a"], kinds=["set"]), "t")["check"] == {"kind": "set_equal"}
+    assert as_exercise(example(7, ["a"], answer=True), "t")["check"] == {"kind": "exact"}
+    text = tasks_report([{"package": "shapes", "usable": 3, "chosen": 3, "written": 2, "by_tools": {1: 1, 2: 1}, "dropped": {}}])
+    assert "2 exercises from 1 repositories" in text and "1: 1, 2: 1" in text and "| `shapes` | 3 | 3 | 2 | 1 |" in text
+
+
+def test_a_number_answer_may_be_written_with_or_without_a_point():
+    number = {"answer": 4.0, "check": {"kind": "number"}}
+    assert exercise_check(number, 4) and exercise_check(number, 4.0) and not exercise_check(number, 4.1) and not exercise_check(number, "4") and not exercise_check(number, True)
+    assert not exercise_check({"answer": 1, "check": {"kind": "number"}}, True) and exercise_check({"answer": 0.1 + 0.2, "check": {"kind": "number"}}, 0.3)

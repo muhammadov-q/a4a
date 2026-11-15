@@ -103,6 +103,9 @@ class Usage:
                         names[alias.asname or alias.name.split(".")[0]] = ("module", alias.name if alias.asname else alias.name.split(".")[0])
             elif isinstance(node, ast.ImportFrom) and node.module and not node.level and (node.module == api.package or node.module.startswith(api.package + ".")):
                 for alias in node.names:
+                    if alias.name == "*":  # `from pkg.mod import *`: the package's own names are known from here on
+                        names |= self.own_names()
+                        continue
                     found = api.lookup(f"{node.module}.{alias.name}")
                     names[alias.asname or alias.name] = found or ("module", f"{node.module}.{alias.name}")
 
@@ -184,16 +187,20 @@ class Usage:
         self.files[source] += 1
         self.scan(path.read_text(encoding="utf-8", errors="replace"), source)
 
-    def scan_examples(self, text: str, source: str = "docs", own_names: bool = False) -> None:
+    def own_names(self) -> dict:
+        """The package's functions and classes by their bare names, as code inside the package or after a star import sees them."""
+        return {name: ("function", path) for name, path in self.api.unique_functions.items()} | {name: ("class", name) for name in self.api.classes}
+
+    def scan_examples(self, text: str, source: str = "docs", own_names: bool = False, preamble: str = "") -> None:
         """The Python examples in a documentation text: doctest lines, rst code blocks and Markdown fences.
 
         `own_names`: the text is a docstring inside the package, where examples use the package's functions and
-        classes without importing them.
+        classes without importing them. `preamble`: the imports of the module the docstring is in, whose names
+        (`import networkx as nx`) its examples use as well.
         """
-        names: dict = {}
-        if own_names:
-            names |= {name: ("function", path) for name, path in self.api.unique_functions.items()}
-            names |= {name: ("class", name) for name in self.api.classes}
+        names: dict = self.own_names() if own_names else {}
+        if preamble:
+            names = self.scan(preamble, source, names)
         for group in example_groups(text):
             before = self.uses(source)
             for block in group:
@@ -328,6 +335,11 @@ def is_test_file(path: Path, root: Path) -> bool:
     return any(p in ("tests", "test", "testing") for p in parts[:-1]) or path.name.startswith("test_") or path.name.endswith("_test.py") or path.name == "conftest.py"
 
 
+def absolute_imports(tree: ast.Module) -> str:
+    """The `import x` and `from x import y` lines at the top level of a module, as code. Relative imports bring names the package already knows."""
+    return "\n".join(ast.unparse(node) for node in tree.body if isinstance(node, ast.Import) or (isinstance(node, ast.ImportFrom) and not node.level))
+
+
 def count_usage(api_json: dict, repo: Path, package_dir: Path | None = None) -> Usage:
     """Scan a repository checkout. `package_dir` is the folder of the package itself: only its docstring examples are read."""
     usage = Usage(Api(api_json))
@@ -346,7 +358,7 @@ def count_usage(api_json: dict, repo: Path, package_dir: Path | None = None) -> 
                     continue
                 for node in ast.walk(tree):
                     if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and ">>>" in (ast.get_docstring(node) or ""):
-                        usage.scan_examples(ast.get_docstring(node), own_names=True)
+                        usage.scan_examples(ast.get_docstring(node), own_names=True, preamble=absolute_imports(tree))
         elif path.suffix.lower() in DOC_SUFFIXES and not inside and not is_test_file(path, repo):
             usage.files["docs"] += 1
             usage.scan_examples(path.read_text(encoding="utf-8", errors="replace"))

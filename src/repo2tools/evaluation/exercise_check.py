@@ -2,7 +2,7 @@
 
 An exercise (one JSON object per line) has, among other fields:
   answer            the correct answer, a JSON value
-  check             {"kind": "exact" | "set_equal"}: how an answer is compared with `answer`
+  check             {"kind": "exact" | "set_equal" | "number"}: how an answer is compared with `answer`
   reference_calls   [{"tool": name, "arguments": {...}}, ...], one known-good solution
   reference_answer  the answer built from the outputs of reference_calls
 
@@ -11,6 +11,7 @@ reference call i, followed by object keys or list indexes.
 """
 
 import json
+import math
 
 
 def _canonical(value) -> str:
@@ -26,6 +27,8 @@ def check(exercise: dict, answer) -> bool:
         return _canonical(answer) == _canonical(expected)
     if kind == "set_equal":
         return isinstance(answer, list) and sorted(map(_canonical, answer)) == sorted(map(_canonical, expected))
+    if kind == "number":  # 4 and 4.0 are the same number; true is not a number
+        return isinstance(answer, (int, float)) and not isinstance(answer, bool) and math.isclose(answer, expected, rel_tol=1e-9, abs_tol=1e-12)
     raise ValueError(f"unknown check kind: {kind!r}")
 
 
