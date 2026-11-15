@@ -191,7 +191,10 @@ def make_box(set_name: str, base: Path, package: str, dependencies: list[str], t
     run(["uv", "pip", "install", "--quiet", "--python", str(box.python), "--no-build", MCP_REQUIREMENT, *dependencies])
     site_packages = next((box.env_dir / "lib").glob("python*/site-packages"))
     shutil.rmtree(site_packages / package, ignore_errors=True)
-    shutil.copytree(base / package, site_packages / package, ignore=shutil.ignore_patterns("__pycache__"))
+    if (base / package).is_dir():
+        shutil.copytree(base / package, site_packages / package, ignore=shutil.ignore_patterns("__pycache__"), symlinks=True)
+    else:  # a library that is one file
+        shutil.copy2(base / f"{package}.py", site_packages / f"{package}.py")
     shutil.rmtree(box.scratch, ignore_errors=True)
     box.scratch.mkdir()
     if shutil.which("sandbox-exec"):

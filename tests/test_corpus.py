@@ -1,15 +1,19 @@
 """Tests for the candidate list of the many-repo experiments. No network: PyPI's answers are written here."""
 
 import json
+import shutil
 import subprocess
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
+from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
 from repo2tools.corpus.granularity import level_counts, tool_candidates
 from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from repo2tools.corpus.scan import likely_names, report, scan_one
+from repo2tools.synthesis import pipeline
 from repo2tools.synthesis.scrape import public_api
 
 
@@ -269,3 +273,97 @@ def test_vectors_are_cut_and_made_unit_length():
 
     vectors = embed(["a", "b", "c"], Client, "m", batch=2)
     assert vectors.shape == (3, 1024) and np.allclose(np.linalg.norm(vectors, axis=1), 1) and np.allclose(vectors[0, :2], [0.6, 0.8])
+
+
+# --- exercises from documentation examples -----------------------------------------------------
+
+EXAMPLES = """Shapes
+======
+
+>>> from shapes import Square, parse
+>>> small = parse("2")
+>>> small.area
+4.0
+>>> small.corners
+4
+>>> small
+<a square>
+>>> small.area + 1
+6.0
+
+Prose in between does not matter: `small` and `parse` are still known on this page.
+
+>>> small.corners
+4
+>>> import random
+>>> random.random()
+0.5
+>>> print(parse("3").area)
+9.0
+>>> sides = [parse("1").corners]
+>>> sides.append("x")
+>>> sides
+[4, 'x']
+>>> parse("x")
+Traceback (most recent call last):
+ValueError: no
+"""
+
+
+def test_an_example_becomes_a_draft_with_the_lines_it_needs():
+    drafts = drafts_of(examples_of(EXAMPLES))
+    by_expression = {d["expression"]: d for d in drafts}
+    assert list(by_expression) == ["small.area", "small.corners", "small", "small.area + 1", "random.random()", "parse('3').area", "sides"]  # statements are setup, not questions
+    assert by_expression["small.area"] == {"steps": ["from shapes import Square, parse", 'small = parse("2")'], "expression": "small.area", "printed": False, "documented": "4.0"}
+    assert by_expression["small.area + 1"]["steps"] == by_expression["small.area"]["steps"]  # lines that only showed a value are not setup
+    assert by_expression["random.random()"]["steps"] == ["import random"]
+    assert by_expression["parse('3').area"] == {"steps": ["from shapes import Square, parse"], "expression": "parse('3').area", "printed": True, "documented": "9.0"}
+    assert by_expression["sides"]["steps"] == ["from shapes import Square, parse", 'sides = [parse("1").corners]', 'sides.append("x")']  # a call that changes it is setup
+    assert setup_for(["a = 1", "b = a + 1", "c = 5", "print(b)", "d = {}", "d['k'] = b"], "d") == ["a = 1", "b = a + 1", "d = {}", "d['k'] = b"]
+    assert examples_of("no examples here") == [] and names_of("not python (") == (set(), set(), set())
+    assert setup_for(["from shapes import *", "import os", "x = 1"], "parse('1')") == ["from shapes import *"]
+
+
+def test_only_examples_that_run_and_match_the_documentation_are_kept(tmp_path, monkeypatch):
+    monkeypatch.setattr(pipeline, "CACHE", tmp_path / "cache")
+    outside = Path.home() / ".repo2tools-example-test"
+    assert not outside.exists()
+    hostile = f"\nAn example that tries to write outside the scratch folder:\n\n>>> open({str(outside)!r}, 'w').write('x')\n1\n"
+    docstring = '"""Shapes with an area.\n\n>>> parse("4").area\n16.0\n"""\n'
+    repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES.replace('"""Shapes with an area."""\n', docstring), "README.rst": EXAMPLES + hostile,
+                                                 "pyproject.toml": '[project]\nname = "shapes"\n'})
+    candidate = {"package": "shapes", "repo": str(repo)}
+    scanned = scan_one(candidate, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    record, verified = exercises_for(candidate | {"commit": scanned["commit"]}, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    assert record["error"] is None and record["drafts"] == 9
+    expected = {"verified": 5, "not_json": 1, "differs_from_docs": 1, "not_repeatable": 1, "error": 1}
+    if shutil.which("sandbox-exec") is None:  # without the sandbox the write works and gives the documented 1
+        expected = {"verified": 6, "not_json": 1, "differs_from_docs": 1, "not_repeatable": 1}
+    assert record["outcomes"] == expected
+    assert shutil.which("sandbox-exec") is None or not outside.exists()
+    outside.unlink(missing_ok=True)
+    by_expression = {e["expression"]: e for e in verified}
+    assert by_expression["small.area"]["answer"] == 4.0 and by_expression["small.area"]["steps"] == ["from shapes import Square, parse", 'small = parse("2")']
+    assert by_expression["small.area"]["uses"] == ["shapes.Square.area", "shapes.parse"] and by_expression["small.area"]["commit"] == scanned["commit"]
+    assert by_expression["parse('3').area"]["answer"] == 9.0 and by_expression["sides"]["answer"] == [4, "x"]  # printed in the documentation; built in three lines
+    assert by_expression['parse("4").area']["module"] == "shapes" and by_expression['parse("4").area']["steps"] == []  # a docstring example sees its module's names
+    assert [e["id"] for e in verified] == [f"me__shapes-{i:03d}" for i in range(1, len(verified) + 1)]
+    assert not (tmp_path / "cache" / "envs" / "examples-me__shapes").exists()  # the environment is deleted afterwards
+    text = exercises_report([record])
+    assert f"9 examples in their documentation show a value; {len(verified)} of them are verified" in text and f"| `shapes` | 9 | {len(verified)} |" in text
+    assert record["errors"] == ({"PermissionError": 1} if shutil.which("sandbox-exec") else {})
+
+
+def test_standard_types_get_one_plain_form():
+    import datetime
+    import decimal
+
+    from repo2tools.corpus.example_worker import plain
+
+    kinds: set = set()
+    value = {"when": datetime.datetime(2003, 9, 25, 10, 36), "span": datetime.timedelta(minutes=2), "price": decimal.Decimal("1.50"), "tags": {"b", "a"}, "pair": (1, 2.5)}
+    assert plain(value, kinds) == {"when": "2003-09-25T10:36:00", "span": 120.0, "price": "1.50", "tags": ["a", "b"], "pair": [1, 2.5]}
+    assert kinds == {"datetime", "timedelta", "Decimal", "set"}
+    for not_plain in (object(), float("nan"), {1: "a"}, {1, "a"}):
+        with pytest.raises(TypeError):
+            plain(not_plain, set())
