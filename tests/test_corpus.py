@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 
 from helpers import ScriptedLLM
-from repo2tools.corpus import benchmark
+from repo2tools.corpus import benchmark, python_tool
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
 from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
 from repo2tools.corpus.granularity import level_counts, tool_candidates
@@ -474,12 +474,49 @@ def test_the_benchmark_report_is_built_from_the_saved_runs(tmp_path, monkeypatch
     assert [(r["stem"], r["package"], r["url"], r["tasks"]) for r in repos] == [("me__shapes", "shapes", "https://github.com/me/shapes", 3)]
     (tmp_path / "out" / "generated" / "shapes-t1").mkdir(parents=True)
     (tmp_path / "out" / "generated" / "shapes-t1" / "report.json").write_text(json.dumps({"tools": [{}, {}], "accepted": 1}))
-    benchmark.run_file("m", "none", "t1", "me__shapes").write_text("".join(json.dumps({"passed": p}) + "\n" for p in (True, True, False)))
-    benchmark.run_file("m", "tools", "t1", "me__shapes").write_text("".join(json.dumps(r) + "\n" for r in (
-        {"passed": True, "tool_calls": 2, "tool_errors": 1}, {"passed": False, "tool_calls": 1, "tool_errors": 0}, {"passed": False, "tool_calls": 0, "tool_errors": 0})))
+
+    def save(condition, run, records):
+        benchmark.run_file("m", condition, "t1", "me__shapes", run).write_text("".join(json.dumps(r) + "\n" for r in records))
+
+    assert [benchmark.run_file("m", c, "t1", "me__shapes", k).name for c, k in (("none", 1), ("tools", 2), ("python", 1), ("python", 3))] == [
+        "m-none-t1-me__shapes.jsonl", "m-tools-t1-me__shapes-r2.jsonl", "m-tools-t1-me__shapes-python.jsonl", "m-tools-t1-me__shapes-python-r3.jsonl"]
+    save("none", 1, [{"passed": p} for p in (True, True, False)])
+    save("none", 2, [{"passed": p} for p in (True, False, False)])
+    save("none", 4, [{"passed": True}] * 3)  # run 3 is missing, so this one is not counted
+    for run in (1, 2):
+        save("tools", run, [{"passed": True, "tool_calls": 2, "tool_errors": 1}, {"passed": False, "tool_calls": 1, "tool_errors": 0}, {"passed": False, "tool_calls": 0, "tool_errors": 0}])
+        save("python", run, [{"passed": True, "tool_calls": 1, "tool_errors": 0}] * 3)
     rows = benchmark.summarize(repos, "m", "t1")
-    assert rows == [{"package": "shapes", "repo": "https://github.com/me/shapes", "questions": 3, "tools_picked": 2, "tools_accepted": 1, "none": 2, "tools": 1,
-                     "called_a_tool": 2, "right_when_called": 1, "tool_errors": 1}]
+    assert rows == [{"package": "shapes", "repo": "https://github.com/me/shapes", "questions": 3, "tools_picked": 2, "tools_accepted": 1,
+                     "right": {"none": [2, 1], "tools": [1, 1], "python": [3, 3]},
+                     "use": {"tools": {"called_a_tool": [2, 2], "right_when_called": [1, 1], "tool_calls": [3, 3], "tool_errors": [1, 1]},
+                             "python": {"called_a_tool": [3, 3], "right_when_called": [3, 3], "tool_calls": [3, 3], "tool_errors": [0, 0]}}}]
     text = benchmark.report(rows, "m", "t1")
-    assert "3 questions: 2 right without tools (67%), 1 right with the generated tools (33%)" in text and "| `shapes` | 3 | 2 | 1 | 2 | 1 | 2 | 1 | 1 |" in text
-    assert benchmark.summarize(repos, "m", "missing")[0]["none"] is None
+    assert "1 repositories with every condition, 3 questions, 2 runs each. Right answers: no tools 1.5 (50%) (2, 1); generated tools 1.0 (33%) (1, 1); one python tool 3.0 (100%) (3, 3)." in text
+    assert "| `shapes` | 3 | 1 of 2 | 1.5 (2, 1) | 1.0 (1, 1) | 3.0 (3, 3) |" in text and "| `shapes` | generated tools | 2.0 of 3 | 1.0 | 3.0 | 1.0 |" in text
+    missing = benchmark.summarize(repos, "m", "missing")
+    assert missing[0]["right"] == {"none": [], "tools": [], "python": []} and "0 repositories with every condition" in benchmark.report(missing, "m", "missing")
+    assert benchmark.cell([4]) == "4" and benchmark.cell([4], 8) == "4 (50%)" and benchmark.cell([]) == "none"
+
+
+def test_the_python_tool_runs_code_like_a_notebook_cell_and_keeps_nothing():
+    run = lambda code: asyncio.run(python_tool.run_python(code))  # noqa: E731
+    assert run("import json\nprint('a')\nx = [1, 2]\njson.dumps(x * 2)") == "a\n'[1, 2, 1, 2]'"  # what was printed, then the last line's value
+    assert run("x = 1") == "" and run("print(5)") == "5"  # no value: nothing; None is not shown
+    with pytest.raises(RuntimeError, match=r"NameError: name 'x' is not defined \(line 1 of the code\)"):
+        run("x")  # the x of the call before is gone
+    with pytest.raises(RuntimeError, match=r"shown\nZeroDivisionError: division by zero \(line 2 of the code\)"):
+        run("print('shown')\n1 / 0")
+    with pytest.raises(RuntimeError, match="SyntaxError"):
+        run("not python (")
+    with pytest.raises(RuntimeError, match="SystemExit: 3"):
+        run("import sys\nsys.exit(3)")
+    assert run("open('note.txt', 'w').write('hi')\nopen('note.txt').read()") == "'hi'"
+    with pytest.raises(RuntimeError, match="FileNotFoundError"):
+        run("open('note.txt').read()")  # every call has its own empty folder
+
+
+def test_a_call_of_the_python_tool_that_does_not_end_is_stopped(monkeypatch):
+    monkeypatch.setattr(python_tool, "SECONDS", 1)
+    with pytest.raises(RuntimeError, match="did not finish in 1 seconds"):
+        asyncio.run(python_tool.run_python("while True:\n    pass"))
