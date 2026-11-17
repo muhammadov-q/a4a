@@ -1,10 +1,10 @@
-"""Tests for the `repo2tools` command: every command leads to a module with a main()."""
+"""Tests for the `a4a` command: every command leads to a module with a main()."""
 
 import importlib
 
 import pytest
 
-from repo2tools import __version__, cli
+from a4a import __version__, cli
 
 
 @pytest.mark.parametrize("command, module", sorted(cli.MODULES.items()))
@@ -20,7 +20,7 @@ def test_help_lists_every_command(capsys):
 
 def test_version(capsys):
     cli.main(["--version"])
-    assert capsys.readouterr().out.strip() == f"repo2tools {__version__}"
+    assert capsys.readouterr().out.strip() == f"a4a {__version__}"
 
 
 def test_unknown_command_is_refused():
@@ -32,4 +32,4 @@ def test_unknown_command_is_refused():
 def test_a_command_gets_the_rest_of_the_arguments(monkeypatch, capsys):
     with pytest.raises(SystemExit) as stopped:  # argparse leaves after --help
         cli.main(["compare-runs", "--help"])
-    assert stopped.value.code == 0 and "usage: repo2tools compare-runs" in capsys.readouterr().out
+    assert stopped.value.code == 0 and "usage: a4a compare-runs" in capsys.readouterr().out

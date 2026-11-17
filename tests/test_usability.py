@@ -1,4 +1,4 @@
-"""Tests for `repo2tools usability`: a real generated tool set, a scripted task writer and rewriter, and a scripted small model."""
+"""Tests for `a4a usability`: a real generated tool set, a scripted task writer and rewriter, and a scripted small model."""
 
 import ast
 import asyncio
@@ -9,8 +9,8 @@ from types import SimpleNamespace
 
 import pytest
 
+from a4a.repo2tools import pipeline, usability
 from helpers import ScriptedLLM, options
-from repo2tools.synthesis import pipeline, usability
 from test_traces import completion
 
 LIBRARY = '''"""Product codes such as AB-12."""

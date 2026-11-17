@@ -1,7 +1,7 @@
-"""Tests for `repo2tools toolgym-exercises`."""
+"""Tests for `a4a toolgym-exercises`."""
 
-from repo2tools.evaluation.exercise_check import check, resolve
-from repo2tools.toolgym.exercises import compose, exercise
+from a4a.evaluation.exercise_check import check, resolve
+from a4a.toolgym.exercises import compose, exercise
 
 RECORD = {"conversation": {"messages": [{"role": "user", "content": "Sort the allowed versions."}]}, "tools": []}
 

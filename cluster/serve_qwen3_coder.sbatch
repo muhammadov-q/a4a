@@ -1,6 +1,6 @@
 #!/bin/bash
-# Serve Qwen3-Coder-30B with vLLM, for writing tools with repo2tools.py. Free gratis account, one
-# H100 (96 GB). repo2tools.py only needs plain text from this model, so tool calling stays off.
+# Serve Qwen3-Coder-30B with vLLM, for writing tools with `a4a generate`. Free gratis account, one
+# H100 (96 GB). `a4a generate` only needs plain text from this model, so tool calling stays off.
 #SBATCH --job-name=vllm-qwen3-coder
 #SBATCH --account=gratis
 #SBATCH --qos=job_gratis
