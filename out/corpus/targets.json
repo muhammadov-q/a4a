@@ -1,0 +1,695 @@
+{
+ "model": "qwen3-coder",
+ "requests": 40,
+ "temperature": 0.8,
+ "repositories": [
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "commit": "5a7d3386d2777180a381eb947f21293124ce8df5",
+   "error": null,
+   "api": 99,
+   "covered_by_documentation": 54,
+   "open": 45,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 11,
+     "different": 7,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "packaging.version.parse"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 4,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "packaging.specifiers.SpecifierSet.contains"
+     ]
+    },
+    "target": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 20,
+      "not_json": 4,
+      "error": 16
+     },
+     "verified": 20,
+     "use_the_api": 20,
+     "different": 20,
+     "elements": 22,
+     "new_elements": 17,
+     "used": [
+      "packaging.markers.default_environment",
+      "packaging.metadata.RFC822Policy.header_store_parse",
+      "packaging.pylock.PackageSdist.filename",
+      "packaging.pylock.Pylock.select",
+      "packaging.ranges.VersionRange.contains",
+      "packaging.ranges.VersionRange.intersection",
+      "packaging.specifiers.Specifier.prereleases",
+      "packaging.specifiers.SpecifierSet.contains",
+      "packaging.specifiers.SpecifierSet.filter",
+      "packaging.specifiers.SpecifierSet.prereleases",
+      "packaging.specifiers.SpecifierSet.to_range",
+      "packaging.tags.Tag.abi",
+      "packaging.tags.Tag.interpreter",
+      "packaging.tags.Tag.platform",
+      "packaging.tags.android_platforms",
+      "packaging.tags.compatible_tags",
+      "packaging.tags.interpreter_abi",
+      "packaging.tags.interpreter_name",
+      "packaging.tags.interpreter_version",
+      "packaging.tags.mac_platforms",
+      "packaging.tags.platform_tags",
+      "packaging.tags.sys_tags"
+     ],
+     "hits": 17
+    }
+   },
+   "together": {
+    "elements": 23,
+    "with_documentation": 71
+   }
+  },
+  {
+   "package": "python-dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+   "error": null,
+   "api": 66,
+   "covered_by_documentation": 12,
+   "open": 54,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 6,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "dateutil.parser.parse"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 10,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "dateutil.parser.parse"
+     ]
+    },
+    "target": {
+     "requests": 40,
+     "drafts": 39,
+     "outcomes": {
+      "no_code": 1,
+      "error": 12,
+      "verified": 25,
+      "not_json": 2
+     },
+     "verified": 25,
+     "use_the_api": 24,
+     "different": 25,
+     "elements": 23,
+     "new_elements": 22,
+     "used": [
+      "dateutil.parser.parserinfo.convertyear",
+      "dateutil.parser.parserinfo.jump",
+      "dateutil.parser.parserinfo.month",
+      "dateutil.parser.parserinfo.pertain",
+      "dateutil.parser.parserinfo.validate",
+      "dateutil.parser.parserinfo.weekday",
+      "dateutil.relativedelta.relativedelta.weeks",
+      "dateutil.rrule.rruleset.rdate",
+      "dateutil.tz.available_iana_timezones",
+      "dateutil.tz.datetime_ambiguous",
+      "dateutil.tz.datetime_exists",
+      "dateutil.tz.enfold",
+      "dateutil.tz.tzfile.dst",
+      "dateutil.tz.tzfile.utcoffset",
+      "dateutil.tz.tzlocal.is_ambiguous",
+      "dateutil.tz.tzlocal.utcoffset",
+      "dateutil.tz.tzoffset.utcoffset",
+      "dateutil.tz.tzutc.is_ambiguous",
+      "dateutil.tz.tzutc.utcoffset",
+      "dateutil.utils.today",
+      "dateutil.utils.within_delta",
+      "dateutil.zoneinfo.gettz",
+      "dateutil.zoneinfo.gettz_db_metadata"
+     ],
+     "hits": 22
+    }
+   },
+   "together": {
+    "elements": 24,
+    "with_documentation": 34
+   }
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+   "error": null,
+   "api": 489,
+   "covered_by_documentation": 8,
+   "open": 481,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 1,
+     "elements": 1,
+     "new_elements": 1,
+     "used": [
+      "jinja2.Template.render"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 3,
+     "elements": 2,
+     "new_elements": 2,
+     "used": [
+      "jinja2.Environment.from_string",
+      "jinja2.Template.render"
+     ]
+    },
+    "target": {
+     "requests": 40,
+     "drafts": 39,
+     "outcomes": {
+      "no_code": 1,
+      "error": 23,
+      "verified": 14,
+      "not_json": 2
+     },
+     "verified": 14,
+     "use_the_api": 13,
+     "different": 14,
+     "elements": 11,
+     "new_elements": 10,
+     "used": [
+      "jinja2.Environment.extend",
+      "jinja2.Environment.parse",
+      "jinja2.Template.render",
+      "jinja2.compiler.generate",
+      "jinja2.environment.Parser.parse",
+      "jinja2.environment.get_lexer",
+      "jinja2.filters.do_forceescape",
+      "jinja2.filters.sync_do_sum",
+      "jinja2.lexer.compile_rules",
+      "jinja2.nativetypes.NativeTemplate.render",
+      "jinja2.nodes.Getitem.as_const"
+     ],
+     "hits": 6
+    }
+   },
+   "together": {
+    "elements": 12,
+    "with_documentation": 19
+   }
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "commit": "77001c96f9507be0f4d009b83210a384a5e08bda",
+   "error": null,
+   "api": 513,
+   "covered_by_documentation": 7,
+   "open": 506,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "error": 40
+     },
+     "verified": 0,
+     "use_the_api": 0,
+     "different": 0,
+     "elements": 0,
+     "new_elements": 0,
+     "used": []
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 39,
+     "outcomes": {
+      "no_code": 1,
+      "error": 39
+     },
+     "verified": 0,
+     "use_the_api": 0,
+     "different": 0,
+     "elements": 0,
+     "new_elements": 0,
+     "used": []
+    },
+    "target": {
+     "requests": 40,
+     "drafts": 38,
+     "outcomes": {
+      "no_code": 2,
+      "not_json": 4,
+      "error": 25,
+      "verified": 9
+     },
+     "verified": 9,
+     "use_the_api": 8,
+     "different": 9,
+     "elements": 9,
+     "new_elements": 9,
+     "used": [
+      "mcp.client.auth.oauth2.extract_field_from_www_auth",
+      "mcp.client.auth.oauth2.union_scopes",
+      "mcp.server.MCPServer.session_manager",
+      "mcp.server.MCPServer.streamable_http_app",
+      "mcp.server.apps.Extension.settings",
+      "mcp.server.mcpserver.prompts.base.func_metadata",
+      "mcp.server.mcpserver.server.Tool.from_function",
+      "mcp.server.streamable_http.check_accept_headers",
+      "mcp.server.subscriptions.InMemorySubscriptionBus.subscribe"
+     ],
+     "hits": 8
+    }
+   },
+   "together": {
+    "elements": 9,
+    "with_documentation": 16
+   }
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "commit": "0f43c6ebd426039e4b99ec22535c2c8a2ec2f69f",
+   "error": null,
+   "api": 436,
+   "covered_by_documentation": 14,
+   "open": 422,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 23,
+     "elements": 8,
+     "new_elements": 6,
+     "used": [
+      "werkzeug.datastructures.Headers.add",
+      "werkzeug.datastructures.Headers.get",
+      "werkzeug.routing.Map.bind",
+      "werkzeug.routing.MapAdapter.build",
+      "werkzeug.routing.Rule.bind",
+      "werkzeug.routing.Rule.build",
+      "werkzeug.security.check_password_hash",
+      "werkzeug.security.generate_password_hash"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "error": 36,
+      "verified": 4
+     },
+     "verified": 4,
+     "use_the_api": 4,
+     "different": 1,
+     "elements": 2,
+     "new_elements": 1,
+     "used": [
+      "werkzeug.Client.open",
+      "werkzeug.sansio.response.Response.status_code"
+     ]
+    },
+    "target": {
+     "requests": 40,
+     "drafts": 39,
+     "outcomes": {
+      "no_code": 1,
+      "error": 13,
+      "not_json": 2,
+      "verified": 24
+     },
+     "verified": 24,
+     "use_the_api": 23,
+     "different": 24,
+     "elements": 27,
+     "new_elements": 24,
+     "used": [
+      "werkzeug.Response.apply_status",
+      "werkzeug.Response.get_wsgi_response",
+      "werkzeug.Response.is_streamed",
+      "werkzeug.datastructures.CallbackDict.clear",
+      "werkzeug.datastructures.FileStorage.save",
+      "werkzeug.datastructures.Headers.add",
+      "werkzeug.datastructures.Headers.get",
+      "werkzeug.datastructures.Headers.getlist",
+      "werkzeug.datastructures.Headers.popitem",
+      "werkzeug.datastructures.Headers.update",
+      "werkzeug.datastructures.MultiDict.get",
+      "werkzeug.datastructures.Range.range_for_length",
+      "werkzeug.debug.console.ThreadedStream.displayhook",
+      "werkzeug.debug.repr.DebugReprGenerator.repr",
+      "werkzeug.exceptions.BadRequestKeyError.description",
+      "werkzeug.formparser.parse_options_header",
+      "werkzeug.http.dump_options_header",
+      "werkzeug.local.LocalStack.pop",
+      "werkzeug.local.LocalStack.push",
+      "werkzeug.routing.Map.bind",
+      "werkzeug.routing.Map.iter_rules",
+      "werkzeug.routing.MapAdapter.build",
+      "werkzeug.routing.MapAdapter.get_host",
+      "werkzeug.sansio.response.Response.set_etag",
+      "werkzeug.sansio.response.Response.status_code",
+      "werkzeug.serving.WSGIRequestHandler.address_string",
+      "werkzeug.serving.is_running_from_reloader"
+     ],
+     "hits": 21
+    }
+   },
+   "together": {
+    "elements": 32,
+    "with_documentation": 43
+   }
+  },
+  {
+   "package": "more-itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "commit": "ceafee8ce96f4bc1eb74c528bc247c91d648a0bb",
+   "error": null,
+   "api": 176,
+   "covered_by_documentation": 146,
+   "open": 30,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 34,
+     "outcomes": {
+      "no_code": 6,
+      "verified": 34
+     },
+     "verified": 34,
+     "use_the_api": 34,
+     "different": 5,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "more_itertools.chunked"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 39,
+      "error": 1
+     },
+     "verified": 39,
+     "use_the_api": 39,
+     "different": 7,
+     "elements": 4,
+     "new_elements": 0,
+     "used": [
+      "more_itertools.chunked",
+      "more_itertools.flatten",
+      "more_itertools.sliding_window",
+      "more_itertools.take"
+     ]
+    },
+    "target": {
+     "requests": 30,
+     "drafts": 27,
+     "outcomes": {
+      "no_code": 3,
+      "verified": 16,
+      "error": 5,
+      "not_repeatable": 4,
+      "timeout": 2
+     },
+     "verified": 16,
+     "use_the_api": 14,
+     "different": 16,
+     "elements": 14,
+     "new_elements": 14,
+     "used": [
+      "more_itertools.always_reversible",
+      "more_itertools.concurrent_tee",
+      "more_itertools.consecutive_groups",
+      "more_itertools.constrained_batches",
+      "more_itertools.consume",
+      "more_itertools.one",
+      "more_itertools.pairwise",
+      "more_itertools.partitions",
+      "more_itertools.random_derangement",
+      "more_itertools.running_statistics",
+      "more_itertools.seekable.elements",
+      "more_itertools.substrings_indexes",
+      "more_itertools.synchronized",
+      "more_itertools.with_iter"
+     ],
+     "hits": 14
+    }
+   },
+   "together": {
+    "elements": 18,
+    "with_documentation": 160
+   }
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "commit": "ada19dd8000ec550fd45cf72841c416319dc568d",
+   "error": null,
+   "api": 1180,
+   "covered_by_documentation": 175,
+   "open": 1005,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 6,
+     "elements": 5,
+     "new_elements": 1,
+     "used": [
+      "networkx.Graph.add_edges_from",
+      "networkx.Graph.nodes",
+      "networkx.diameter",
+      "networkx.is_connected",
+      "networkx.simple_cycles"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "error": 3,
+      "verified": 37
+     },
+     "verified": 37,
+     "use_the_api": 37,
+     "different": 8,
+     "elements": 11,
+     "new_elements": 5,
+     "used": [
+      "networkx.Graph.add_edges_from",
+      "networkx.Graph.nodes",
+      "networkx.add_path",
+      "networkx.all_simple_paths",
+      "networkx.average_shortest_path_length",
+      "networkx.connected_components",
+      "networkx.is_connected",
+      "networkx.is_tree",
+      "networkx.set_node_attributes",
+      "networkx.shortest_path",
+      "networkx.simple_cycles"
+     ]
+    },
+    "target": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "error": 17,
+      "verified": 22,
+      "not_json": 1
+     },
+     "verified": 22,
+     "use_the_api": 22,
+     "different": 22,
+     "elements": 35,
+     "new_elements": 27,
+     "used": [
+      "networkx.DiGraph.add_edge",
+      "networkx.DiGraph.add_edges_from",
+      "networkx.DiGraph.edges",
+      "networkx.Graph.add_edge",
+      "networkx.Graph.add_edges_from",
+      "networkx.Graph.add_node",
+      "networkx.Graph.edges",
+      "networkx.Graph.nodes",
+      "networkx.Graph.number_of_nodes",
+      "networkx.algorithms.isomorphism.isomorphvf2.DiGraphMatcher.subgraph_isomorphisms_iter",
+      "networkx.algorithms.tree.greedy_branching",
+      "networkx.all_pairs_dijkstra_path_length",
+      "networkx.average_neighbor_degree",
+      "networkx.binomial_tree",
+      "networkx.connected_dominating_set",
+      "networkx.core_number",
+      "networkx.dijkstra_predecessor_and_distance",
+      "networkx.double_edge_swap",
+      "networkx.fast_gnp_random_graph",
+      "networkx.flow_hierarchy",
+      "networkx.freeze",
+      "networkx.full_join",
+      "networkx.generate_gexf",
+      "networkx.is_frozen",
+      "networkx.is_simple_path",
+      "networkx.k_core",
+      "networkx.random_k_out_graph",
+      "networkx.random_labeled_rooted_tree",
+      "networkx.restricted_view",
+      "networkx.set_edge_attributes",
+      "networkx.set_node_attributes",
+      "networkx.snap_aggregation",
+      "networkx.union",
+      "networkx.utils.UnionFind.to_sets",
+      "networkx.utils.UnionFind.union"
+     ],
+     "hits": 22
+    }
+   },
+   "together": {
+    "elements": 44,
+    "with_documentation": 206
+   }
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+   "error": null,
+   "api": 44,
+   "covered_by_documentation": 11,
+   "open": 33,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 39,
+      "not_json": 1
+     },
+     "verified": 39,
+     "use_the_api": 39,
+     "different": 3,
+     "elements": 3,
+     "new_elements": 0,
+     "used": [
+      "rsa.decrypt",
+      "rsa.encrypt",
+      "rsa.newkeys"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 39,
+      "error": 1
+     },
+     "verified": 39,
+     "use_the_api": 39,
+     "different": 2,
+     "elements": 3,
+     "new_elements": 0,
+     "used": [
+      "rsa.decrypt",
+      "rsa.encrypt",
+      "rsa.newkeys"
+     ]
+    },
+    "target": {
+     "requests": 33,
+     "drafts": 31,
+     "outcomes": {
+      "no_code": 2,
+      "error": 17,
+      "not_json": 4,
+      "verified": 8,
+      "not_repeatable": 2
+     },
+     "verified": 8,
+     "use_the_api": 8,
+     "different": 8,
+     "elements": 10,
+     "new_elements": 9,
+     "used": [
+      "rsa.common.extended_gcd",
+      "rsa.compute_hash",
+      "rsa.core.assert_int",
+      "rsa.core.encrypt_int",
+      "rsa.find_signature_hash",
+      "rsa.newkeys",
+      "rsa.parallel.getprime",
+      "rsa.pem.save_pem",
+      "rsa.sign",
+      "rsa.sign_hash"
+     ],
+     "hits": 8
+    }
+   },
+   "together": {
+    "elements": 12,
+    "with_documentation": 20
+   }
+  }
+ ]
+}

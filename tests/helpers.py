@@ -13,7 +13,7 @@ class ScriptedLLM:
         self.script = {k: list(v) for k, v in script.items()}
         self.tokens, self.requests, self.chats = Counter(), Counter(), []
 
-    async def chat(self, stage, subject, messages, max_tokens=2048):
+    async def chat(self, stage, subject, messages, max_tokens=2048, temperature=0, seed=None):
         self.tokens[stage] += 10
         self.requests[stage] += 1
         self.chats.append((stage, subject, messages))

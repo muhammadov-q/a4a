@@ -237,11 +237,11 @@ class LLM:
         self.tokens: Counter = Counter()
         self.requests: Counter = Counter()
 
-    async def chat(self, stage: str, subject: str, messages: list[dict], max_tokens: int = 2048) -> str:
+    async def chat(self, stage: str, subject: str, messages: list[dict], max_tokens: int = 2048, temperature: float = 0, seed: int | None = None) -> str:
         started = time.monotonic()
         async with self.limit:
             response = await self.client.chat.completions.create(
-                model=self.model, messages=messages, temperature=0,
+                model=self.model, messages=messages, temperature=temperature, **({} if seed is None else {"seed": seed}),
                 max_tokens=max_tokens * 2 if self.thinking else max_tokens,
                 extra_body={"chat_template_kwargs": {"enable_thinking": self.thinking}})
         text = response.choices[0].message.content or ""

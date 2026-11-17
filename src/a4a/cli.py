@@ -38,6 +38,7 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "corpus-saturation": ("a4a.corpus.saturation", "group similar tool candidates across repositories; do the distinct ones saturate?"),
         "corpus-exercises": ("a4a.corpus.exercises", "exercises with known answers from documentation examples, confirmed by running them in the sandbox"),
         "corpus-density": ("a4a.corpus.density", "verified exercises per 1,000 lines of each kind of source, and the share of the public API they cover"),
+        "corpus-targets": ("a4a.corpus.targets", "a model writes examples for a repository in three ways: free, with the API listed, or one target per request"),
         "corpus-tasks": ("a4a.corpus.tasks", "a question in plain words for each verified example, in the format of run-model"),
         "corpus-benchmark": ("a4a.corpus.benchmark", "per repository: score a model on its questions without tools, with generated tools, and with one Python tool"),
     },
