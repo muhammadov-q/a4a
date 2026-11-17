@@ -12,13 +12,15 @@ import pytest
 from helpers import ScriptedLLM
 from repo2tools.corpus import benchmark, python_tool
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
-from repo2tools.corpus.density import density_of, rank_correlation, report as density_report, text_lines
-from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
+from repo2tools.corpus.density import density_of, rank_correlation, report as density_report
+from repo2tools.corpus.exercises import exercises_for, report as exercises_report
 from repo2tools.corpus.granularity import level_counts, tool_candidates
 from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from repo2tools.corpus.scan import likely_names, report, scan_one
 from repo2tools.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
 from repo2tools.evaluation.exercise_check import check as exercise_check
+from repo2tools.sources.base import Source
+from repo2tools.sources.python_repository import PythonRepository, drafts_of, examples_of, names_of, setup_for, text_lines
 from repo2tools.synthesis import pipeline
 from repo2tools.synthesis.scrape import public_api
 
@@ -556,13 +558,16 @@ def test_density_counts_lines_by_kind_of_source_and_the_api_that_exercises_cover
     repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES, "README.rst": SHAPES_DOCS, "docs/empty.md": "\n\n", "tests/notes.txt": "not documentation\n",
                                                  "pyproject.toml": '[project]\nname = "shapes"\n'})
     static = scan_one({"package": "shapes", "repo": str(repo)}, clones=tmp_path / "clones", scans=tmp_path / "scans")
-    api = json.loads((tmp_path / "scans" / "me__shapes" / "api.json").read_text())
+    source = PythonRepository(static, tmp_path / "clones", tmp_path / "scans")
     root = tmp_path / "clones" / "me__shapes"
+    assert isinstance(source, Source) and source.name == "me__shapes" and source.package == "shapes" and source.package_dir == root / "shapes"
+    assert source.elements() == {"shapes.parse", "shapes.unused", "shapes.Square.area", "shapes.Square.corners", "shapes.Square.scaled"}
+    assert source.parts().keys() == PythonRepository.PARTS.keys() and {source.part_of(d) for d in source.drafts()} == {"files"}
     # seven docstrings of one line each (module, class, five members); the README without its blank lines; a file under tests/ is not documentation
     assert text_lines(root, root / "shapes") == {"files": sum(1 for line in SHAPES_DOCS.splitlines() if line.strip()), "docstrings": 7}
     exercises = [{"module": None, "uses": ["Square()", "shapes.Square.area", "shapes.parse"]}, {"module": None, "uses": ["shapes.parse"]},
                  {"module": "shapes", "uses": ["Square <"]}]
-    record = density_of(static, {"error": None}, exercises, api, 2, clones=tmp_path / "clones")
+    record = density_of(source, {"error": None}, exercises, 2)
     assert record["verified"] == {"files": 2, "docstrings": 1} and record["questions"] == 2 and record["not_run"] is None
     assert (record["api"], record["api_in_docs"], record["api_covered"]) == (5, 2, 2) and (record["classes"], record["classes_built"]) == (1, 1)
     assert tuple(record["most_used"]) == (2, "shapes.parse")
@@ -576,12 +581,12 @@ def test_density_counts_lines_by_kind_of_source_and_the_api_that_exercises_cover
 def test_density_without_a_clone_or_without_a_run_says_so_instead_of_guessing(tmp_path):
     repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES, "README.rst": SHAPES_DOCS, "pyproject.toml": '[project]\nname = "shapes"\n'})
     static = scan_one({"package": "shapes", "repo": str(repo)}, clones=tmp_path / "clones", scans=tmp_path / "scans")
-    api = json.loads((tmp_path / "scans" / "me__shapes" / "api.json").read_text())
-    failed = density_of(static, {"error": "RuntimeError: the package has compiled code"}, [], api, None, clones=tmp_path / "clones")
+    here = lambda record=static, clones=tmp_path / "clones": PythonRepository(record, clones, tmp_path / "scans")  # noqa: E731
+    failed = density_of(here(), {"error": "RuntimeError: the package has compiled code"}, [], None)
     assert failed["lines"] is not None and failed["examples"] is None and failed["not_run"] == "RuntimeError: the package has compiled code"
-    gone = density_of(static, {"error": None}, [], api, None, clones=tmp_path / "nowhere")
+    gone = density_of(here(clones=tmp_path / "nowhere"), {"error": None}, [], None)
     assert gone["lines"] is None and gone["examples"] is None
-    other_commit = density_of(static | {"commit": "0" * 40}, {"error": None}, [], api, None, clones=tmp_path / "clones")
+    other_commit = density_of(here(static | {"commit": "0" * 40}), {"error": None}, [], None)
     assert other_commit["lines"] is None
     text = density_report([failed, gone])
     assert "Lines of text were counted in 1 clones" in text and "Left out, because the examples were not run: `shapes` (RuntimeError: the package has compiled code)" in text

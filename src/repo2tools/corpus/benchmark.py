@@ -38,9 +38,9 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from statistics import mean
 
-from repo2tools.corpus.exercises import box_for, drop_box
 from repo2tools.corpus.scan import OUT, folder_name
 from repo2tools.paths import API_KEY_FILE, REPO_ROOT
+from repo2tools.sources.python_repository import box_for, drop_box
 from repo2tools.synthesis.pipeline import repo_name
 
 CONDITIONS = {"none": "No tools", "tools": "Generated tools", "python": "One Python tool"}
