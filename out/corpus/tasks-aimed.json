@@ -1,0 +1,129 @@
+{
+ "model": "qwen3-32b",
+ "solver": "qwen3-coder",
+ "per_repo": 40,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "usable": 25,
+   "chosen": 21,
+   "phrased": 20,
+   "written": 14,
+   "by_tools": {
+    "2": 11,
+    "1": 3
+   },
+   "dropped": {
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 6
+   }
+  },
+  {
+   "package": "mcp",
+   "usable": 12,
+   "chosen": 4,
+   "phrased": 4,
+   "written": 4,
+   "by_tools": {
+    "3": 1,
+    "1": 2,
+    "2": 1
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "package": "more_itertools",
+   "usable": 20,
+   "chosen": 11,
+   "phrased": 10,
+   "written": 5,
+   "by_tools": {
+    "2": 2,
+    "1": 3
+   },
+   "dropped": {
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 5
+   }
+  },
+  {
+   "package": "networkx",
+   "usable": 23,
+   "chosen": 21,
+   "phrased": 20,
+   "written": 14,
+   "by_tools": {
+    "1": 2,
+    "3": 7,
+    "4": 4,
+    "5": 1
+   },
+   "dropped": {
+    "these input values must appear exactly": 1,
+    "not solvable from the request": 6
+   }
+  },
+  {
+   "package": "jinja2",
+   "usable": 8,
+   "chosen": 7,
+   "phrased": 5,
+   "written": 3,
+   "by_tools": {
+    "2": 2,
+    "5": 1
+   },
+   "dropped": {
+    "no code": 2,
+    "not solvable from the request": 2
+   }
+  },
+  {
+   "package": "werkzeug",
+   "usable": 28,
+   "chosen": 20,
+   "phrased": 20,
+   "written": 13,
+   "by_tools": {
+    "2": 7,
+    "1": 2,
+    "3": 3,
+    "4": 1
+   },
+   "dropped": {
+    "not solvable from the request": 7
+   }
+  },
+  {
+   "package": "packaging",
+   "usable": 19,
+   "chosen": 16,
+   "phrased": 16,
+   "written": 10,
+   "by_tools": {
+    "2": 3,
+    "4": 1,
+    "1": 6
+   },
+   "dropped": {
+    "not solvable from the request": 6
+   }
+  },
+  {
+   "package": "rsa",
+   "usable": 9,
+   "chosen": 8,
+   "phrased": 8,
+   "written": 3,
+   "by_tools": {
+    "1": 1,
+    "3": 2
+   },
+   "dropped": {
+    "not solvable from the request": 5
+   }
+  }
+ ]
+}

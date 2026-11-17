@@ -26,6 +26,11 @@ a solution needs.
 
 Writes out/corpus/tasks/<repository>.jsonl in the exercise format of `a4a run-model`, and
 out/corpus/tasks.md.
+
+The examples do not have to come from documentation. `--examples out/corpus/targets --name tasks-aimed`
+reads the examples a model wrote for one API element each (`a4a corpus-targets`) and writes
+out/corpus/tasks-aimed/ and tasks-aimed.md. Of those, an example is taken only if it uses the element it was
+written for, and one per element.
 """
 
 import argparse
@@ -35,6 +40,7 @@ import json
 import random
 import re
 from collections import Counter, defaultdict
+from pathlib import Path
 
 from a4a.corpus.exercises import run_drafts
 from a4a.corpus.scan import OUT, folder_name
@@ -63,7 +69,7 @@ def literals_of(code: str) -> list[str]:
 def choose(examples: list[dict], per_repo: int, seed: int = 0) -> list[dict]:
     """At most `per_repo` examples that use the API and can be asked in words, taken in turn from each number of uses."""
     by_uses: dict[int, list[dict]] = defaultdict(list)
-    for example in examples:
+    for example in on_target(examples):
         try:
             code = "\n".join([*example["steps"], example["expression"]])
             values = literals_of(code)
@@ -83,6 +89,17 @@ def choose(examples: list[dict], per_repo: int, seed: int = 0) -> list[dict]:
             if by_uses[k] and len(chosen) < per_repo:
                 chosen.append(by_uses[k].pop())
     return sorted(chosen, key=lambda e: e["id"])
+
+
+def on_target(examples: list[dict]) -> list[dict]:
+    """Examples from documentation as they are. Of examples written for an API element: those that use it, one per element, with its reference first."""
+    if not any(e.get("target") for e in examples):
+        return examples
+    kept: dict[str, dict] = {}
+    for example in sorted(examples, key=lambda e: (e.get("way") != "target", e["id"])):
+        if example.get("target") and example["target"] in example["uses"]:
+            kept.setdefault(example["target"], example)
+    return sorted(kept.values(), key=lambda e: e["id"])
 
 
 def answer_form(example: dict) -> str:
@@ -151,7 +168,8 @@ def as_exercise(example: dict, task: str) -> dict:
             "reference_calls": [], "reference_call_count": len(example["uses"]), "library_functions": example["uses"],
             "source_repo": f"{owner_repo}@{(example.get('commit') or '')[:7]}", "reference_code": [*example["steps"], example["expression"]],
             "provenance": {"file": example["file"], "documented": example["documented"],
-                           "answer_from": "the documentation's example, confirmed by running it twice at this commit"}}
+                           "answer_from": (f"an example a model wrote for `{example['target']}`, run twice at this commit with the same result" if example.get("target")
+                                           else "the documentation's example, confirmed by running it twice at this commit")}}
 
 
 async def write_tasks(examples: list[dict], llm) -> tuple[list[dict], Counter]:
@@ -236,32 +254,35 @@ async def solvable(exercises: list[dict], api: dict, llm, run_items) -> tuple[li
     return kept, len(exercises) - len(kept)
 
 
-def report(rows: list[dict]) -> str:
+def report(rows: list[dict], aimed: bool = False) -> str:
+    kind = "an example that a model wrote for one API element" if aimed else "a documentation example"
     total = sum(r["written"] for r in rows)
     by_tools = Counter()
     for r in rows:
         by_tools.update({int(k): v for k, v in r["by_tools"].items()})
-    lines = ["# Exercises in plain words, from documentation examples", "",
-             f"{total:,} exercises from {sum(1 for r in rows if r['written'])} repositories. The answer of each is the verified value of a documentation example; "
+    lines = ["# Exercises in plain words, from " + ("examples a model wrote for one API element each" if aimed else "documentation examples"), "",
+             f"{total:,} exercises from {sum(1 for r in rows if r['written'])} repositories. The answer of each is the verified value of {kind}; "
              "an LLM wrote only the request. Kept only if a second model, given the request and the reference of the API elements used, wrote code "
              "that gives that answer in the sandbox.", "",
              "By the number of API elements the example uses (the tools a solution needs): " + ", ".join(f"{k}: {v}" for k, v in sorted(by_tools.items())) + ".", "",
-             "| Package | Verified examples that use the API | Chosen | Request written | Solvable from the request (kept) |", "| --- | --- | --- | --- | --- |"]
+             f"| Package | {'Elements with a verified example' if aimed else 'Verified examples that use the API'} | Chosen | Request written | Solvable from the request (kept) |",
+             "| --- | --- | --- | --- | --- |"]
     lines += [f"| `{r['package']}` | {r['usable']} | {r['chosen']} | {r.get('phrased', r['written'])} | {r['written']} |" for r in sorted(rows, key=lambda r: -r["written"])]
     return "\n".join(lines) + "\n"
 
 
 async def run(args) -> None:
-    folder = OUT / "tasks"
+    folder = OUT / args.name
     folder.mkdir(parents=True, exist_ok=True)
-    llm = LLM(args.base_url, args.model, False, args.concurrency, OUT / "tasks_llm_log.jsonl")
-    solver = LLM(args.solver_base_url or args.base_url, args.solver_model, False, args.concurrency, OUT / "tasks_llm_log.jsonl") if args.solver_model else None
+    llm = LLM(args.base_url, args.model, False, args.concurrency, OUT / f"{args.name}_llm_log.jsonl")
+    solver = LLM(args.solver_base_url or args.base_url, args.solver_model, False, args.concurrency, OUT / f"{args.name}_solver_log.jsonl") if args.solver_model else None
     scanned = {folder_name(r["repo"]): r for r in json.loads((OUT / "static.json").read_text())["repositories"] if not r["error"]}
-    rows = []
-    for path in sorted((OUT / "exercises").glob("*.jsonl")):
+    rows, aimed = [], False
+    for path in sorted(args.examples.glob("*.jsonl")):
         examples = [json.loads(line) for line in path.read_text().splitlines()]
         if not examples or (args.only and examples[0]["package"] not in args.only):
             continue
+        aimed = aimed or any(e.get("target") for e in examples)
         chosen = choose(examples, args.per_repo)
         written, outcomes = await write_tasks(chosen, llm) if chosen else ([], Counter())
         phrased = len(written)
@@ -278,13 +299,13 @@ async def run(args) -> None:
             target.write_text("".join(json.dumps(e) + "\n" for e in written), encoding="utf-8")
         else:
             target.unlink(missing_ok=True)
-        rows.append({"package": examples[0]["package"], "usable": sum(1 for e in examples if e["uses"]), "chosen": len(chosen), "phrased": phrased, "written": len(written),
+        rows.append({"package": examples[0]["package"], "usable": sum(1 for e in on_target(examples) if e["uses"]), "chosen": len(chosen), "phrased": phrased, "written": len(written),
                      "by_tools": dict(Counter(e["reference_call_count"] for e in written)), "dropped": {k: v for k, v in outcomes.items() if k != "written"}})
         print(f"{examples[0]['package']}: {len(written)} written of {len(chosen)} chosen {rows[-1]['dropped'] or ''}", flush=True)
     if not args.only:
-        (OUT / "tasks.json").write_text(json.dumps({"model": args.model, "solver": args.solver_model, "per_repo": args.per_repo, "repositories": rows}, indent=1) + "\n", encoding="utf-8")
-        (OUT / "tasks.md").write_text(report(rows), encoding="utf-8")
-    print(f"{sum(r['written'] for r in rows):,} exercises -> out/corpus/tasks/")
+        (OUT / f"{args.name}.json").write_text(json.dumps({"model": args.model, "solver": args.solver_model, "per_repo": args.per_repo, "repositories": rows}, indent=1) + "\n", encoding="utf-8")
+        (OUT / f"{args.name}.md").write_text(report(rows, aimed), encoding="utf-8")
+    print(f"{sum(r['written'] for r in rows):,} exercises -> out/corpus/{args.name}/")
 
 
 def main() -> None:
@@ -294,6 +315,8 @@ def main() -> None:
     parser.add_argument("--solver-model", help="a second model that must be able to solve each request with code; requests it cannot solve are dropped")
     parser.add_argument("--solver-base-url", help="its endpoint, if it is not the same")
     parser.add_argument("--per-repo", type=int, default=40)
+    parser.add_argument("--examples", type=Path, default=OUT / "exercises", help="the folder with verified examples, one file per repository")
+    parser.add_argument("--name", default="tasks", help="the name of the folder and report this run writes under out/corpus/")
     parser.add_argument("--only", nargs="+", help="only these packages")
     parser.add_argument("--concurrency", type=int, default=8)
     asyncio.run(run(parser.parse_args()))

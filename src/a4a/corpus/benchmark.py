@@ -47,10 +47,10 @@ CONDITIONS = {"none": "No tools", "tools": "Generated tools", "python": "One Pyt
 PYTHON_TOOL = Path(__file__).resolve().parent / "python_tool.py"
 
 
-def repositories(min_tasks: int) -> list[dict]:
-    """The repositories with enough questions: {"stem", "path", "package", "url", "tasks"}."""
+def repositories(min_tasks: int, tasks: str = "tasks") -> list[dict]:
+    """The repositories with enough questions in out/corpus/<tasks>/: {"stem", "path", "package", "url", "tasks"}."""
     found = []
-    for path in sorted((OUT / "tasks").glob("*.jsonl")):
+    for path in sorted((OUT / tasks).glob("*.jsonl")):
         tasks = [json.loads(line) for line in path.read_text().splitlines()]
         if len(tasks) >= min_tasks:
             found.append({"stem": path.stem, "path": path, "package": tasks[0]["kind"], "url": "https://github.com/" + tasks[0]["source_repo"].split("@")[0], "tasks": len(tasks)})
@@ -145,7 +145,8 @@ def cell(values: list, of: int | None = None) -> str:
     return f"{mean(values):.1f}{share} ({', '.join(map(str, values))})"
 
 
-def report(rows: list[dict], model: str, tag: str, strict: bool = False, details: dict | None = None) -> str:
+def report(rows: list[dict], model: str, tag: str, strict: bool = False, details: dict | None = None, tasks: str = "tasks") -> str:
+    where = "each library's own documentation questions" if tasks == "tasks" else f"the questions of out/corpus/{tasks}/"
     shown = [c for c in CONDITIONS if any(r["right"][c] for r in rows)]
     complete = [r for r in rows if shown and all(r["right"][c] for c in shown)]
     runs = min((len(r["right"][c]) for r in complete for c in shown), default=0)
@@ -153,7 +154,7 @@ def report(rows: list[dict], model: str, tag: str, strict: bool = False, details
     totals = {c: [sum(r["right"][c][k] for r in complete) for k in range(runs)] for c in shown}
     harness = ("Strict harness: a tool call that the model wrote as text was taken as its answer, and the Python tool's output was shown as a JSON string." if strict else
                "A tool call that the model wrote as text is run as a call, and the Python tool's output is shown as text.")
-    lines = [f"# Tools against no tools, on each library's own documentation questions ({tag}{', strict harness' if strict else ''})", "", harness, "",
+    lines = [f"# Tools against no tools, on {where} ({tag}{', strict harness' if strict else ''})", "", harness, "",
              f"Model `{model}`. {len(complete)} repositories with every condition, {questions} questions, {runs} run{'s' if runs != 1 else ''} each. Right answers: "
              + "; ".join(f"{CONDITIONS[c].lower()} {cell(totals[c], questions)}" for c in shown) + ".", "",
              "A cell is the number of right answers: the mean of the runs, then each run in brackets.", "",
@@ -247,11 +248,12 @@ def main() -> None:
     parser.add_argument("--jobs", type=int, default=3, help="runs of one repository at the same time")
     parser.add_argument("--only", nargs="+", metavar="PACKAGE", help="run only these packages; the report still covers all")
     parser.add_argument("--min-tasks", type=int, default=8)
+    parser.add_argument("--tasks", default="tasks", help="the question set to score: a folder under out/corpus/ written by `a4a corpus-tasks --name`")
     parser.add_argument("--max-tools", type=int, default=60)
     parser.add_argument("--strict", action="store_true", help="without --repair-calls and --plain-text, as in the first runs")
     parser.add_argument("--report-only", action="store_true", help="only build the report from the saved runs")
     args = parser.parse_args()
-    repos = repositories(args.min_tasks)
+    repos = repositories(args.min_tasks, args.tasks)
     if not args.report_only:
         if not args.base_url:
             parser.error("give --base-url, or --report-only")
@@ -262,8 +264,8 @@ def main() -> None:
                 run_repository(repo, scanned[repo["stem"]], args, env)
     rows, details = summarize(repos, args.model, args.tag, args.strict), breakdown(repos, args.model, args.tag, args.strict)
     name = re.sub(r"[^A-Za-z0-9._-]+", "-", f"benchmark-{args.tag}-{args.model}{'-strict' if args.strict else ''}")
-    (OUT / f"{name}.json").write_text(json.dumps({"model": args.model, "tag": args.tag, "strict": args.strict, "min_tasks": args.min_tasks, "repositories": rows, **details}, indent=1) + "\n", encoding="utf-8")
-    (OUT / f"{name}.md").write_text(report(rows, args.model, args.tag, args.strict, details), encoding="utf-8")
+    (OUT / f"{name}.json").write_text(json.dumps({"model": args.model, "tag": args.tag, "tasks": args.tasks, "strict": args.strict, "min_tasks": args.min_tasks, "repositories": rows, **details}, indent=1) + "\n", encoding="utf-8")
+    (OUT / f"{name}.md").write_text(report(rows, args.model, args.tag, args.strict, details, args.tasks), encoding="utf-8")
     print(f"-> out/corpus/{name}.md")
 
 
