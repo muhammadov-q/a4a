@@ -22,82 +22,41 @@ Writes out/corpus/density.json (the counts) and out/corpus/density.md (the table
 """
 
 import argparse
-import ast
 import json
-import subprocess
-import warnings
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
-from pathlib import Path
 from statistics import median
 
-from repo2tools.corpus.exercises import MAX_DRAFTS, collect
-from repo2tools.corpus.scan import CLONES, OUT, folder_name, likely_names, locate
-from repo2tools.synthesis.usage import DOC_SUFFIXES, SKIP_DIRS, is_test_file
+from repo2tools.corpus.scan import CLONES, OUT
+from repo2tools.sources.python_repository import MAX_DRAFTS, PythonRepository
 
-KINDS = {"files": "Documentation files", "docstrings": "Docstrings"}
-
-
-def filled(text: str) -> int:
-    return sum(1 for line in text.splitlines() if line.strip())
+KINDS = PythonRepository.PARTS
 
 
-def text_lines(root: Path, package_dir: Path) -> dict:
-    """Lines of documentation files outside the package, and of docstrings inside it: the same files `corpus-exercises` reads."""
-    counts = {"files": 0, "docstrings": 0}
-    root, package_dir = root.resolve(), package_dir.resolve()
-    for path in root.rglob("*"):
-        if path.is_symlink() or not path.is_file() or SKIP_DIRS & set(path.relative_to(root).parts):
-            continue
-        inside = package_dir in path.parents or path == package_dir
-        if path.suffix == ".py" and inside:
-            try:
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore", SyntaxWarning)  # old escape sequences in other people's code
-                    tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
-            except (SyntaxError, ValueError):
-                continue
-            counts["docstrings"] += sum(filled(ast.get_docstring(node) or "") for node in ast.walk(tree)
-                                        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)))
-        elif path.suffix.lower() in DOC_SUFFIXES and not inside and not is_test_file(path, root):
-            counts["files"] += filled(path.read_text(encoding="utf-8", errors="replace"))
-    return counts
-
-
-def kind_of(exercise: dict) -> str:
-    return "docstrings" if exercise["module"] else "files"
-
-
-def density_of(static: dict, outcome: dict | None, exercises: list[dict], api: dict, questions: int | None, clones: Path = CLONES) -> dict:
+def density_of(source: PythonRepository, outcome: dict | None, exercises: list[dict], questions: int | None) -> dict:
     """The counts for one scanned repository. `lines` is None when the clone is missing or at another commit; `examples` also when the exercise pass did not run them."""
-    paths = {f"{c['module']}.{c['qualname']}" for c in api["callables"]}
+    static, paths, classes = source.candidate, source.elements(), (source.api or {}).get("classes", {})
     used = Counter(use for e in exercises for use in set(e["uses"]))
     covered = sorted(paths & set(used))
     record = {"package": static["package"], "repo": static["repo"], "commit": static["commit"], "code_lines": static["files"]["lines"], "lines": None, "examples": None,
-              "not_run": outcome["error"] if outcome else "no exercise pass", "verified": dict(Counter(kind_of(e) for e in exercises)), "questions": questions,
+              "not_run": outcome["error"] if outcome else "no exercise pass", "verified": dict(Counter(source.part_of(e) for e in exercises)), "questions": questions,
               "api": len(paths), "api_in_docs": static["usage"]["callables_used_in_docs"], "api_covered": len(covered),
-              "classes": len(api["classes"]), "classes_built": sum(1 for name in api["classes"] if f"{name}()" in used),
+              "classes": len(classes), "classes_built": sum(1 for name in classes if f"{name}()" in used),
               "without_api": sum(1 for e in exercises if not paths & set(e["uses"])),
               "most_used": max(((used[p], p) for p in covered), default=(0, None))}
-    root = clones / folder_name(static["repo"])
-    head = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip() if root.is_dir() else ""
-    if head == static["commit"]:
-        base, package, single_file = locate(root, likely_names(static))
-        package_dir = base / f"{package}.py" if single_file else base / package
-        record["lines"] = text_lines(root, package_dir)
+    if source.at_scanned_commit():
+        record["lines"] = source.parts()
         if outcome and not outcome["error"]:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore", SyntaxWarning)
-                record["examples"] = dict(Counter(kind_of(d) for d in collect(root, package_dir, package)))
+            record["examples"] = dict(Counter(source.part_of(d) for d in source.drafts()))
     return record
 
 
 def one(job: tuple) -> dict:
     static, outcome, questions, scans, exercises_dir, clones = job
-    name = folder_name(static["repo"])
-    file = exercises_dir / f"{name}.jsonl"
+    source = PythonRepository(static, clones, scans)
+    file = exercises_dir / f"{source.name}.jsonl"
     exercises = [json.loads(line) for line in file.read_text(encoding="utf-8").splitlines()] if file.is_file() else []
-    return density_of(static, outcome, exercises, json.loads((scans / name / "api.json").read_text(encoding="utf-8")), questions, clones)
+    return density_of(source, outcome, exercises, questions)
 
 
 def rank_correlation(xs: list[float], ys: list[float]) -> float | None:

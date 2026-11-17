@@ -9,7 +9,7 @@ A4A takes a source of information and extracts things a model can be trained and
 | A Python repository (its code) | Tools, one per library function | The tool gives the same result as calling the library directly, in a sandbox | `repo2tools generate` |
 | The repository's documentation | Exercises and questions with known answers | Two sandboxed runs of the documentation example give the same value, and a second model can solve the question from its wording | `repo2tools corpus-exercises`, `repo2tools corpus-tasks` |
 
-These two kinds of source are what is implemented today. Other kinds (databases, websites, PDFs) are not.
+These two kinds of source are what is implemented today. Other kinds (databases, websites, PDFs) are not. The commands that make and measure exercises reach a source only through a small interface (`src/repo2tools/sources/base.py`): its text by part, the elements it offers, its candidate exercises, and its sandbox. A new kind of source is a new class there.
 
 The command-line tool is called `repo2tools`, after the part that was built first. It takes the URL of a Python library, has an LLM write one tool per library function, and accepts a tool only if running it gives the same result as calling the library directly. It then works out which tools can be chained, again by running them, and measures what a model does with the tools: how often it solves tasks with known answers, and what a run costs in tokens.
 
@@ -599,6 +599,9 @@ The code is one Python package with one command, `repo2tools <command>`. Every c
 src/repo2tools/
 ├── cli.py                   the `repo2tools` command; imports a module only when its command is used
 ├── paths.py                 where the checkout and the local API key file are
+├── sources/                 kinds of source that exercises are extracted from
+│   ├── base.py                                 the `Source` interface: parts, elements, drafts, uses, box
+│   └── python_repository.py                    a scanned Python repository: its documentation files and docstrings, and its sandbox
 ├── synthesis/               repository -> checked tools
 │   ├── pipeline.py          generate           clone, propose, write, check, repair, serve
 │   ├── worker.py                               checks one tool; runs inside the tool set's own environment and sandbox
@@ -623,7 +626,7 @@ src/repo2tools/
 │   ├── scan.py              corpus-scan        clone the approved repositories and scan them; nothing is run
 │   ├── granularity.py                          tool candidates at three levels, each with a short description
 │   ├── saturation.py        corpus-saturation  group similar candidates across repositories; do the distinct ones saturate?
-│   ├── exercises.py         corpus-exercises   documentation examples as exercises, verified by two sandboxed runs
+│   ├── exercises.py         corpus-exercises   run every draft of a source twice in its sandbox; keep what repeats and matches the documentation
 │   ├── example_worker.py                       runs those examples; inside the library's own environment and sandbox
 │   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
 │   ├── density.py           corpus-density     verified exercises per 1,000 lines of each kind of source, and the API they cover

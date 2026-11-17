@@ -36,9 +36,10 @@ import random
 import re
 from collections import Counter, defaultdict
 
-from repo2tools.corpus.exercises import box_for, drop_box, run_drafts
+from repo2tools.corpus.exercises import run_drafts
 from repo2tools.corpus.scan import OUT, folder_name
 from repo2tools.evaluation.exercise_check import check
+from repo2tools.sources.python_repository import box_for, drop_box
 from repo2tools.synthesis.pipeline import LLM, extract_json
 
 MAX_LITERALS, MAX_LITERAL, ROUNDS = 8, 120, 3
