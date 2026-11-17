@@ -16,6 +16,7 @@ from a4a.corpus.exercises import exercises_for, report as exercises_report
 from a4a.corpus.granularity import level_counts, tool_candidates
 from a4a.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from a4a.corpus.scan import likely_names, report, scan_one
+from a4a.corpus.targets import draft_of, examples_for, messages_for, report as targets_report, targets_for
 from a4a.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
 from a4a.evaluation.exercise_check import check as exercise_check
 from a4a.repo2tools import pipeline
@@ -599,3 +600,38 @@ def test_rank_correlation():
     assert rank_correlation([1, 2, 2, 3], [1, 2, 2, 3]) == pytest.approx(1.0)  # ties share a rank
     assert rank_correlation([1, 2, 3, 4], [1, 3, 2, 4]) == pytest.approx(0.8)
     assert rank_correlation([1, 2], [1, 2]) is None and rank_correlation([1, 2, 3], [5, 5, 5]) is None
+
+
+def test_examples_from_a_model_are_checked_the_same_way_with_and_without_a_target(tmp_path, monkeypatch):
+    monkeypatch.setattr(pipeline, "CACHE", tmp_path / "cache")
+    repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES, "README.rst": SHAPES_DOCS, "pyproject.toml": '[project]\nname = "shapes"\n'})
+    static = scan_one({"package": "shapes", "repo": str(repo)}, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    source = PythonRepository(static, tmp_path / "clones", tmp_path / "scans")
+    covered = {"shapes.parse", "shapes.Square.area"}  # what the documentation exercises use
+    targets = targets_for(source.elements(), covered, 2)
+    assert len(targets) == 2 and not set(targets) & covered and targets == targets_for(source.elements(), covered, 2)  # the same choice every time
+    # the first one is a reply that ends with an assignment
+    uses = {"shapes.unused": "from shapes import unused\nresult = unused('a')", "shapes.Square.corners": "from shapes import Square\ns = Square('2')\ns.corners",
+            "shapes.Square.scaled": "from shapes import Square\ns = Square('2')\ns.scaled(2).side"}
+    reply = lambda code: [json.dumps({"code": code})]  # noqa: E731
+    old = "from shapes import parse\nparse('2').area"
+    llm = ScriptedLLM({("free", "me__shapes-0"): reply(old), ("free", "me__shapes-1"): reply(old),  # twice the same example
+                       ("listed", "me__shapes-0"): reply(uses["shapes.Square.corners"]), ("listed", "me__shapes-1"): ["no JSON here"],
+                       ("target", "me__shapes-0"): reply(uses[targets[0]]), ("target", "me__shapes-1"): reply(old)})  # the second reply ignores its target
+    record, verified = asyncio.run(examples_for(source, covered, llm, 2))
+    assert record["error"] is None and (record["api"], record["covered_by_documentation"], record["open"]) == (5, 2, 3)
+    ways = record["ways"]
+    assert {k: ways["free"][k] for k in ("requests", "drafts", "verified", "different", "elements", "new_elements")} == {"requests": 2, "drafts": 2, "verified": 2, "different": 1, "elements": 2, "new_elements": 0}
+    assert (ways["listed"]["drafts"], ways["listed"]["verified"], ways["listed"]["used"]) == (1, 1, ["shapes.Square.corners"]) and ways["listed"]["new_elements"] == 1
+    assert ways["listed"]["outcomes"] == {"no_code": 1, "verified": 1} and ways["free"]["outcomes"] == {"verified": 2}
+    assert draft_of("x = 1\ny = x + 1") == {"module": None, "steps": ["x = 1", "y = x + 1"], "expression": "y"} and draft_of("x = 1\nx + 1")["expression"] == "x + 1"
+    assert draft_of("for i in range(3):\n    pass") is None and draft_of("a, b = 1, 2") is None and draft_of("def broken(") is None and draft_of(None) is None
+    assert (ways["target"]["verified"], ways["target"]["hits"], ways["target"]["new_elements"]) == (2, 1, 1) and targets[0] in ways["target"]["used"]
+    assert [e["id"] for e in verified][:2] == ["me__shapes-free-000", "me__shapes-free-001"] and verified[0]["answer"] == 4.0 and verified[0]["documented"] is None
+    assert {e["target"] for e in verified if e["way"] == "target"} == set(targets) and not (tmp_path / "cache" / "envs" / "targets-me__shapes").exists()
+
+    asked = {stage: messages[1]["content"] for stage, subject, messages in llm.chats if subject.endswith("-0")}
+    assert "public API" not in asked["free"] and "shapes.Square.scaled" in asked["listed"] and f"must use `{targets[0]}`" in asked["target"]
+    assert messages_for("free", "shapes", [], None, "")[1]["content"].startswith("Library: `shapes`.\n\nWrite one short example")
+    text = targets_report([record], "scripted", 2)
+    assert "| free | Only the name of the library | 2 | 2 | 2 | 2 | 1 | 2 | 0 | 0.00 |" in text and "1 of 2 verified examples use the element they were asked to use (50%)" in text

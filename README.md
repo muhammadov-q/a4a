@@ -393,6 +393,30 @@ This needs no model and no sandbox. It reads the saved scans and exercises, coun
 
 Limits. Which elements an exercise uses comes from the static usage scan, which misses a method called on a value whose class it cannot tell; 456 of the 1,545 exercises use nothing the scan can name. At most 400 examples of a repository are read, so the repositories at that limit are lower bounds (the report names them). A package that only re-exports another one has few lines here (`attrs` 79, `pytest` 193), so its number per 1,000 lines of code says little. `setuptools` is left out of the yield because its examples were not run.
 
+### Does a target help when a model writes the examples?
+
+```sh
+uv run a4a corpus-targets --base-url http://127.0.0.1:18000/v1 --model qwen3-coder --requests 40
+```
+
+The documentation decides what its examples show, so the exercises made from it use a small part of a library. Here a model writes the examples, in three ways, with the same number of requests for each: it gets only the name of the library (*free*), also the names of the public API (*listed*), or one API element that no documentation exercise uses, with its signature and documentation, which the example must use (*target*). Every example is run twice in the library's sandbox and is verified when both runs give the same plain value.
+
+Qwen3-Coder-30B, 40 requests per way and repository, 8 repositories with 3,003 public API elements. Their verified documentation exercises use 427 of those (14%).
+
+| Way | Requests | Verified | Different examples | API elements used | New (not used by documentation exercises) | New per request |
+| --- | --- | --- | --- | --- | --- | --- |
+| free | 320 | 273 | 51 | 20 | 8 | 0.03 |
+| listed | 320 | 239 | 35 | 24 | 8 | 0.03 |
+| target | 303 | 138 | 138 | 151 | 132 | 0.44 |
+
+- **Without a target the model repeats itself.** Of 273 verified free examples, 51 are different from each other: four of five are a copy of another one. They use 20 API elements, and 8 that the documentation exercises did not have.
+- **Knowing the API does not change that.** With the names of the public API in the request, the examples use 24 elements and again add 8.
+- **A target does.** Fewer of its examples survive the check (138 of 303, against 273 of 320), but every one is different, and together they add 132 new elements: 0.44 per request against 0.03, about fifteen times as many.
+- **The model mostly does what it is asked.** 118 of the 138 verified target examples use the element they were asked to use (86%). That is 39% of all target requests; the others fail because the code raises (128), gives an object and not a plain value (19), or does not repeat (6).
+- **What it costs.** A target request fails more often, because the elements nobody documents are the harder ones to call: internal helpers, classes that need other objects, things with random results.
+
+Limits. One model, one run, a fixed sampling temperature of 0.8 with the request number as seed. The target way gets the element's documentation as well as its name, so "a target" and "the reference of one element" are not told apart here; the listed way only shows that names alone do not help. Which elements an example uses comes from the static usage scan. A verified example has one witness, its own run: nothing says the value is the right one for a question, and nobody has judged whether the examples are meaningful. The 303 target requests ask for 12% of the 2,576 elements that the documentation exercises leave open; nothing here says what a full pass over a library would give.
+
 ### Do generated tools help on these questions?
 
 ```sh
@@ -656,6 +680,7 @@ src/a4a/
 │   ├── example_worker.py                       runs those examples; inside the library's own environment and sandbox
 │   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
 │   ├── density.py           corpus-density     verified exercises per 1,000 lines of each kind of source, and the API they cover
+│   ├── targets.py           corpus-targets     a model writes examples free, with the API listed, or with one target per request; same check
 │   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 ├── databases/               databases as sources
