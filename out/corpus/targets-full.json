@@ -1,0 +1,500 @@
+{
+ "model": "qwen3-coder",
+ "requests": 40,
+ "temperature": 0.8,
+ "seed": 0,
+ "all_open": true,
+ "repositories": [
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "commit": "5a7d3386d2777180a381eb947f21293124ce8df5",
+   "error": null,
+   "api": 99,
+   "covered_by_documentation": 54,
+   "open": 45,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 11,
+     "different": 8,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "packaging.version.parse"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 39,
+     "different": 4,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "packaging.specifiers.SpecifierSet.contains"
+     ]
+    },
+    "named": {
+     "requests": 45,
+     "drafts": 45,
+     "outcomes": {
+      "verified": 14,
+      "not_json": 6,
+      "error": 25
+     },
+     "verified": 14,
+     "use_the_api": 14,
+     "different": 13,
+     "elements": 13,
+     "new_elements": 11,
+     "used": [
+      "packaging.markers.default_environment",
+      "packaging.specifiers.Specifier.prereleases",
+      "packaging.specifiers.SpecifierSet.contains",
+      "packaging.specifiers.SpecifierSet.filter",
+      "packaging.specifiers.SpecifierSet.prereleases",
+      "packaging.tags.Tag.abi",
+      "packaging.tags.Tag.interpreter",
+      "packaging.tags.Tag.platform",
+      "packaging.tags.generic_tags",
+      "packaging.tags.interpreter_abi",
+      "packaging.tags.interpreter_name",
+      "packaging.tags.interpreter_version",
+      "packaging.tags.platform_tags"
+     ],
+     "hits": 11
+    },
+    "target": {
+     "requests": 45,
+     "drafts": 45,
+     "outcomes": {
+      "verified": 21,
+      "not_json": 4,
+      "error": 20
+     },
+     "verified": 21,
+     "use_the_api": 21,
+     "different": 21,
+     "elements": 21,
+     "new_elements": 17,
+     "used": [
+      "packaging.markers.default_environment",
+      "packaging.metadata.RFC822Policy.header_store_parse",
+      "packaging.pylock.PackageSdist.filename",
+      "packaging.ranges.VersionRange.intersection",
+      "packaging.specifiers.Specifier.prereleases",
+      "packaging.specifiers.SpecifierSet.contains",
+      "packaging.specifiers.SpecifierSet.filter",
+      "packaging.specifiers.SpecifierSet.prereleases",
+      "packaging.specifiers.SpecifierSet.to_range",
+      "packaging.tags.Tag.abi",
+      "packaging.tags.Tag.interpreter",
+      "packaging.tags.Tag.platform",
+      "packaging.tags.android_platforms",
+      "packaging.tags.compatible_tags",
+      "packaging.tags.interpreter_abi",
+      "packaging.tags.interpreter_name",
+      "packaging.tags.interpreter_version",
+      "packaging.tags.ios_platforms",
+      "packaging.tags.mac_platforms",
+      "packaging.tags.platform_tags",
+      "packaging.tags.sys_tags"
+     ],
+     "hits": 17
+    }
+   },
+   "paired": {
+    "both": 10,
+    "only_with_reference": 7,
+    "only_by_name": 1,
+    "neither": 27
+   },
+   "together": {
+    "elements": 23,
+    "with_documentation": 72
+   }
+  },
+  {
+   "package": "python-dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+   "error": null,
+   "api": 66,
+   "covered_by_documentation": 12,
+   "open": 54,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 8,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "dateutil.parser.parse"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 40
+     },
+     "verified": 40,
+     "use_the_api": 40,
+     "different": 11,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "dateutil.parser.parse"
+     ]
+    },
+    "named": {
+     "requests": 54,
+     "drafts": 54,
+     "outcomes": {
+      "error": 20,
+      "verified": 27,
+      "not_json": 7
+     },
+     "verified": 27,
+     "use_the_api": 25,
+     "different": 26,
+     "elements": 25,
+     "new_elements": 22,
+     "used": [
+      "dateutil.parser.parse",
+      "dateutil.parser.parserinfo.convertyear",
+      "dateutil.parser.parserinfo.pertain",
+      "dateutil.relativedelta.relativedelta.weeks",
+      "dateutil.rrule.rrule.replace",
+      "dateutil.rrule.rruleset.exdate",
+      "dateutil.rrule.rruleset.rrule",
+      "dateutil.tz.available_iana_timezones",
+      "dateutil.tz.datetime_ambiguous",
+      "dateutil.tz.tzfile.dst",
+      "dateutil.tz.tzfile.is_ambiguous",
+      "dateutil.tz.tzfile.utcoffset",
+      "dateutil.tz.tzlocal.dst",
+      "dateutil.tz.tzlocal.is_ambiguous",
+      "dateutil.tz.tzlocal.utcoffset",
+      "dateutil.tz.tzoffset.dst",
+      "dateutil.tz.tzoffset.is_ambiguous",
+      "dateutil.tz.tzoffset.utcoffset",
+      "dateutil.tz.tzutc.dst",
+      "dateutil.tz.tzutc.is_ambiguous",
+      "dateutil.tz.tzutc.utcoffset",
+      "dateutil.utils.today",
+      "dateutil.utils.within_delta",
+      "dateutil.zoneinfo.get_zonefile_instance",
+      "dateutil.zoneinfo.gettz"
+     ],
+     "hits": 22
+    },
+    "target": {
+     "requests": 54,
+     "drafts": 53,
+     "outcomes": {
+      "no_code": 1,
+      "error": 16,
+      "verified": 35,
+      "not_json": 2
+     },
+     "verified": 35,
+     "use_the_api": 33,
+     "different": 35,
+     "elements": 31,
+     "new_elements": 29,
+     "used": [
+      "dateutil.parser.parse",
+      "dateutil.parser.parserinfo.ampm",
+      "dateutil.parser.parserinfo.convertyear",
+      "dateutil.parser.parserinfo.jump",
+      "dateutil.parser.parserinfo.month",
+      "dateutil.parser.parserinfo.pertain",
+      "dateutil.parser.parserinfo.utczone",
+      "dateutil.parser.parserinfo.weekday",
+      "dateutil.relativedelta.relativedelta.weeks",
+      "dateutil.rrule.rruleset.rdate",
+      "dateutil.tz.available_iana_timezones",
+      "dateutil.tz.datetime_ambiguous",
+      "dateutil.tz.datetime_exists",
+      "dateutil.tz.enfold",
+      "dateutil.tz.tzfile.dst",
+      "dateutil.tz.tzfile.utcoffset",
+      "dateutil.tz.tzlocal.dst",
+      "dateutil.tz.tzlocal.is_ambiguous",
+      "dateutil.tz.tzlocal.utcoffset",
+      "dateutil.tz.tzoffset.dst",
+      "dateutil.tz.tzoffset.is_ambiguous",
+      "dateutil.tz.tzoffset.utcoffset",
+      "dateutil.tz.tzrange.transitions",
+      "dateutil.tz.tzutc.dst",
+      "dateutil.tz.tzutc.is_ambiguous",
+      "dateutil.tz.tzutc.utcoffset",
+      "dateutil.utils.today",
+      "dateutil.utils.within_delta",
+      "dateutil.zoneinfo.get_zonefile_instance",
+      "dateutil.zoneinfo.gettz",
+      "dateutil.zoneinfo.gettz_db_metadata"
+     ],
+     "hits": 29
+    }
+   },
+   "paired": {
+    "both": 19,
+    "only_with_reference": 10,
+    "only_by_name": 3,
+    "neither": 22
+   },
+   "together": {
+    "elements": 35,
+    "with_documentation": 44
+   }
+  },
+  {
+   "package": "more-itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "commit": "ceafee8ce96f4bc1eb74c528bc247c91d648a0bb",
+   "error": null,
+   "api": 176,
+   "covered_by_documentation": 146,
+   "open": 30,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 34,
+     "outcomes": {
+      "no_code": 6,
+      "verified": 34
+     },
+     "verified": 34,
+     "use_the_api": 34,
+     "different": 5,
+     "elements": 1,
+     "new_elements": 0,
+     "used": [
+      "more_itertools.chunked"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 39,
+      "error": 1
+     },
+     "verified": 39,
+     "use_the_api": 39,
+     "different": 6,
+     "elements": 4,
+     "new_elements": 0,
+     "used": [
+      "more_itertools.chunked",
+      "more_itertools.flatten",
+      "more_itertools.sliding_window",
+      "more_itertools.take"
+     ]
+    },
+    "named": {
+     "requests": 30,
+     "drafts": 29,
+     "outcomes": {
+      "no_code": 1,
+      "not_json": 2,
+      "verified": 13,
+      "error": 7,
+      "not_repeatable": 7
+     },
+     "verified": 13,
+     "use_the_api": 13,
+     "different": 13,
+     "elements": 13,
+     "new_elements": 13,
+     "used": [
+      "more_itertools.always_reversible",
+      "more_itertools.concurrent_tee",
+      "more_itertools.consecutive_groups",
+      "more_itertools.consume",
+      "more_itertools.numeric_range.index",
+      "more_itertools.one",
+      "more_itertools.pairwise",
+      "more_itertools.partitions",
+      "more_itertools.raise_",
+      "more_itertools.random_derangement",
+      "more_itertools.running_statistics",
+      "more_itertools.seekable.elements",
+      "more_itertools.substrings_indexes"
+     ],
+     "hits": 13
+    },
+    "target": {
+     "requests": 30,
+     "drafts": 27,
+     "outcomes": {
+      "no_code": 3,
+      "verified": 16,
+      "error": 6,
+      "not_repeatable": 5
+     },
+     "verified": 16,
+     "use_the_api": 14,
+     "different": 16,
+     "elements": 14,
+     "new_elements": 14,
+     "used": [
+      "more_itertools.always_reversible",
+      "more_itertools.concurrent_tee",
+      "more_itertools.consecutive_groups",
+      "more_itertools.constrained_batches",
+      "more_itertools.consume",
+      "more_itertools.iter_except",
+      "more_itertools.one",
+      "more_itertools.pairwise",
+      "more_itertools.partitions",
+      "more_itertools.running_statistics",
+      "more_itertools.seekable.elements",
+      "more_itertools.substrings_indexes",
+      "more_itertools.synchronized",
+      "more_itertools.with_iter"
+     ],
+     "hits": 14
+    }
+   },
+   "paired": {
+    "both": 10,
+    "only_with_reference": 4,
+    "only_by_name": 3,
+    "neither": 13
+   },
+   "together": {
+    "elements": 21,
+    "with_documentation": 163
+   }
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+   "error": null,
+   "api": 44,
+   "covered_by_documentation": 11,
+   "open": 33,
+   "ways": {
+    "free": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 37,
+      "not_repeatable": 1,
+      "not_json": 2
+     },
+     "verified": 37,
+     "use_the_api": 37,
+     "different": 3,
+     "elements": 3,
+     "new_elements": 0,
+     "used": [
+      "rsa.decrypt",
+      "rsa.encrypt",
+      "rsa.newkeys"
+     ]
+    },
+    "listed": {
+     "requests": 40,
+     "drafts": 40,
+     "outcomes": {
+      "verified": 39,
+      "error": 1
+     },
+     "verified": 39,
+     "use_the_api": 39,
+     "different": 3,
+     "elements": 3,
+     "new_elements": 0,
+     "used": [
+      "rsa.decrypt",
+      "rsa.encrypt",
+      "rsa.newkeys"
+     ]
+    },
+    "named": {
+     "requests": 33,
+     "drafts": 32,
+     "outcomes": {
+      "no_code": 1,
+      "error": 21,
+      "not_json": 5,
+      "verified": 5,
+      "not_repeatable": 1
+     },
+     "verified": 5,
+     "use_the_api": 5,
+     "different": 5,
+     "elements": 5,
+     "new_elements": 4,
+     "used": [
+      "rsa.common.extended_gcd",
+      "rsa.newkeys",
+      "rsa.randnum.randint",
+      "rsa.sign",
+      "rsa.verify"
+     ],
+     "hits": 4
+    },
+    "target": {
+     "requests": 33,
+     "drafts": 32,
+     "outcomes": {
+      "no_code": 1,
+      "error": 18,
+      "not_json": 5,
+      "verified": 6,
+      "not_repeatable": 3
+     },
+     "verified": 6,
+     "use_the_api": 6,
+     "different": 6,
+     "elements": 9,
+     "new_elements": 8,
+     "used": [
+      "rsa.common.extended_gcd",
+      "rsa.compute_hash",
+      "rsa.core.assert_int",
+      "rsa.core.encrypt_int",
+      "rsa.find_signature_hash",
+      "rsa.newkeys",
+      "rsa.pem.save_pem",
+      "rsa.sign",
+      "rsa.sign_hash"
+     ],
+     "hits": 6
+    }
+   },
+   "paired": {
+    "both": 1,
+    "only_with_reference": 5,
+    "only_by_name": 3,
+    "neither": 24
+   },
+   "together": {
+    "elements": 13,
+    "with_documentation": 21
+   }
+  }
+ ]
+}
