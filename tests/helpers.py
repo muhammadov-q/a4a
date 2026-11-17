@@ -1,4 +1,4 @@
-"""Shared by the test files: a scripted LLM, and the options of `repo2tools generate` with test defaults."""
+"""Shared by the test files: a scripted LLM, and the options of `a4a generate` with test defaults."""
 
 from argparse import Namespace
 from collections import Counter

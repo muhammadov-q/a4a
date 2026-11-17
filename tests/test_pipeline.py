@@ -1,4 +1,4 @@
-"""Tests for `repo2tools generate`, with a scripted LLM instead of a model. Needs uv; no GPU or API key."""
+"""Tests for `a4a generate`, with a scripted LLM instead of a model. Needs uv; no GPU or API key."""
 
 import asyncio
 import json
@@ -8,10 +8,10 @@ from pathlib import Path
 
 import pytest
 
+from a4a.paths import API_KEY_FILE, REPO_ROOT
+from a4a.repo2tools import pipeline, worker
+from a4a.repo2tools.pipeline import checked_url, find_package, make_box, native_code, parse_proposal, parse_spec, repo_name, run_worker, static_problem
 from helpers import ScriptedLLM, options
-from repo2tools.paths import API_KEY_FILE, REPO_ROOT
-from repo2tools.synthesis import pipeline, worker
-from repo2tools.synthesis.pipeline import checked_url, find_package, make_box, native_code, parse_proposal, parse_spec, repo_name, run_worker, static_problem
 
 HAS_SANDBOX = shutil.which("sandbox-exec") is not None
 

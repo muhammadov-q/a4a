@@ -6,15 +6,15 @@ A4A takes a source of information and extracts things a model can be trained and
 
 | Source | What is extracted | How it is checked | Command |
 | --- | --- | --- | --- |
-| A Python repository (its code) | Tools, one per library function | The tool gives the same result as calling the library directly, in a sandbox | `repo2tools generate` |
-| The repository's documentation | Exercises and questions with known answers | Two sandboxed runs of the documentation example give the same value, and a second model can solve the question from its wording | `repo2tools corpus-exercises`, `repo2tools corpus-tasks` |
+| A Python repository (its code) | Tools, one per library function | The tool gives the same result as calling the library directly, in a sandbox | `a4a generate` |
+| The repository's documentation | Exercises and questions with known answers | Two sandboxed runs of the documentation example give the same value, and a second model can solve the question from its wording | `a4a corpus-exercises`, `a4a corpus-tasks` |
 
-These two kinds of source are what is implemented today. Other kinds (databases, websites, PDFs) are not. The commands that make and measure exercises reach a source only through a small interface (`src/repo2tools/sources/base.py`): its text by part, the elements it offers, its candidate exercises, and its sandbox. A new kind of source is a new class there.
+These two kinds of source are what is implemented today. Other kinds (databases, websites, PDFs) are not. The commands that make and measure exercises reach a source only through a small interface (`src/a4a/sources/base.py`): its text by part, the elements it offers, its candidate exercises, and its sandbox. A new kind of source is a new class there.
 
-The command-line tool is called `repo2tools`, after the part that was built first. It takes the URL of a Python library, has an LLM write one tool per library function, and accepts a tool only if running it gives the same result as calling the library directly. It then works out which tools can be chained, again by running them, and measures what a model does with the tools: how often it solves tasks with known answers, and what a run costs in tokens.
+The command is `a4a`. Its first part, **repo2tools**, is the one that turns a repository into tools (`src/a4a/repo2tools/`, command `a4a generate`): it takes the URL of a Python library, has an LLM write one tool per library function, and accepts a tool only if running it gives the same result as calling the library directly. It then works out which tools can be chained, again by running them, and measures what a model does with the tools: how often it solves tasks with known answers, and what a run costs in tokens.
 
 <p align="center">
-  <img src="docs/architecture.png" alt="Architecture of repo2tools. Top: a repository is scanned statically, an LLM generator turns public functions into candidate tools, and a sandbox verifier runs each tool on sample inputs and compares it with a direct library call; errors go back to the generator for up to three repair rounds, and accepted tools form the verified MCP tool set. Bottom: an LLM proposes types for the tools, a pairwise parameter check and an output-to-consumer check keep only the types that hold when the tools are run, ToolGym samples and validates tool chains into synthetic traces, an LLM agent solves 242 exercises with and without the tools, and both kinds of traces go to the trace analysis." width="100%">
+  <img src="docs/architecture.png" alt="Architecture of a4a. Top: a repository is scanned statically, an LLM generator turns public functions into candidate tools, and a sandbox verifier runs each tool on sample inputs and compares it with a direct library call; errors go back to the generator for up to three repair rounds, and accepted tools form the verified MCP tool set. Bottom: an LLM proposes types for the tools, a pairwise parameter check and an output-to-consumer check keep only the types that hold when the tools are run, ToolGym samples and validates tool chains into synthetic traces, an LLM agent solves 242 exercises with and without the tools, and both kinds of traces go to the trace analysis." width="100%">
 </p>
 <p align="center"><sub><b>Figure 1.</b> Overview. <i>Top:</i> tool synthesis. An LLM writes each tool, and a sandboxed verifier accepts it only if it agrees with the library on sample inputs. <i>Bottom:</i> the types an LLM proposes are kept only where the tools, when run, accept each other's values (T<sup>kept</sup>); the typed tools feed ToolGym's chain sampling and an agent evaluation, and both produce traces for analysis.</sub></p>
 
@@ -54,9 +54,9 @@ Three things follow from that rule, one per stage:
 
 | Stage | What it does | Entry point |
 | --- | --- | --- |
-| 1. Synthesize | Clone a repo at a recorded commit, scan its public API without running it, generate tools, verify them in a sandbox, repair on failure | `repo2tools generate` |
-| 2. Chain | Give the tools semantic types checked by execution, load them into ToolGym, run its live chain check and its data-generation pipeline | `repo2tools toolgym-types`, `repo2tools toolgym-local` |
-| 3. Measure | Run a model on exercises with and without tools; save every request as a trace; quantify repetition and simulate context compression | `repo2tools run-model`, `repo2tools analyze-traces` |
+| 1. Synthesize | Clone a repo at a recorded commit, scan its public API without running it, generate tools, verify them in a sandbox, repair on failure | `a4a generate` |
+| 2. Chain | Give the tools semantic types checked by execution, load them into ToolGym, run its live chain check and its data-generation pipeline | `a4a toolgym-types`, `a4a toolgym-local` |
+| 3. Measure | Run a model on exercises with and without tools; save every request as a trace; quantify repetition and simulate context compression | `a4a run-model`, `a4a analyze-traces` |
 
 Also included: 21 reference tools over [pypa/packaging](https://github.com/pypa/packaging) that were written before the pipeline existed (called "hand-made" below, as the baseline the generated tools are compared with), 242 exercises with known answers, and a test suite of over 100 tests that needs no GPU and no API key.
 
@@ -135,14 +135,14 @@ Generated tools in ToolGym, 11 November 2026. Qwen3-32B proposes the types and r
 
 - **Checked types give usable short chains.** Hand-typed tools get chains through ToolGym's automatic casts (a package name fed into a specifier check), and its validation rejects all of them.
 - **Long chains are not solved by asking for more steps.** With 16 links, a long walk loops: one chain is `parse_tag` eight times, and 34 of 104 calls repeat an earlier call exactly.
-- **The check finds tools that cannot be chained.** Eight range tools take a constraint like `>=1.0` but return text like `<VersionRange '[1.0, 2.0.dev0)'>`, which no tool accepts. They passed every check of `repo2tools generate`.
+- **The check finds tools that cannot be chained.** Eight range tools take a constraint like `>=1.0` but return text like `<VersionRange '[1.0, 2.0.dev0)'>`, which no tool accepts. They passed every check of `a4a generate`.
 - **A harder repo:** more-itertools gives 50 accepted tools of 142 picked. Its values are plain lists, so the LLM found only 2 types and 21 links. Kinds of values work for a domain library like packaging, not for generic data.
 
 Chaining, 12 November 2026. Qwen3-32B repairs and types the tools and runs ToolGym; Qwen3-8B is the second model. One run each, small numbers.
 
 | Step | Result |
 | --- | --- |
-| Dead-end tools repaired (`repo2tools repair-chains`) | 3 of 8. One more "repair" passed the library check and the consumer check but returned `""` for every union of ranges; a third guard (different results must stay different) rejected it |
+| Dead-end tools repaired (`a4a repair-chains`) | 3 of 8. One more "repair" passed the library check and the consumer check but returned `""` for every union of ranges; a third guard (different results must stay different) rejected it |
 | Links between the 29 generated tools, same type claims before and after | 45 before, 69 after; tools with no link: 16, then 8. ToolGym's live chain check: 44 of 44, then 86 of 86 |
 | Hand-made tools with checked types instead of hand-written ones | 49 links; short chains accepted by ToolGym: 11 of 26 (hand-written types: 0 of 15) |
 | Longest chain in which every tool appears once | 4 calls (generated, before and after repair), 8 (hand-made), 3 (more-itertools) |
@@ -174,12 +174,12 @@ Usability, 12 November 2026. Qwen3-8B uses the 29 generated packaging tools; Qwe
 
 ## Quick start
 
-Needs [uv](https://docs.astral.sh/uv/). `uv run` installs the package and its dependencies on first use, and `uv run repo2tools --help` lists every command.
+Needs [uv](https://docs.astral.sh/uv/). `uv run` installs the package and its dependencies on first use, and `uv run a4a --help` lists every command.
 
 This replays a known-good solution for every exercise through the tools:
 
 ```sh
-uv run repo2tools check-tools out/packaging/exercises.jsonl -- uv run python toolsets/pypa_packaging/server.py
+uv run a4a check-tools out/packaging/exercises.jsonl -- uv run python toolsets/pypa_packaging/server.py
 ```
 
 The last line should say `242/242 exercises solved by their reference calls`.
@@ -188,15 +188,15 @@ To run a model, start an OpenAI-compatible server with tool calling. `cluster/RE
 
 ```sh
 export OPENAI_API_KEY=<the server's key>
-uv run repo2tools run-model out/packaging/exercises.jsonl --mode tools --base-url http://127.0.0.1:18000/v1 --model qwen3-8b -- uv run python toolsets/pypa_packaging/server.py
-uv run repo2tools run-model out/packaging/exercises.jsonl --mode none --base-url http://127.0.0.1:18000/v1 --model qwen3-8b
-uv run repo2tools compare-runs out/runs/qwen3-8b-tools.jsonl out/runs/qwen3-8b-none.jsonl
+uv run a4a run-model out/packaging/exercises.jsonl --mode tools --base-url http://127.0.0.1:18000/v1 --model qwen3-8b -- uv run python toolsets/pypa_packaging/server.py
+uv run a4a run-model out/packaging/exercises.jsonl --mode none --base-url http://127.0.0.1:18000/v1 --model qwen3-8b
+uv run a4a compare-runs out/runs/qwen3-8b-tools.jsonl out/runs/qwen3-8b-none.jsonl
 ```
 
 ## Stage 1: from a repo link to tools
 
 ```sh
-uv run repo2tools generate https://github.com/pypa/packaging --commit c1d2a9d \
+uv run a4a generate https://github.com/pypa/packaging --commit c1d2a9d \
     --base-url http://127.0.0.1:18000/v1 --model qwen3-8b
 ```
 
@@ -218,23 +218,23 @@ The result goes to `toolsets/generated/<repo>-<model>/` (one file per tool, `ser
 
 - Only repos you name are cloned. The repo is never built or installed: its dependencies come as wheels (`--no-build`), and the package is copied in, so no `setup.py` runs.
 - Generated code gets an empty environment, so no API keys.
-- On macOS it runs inside `sandbox-exec`: no network, no reading the home folder (SSH keys, the API key), writing only to one scratch folder. `tests/test_repo2tools.py` runs hostile code to check this.
+- On macOS it runs inside `sandbox-exec`: no network, no reading the home folder (SSH keys, the API key), writing only to one scratch folder. `tests/test_a4a.py` runs hostile code to check this.
 - Other systems have no such sandbox. The tool then warns, and the report says so. Only use repos you trust there.
 
-To score generated tools on exercises, use `repo2tools run-model` with `run_server.sh` as the server command. `repo2tools check-tools` needs the hand-made tool names, so it doesn't work on generated tools.
+To score generated tools on exercises, use `a4a run-model` with `run_server.sh` as the server command. `a4a check-tools` needs the hand-made tool names, so it doesn't work on generated tools.
 
 ### Which functions to wrap: how the repo itself uses its API
 
 By default the LLM picks functions from a plain list of the public API. Two options give it more to go on:
 
 ```sh
-uv run repo2tools usage out/generated/packaging-coder-60/api.json .cache/repos/packaging \
+uv run a4a usage out/generated/packaging-coder-60/api.json .cache/repos/packaging \
     --package-dir .cache/repos/packaging/src/packaging -o out/usage/packaging.json
-uv run repo2tools generate https://github.com/pypa/packaging --commit c1d2a9d \
+uv run a4a generate https://github.com/pypa/packaging --commit c1d2a9d \
     --base-url http://127.0.0.1:18000/v1 --model qwen3-coder --usage docs --classes
 ```
 
-- `repo2tools usage` counts how often each API function is used in the repo's own documentation (doctest lines, code blocks, docstring examples) and in its tests. It only reads the files with `ast`; nothing is run. It also counts, per class, how often the class is built and which operators (`<`, `==`, `in`, `&`, ...) are used on its objects.
+- `a4a usage` counts how often each API function is used in the repo's own documentation (doctest lines, code blocks, docstring examples) and in its tests. It only reads the files with `ast`; nothing is run. It also counts, per class, how often the class is built and which operators (`<`, `==`, `in`, `&`, ...) are used on its objects.
 - `--usage docs|tests|both` sorts the list shown to the LLM by these counts and prints the counts next to each entry.
 - `--classes` adds each class as an entry. A class may be picked several times, once per operation, so a tool can wrap `Version(a) < Version(b)` or `version in SpecifierSet(spec)`, which no single function offers.
 
@@ -269,7 +269,7 @@ A third option, `--operators`, lists each operator the repo uses with a class (`
 The experiments on tool granularity run over many libraries. Which ones is decided by a list that a person approves:
 
 ```sh
-uv run repo2tools corpus-candidates --scan 600 --want 100
+uv run a4a corpus-candidates --scan 600 --want 100
 ```
 
 It reads the public list of the most downloaded PyPI packages and PyPI's description of each newest release. Nothing is cloned, and no package code is downloaded or run. A package is a candidate if its wheels are pure Python, its source archive is at most 5 MB and it names a GitHub repository; type stubs are left out, and a repository counts once. From the 600 most downloaded packages (list of 1 November 2026): 100 candidates kept, 281 more would qualify, 126 have compiled code, 33 name no GitHub repository, 27 share a repository with a kept one, 22 are too large, 10 are stubs. The list is in `out/corpus/candidates.md`.
@@ -277,7 +277,7 @@ It reads the public list of the most downloaded PyPI packages and PyPI's descrip
 ### The static pass
 
 ```sh
-uv run repo2tools corpus-scan --jobs 6
+uv run a4a corpus-scan --jobs 6
 ```
 
 For each approved repository it clones the default branch (hooks off, no LFS, no submodules), records the commit, and reads the files with `ast`: files and lines, the public API with re-exports followed, how the repository's own documentation and tests use that API, and each documentation example with what it uses. No repository code is run, and links that leave the checkout are not followed. It takes about two and a half minutes for 100 repositories once they are cloned.
@@ -302,7 +302,7 @@ What these numbers are and are not:
 ### Do the distinct tools saturate?
 
 ```sh
-uv run --group analysis repo2tools corpus-saturation --base-url http://127.0.0.1:18002/v1 --model qwen3-embedding-4b
+uv run --group analysis a4a corpus-saturation --base-url http://127.0.0.1:18002/v1 --model qwen3-embedding-4b
 uv run --with matplotlib python docs/make_figures.py
 ```
 
@@ -326,7 +326,7 @@ At threshold 0.85, 97 repositories, mean of 10 random orders:
 
 ### Does the pipeline work on these repositories?
 
-A sample check with real generation, one run each, on five of the scanned repositories (`repo2tools generate <repo> --commit <scanned commit> --follow-reexports --classes --max-tools 60`, Qwen3-Coder):
+A sample check with real generation, one run each, on five of the scanned repositories (`a4a generate <repo> --commit <scanned commit> --follow-reexports --classes --max-tools 60`, Qwen3-Coder):
 
 | Repository | API elements | Picked by the LLM | Accepted by the checks | On the first try |
 | --- | --- | --- | --- | --- |
@@ -341,8 +341,8 @@ A sample check with real generation, one run each, on five of the scanned reposi
 ### Exercises with known answers, from each repository's documentation
 
 ```sh
-uv run repo2tools corpus-exercises --jobs 3
-uv run repo2tools corpus-tasks --base-url http://127.0.0.1:18003/v1 --model qwen3-32b \
+uv run a4a corpus-exercises --jobs 3
+uv run a4a corpus-tasks --base-url http://127.0.0.1:18003/v1 --model qwen3-32b \
     --solver-base-url http://127.0.0.1:18000/v1 --solver-model qwen3-coder
 ```
 
@@ -372,7 +372,7 @@ Read on 15 November 2026, 97 repositories:
 ### How many exercises does a source hold, and what do they cover?
 
 ```sh
-uv run repo2tools corpus-density
+uv run a4a corpus-density
 ```
 
 This needs no model and no sandbox. It reads the saved scans and exercises, counts lines of text in the clones, and writes `out/corpus/density.md`. Each kind of source gets its own denominator: an example found in a documentation file is counted against the lines of documentation files, an example found in a docstring against the lines of docstrings.
@@ -394,7 +394,7 @@ Limits. Which elements an exercise uses comes from the static usage scan, which 
 ### Do generated tools help on these questions?
 
 ```sh
-uv run repo2tools corpus-benchmark --writer-base-url http://127.0.0.1:18000/v1 --writer-model qwen3-coder \
+uv run a4a corpus-benchmark --writer-base-url http://127.0.0.1:18000/v1 --writer-model qwen3-coder \
     --base-url http://127.0.0.1:18001/v1 --model qwen3-8b --tag <name> --runs 3
 ```
 
@@ -443,23 +443,23 @@ Read on 15 November 2026 (`--tag bench2`), right answers as the mean of 3 runs, 
 
 ## Usability: can a small model call the tools
 
-A tool that agrees with the library is still of no use if the model can't pick it or call it. `repo2tools usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
+A tool that agrees with the library is still of no use if the model can't pick it or call it. `a4a usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
 
 ```sh
 T=toolsets/generated/packaging-coder-60
 # one task per checked sample call, written from the library function, never from the tool's name or description
-uv run repo2tools usability tasks  $T --base-url http://127.0.0.1:18000/v1 --model qwen3-32b
+uv run a4a usability tasks  $T --base-url http://127.0.0.1:18000/v1 --model qwen3-32b
 # the small model gets each task with the tool alone, with the whole set, and with no tools
-uv run repo2tools usability check  $T --base-url http://127.0.0.1:18001/v1 --model qwen3-8b
+uv run a4a usability check  $T --base-url http://127.0.0.1:18001/v1 --model qwen3-8b
 # rewrite names and descriptions of tools with a failed task; the result is the tool set <set>-usable
-uv run repo2tools usability repair $T --base-url http://127.0.0.1:18001/v1 --model qwen3-8b \
+uv run a4a usability repair $T --base-url http://127.0.0.1:18001/v1 --model qwen3-8b \
     --writer-url http://127.0.0.1:18000/v1 --writer-model qwen3-32b
 ```
 
 - **A task is right** when the model calls the tool the task was written for, with the task's arguments or with others that give the same result. A true/false result needs the arguments themselves. A right final answer without that call does not count: 51 of 135 answers can be guessed without tools.
 - **Half of each tool's tasks are held out.** The rewriter sees only the other half, with what the small model did on them.
 - **A rewrite is kept** only if the small model then gets more of the tool's tasks right and its final answer is the tool's result at least as often as before.
-- **The LLM never touches the code.** The script replaces the function name and the docstring, and the tool must pass the checks of `repo2tools generate` again. The new set is then measured through its own server.
+- **The LLM never touches the code.** The script replaces the function name and the docstring, and the tool must pass the checks of `a4a generate` again. The new set is then measured through its own server.
 
 Reports: `out/generated/<set>/usability.md` and `out/generated/<set>-usable/usability_repair.md`.
 
@@ -473,22 +473,22 @@ Needs a ToolGym checkout next to this repo (`../tool-gym`) and a model with tool
 T=toolsets/generated/packaging-coder-60
 
 # 1. types for the generated tools, checked by running them; writes ToolGym's catalog folder
-uv run repo2tools toolgym-types $T --dest ../tool-gym/gym/tools/mcp_servers/catalog --base-url http://127.0.0.1:18000/v1 --model qwen3-32b
+uv run a4a toolgym-types $T --dest ../tool-gym/gym/tools/mcp_servers/catalog --base-url http://127.0.0.1:18000/v1 --model qwen3-32b
 
 # 2. local variants of ToolGym's chain check and pipeline, in its ignored local/ folders
-uv run repo2tools toolgym-local install ../tool-gym
+uv run a4a toolgym-local install ../tool-gym
 
 # 3. ToolGym's own checks: the catalog loads, and every 2-step chain runs on the live tools
 (cd ../tool-gym && uv run python -m gym.tools.mcp_servers.check --no-report-file)
-uv run repo2tools toolgym-local chains ../tool-gym repo2tools_packaging_coder_60 --tool-server $T/run_server.sh
+uv run a4a toolgym-local chains ../tool-gym repo2tools_packaging_coder_60 --tool-server $T/run_server.sh
 
 # 4. synthetic tasks from ToolGym's pipeline, then as traces in our format
-uv run repo2tools toolgym-local generate ../tool-gym repo2tools_packaging_coder_60 --tool-server $T/run_server.sh \
+uv run a4a toolgym-local generate ../tool-gym repo2tools_packaging_coder_60 --tool-server $T/run_server.sh \
     --base-url http://127.0.0.1:18000/v1 --model qwen3-32b --min-length 2 --max-length 4 --chains 40 --run-name generated-short
-uv run repo2tools toolgym-traces ../tool-gym/results/gym/repo2tools/generated-short-* -o out/traces/toolgym-generated-short.jsonl.gz
+uv run a4a toolgym-traces ../tool-gym/results/gym/repo2tools/generated-short-* -o out/traces/toolgym-generated-short.jsonl.gz
 ```
 
-How the types are made (`repo2tools toolgym-types`):
+How the types are made (`a4a toolgym-types`):
 
 1. Every tool is called on its sample inputs. Inputs that work, and their outputs, are the examples.
 2. An LLM proposes a small shared vocabulary, e.g. `VersionString` for every parameter that takes a version.
@@ -501,20 +501,20 @@ More steps around ToolGym:
 
 ```sh
 # rewrite tools whose output no tool accepts; the result is the tool set <set>-chained
-uv run repo2tools repair-chains $T --base-url http://127.0.0.1:18000/v1 --model qwen3-32b
+uv run a4a repair-chains $T --base-url http://127.0.0.1:18000/v1 --model qwen3-32b
 # type the repaired set with the same claims as the original, so the two can be compared
-uv run repo2tools toolgym-types $T-chained --dest ../tool-gym/gym/tools/mcp_servers/catalog --proposal-from out/generated/packaging-coder-60/toolgym_proposal.json
+uv run a4a toolgym-types $T-chained --dest ../tool-gym/gym/tools/mcp_servers/catalog --proposal-from out/generated/packaging-coder-60/toolgym_proposal.json
 
 # longer chains that do not loop: walk to the least visited step, and drop chains that still repeat a tool
-uv run repo2tools toolgym-local generate ../tool-gym repo2tools_packaging_coder_60_chained --tool-server $T-chained/run_server.sh \
+uv run a4a toolgym-local generate ../tool-gym repo2tools_packaging_coder_60_chained --tool-server $T-chained/run_server.sh \
     --base-url http://127.0.0.1:18000/v1 --model qwen3-32b --min-length 4 --max-length 6 --chains 60 --spread-walk --max-tool-uses 2
 
 # ToolGym's tasks as exercises with known answers (the output of the chain's last call), for any model
-uv run repo2tools toolgym-exercises ../tool-gym/results/gym/repo2tools/<run> -o out/toolgym_exercises/<name>.jsonl
-uv run repo2tools run-model out/toolgym_exercises/<name>.jsonl --mode tools --base-url <url> --model <model> -- $T-chained/run_server.sh
+uv run a4a toolgym-exercises ../tool-gym/results/gym/repo2tools/<run> -o out/toolgym_exercises/<name>.jsonl
+uv run a4a run-model out/toolgym_exercises/<name>.jsonl --mode tools --base-url <url> --model <model> -- $T-chained/run_server.sh
 
 # recorded chains as worked examples before the task
-uv run repo2tools run-model out/packaging/exercises.jsonl --mode tools --horizon long --examples out/traces/<chains>.jsonl.gz --n-examples 3 \
+uv run a4a run-model out/packaging/exercises.jsonl --mode tools --horizon long --examples out/traces/<chains>.jsonl.gz --n-examples 3 \
     --base-url <url> --model <model> -- toolsets/pypa_packaging/run_server.sh
 ```
 
@@ -526,14 +526,14 @@ A trace records every request of a run, with its full messages and token counts.
 
 ```sh
 # known-good solutions, no model (the file is 4.6 MB, so it isn't committed)
-uv run repo2tools reference-traces out/packaging/exercises.jsonl -o out/traces/reference-function.jsonl -- uv run python toolsets/pypa_packaging/server.py
+uv run a4a reference-traces out/packaging/exercises.jsonl -o out/traces/reference-function.jsonl -- uv run python toolsets/pypa_packaging/server.py
 
 # model runs save traces to out/traces/. --tool-choice first|always forces tool use
-uv run repo2tools run-model out/packaging/exercises.jsonl --mode tools --horizon long --tool-choice always \
+uv run a4a run-model out/packaging/exercises.jsonl --mode tools --horizon long --tool-choice always \
     --base-url http://127.0.0.1:18000/v1 --model qwen3-8b -- uv run python toolsets/pypa_packaging/server.py
 
 # what repeats, and how many tokens each compression idea would save
-uv run --group analysis repo2tools analyze-traces out/traces/reference-function.jsonl out/traces/*.gz -o out/traces/analysis
+uv run --group analysis a4a analyze-traces out/traces/reference-function.jsonl out/traces/*.gz -o out/traces/analysis
 ```
 
 The analysis counts tokens with the model's own tokenizer and chat template. The parts of a prompt add up to exactly the rendered prompt. Savings are simulated on recorded runs, and their effect on accuracy is not measured.
@@ -593,16 +593,16 @@ No GPU or API key needed. The LLM and the endpoint are scripted. Tools are gener
 
 ## Repository layout
 
-The code is one Python package with one command, `repo2tools <command>`. Every command is also a module: `repo2tools generate` is `python -m repo2tools.synthesis.pipeline`. The package is used from a checkout, because tool sets, results and caches live next to the code.
+The code is one Python package with one command, `a4a <command>` (`repo2tools <command>`, its first name, still works). Every command is also a module: `a4a generate` is `python -m a4a.repo2tools.pipeline`. The package is used from a checkout, because tool sets, results and caches live next to the code.
 
 ```text
-src/repo2tools/
-├── cli.py                   the `repo2tools` command; imports a module only when its command is used
+src/a4a/
+├── cli.py                   the `a4a` command; imports a module only when its command is used
 ├── paths.py                 where the checkout and the local API key file are
 ├── sources/                 kinds of source that exercises are extracted from
 │   ├── base.py                                 the `Source` interface: parts, elements, drafts, uses, box
 │   └── python_repository.py                    a scanned Python repository: its documentation files and docstrings, and its sandbox
-├── synthesis/               repository -> checked tools
+├── repo2tools/              the part that was built first: repository -> checked tools
 │   ├── pipeline.py          generate           clone, propose, write, check, repair, serve
 │   ├── worker.py                               checks one tool; runs inside the tool set's own environment and sandbox
 │   ├── scrape.py            scrape             static `ast` scan of the public API, also following re-exports; never imports the package
@@ -658,23 +658,23 @@ These steps need clones next to this repo: `../source-repos/packaging` (pypa/pac
 
 ```sh
 # scrape a public API
-uv run repo2tools scrape ../source-repos/arrow arrow -o out/arrow/api.json
-uv run repo2tools scrape ../source-repos/packaging/src packaging -o out/packaging/api.json
+uv run a4a scrape ../source-repos/arrow arrow -o out/arrow/api.json
+uv run a4a scrape ../source-repos/packaging/src packaging -o out/packaging/api.json
 
 # ToolGym's catalog today (offline; no LLM, no servers)
 (cd ../tool-gym && uv run python -m gym.tools.mcp_servers.check --no-report-file) > out/baseline/check.txt
 (cd ../tool-gym && uv run python -m gym.tools.mcp_servers.chain_check --dry-run) > out/baseline/chains.txt
-uv run repo2tools toolgym-chains out/baseline/check.txt out/baseline/chains.txt
+uv run a4a toolgym-chains out/baseline/check.txt out/baseline/chains.txt
 
 # packaging: test cases, then exercises (test_cases.jsonl is 17 MB and not committed)
 (cd ../source-repos/packaging && PYTHONPATH="$OLDPWD/src:src" TEST_CASES_OUT="$OLDPWD/out/packaging/test_cases.jsonl" \
-    uvx --with pretend --with tomli_w pytest --collect-only -q -p no:cacheprovider -p repo2tools.evaluation.test_case_plugin tests --ignore=tests/property)
-uv run repo2tools make-exercises --per-kind 20 --long 20 --seed 0
+    uvx --with pretend --with tomli_w pytest --collect-only -q -p no:cacheprovider -p a4a.evaluation.test_case_plugin tests --ignore=tests/property)
+uv run a4a make-exercises --per-kind 20 --long 20 --seed 0
 
 # add the tools to ToolGym, then see which links it finds
-uv run repo2tools toolgym-export --dest ../tool-gym/gym/tools/mcp_servers/catalog
+uv run a4a toolgym-export --dest ../tool-gym/gym/tools/mcp_servers/catalog
 (cd ../tool-gym && uv run python -m gym.tools.mcp_servers.chain_check --dry-run kobiljon_pypa_packaging_tools) > out/packaging_toolgym/chains_packaging.txt
-uv run repo2tools toolgym-edges out/packaging_toolgym/chains_packaging.txt out/packaging/exercises.jsonl \
+uv run a4a toolgym-edges out/packaging_toolgym/chains_packaging.txt out/packaging/exercises.jsonl \
     ../tool-gym/gym/tools/mcp_servers/catalog/kobiljon_pypa_packaging_tools/mcp_server.json
 ```
 
@@ -682,7 +682,7 @@ The figures are drawn by `uv run --with matplotlib python docs/make_figures.py`;
 
 ## Related work
 
-- **ToolMaker**: [LLM Agents Making Agent Tools](https://aclanthology.org/2025.acl-long.1266/) (ACL 2025) turns papers and repositories into tested tools. `repo2tools` shares the goal and differs in the oracle: the wrapped library itself, through differential testing.
+- **ToolMaker**: [LLM Agents Making Agent Tools](https://aclanthology.org/2025.acl-long.1266/) (ACL 2025) turns papers and repositories into tested tools. `a4a` shares the goal and differs in the oracle: the wrapped library itself, through differential testing.
 - **CodeGym**: [Generalizable End-to-End Tool-Use RL with Synthetic CodeGym](https://proceedings.iclr.cc/paper_files/paper/2026/hash/1e4322fddd833f83c855660ac65e428d-Abstract-Conference.html) (ICLR 2026) turns coding problems into tool-use environments with verifiable outcomes.
 - **Agent World Model**: [Infinity Synthetic Environments for Agentic RL](https://proceedings.mlr.press/v306/wang26jh.html) (ICML 2026) generates executable environments whose tools are exposed through MCP.
 - **SERA**: [Soft-Verified Efficient Repository Agents](https://proceedings.mlr.press/v306/shen26o.html) (ICML 2026) generates repository-specific trajectories where full verification is not available.

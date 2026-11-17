@@ -1,4 +1,4 @@
-"""Tests for `repo2tools repair-chains`: a real generated tool set with one dead-end tool, and a scripted LLM."""
+"""Tests for `a4a repair-chains`: a real generated tool set with one dead-end tool, and a scripted LLM."""
 
 import asyncio
 import json
@@ -6,10 +6,10 @@ import subprocess
 
 import pytest
 
+from a4a.repo2tools import chain_repair, pipeline
+from a4a.toolgym import type_inference
+from a4a.toolgym.type_inference import links
 from helpers import ScriptedLLM, options
-from repo2tools.synthesis import chain_repair, pipeline
-from repo2tools.toolgym import type_inference
-from repo2tools.toolgym.type_inference import links
 
 LIBRARY = '''"""Product codes such as AB-12."""
 import re

@@ -1,4 +1,4 @@
-"""Tests for `repo2tools usage`, and for picking tools with usage counts and classes in `repo2tools generate`."""
+"""Tests for `a4a usage`, and for picking tools with usage counts and classes in `a4a generate`."""
 
 import asyncio
 import json
@@ -8,11 +8,11 @@ from pathlib import Path
 
 import pytest
 
+from a4a.repo2tools import pipeline
+from a4a.repo2tools.scrape import constructors, scrape_package
+from a4a.repo2tools.usage import Api, Usage, count_usage, example_blocks
+from a4a.repo2tools.worker import direct_call_problem
 from helpers import ScriptedLLM, options
-from repo2tools.synthesis import pipeline
-from repo2tools.synthesis.scrape import constructors, scrape_package
-from repo2tools.synthesis.usage import Api, Usage, count_usage, example_blocks
-from repo2tools.synthesis.worker import direct_call_problem
 
 LIBRARY = '''"""Money amounts such as "12.50 EUR"."""
 

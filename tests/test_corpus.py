@@ -9,20 +9,20 @@ from types import SimpleNamespace
 
 import pytest
 
+from a4a.corpus import benchmark, python_tool
+from a4a.corpus.candidates import assess, github_repo, report as candidates_report, select
+from a4a.corpus.density import density_of, rank_correlation, report as density_report
+from a4a.corpus.exercises import exercises_for, report as exercises_report
+from a4a.corpus.granularity import level_counts, tool_candidates
+from a4a.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
+from a4a.corpus.scan import likely_names, report, scan_one
+from a4a.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
+from a4a.evaluation.exercise_check import check as exercise_check
+from a4a.repo2tools import pipeline
+from a4a.repo2tools.scrape import public_api
+from a4a.sources.base import Source
+from a4a.sources.python_repository import PythonRepository, drafts_of, examples_of, names_of, setup_for, text_lines
 from helpers import ScriptedLLM
-from repo2tools.corpus import benchmark, python_tool
-from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
-from repo2tools.corpus.density import density_of, rank_correlation, report as density_report
-from repo2tools.corpus.exercises import exercises_for, report as exercises_report
-from repo2tools.corpus.granularity import level_counts, tool_candidates
-from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
-from repo2tools.corpus.scan import likely_names, report, scan_one
-from repo2tools.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
-from repo2tools.evaluation.exercise_check import check as exercise_check
-from repo2tools.sources.base import Source
-from repo2tools.sources.python_repository import PythonRepository, drafts_of, examples_of, names_of, setup_for, text_lines
-from repo2tools.synthesis import pipeline
-from repo2tools.synthesis.scrape import public_api
 
 
 def meta(wheels=("x-1.0-py3-none-any.whl",), sdist_mb=0.1, links=None, **info):
@@ -369,7 +369,7 @@ def test_standard_types_get_one_plain_form():
     import datetime
     import decimal
 
-    from repo2tools.corpus.example_worker import plain
+    from a4a.corpus.example_worker import plain
 
     kinds: set = set()
     value = {"when": datetime.datetime(2003, 9, 25, 10, 36), "span": datetime.timedelta(minutes=2), "price": decimal.Decimal("1.50"), "tags": {"b", "a"}, "pair": (1, 2.5)}

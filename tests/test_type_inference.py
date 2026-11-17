@@ -1,4 +1,4 @@
-"""Tests for `repo2tools toolgym-types`: types proposed by a scripted LLM, checked by running real generated tools."""
+"""Tests for `a4a toolgym-types`: types proposed by a scripted LLM, checked by running real generated tools."""
 
 import asyncio
 import json
@@ -6,10 +6,10 @@ import subprocess
 
 import pytest
 
+from a4a.repo2tools import pipeline
+from a4a.toolgym import type_inference
+from a4a.toolgym.type_inference import links, parse_type
 from helpers import ScriptedLLM, options
-from repo2tools.synthesis import pipeline
-from repo2tools.toolgym import type_inference
-from repo2tools.toolgym.type_inference import links, parse_type
 
 LIBRARY = '''"""Product codes such as AB-12."""
 import re

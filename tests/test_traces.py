@@ -1,4 +1,4 @@
-"""Tests for the trace format, forced tool use in `repo2tools run-model`, and `repo2tools analyze-traces`. No model, no network."""
+"""Tests for the trace format, forced tool use in `a4a run-model`, and `a4a analyze-traces`. No model, no network."""
 
 import asyncio
 import json
@@ -7,9 +7,9 @@ from types import SimpleNamespace
 
 from openai.types.chat import ChatCompletion
 
-from repo2tools.evaluation import run_model
-from repo2tools.traces.analyze import Change, analyze, exact_repeats, flows, measure, merge_change, occurrences, prompts, repeated_arguments, sequences
-from repo2tools.traces.format import SCHEMA, read_traces, tool_list_id, trace_from_calls, write_traces
+from a4a.evaluation import run_model
+from a4a.traces.analyze import Change, analyze, exact_repeats, flows, measure, merge_change, occurrences, prompts, repeated_arguments, sequences
+from a4a.traces.format import SCHEMA, read_traces, tool_list_id, trace_from_calls, write_traces
 
 
 class WordTokenizer:
@@ -190,7 +190,7 @@ def test_server_counts_are_compared():
     assert result["completion_tokens"] == 20
 
 
-# --- `repo2tools run-model`, with a scripted endpoint and tools ------------------------------------------
+# --- `a4a run-model`, with a scripted endpoint and tools ------------------------------------------
 
 
 def completion(content=None, calls=None):

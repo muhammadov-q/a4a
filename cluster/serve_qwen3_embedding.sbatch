@@ -1,6 +1,6 @@
 #!/bin/bash
 # Serve Qwen3-Embedding-4B with vLLM as an OpenAI-compatible embeddings endpoint (/v1/embeddings),
-# for `repo2tools corpus-saturation`. Free gratis account, one RTX 4090 (24 GB).
+# for `a4a corpus-saturation`. Free gratis account, one RTX 4090 (24 GB).
 #SBATCH --job-name=vllm-qwen3-embed
 #SBATCH --account=gratis
 #SBATCH --qos=job_gratis
