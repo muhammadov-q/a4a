@@ -17,7 +17,7 @@ from a4a.corpus.granularity import level_counts, tool_candidates
 from a4a.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
 from a4a.corpus.scan import likely_names, report, scan_one
 from a4a.corpus.targets import draft_of, examples_for, messages_for, report as targets_report, targets_for
-from a4a.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, reference_of, report as tasks_report, solvable, task_problem, write_tasks
+from a4a.corpus.tasks import answer_form, as_exercise, as_item, choose, literals_of, on_target, reference_of, report as tasks_report, solvable, task_problem, write_tasks
 from a4a.evaluation.exercise_check import check as exercise_check
 from a4a.repo2tools import pipeline
 from a4a.repo2tools.scrape import public_api
@@ -642,3 +642,19 @@ def test_examples_from_a_model_are_checked_the_same_way_with_and_without_a_targe
     assert "| free | Only the name of the library | 2 | 2 | 2 | 2 | 1 | 2 | 0 | 0.00 |" in text
     assert "Way `target`: 1 of 2 requests give a verified example that uses the element it was asked to use (50%)." in text and "Way `named`: 2 of 2 requests" in text
     assert "Reached both ways: 1. Only with the signature and documentation: 0. Only by name: 1. Neither: 0." in text
+
+
+def test_questions_for_examples_a_model_wrote_keep_one_example_per_element_that_it_really_uses():
+    base = {"repo": "https://github.com/me/shapes", "commit": "a" * 40, "package": "shapes", "file": "model:target", "module": None, "documented": None,
+            "steps": ["from shapes import parse"], "answer": 9.0, "answer_kinds": []}
+    examples = [base | {"id": "s-named-000", "way": "named", "target": "shapes.parse", "expression": "parse('3').area", "uses": ["shapes.Square.area", "shapes.parse"]},
+                base | {"id": "s-target-000", "way": "target", "target": "shapes.parse", "expression": "parse('3').area", "uses": ["shapes.Square.area", "shapes.parse"]},
+                base | {"id": "s-target-001", "way": "target", "target": "shapes.unused", "expression": "parse('3').area", "uses": ["shapes.Square.area", "shapes.parse"]},  # misses its element
+                base | {"id": "s-free-000", "way": "free", "target": None, "expression": "parse('3').area", "uses": ["shapes.parse"]}]
+    assert [e["id"] for e in on_target(examples)] == ["s-target-000"]  # the one with the reference is kept for an element both ways reached
+    assert [e["id"] for e in choose(examples, 10)] == ["s-target-000"]
+    documented = [base | {"id": "s-001", "expression": "parse('3').area", "uses": ["shapes.parse"], "documented": "9.0"}]
+    assert on_target(documented) == documented  # examples from documentation are not filtered
+    made, plain = as_exercise(examples[1], "With the shapes library, find the area of the square read from the text '3'."), as_exercise(documented[0], "The same question.")
+    assert made["provenance"]["answer_from"] == "an example a model wrote for `shapes.parse`, run twice at this commit with the same result"
+    assert plain["provenance"]["answer_from"].startswith("the documentation's example") and made["check"] == {"kind": "number"}

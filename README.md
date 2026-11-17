@@ -439,6 +439,29 @@ One pass takes these four libraries from 58% to 78% of their public API (223 to 
 
 Limits. One model. Which elements an example uses comes from the static usage scan. A verified example has one witness, its own run: nothing says the value is the right one for a question, and nobody has judged whether the examples are meaningful. An element that is not reached in one request may be reachable with a second try or a stronger model; that was not tried.
 
+### Questions for the aimed examples, and how models do on them
+
+```sh
+uv run a4a corpus-tasks --base-url http://127.0.0.1:18003/v1 --model qwen3-32b --solver-base-url http://127.0.0.1:18000/v1 --solver-model qwen3-coder \
+    --examples out/corpus/targets --name tasks-aimed
+uv run a4a corpus-benchmark --tag aimed1 --tasks tasks-aimed --min-tasks 3 --conditions none python --model qwen3-8b --base-url http://127.0.0.1:18001/v1
+```
+
+An example that a model wrote and a sandbox ran twice is not yet a question. `a4a corpus-tasks` takes the aimed examples that really use the element they were written for, one per element, and treats them like the documentation examples: a model writes a request in plain words, and the request is kept only if a second model can solve it from the wording and the reference of the API elements. Of the 144 elements with a verified example, 108 can be asked in words, and **66 questions** are kept, in 8 repositories. They are about API elements that no documentation exercise uses.
+
+On the 7 repositories of the benchmark (62 questions), one run, with the same harness as below:
+
+| Model | Questions | No tools | One Python tool | For comparison, the documentation questions: no tools | One Python tool |
+| --- | --- | --- | --- | --- | --- |
+| Qwen3-8B | 62 | 25 (40%) | 38 (61%) | 45% | 58% |
+| Qwen3-32B | 62 | 32 (52%) | 39 (63%) | 58% | 68% |
+
+- **The questions behave like the documentation questions.** A model that can run code does better than one that cannot, by about the same margin (8B: 20 questions right only with the tool against 7 only without, p = 0.02; 32B: 13 against 6, p = 0.17).
+- **Without tools they are a little harder** (40% and 52%, against 45% and 58%). They ask about the parts of a library that its documentation does not show.
+- **Fewer of them can be guessed.** 9 of 62 answers are true or false (15%), against 44 of 120 (37%) for the documentation questions.
+
+Limits. 62 questions and one run. The two question sets come from the same repositories but are not the same size, so the comparison of the two is rough. Each answer has one witness, the run of the example; a second model solving the question from its wording is a second check of the question, not of the answer. Some examples depend on the computer they ran on (one reads the local time zone file).
+
 ### Do generated tools help on these questions?
 
 ```sh
