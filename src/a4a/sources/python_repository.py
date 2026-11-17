@@ -20,9 +20,8 @@ from a4a.corpus.scan import CLONES, folder_name, likely_names, locate
 from a4a.repo2tools import pipeline
 from a4a.repo2tools.pipeline import native_code, project_metadata
 from a4a.repo2tools.usage import DOC_SUFFIXES, SKIP_DIRS, Api, Usage, absolute_imports, is_test_file
-from a4a.sources.base import Source
+from a4a.sources.base import EXAMPLE_WORKER, Source
 
-EXAMPLE_WORKER = Path(__file__).resolve().parents[1] / "corpus" / "example_worker.py"
 MAX_STEPS, MAX_CODE, MAX_EXPRESSION, MAX_DRAFTS = 12, 1500, 300, 400
 
 
@@ -254,6 +253,9 @@ class PythonRepository(Source):
 
     def uses(self, draft: dict) -> list[str]:
         return uses_of(draft, self.api, self.root) if self.api else []
+
+    def origin(self, draft: dict) -> dict:
+        return {"repo": self.candidate["repo"], "commit": self.candidate.get("commit"), "package": self.package, "file": draft["file"], "module": draft["module"]}
 
     def box(self, set_name: str, readable: Path = EXAMPLE_WORKER):
         return box_for(self.candidate, set_name, self.clones, readable)

@@ -1,0 +1,145 @@
+{
+ "databases": [
+  {
+   "database": "chinook",
+   "sha256": "bdf635be69850bd3be09c9a2dbeef7ddfb80036bd3ef3381383cd03b61e4a61a",
+   "error": null,
+   "drafts": 128,
+   "outcomes": {
+    "verified": 128
+   },
+   "errors": {},
+   "seconds": 0.4,
+   "tables": 11,
+   "columns": 64,
+   "parts": {
+    "schema": 140,
+    "rows": 15607
+   },
+   "elements": 75,
+   "covered": 75,
+   "not_covered": [],
+   "templates": {
+    "rows": [
+     11,
+     11
+    ],
+    "distinct": [
+     64,
+     64
+    ],
+    "range": [
+     5,
+     5
+    ],
+    "filter": [
+     37,
+     37
+    ],
+    "most": [
+     11,
+     11
+    ]
+   }
+  },
+  {
+   "database": "northwind",
+   "sha256": "2f4f5c68dfcd33ba27373eae48c7a4869800c68095ee0f9f0da494f83382a877",
+   "error": null,
+   "drafts": 165,
+   "outcomes": {
+    "verified": 165
+   },
+   "errors": {},
+   "seconds": 2.4,
+   "tables": 13,
+   "columns": 88,
+   "parts": {
+    "schema": 336,
+    "rows": 625890
+   },
+   "elements": 101,
+   "covered": 95,
+   "not_covered": [
+    "CustomerCustomerDemo",
+    "CustomerCustomerDemo.CustomerID",
+    "CustomerCustomerDemo.CustomerTypeID",
+    "CustomerDemographics",
+    "CustomerDemographics.CustomerDesc",
+    "CustomerDemographics.CustomerTypeID"
+   ],
+   "templates": {
+    "rows": [
+     11,
+     11
+    ],
+    "distinct": [
+     84,
+     84
+    ],
+    "range": [
+     8,
+     8
+    ],
+    "filter": [
+     51,
+     51
+    ],
+    "most": [
+     11,
+     11
+    ]
+   }
+  },
+  {
+   "database": "sakila",
+   "sha256": "16daaf58a1b35e78925a0c6ca3a8b6d6c8df1290365e66f1765272e0a419a8cc",
+   "error": null,
+   "drafts": 164,
+   "outcomes": {
+    "verified": 163,
+    "error": 1
+   },
+   "errors": {
+    "TypeError": 1
+   },
+   "seconds": 0.7,
+   "tables": 16,
+   "columns": 89,
+   "parts": {
+    "schema": 378,
+    "rows": 46273
+   },
+   "elements": 105,
+   "covered": 101,
+   "not_covered": [
+    "film_text",
+    "film_text.description",
+    "film_text.film_id",
+    "film_text.title"
+   ],
+   "templates": {
+    "rows": [
+     15,
+     15
+    ],
+    "distinct": [
+     86,
+     86
+    ],
+    "range": [
+     5,
+     5
+    ],
+    "filter": [
+     36,
+     36
+    ],
+    "most": [
+     22,
+     21
+    ]
+   }
+  }
+ ]
+}
