@@ -617,6 +617,7 @@ def test_examples_from_a_model_are_checked_the_same_way_with_and_without_a_targe
     old = "from shapes import parse\nparse('2').area"
     llm = ScriptedLLM({("free", "me__shapes-0"): reply(old), ("free", "me__shapes-1"): reply(old),  # twice the same example
                        ("listed", "me__shapes-0"): reply(uses["shapes.Square.corners"]), ("listed", "me__shapes-1"): ["no JSON here"],
+                       ("named", "me__shapes-0"): reply(uses[targets[0]]), ("named", "me__shapes-1"): reply(uses[targets[1]]),
                        ("target", "me__shapes-0"): reply(uses[targets[0]]), ("target", "me__shapes-1"): reply(old)})  # the second reply ignores its target
     record, verified = asyncio.run(examples_for(source, covered, llm, 2))
     assert record["error"] is None and (record["api"], record["covered_by_documentation"], record["open"]) == (5, 2, 3)
@@ -627,11 +628,17 @@ def test_examples_from_a_model_are_checked_the_same_way_with_and_without_a_targe
     assert draft_of("x = 1\ny = x + 1") == {"module": None, "steps": ["x = 1", "y = x + 1"], "expression": "y"} and draft_of("x = 1\nx + 1")["expression"] == "x + 1"
     assert draft_of("for i in range(3):\n    pass") is None and draft_of("a, b = 1, 2") is None and draft_of("def broken(") is None and draft_of(None) is None
     assert (ways["target"]["verified"], ways["target"]["hits"], ways["target"]["new_elements"]) == (2, 1, 1) and targets[0] in ways["target"]["used"]
+    assert (ways["named"]["requests"], ways["named"]["hits"]) == (2, 2) and record["paired"] == {"both": 1, "only_with_reference": 0, "only_by_name": 1, "neither": 0}
     assert [e["id"] for e in verified][:2] == ["me__shapes-free-000", "me__shapes-free-001"] and verified[0]["answer"] == 4.0 and verified[0]["documented"] is None
-    assert {e["target"] for e in verified if e["way"] == "target"} == set(targets) and not (tmp_path / "cache" / "envs" / "targets-me__shapes").exists()
+    assert {e["target"] for e in verified if e["way"] in ("named", "target")} == set(targets) and not (tmp_path / "cache" / "envs" / "targets-me__shapes").exists()
 
     asked = {stage: messages[1]["content"] for stage, subject, messages in llm.chats if subject.endswith("-0")}
     assert "public API" not in asked["free"] and "shapes.Square.scaled" in asked["listed"] and f"must use `{targets[0]}`" in asked["target"]
+    aim = f"The example must use `{targets[0]}`: the value of the last line has to come from it."
+    assert aim in asked["named"] and aim in asked["target"] and "[" not in asked["named"] and "- " + targets[0] in asked["target"]  # the same request; only one has the reference
+    assert targets_for(source.elements(), covered, None) == targets_for(source.elements(), covered, 99) and len(targets_for(source.elements(), covered, None)) == 3
     assert messages_for("free", "shapes", [], None, "")[1]["content"].startswith("Library: `shapes`.\n\nWrite one short example")
     text = targets_report([record], "scripted", 2)
-    assert "| free | Only the name of the library | 2 | 2 | 2 | 2 | 1 | 2 | 0 | 0.00 |" in text and "1 of 2 verified examples use the element they were asked to use (50%)" in text
+    assert "| free | Only the name of the library | 2 | 2 | 2 | 2 | 1 | 2 | 0 | 0.00 |" in text
+    assert "Way `target`: 1 of 2 requests give a verified example that uses the element it was asked to use (50%)." in text and "Way `named`: 2 of 2 requests" in text
+    assert "Reached both ways: 1. Only with the signature and documentation: 0. Only by name: 1. Neither: 0." in text

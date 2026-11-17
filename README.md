@@ -397,25 +397,47 @@ Limits. Which elements an exercise uses comes from the static usage scan, which 
 
 ```sh
 uv run a4a corpus-targets --base-url http://127.0.0.1:18000/v1 --model qwen3-coder --requests 40
+uv run a4a corpus-targets ... --tag seed2 --seed 1000                                             # again, with other samples
+uv run a4a corpus-targets ... --tag full --only packaging python-dateutil rsa more-itertools --all-open   # every open element once
 ```
 
-The documentation decides what its examples show, so the exercises made from it use a small part of a library. Here a model writes the examples, in three ways, with the same number of requests for each: it gets only the name of the library (*free*), also the names of the public API (*listed*), or one API element that no documentation exercise uses, with its signature and documentation, which the example must use (*target*). Every example is run twice in the library's sandbox and is verified when both runs give the same plain value.
+The documentation decides what its examples show, so the exercises made from it use a small part of a library. Here a model writes the examples, in four ways, with the same number of requests for each:
+
+- **free:** it gets only the name of the library
+- **listed:** it also gets the names of the public API
+- **named:** it gets one API element that no documentation exercise uses, by its name, and the example must use it
+- **target:** the same element, with its signature and documentation
+
+Every example is run twice in the library's sandbox and is verified when both runs give the same plain value. The two aimed ways are asked for the same elements, so they can be compared element by element.
 
 Qwen3-Coder-30B, 40 requests per way and repository, 8 repositories with 3,003 public API elements. Their verified documentation exercises use 427 of those (14%).
 
-| Way | Requests | Verified | Different examples | API elements used | New (not used by documentation exercises) | New per request |
+| Way | Requests | Verified | Different examples | API elements used | New (not used by documentation exercises) | New per request | The same with other samples |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| free | 320 | 274 | 50 | 19 | 8 | 0.03 | 0.02 |
+| listed | 320 | 240 | 40 | 27 | 8 | 0.03 | 0.02 |
+| named | 303 | 104 | 102 | 108 | 94 | 0.31 | 0.31 |
+| target | 303 | 141 | 141 | 155 | 136 | 0.45 | 0.40 |
+
+- **Without a target the model repeats itself.** Of 274 verified free examples, 50 are different from each other: four of five are a copy of another one. They use 19 API elements, and 8 that the documentation exercises did not have.
+- **Knowing the API does not change that.** With the names of the public API in the request, the examples again add 8.
+- **The target is what matters.** The name of one element alone gives 0.31 new elements per request, ten times the 0.03 of the free ways, and almost no copies.
+- **The reference adds to it.** With the signature and documentation the same requests give 0.45. Element by element, 60 are reached only with the reference and 22 only by name (62 both ways, 159 neither; exact sign test p = 0.00003).
+- **The numbers hold with other samples.** A second run with other seeds gives 0.02, 0.02, 0.31 and 0.40, and the same order in the comparison of the aimed ways (41 against 20, p = 0.01).
+- **What it costs.** An aimed request fails more often: 34% of the named and 47% of the target requests give a verified example, against 86% of the free ones. Most failures are code that raises. The elements nobody documents are the harder ones to call: internal helpers, classes that need other objects, things with random results.
+
+**A full pass.** For four small libraries every open element was asked for once in each aimed way (162 elements):
+
+| Package | API elements | Used by documentation exercises | Open | Reached by name | Reached with the reference | Used at the end |
 | --- | --- | --- | --- | --- | --- | --- |
-| free | 320 | 273 | 51 | 20 | 8 | 0.03 |
-| listed | 320 | 239 | 35 | 24 | 8 | 0.03 |
-| target | 303 | 138 | 138 | 151 | 132 | 0.44 |
+| `packaging` | 99 | 54 | 45 | 11 | 17 | 72 (73%) |
+| `python-dateutil` | 66 | 12 | 54 | 22 | 29 | 44 (67%) |
+| `more-itertools` | 176 | 146 | 30 | 13 | 14 | 163 (93%) |
+| `rsa` | 44 | 11 | 33 | 4 | 6 | 21 (48%) |
 
-- **Without a target the model repeats itself.** Of 273 verified free examples, 51 are different from each other: four of five are a copy of another one. They use 20 API elements, and 8 that the documentation exercises did not have.
-- **Knowing the API does not change that.** With the names of the public API in the request, the examples use 24 elements and again add 8.
-- **A target does.** Fewer of its examples survive the check (138 of 303, against 273 of 320), but every one is different, and together they add 132 new elements: 0.44 per request against 0.03, about fifteen times as many.
-- **The model mostly does what it is asked.** 118 of the 138 verified target examples use the element they were asked to use (86%). That is 39% of all target requests; the others fail because the code raises (128), gives an object and not a plain value (19), or does not repeat (6).
-- **What it costs.** A target request fails more often, because the elements nobody documents are the harder ones to call: internal helpers, classes that need other objects, things with random results.
+One pass takes these four libraries from 58% to 78% of their public API (223 to 300 of 385 elements). The 80 free and listed requests per library add nothing there. `rsa` stays lowest: many of its functions give random values, which never repeat.
 
-Limits. One model, one run, a fixed sampling temperature of 0.8 with the request number as seed. The target way gets the element's documentation as well as its name, so "a target" and "the reference of one element" are not told apart here; the listed way only shows that names alone do not help. Which elements an example uses comes from the static usage scan. A verified example has one witness, its own run: nothing says the value is the right one for a question, and nobody has judged whether the examples are meaningful. The 303 target requests ask for 12% of the 2,576 elements that the documentation exercises leave open; nothing here says what a full pass over a library would give.
+Limits. One model. Which elements an example uses comes from the static usage scan. A verified example has one witness, its own run: nothing says the value is the right one for a question, and nobody has judged whether the examples are meaningful. An element that is not reached in one request may be reachable with a second try or a stronger model; that was not tried.
 
 ### Do generated tools help on these questions?
 
@@ -680,7 +702,7 @@ src/a4a/
 │   ├── example_worker.py                       runs those examples; inside the library's own environment and sandbox
 │   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
 │   ├── density.py           corpus-density     verified exercises per 1,000 lines of each kind of source, and the API they cover
-│   ├── targets.py           corpus-targets     a model writes examples free, with the API listed, or with one target per request; same check
+│   ├── targets.py           corpus-targets     a model writes examples free, with the API listed, or aimed at one element (by name, or with its reference); same check
 │   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 ├── databases/               databases as sources
