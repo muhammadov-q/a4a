@@ -12,6 +12,7 @@ import pytest
 from helpers import ScriptedLLM
 from repo2tools.corpus import benchmark, python_tool
 from repo2tools.corpus.candidates import assess, github_repo, report as candidates_report, select
+from repo2tools.corpus.density import density_of, rank_correlation, report as density_report, text_lines
 from repo2tools.corpus.exercises import drafts_of, examples_of, exercises_for, names_of, report as exercises_report, setup_for
 from repo2tools.corpus.granularity import level_counts, tool_candidates
 from repo2tools.corpus.saturation import count_groups, curve, embed, exponent, pairs_report, report as saturation_report, similar_pairs
@@ -549,3 +550,47 @@ def test_a_call_of_the_python_tool_that_does_not_end_is_stopped(monkeypatch):
     monkeypatch.setattr(python_tool, "SECONDS", 1)
     with pytest.raises(RuntimeError, match="did not finish in 1 seconds"):
         asyncio.run(python_tool.run_python("while True:\n    pass"))
+
+
+def test_density_counts_lines_by_kind_of_source_and_the_api_that_exercises_cover(tmp_path):
+    repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES, "README.rst": SHAPES_DOCS, "docs/empty.md": "\n\n", "tests/notes.txt": "not documentation\n",
+                                                 "pyproject.toml": '[project]\nname = "shapes"\n'})
+    static = scan_one({"package": "shapes", "repo": str(repo)}, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    api = json.loads((tmp_path / "scans" / "me__shapes" / "api.json").read_text())
+    root = tmp_path / "clones" / "me__shapes"
+    # seven docstrings of one line each (module, class, five members); the README without its blank lines; a file under tests/ is not documentation
+    assert text_lines(root, root / "shapes") == {"files": sum(1 for line in SHAPES_DOCS.splitlines() if line.strip()), "docstrings": 7}
+    exercises = [{"module": None, "uses": ["Square()", "shapes.Square.area", "shapes.parse"]}, {"module": None, "uses": ["shapes.parse"]},
+                 {"module": "shapes", "uses": ["Square <"]}]
+    record = density_of(static, {"error": None}, exercises, api, 2, clones=tmp_path / "clones")
+    assert record["verified"] == {"files": 2, "docstrings": 1} and record["questions"] == 2 and record["not_run"] is None
+    assert (record["api"], record["api_in_docs"], record["api_covered"]) == (5, 2, 2) and (record["classes"], record["classes_built"]) == (1, 1)
+    assert tuple(record["most_used"]) == (2, "shapes.parse")
+    assert record["without_api"] == 1 and record["examples"] == {"files": 2}
+    text = density_report([record])
+    assert "1 scanned repositories. 1 give at least one verified exercise." in text
+    assert f"| Documentation files | {record['lines']['files']} | 2 | 2 | 100% |" in text and "| used by at least one verified exercise | 2 | 40.0% |" in text
+    assert "| `shapes` |" in text and "| 40.0% |" in text and "top 1: 100%" in text
+
+
+def test_density_without_a_clone_or_without_a_run_says_so_instead_of_guessing(tmp_path):
+    repo = git_repo(tmp_path / "me" / "shapes", {"shapes/__init__.py": SHAPES, "README.rst": SHAPES_DOCS, "pyproject.toml": '[project]\nname = "shapes"\n'})
+    static = scan_one({"package": "shapes", "repo": str(repo)}, clones=tmp_path / "clones", scans=tmp_path / "scans")
+    api = json.loads((tmp_path / "scans" / "me__shapes" / "api.json").read_text())
+    failed = density_of(static, {"error": "RuntimeError: the package has compiled code"}, [], api, None, clones=tmp_path / "clones")
+    assert failed["lines"] is not None and failed["examples"] is None and failed["not_run"] == "RuntimeError: the package has compiled code"
+    gone = density_of(static, {"error": None}, [], api, None, clones=tmp_path / "nowhere")
+    assert gone["lines"] is None and gone["examples"] is None
+    other_commit = density_of(static | {"commit": "0" * 40}, {"error": None}, [], api, None, clones=tmp_path / "clones")
+    assert other_commit["lines"] is None
+    text = density_report([failed, gone])
+    assert "Lines of text were counted in 1 clones" in text and "Left out, because the examples were not run: `shapes` (RuntimeError: the package has compiled code)" in text
+    assert "| n/a |" in text and "n/a%" not in text
+
+
+def test_rank_correlation():
+    assert rank_correlation([1, 2, 3, 4], [10, 20, 30, 40]) == pytest.approx(1.0)
+    assert rank_correlation([1, 2, 3, 4], [9, 7, 5, 1]) == pytest.approx(-1.0)
+    assert rank_correlation([1, 2, 2, 3], [1, 2, 2, 3]) == pytest.approx(1.0)  # ties share a rank
+    assert rank_correlation([1, 2, 3, 4], [1, 3, 2, 4]) == pytest.approx(0.8)
+    assert rank_correlation([1, 2], [1, 2]) is None and rank_correlation([1, 2, 3], [5, 5, 5]) is None

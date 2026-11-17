@@ -37,6 +37,7 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "corpus-scan": ("repo2tools.corpus.scan", "clone the approved repositories and scan them without running anything"),
         "corpus-saturation": ("repo2tools.corpus.saturation", "group similar tool candidates across repositories; do the distinct ones saturate?"),
         "corpus-exercises": ("repo2tools.corpus.exercises", "exercises with known answers from documentation examples, confirmed by running them in the sandbox"),
+        "corpus-density": ("repo2tools.corpus.density", "verified exercises per 1,000 lines of each kind of source, and the share of the public API they cover"),
         "corpus-tasks": ("repo2tools.corpus.tasks", "a question in plain words for each verified example, in the format of run-model"),
         "corpus-benchmark": ("repo2tools.corpus.benchmark", "per repository: score a model on its questions without tools, with generated tools, and with one Python tool"),
     },
