@@ -533,7 +533,29 @@ Drafts are made without a model, from five templates over the schema: the number
 - **Coverage is chosen, not found.** Every draft names the tables and columns it uses, so the exercises cover 94% to 100% of them. What is left out are empty tables. For repositories the exercises cover 3% of the public API, because there the documentation decides what is shown.
 - **The number of exercises follows the schema, not the data.** It is 0.4 to 0.9 per line of schema in all three databases, while per 1,000 rows it differs by a factor of about 30 (`northwind` has 40 times the rows of `chinook`).
 
-Limits. The answer of an exercise comes from its query alone: nothing else says what it should be, unlike a documentation example, which shows its result. The templates are simple, and half of the exercises ask for the number of different values of a column. There are no questions in plain words yet, so no model has been tested on these exercises.
+Limits. The answer of an exercise comes from its query alone: nothing else says what it should be, unlike a documentation example, which shows its result. The templates are simple, and half of the exercises ask for the number of different values of a column.
+
+### Questions about the databases, and how models do on them
+
+```sh
+uv run a4a db-tasks --base-url http://127.0.0.1:18003/v1 --model qwen3-32b --solver-base-url http://127.0.0.1:18000/v1 --solver-model qwen3-coder
+uv run a4a db-benchmark --tag db1 --model qwen3-8b --base-url http://127.0.0.1:18001/v1
+```
+
+`a4a db-tasks` takes at most 40 exercises per database, in turn from each template, and has a model write a request in plain words for each. As for the library questions, a request must repeat every input value of the query and show no SQL, and it is kept only if a second model, given the request and the schema, writes a query that gives the verified answer. **118 of 120 questions are kept**: a question about a table is almost always clear enough to answer.
+
+`a4a db-benchmark` then lets a model answer them without a tool, and with one tool, `run_sql`, that runs a read-only query on the database inside the sandbox. One run:
+
+| Model | Questions | No tool | One SQL tool | Right only with the tool | Right only without |
+| --- | --- | --- | --- | --- | --- |
+| Qwen3-8B | 118 | 11 (9%) | 105 (89%) | 94 | 0 |
+| Qwen3-32B | 118 | 41 (35%) | 110 (93%) | 71 | 2 |
+
+- **With the tool both models answer about nine in ten.** The questions that stay hard are the joins: the small model gets 11 of 22 "parent row with the most child rows" questions, the larger one 19.
+- **The larger model knows these databases by heart.** Without any tool it gets 35% right, and 19 of the 26 questions about the number of rows of a table; asked how many albums the Chinook database has, it answers 347. These three databases are public samples that are copied all over the web, so they are in its training data.
+- **So "no tool" is not a clean baseline here.** A source that a model has seen cannot show whether the model can find a fact or only recall it. A database made for the test, or one of these with its rows changed, would.
+
+Limits. One run, three databases, simple questions. Each answer has one witness, the query. Nothing here says how a model does on a database it has never seen.
 
 ## Usability: can a small model call the tools
 
@@ -730,7 +752,10 @@ src/a4a/
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 ├── databases/               databases as sources
 │   ├── fetch.py             db-fetch           download the approved databases; keep a file only if its SHA-256 matches
-│   └── exercises.py         db-exercises       exercises from a database, verified by two sandboxed runs; density and coverage
+│   ├── exercises.py         db-exercises       exercises from a database, verified by two sandboxed runs; density and coverage
+│   ├── tasks.py             db-tasks           a question in plain words per query, kept if a second model can answer it with a query
+│   ├── benchmark.py         db-benchmark       per database: score a model without a tool and with one SQL tool
+│   └── sql_tool.py                             the SQL tool: an MCP server with `run_sql`, read-only, inside the sandbox
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server

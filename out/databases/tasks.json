@@ -1,0 +1,103 @@
+{
+ "model": "qwen3-32b",
+ "solver": "qwen3-coder",
+ "per_database": 40,
+ "databases": [
+  {
+   "database": "chinook",
+   "exercises": 128,
+   "chosen": 40,
+   "phrased": 40,
+   "written": 40,
+   "by_template": {
+    "rows": [
+     9,
+     9
+    ],
+    "distinct": [
+     9,
+     9
+    ],
+    "filter": [
+     9,
+     9
+    ],
+    "most": [
+     8,
+     8
+    ],
+    "range": [
+     5,
+     5
+    ]
+   },
+   "dropped": {
+    "not solvable from the request": 0
+   }
+  },
+  {
+   "database": "northwind",
+   "exercises": 165,
+   "chosen": 40,
+   "phrased": 40,
+   "written": 39,
+   "by_template": {
+    "rows": [
+     8,
+     8
+    ],
+    "filter": [
+     8,
+     8
+    ],
+    "distinct": [
+     8,
+     8
+    ],
+    "most": [
+     8,
+     7
+    ],
+    "range": [
+     8,
+     8
+    ]
+   },
+   "dropped": {
+    "not solvable from the request": 1
+   }
+  },
+  {
+   "database": "sakila",
+   "exercises": 163,
+   "chosen": 40,
+   "phrased": 40,
+   "written": 39,
+   "by_template": {
+    "rows": [
+     9,
+     9
+    ],
+    "filter": [
+     9,
+     9
+    ],
+    "distinct": [
+     9,
+     9
+    ],
+    "most": [
+     8,
+     7
+    ],
+    "range": [
+     5,
+     5
+    ]
+   },
+   "dropped": {
+    "not solvable from the request": 1
+   }
+  }
+ ]
+}

@@ -45,6 +45,8 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
     "Databases: a database -> exercises": {
         "db-fetch": ("a4a.databases.fetch", "download the approved databases and check each file against its SHA-256"),
         "db-exercises": ("a4a.databases.exercises", "exercises from templates over a database's schema, verified by two sandboxed runs"),
+        "db-tasks": ("a4a.databases.tasks", "a question in plain words for each verified query, kept if a second model can answer it with a query"),
+        "db-benchmark": ("a4a.databases.benchmark", "per database: score a model on its questions without a tool and with one SQL tool"),
     },
     "ToolGym": {
         "toolgym-types": ("a4a.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),
