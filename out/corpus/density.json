@@ -1,0 +1,2555 @@
+{
+ "repositories": [
+  {
+   "package": "boto3",
+   "repo": "https://github.com/boto/boto3",
+   "commit": "3755d3acd73da0fc52c079965e271724e0f68044",
+   "code_lines": 7127,
+   "lines": {
+    "files": 24288,
+    "docstrings": 1580
+   },
+   "examples": {
+    "docstrings": 5,
+    "files": 2
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 154,
+   "api_in_docs": 18,
+   "api_covered": 0,
+   "classes": 34,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "commit": "5a7d3386d2777180a381eb947f21293124ce8df5",
+   "code_lines": 11316,
+   "lines": {
+    "files": 4275,
+    "docstrings": 2030
+   },
+   "examples": {
+    "files": 118,
+    "docstrings": 193
+   },
+   "not_run": null,
+   "verified": {
+    "files": 91,
+    "docstrings": 140
+   },
+   "questions": 28,
+   "api": 99,
+   "api_in_docs": 71,
+   "api_covered": 54,
+   "classes": 17,
+   "classes_built": 5,
+   "without_api": 53,
+   "most_used": [
+    30,
+    "packaging.specifiers.SpecifierSet.to_range"
+   ]
+  },
+  {
+   "package": "typing-extensions",
+   "repo": "https://github.com/python/typing_extensions",
+   "commit": "a2024556ab75799fbd2f41d1c2d114dd6372de12",
+   "code_lines": 3674,
+   "lines": {
+    "files": 1774,
+    "docstrings": 696
+   },
+   "examples": {
+    "files": 6,
+    "docstrings": 3
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 3
+   },
+   "questions": 1,
+   "api": 38,
+   "api_in_docs": 4,
+   "api_covered": 2,
+   "classes": 2,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    2,
+    "typing_extensions.is_protocol"
+   ]
+  },
+  {
+   "package": "certifi",
+   "repo": "https://github.com/certifi/python-certifi",
+   "commit": "ca446ca404ff3b962a0193f36e03d1eabb231968",
+   "code_lines": 93,
+   "lines": {
+    "files": 30,
+    "docstrings": 3
+   },
+   "examples": {
+    "files": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 3,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "idna",
+   "repo": "https://github.com/kjd/idna",
+   "commit": "d357725082245ff90f5cf8800a3fc297b1f2319a",
+   "code_lines": 20191,
+   "lines": {
+    "files": 931,
+    "docstrings": 249
+   },
+   "examples": {
+    "files": 5
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 29,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "urllib3",
+   "repo": "https://github.com/urllib3/urllib3",
+   "commit": "d9f9b0ad5b99247e06aa9a50b7a5747aa5c2e35d",
+   "code_lines": 10262,
+   "lines": {
+    "files": 3574,
+    "docstrings": 1598
+   },
+   "examples": {
+    "files": 5,
+    "docstrings": 7
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 5
+   },
+   "questions": 0,
+   "api": 239,
+   "api_in_docs": 17,
+   "api_covered": 2,
+   "classes": 30,
+   "classes_built": 1,
+   "without_api": 0,
+   "most_used": [
+    5,
+    "urllib3.HTTPHeaderDict.add"
+   ]
+  },
+  {
+   "package": "requests",
+   "repo": "https://github.com/psf/requests",
+   "commit": "3c7baaa05ab4aa49cc819ce3a819d260de19c157",
+   "code_lines": 5186,
+   "lines": {
+    "files": 3960,
+    "docstrings": 979
+   },
+   "examples": {
+    "files": 25,
+    "docstrings": 18
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 9
+   },
+   "questions": 4,
+   "api": 165,
+   "api_in_docs": 28,
+   "api_covered": 4,
+   "classes": 15,
+   "classes_built": 0,
+   "without_api": 3,
+   "most_used": [
+    3,
+    "requests.auth.parse_dict_header"
+   ]
+  },
+  {
+   "package": "pluggy",
+   "repo": "https://github.com/pytest-dev/pluggy",
+   "commit": "46a80723004b2f6c3a57c387c3a1d50e17fb8c25",
+   "code_lines": 1755,
+   "lines": {
+    "files": 1546,
+    "docstrings": 286
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 35,
+   "api_in_docs": 3,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pycparser",
+   "repo": "https://github.com/eliben/pycparser",
+   "commit": "c1f7fe5a5902d8d1d23bb9151f50712e885fd50e",
+   "code_lines": 5882,
+   "lines": {
+    "files": 287,
+    "docstrings": 317
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 131,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 65,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "python-dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "commit": "a78cbd81d5d03b5f126eb36edb92bca78972c804",
+   "code_lines": 6998,
+   "lines": {
+    "files": 2488,
+    "docstrings": 1259
+   },
+   "examples": {
+    "files": 204,
+    "docstrings": 32
+   },
+   "not_run": null,
+   "verified": {
+    "files": 164,
+    "docstrings": 11
+   },
+   "questions": 11,
+   "api": 66,
+   "api_in_docs": 19,
+   "api_covered": 12,
+   "classes": 14,
+   "classes_built": 6,
+   "without_api": 40,
+   "most_used": [
+    132,
+    "dateutil.parser.parse"
+   ]
+  },
+  {
+   "package": "six",
+   "repo": "https://github.com/benjaminp/six",
+   "commit": "c8e394065cd541a16c040515dc0afb85cf22a7c3",
+   "code_lines": 813,
+   "lines": {
+    "files": 628,
+    "docstrings": 49
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 31,
+   "api_in_docs": 3,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "setuptools",
+   "repo": "https://github.com/pypa/setuptools",
+   "commit": "049ae8e3083514378aedb352a2017fbc306bd126",
+   "code_lines": 72957,
+   "lines": {
+    "files": 17963,
+    "docstrings": 11038
+   },
+   "examples": null,
+   "not_run": "RuntimeError: the package has compiled code",
+   "verified": {},
+   "questions": null,
+   "api": 326,
+   "api_in_docs": 13,
+   "api_covered": 0,
+   "classes": 40,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pydantic",
+   "repo": "https://github.com/pydantic/pydantic",
+   "commit": "cd1d8be820a8036818d6e82603a3ab07e0f855b5",
+   "code_lines": 24385,
+   "lines": {
+    "files": 19014,
+    "docstrings": 5103
+   },
+   "examples": {
+    "docstrings": 2
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 2
+   },
+   "questions": 0,
+   "api": 234,
+   "api_in_docs": 28,
+   "api_covered": 0,
+   "classes": 33,
+   "classes_built": 0,
+   "without_api": 2,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "click",
+   "repo": "https://github.com/pallets/click",
+   "commit": "e38188e9e205005d5af5f9e59df51904c984586a",
+   "code_lines": 10398,
+   "lines": {
+    "files": 6744,
+    "docstrings": 2364
+   },
+   "examples": {
+    "files": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 240,
+   "api_in_docs": 18,
+   "api_covered": 0,
+   "classes": 34,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "anyio",
+   "repo": "https://github.com/agronholm/anyio",
+   "commit": "4d53ea15daec445b2bf368285f6ef60297b8f4ab",
+   "code_lines": 13370,
+   "lines": {
+    "files": 3815,
+    "docstrings": 1597
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 411,
+   "api_in_docs": 4,
+   "api_covered": 0,
+   "classes": 60,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "annotated-types",
+   "repo": "https://github.com/annotated-types/annotated-types",
+   "commit": "96eef3cb9a8f06804d2f61f465d20212af6ee90e",
+   "code_lines": 418,
+   "lines": {
+    "files": 196,
+    "docstrings": 96
+   },
+   "examples": {
+    "docstrings": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 1,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pytest",
+   "repo": "https://github.com/pytest-dev/pytest",
+   "commit": "fc9a7ef678f64d17f1c03b619f3842ea1d127e74",
+   "code_lines": 193,
+   "lines": {
+    "files": 42156,
+    "docstrings": 2
+   },
+   "examples": {
+    "files": 14
+   },
+   "not_run": null,
+   "verified": {
+    "files": 1
+   },
+   "questions": 0,
+   "api": 342,
+   "api_in_docs": 9,
+   "api_covered": 0,
+   "classes": 43,
+   "classes_built": 0,
+   "without_api": 1,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "iniconfig",
+   "repo": "https://github.com/pytest-dev/iniconfig",
+   "commit": "e0f1ee1ccd69634acf5d127ed2ea6e628f18da31",
+   "code_lines": 376,
+   "lines": {
+    "files": 45,
+    "docstrings": 40
+   },
+   "examples": {
+    "files": 7
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 4,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "typing-inspection",
+   "repo": "https://github.com/pydantic/typing-inspection",
+   "commit": "5bbf4550d7b6bde6c1fe5813bf0fe29ee2312579",
+   "code_lines": 1000,
+   "lines": {
+    "files": 404,
+    "docstrings": 166
+   },
+   "examples": {
+    "files": 4,
+    "docstrings": 17
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 3
+   },
+   "questions": 0,
+   "api": 7,
+   "api_in_docs": 4,
+   "api_covered": 3,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    1,
+    "typing_inspection.typing_objects.is_namedtuple"
+   ]
+  },
+  {
+   "package": "h11",
+   "repo": "https://github.com/python-hyper/h11",
+   "commit": "62c5068c971579d61fa1b55373390e12f25fd856",
+   "code_lines": 4529,
+   "lines": {
+    "files": 1838,
+    "docstrings": 239
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 11,
+   "api_in_docs": 6,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "attrs",
+   "repo": "https://github.com/python-attrs/attrs",
+   "commit": "2a1fb86d44816afcc60e86d57956ce3604820326",
+   "code_lines": 79,
+   "lines": {
+    "files": 4264,
+    "docstrings": 0
+   },
+   "examples": {
+    "files": 90
+   },
+   "not_run": null,
+   "verified": {
+    "files": 21
+   },
+   "questions": 1,
+   "api": 47,
+   "api_in_docs": 36,
+   "api_covered": 8,
+   "classes": 2,
+   "classes_built": 0,
+   "without_api": 7,
+   "most_used": [
+    10,
+    "attrs.field"
+   ]
+  },
+  {
+   "package": "httpx",
+   "repo": "https://github.com/encode/httpx",
+   "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "code_lines": 7448,
+   "lines": {
+    "files": 3766,
+    "docstrings": 882
+   },
+   "examples": {
+    "files": 30,
+    "docstrings": 10
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 151,
+   "api_in_docs": 28,
+   "api_covered": 0,
+   "classes": 26,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "httpcore",
+   "repo": "https://github.com/encode/httpcore",
+   "commit": "10a658221deb38a4c5b16db55ab554b0bf731707",
+   "code_lines": 6085,
+   "lines": {
+    "files": 1639,
+    "docstrings": 438
+   },
+   "examples": {
+    "files": 5,
+    "docstrings": 2
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 101,
+   "api_in_docs": 17,
+   "api_covered": 0,
+   "classes": 21,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "s3transfer",
+   "repo": "https://github.com/boto/s3transfer",
+   "commit": "87ca003a6044279c2e246687c5bcdea2a1d1a76d",
+   "code_lines": 7579,
+   "lines": {
+    "files": 733,
+    "docstrings": 1411
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 268,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 63,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "python-dotenv",
+   "repo": "https://github.com/theskumar/python-dotenv",
+   "commit": "4fbc6ff07215367ece731006855e732d1405992c",
+   "code_lines": 977,
+   "lines": {
+    "files": 713,
+    "docstrings": 92
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 46,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 7,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pyjwt",
+   "repo": "https://github.com/jpadilla/pyjwt",
+   "commit": "16231abfd1d8eab4953e8779b3017b859c88565e",
+   "code_lines": 2712,
+   "lines": {
+    "files": 1891,
+    "docstrings": 317
+   },
+   "examples": {
+    "files": 6
+   },
+   "not_run": null,
+   "verified": {
+    "files": 4
+   },
+   "questions": 0,
+   "api": 81,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 14,
+   "classes_built": 0,
+   "without_api": 4,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+   "code_lines": 11616,
+   "lines": {
+    "files": 3815,
+    "docstrings": 2181
+   },
+   "examples": {
+    "files": 9,
+    "docstrings": 22
+   },
+   "not_run": null,
+   "verified": {
+    "files": 1,
+    "docstrings": 21
+   },
+   "questions": 9,
+   "api": 489,
+   "api_in_docs": 12,
+   "api_covered": 8,
+   "classes": 71,
+   "classes_built": 3,
+   "without_api": 6,
+   "most_used": [
+    5,
+    "jinja2.sandbox.modifies_known_mutable"
+   ]
+  },
+  {
+   "package": "aiobotocore",
+   "repo": "https://github.com/aio-libs/aiobotocore",
+   "commit": "eb83cd94a72f8a0a9ee505548aa3646c493a0404",
+   "code_lines": 7500,
+   "lines": {
+    "files": 4746,
+    "docstrings": 323
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 149,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 62,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "starlette",
+   "repo": "https://github.com/Kludex/starlette",
+   "commit": "271c277da0ff64e2048a4d46ecc812b9d61db5f6",
+   "code_lines": 5890,
+   "lines": {
+    "files": 4361,
+    "docstrings": 164
+   },
+   "examples": {
+    "files": 6
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 257,
+   "api_in_docs": 29,
+   "api_covered": 0,
+   "classes": 55,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "platformdirs",
+   "repo": "https://github.com/tox-dev/platformdirs",
+   "commit": "2f915d83f8822a017b839ed270da701c4048db4c",
+   "code_lines": 3175,
+   "lines": {
+    "files": 3321,
+    "docstrings": 696
+   },
+   "examples": {
+    "files": 14
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 237,
+   "api_in_docs": 13,
+   "api_covered": 0,
+   "classes": 5,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "uvicorn",
+   "repo": "https://github.com/Kludex/uvicorn",
+   "commit": "a99c1b76ee9caea67ff98e2ccc457bd372db193f",
+   "code_lines": 6395,
+   "lines": {
+    "files": 2405,
+    "docstrings": 132
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 251,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 25,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pathspec",
+   "repo": "https://github.com/cpburnz/python-pathspec",
+   "commit": "3dfbd9192ae36b0058b0e306ea44da132a5a025c",
+   "code_lines": 4710,
+   "lines": {
+    "files": 1705,
+    "docstrings": 940
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 46,
+   "api_in_docs": 5,
+   "api_covered": 0,
+   "classes": 10,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "fsspec",
+   "repo": "https://github.com/fsspec/filesystem_spec",
+   "commit": "12c823bc90e237b063b12d313c2c5b87dd4803ac",
+   "code_lines": 41714,
+   "lines": {
+    "files": 2768,
+    "docstrings": 3646
+   },
+   "examples": {
+    "docstrings": 17
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 7
+   },
+   "questions": 5,
+   "api": 625,
+   "api_in_docs": 26,
+   "api_covered": 2,
+   "classes": 77,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    5,
+    "fsspec.core.build_name_function"
+   ]
+  },
+  {
+   "package": "jsonschema",
+   "repo": "https://github.com/python-jsonschema/jsonschema",
+   "commit": "59954eb83d0b98088c6cd0c25b82baea15c70d01",
+   "code_lines": 9616,
+   "lines": {
+    "files": 2085,
+    "docstrings": 742
+   },
+   "examples": {
+    "files": 9,
+    "docstrings": 5
+   },
+   "not_run": null,
+   "verified": {
+    "files": 1
+   },
+   "questions": 1,
+   "api": 36,
+   "api_in_docs": 6,
+   "api_covered": 1,
+   "classes": 6,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    1,
+    "jsonschema.exceptions.best_match"
+   ]
+  },
+  {
+   "package": "filelock",
+   "repo": "https://github.com/tox-dev/filelock",
+   "commit": "1f7cd7397354a0cb2c999baa5fc6838a8062dda9",
+   "code_lines": 11196,
+   "lines": {
+    "files": 5176,
+    "docstrings": 780
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 82,
+   "api_in_docs": 30,
+   "api_covered": 0,
+   "classes": 12,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "jmespath",
+   "repo": "https://github.com/jmespath/jmespath.py",
+   "commit": "2812594e69d43098ef60f81f4efc404c071b0418",
+   "code_lines": 1422,
+   "lines": {
+    "files": 259,
+    "docstrings": 28
+   },
+   "examples": {
+    "files": 2
+   },
+   "not_run": null,
+   "verified": {
+    "files": 2
+   },
+   "questions": 2,
+   "api": 60,
+   "api_in_docs": 3,
+   "api_covered": 1,
+   "classes": 8,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    2,
+    "jmespath.compile"
+   ]
+  },
+  {
+   "package": "tzdata",
+   "repo": "https://github.com/python/tzdata",
+   "commit": "0d4342c29e1f64211181cf8ad2276cfa59c094ce",
+   "code_lines": 5,
+   "lines": {
+    "files": 1691,
+    "docstrings": 0
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 0,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "referencing",
+   "repo": "https://github.com/python-jsonschema/referencing",
+   "commit": "84089b993ece43300e7320d03627c9192524de39",
+   "code_lines": 2804,
+   "lines": {
+    "files": 499,
+    "docstrings": 211
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 30,
+   "api_in_docs": 4,
+   "api_covered": 0,
+   "classes": 7,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "tomlkit",
+   "repo": "https://github.com/python-poetry/tomlkit",
+   "commit": "7bf7284dbd622557d9909f8fee017a4cb169a139",
+   "code_lines": 5230,
+   "lines": {
+    "files": 750,
+    "docstrings": 332
+   },
+   "examples": {
+    "files": 6,
+    "docstrings": 16
+   },
+   "not_run": null,
+   "verified": {
+    "files": 3,
+    "docstrings": 6
+   },
+   "questions": 0,
+   "api": 183,
+   "api_in_docs": 36,
+   "api_covered": 27,
+   "classes": 26,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    5,
+    "tomlkit.container.Item.as_string"
+   ]
+  },
+  {
+   "package": "jsonschema-specifications",
+   "repo": "https://github.com/python-jsonschema/jsonschema-specifications",
+   "commit": "05ddbbbabcb9ceb6526012a5a05dbdf3a4935d2b",
+   "code_lines": 70,
+   "lines": {
+    "files": 145,
+    "docstrings": 6
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 0,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "markdown-it-py",
+   "repo": "https://github.com/executablebooks/markdown-it-py",
+   "commit": "d504583a458edfa399ee800074244fceec288862",
+   "code_lines": 6082,
+   "lines": {
+    "files": 9202,
+    "docstrings": 482
+   },
+   "examples": {
+    "files": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 193,
+   "api_in_docs": 8,
+   "api_covered": 0,
+   "classes": 15,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "rich",
+   "repo": "https://github.com/Textualize/rich",
+   "commit": "3a109ccdffe5b2d0e30684a304fbd388e99ce57b",
+   "code_lines": 35025,
+   "lines": {
+    "files": 9671,
+    "docstrings": 2917
+   },
+   "examples": {
+    "files": 6,
+    "docstrings": 2
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 458,
+   "api_in_docs": 63,
+   "api_covered": 0,
+   "classes": 90,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "mdurl",
+   "repo": "https://github.com/executablebooks/mdurl",
+   "commit": "524d2edbbcb8bb48301ba716c7482827bcabb281",
+   "code_lines": 478,
+   "lines": {
+    "files": 6,
+    "docstrings": 0
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 4,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pip",
+   "repo": "https://github.com/pypa/pip",
+   "commit": "4b71f36fb4dfbc87ce65ac4710eeccf81d379f55",
+   "code_lines": 132808,
+   "lines": {
+    "files": 13643,
+    "docstrings": 13187
+   },
+   "examples": {
+    "docstrings": 251
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 144
+   },
+   "questions": 0,
+   "api": 1,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 144,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "annotated-doc",
+   "repo": "https://github.com/fastapi/annotated-doc",
+   "commit": "d4b3d0d034c1a23c0d728451f0e68746548d3947",
+   "code_lines": 28,
+   "lines": {
+    "files": 200,
+    "docstrings": 14
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 0,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "fastapi",
+   "repo": "https://github.com/fastapi/fastapi",
+   "commit": "a3260d49e97b0072c4c0c161d9f63cc3826584b5",
+   "code_lines": 20346,
+   "lines": {
+    "files": 145155,
+    "docstrings": 910
+   },
+   "examples": {
+    "docstrings": 3
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 2
+   },
+   "questions": 0,
+   "api": 162,
+   "api_in_docs": 7,
+   "api_covered": 1,
+   "classes": 18,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    2,
+    "fastapi.encoders.decimal_encoder"
+   ]
+  },
+  {
+   "package": "pytz",
+   "repo": "https://github.com/stub42/pytz",
+   "commit": "e3c6fe223abf0ad1c1c4e40a9bd319a87bb3b829",
+   "code_lines": 2262,
+   "lines": {
+    "files": 541,
+    "docstrings": 391
+   },
+   "examples": {
+    "files": 68,
+    "docstrings": 60
+   },
+   "not_run": null,
+   "verified": {
+    "files": 17,
+    "docstrings": 19
+   },
+   "questions": 2,
+   "api": 34,
+   "api_in_docs": 25,
+   "api_covered": 3,
+   "classes": 7,
+   "classes_built": 1,
+   "without_api": 30,
+   "most_used": [
+    2,
+    "pytz.timezone"
+   ]
+  },
+  {
+   "package": "tqdm",
+   "repo": "https://github.com/tqdm/tqdm",
+   "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+   "code_lines": 4025,
+   "lines": {
+    "files": 2646,
+    "docstrings": 773
+   },
+   "examples": {
+    "files": 1,
+    "docstrings": 2
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 1
+   },
+   "questions": 0,
+   "api": 109,
+   "api_in_docs": 17,
+   "api_covered": 0,
+   "classes": 18,
+   "classes_built": 0,
+   "without_api": 1,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pyasn1",
+   "repo": "https://github.com/pyasn1/pyasn1",
+   "commit": "e24fa719428229db5efeb8aee74ce6d03329df5d",
+   "code_lines": 8852,
+   "lines": {
+    "files": 4934,
+    "docstrings": 2064
+   },
+   "examples": {
+    "files": 12,
+    "docstrings": 3
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 2
+   },
+   "questions": 1,
+   "api": 177,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 25,
+   "classes_built": 1,
+   "without_api": 2,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "aiosignal",
+   "repo": "https://github.com/aio-libs/aiosignal",
+   "commit": "21a4df05b659d9db18d346e0b28afc00197eb8ac",
+   "code_lines": 43,
+   "lines": {
+    "files": 649,
+    "docstrings": 6
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 1,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "aiohappyeyeballs",
+   "repo": "https://github.com/aio-libs/aiohappyeyeballs",
+   "commit": "2cf4fe106bf7e0acbd517fb69c208461197ab3be",
+   "code_lines": 476,
+   "lines": {
+    "files": 410,
+    "docstrings": 86
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 4,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "sniffio",
+   "repo": "https://github.com/python-trio/sniffio",
+   "commit": "6996e05d9b9debe32f42f709c8041e744f850478",
+   "code_lines": 149,
+   "lines": {
+    "files": 221,
+    "docstrings": 31
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 1,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pydantic-settings",
+   "repo": "https://github.com/pydantic/pydantic-settings",
+   "commit": "4af040bf35186ef4cdd9f949b71ce9242c4527b0",
+   "code_lines": 5956,
+   "lines": {
+    "files": 2778,
+    "docstrings": 599
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 56,
+   "api_in_docs": 15,
+   "api_covered": 0,
+   "classes": 11,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "python-multipart",
+   "repo": "https://github.com/Kludex/python-multipart",
+   "commit": "9bd038eb9ff714b99615c4b8b7f4d39a1e80276b",
+   "code_lines": 1897,
+   "lines": {
+    "files": 600,
+    "docstrings": 315
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 47,
+   "api_in_docs": 4,
+   "api_covered": 0,
+   "classes": 11,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "trove-classifiers",
+   "repo": "https://github.com/pypa/trove-classifiers",
+   "commit": "bc832553ebe6114e7682f09bc59bda6552da37cd",
+   "code_lines": 929,
+   "lines": {
+    "files": 73,
+    "docstrings": 0
+   },
+   "examples": {
+    "files": 5
+   },
+   "not_run": null,
+   "verified": {
+    "files": 4
+   },
+   "questions": 0,
+   "api": 0,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 4,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "zipp",
+   "repo": "https://github.com/jaraco/zipp",
+   "commit": "dc7de0b7207f8bd4321317c8900d22f36289f86b",
+   "code_lines": 539,
+   "lines": {
+    "files": 375,
+    "docstrings": 202
+   },
+   "examples": {
+    "docstrings": 39
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 36
+   },
+   "questions": 3,
+   "api": 31,
+   "api_in_docs": 11,
+   "api_covered": 10,
+   "classes": 2,
+   "classes_built": 2,
+   "without_api": 20,
+   "most_used": [
+    10,
+    "zipp.Path.filename"
+   ]
+  },
+  {
+   "package": "tenacity",
+   "repo": "https://github.com/jd/tenacity",
+   "commit": "aac059c906170ee7b6ce1aa086a226f3aded5c99",
+   "code_lines": 1962,
+   "lines": {
+    "files": 603,
+    "docstrings": 157
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 25,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 5,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "importlib-metadata",
+   "repo": "https://github.com/python/importlib_metadata",
+   "commit": "7e35ac1e6f23e92c66279837b17ce3847434c846",
+   "code_lines": 2016,
+   "lines": {
+    "files": 1047,
+    "docstrings": 733
+   },
+   "examples": {
+    "docstrings": 89
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 71
+   },
+   "questions": 4,
+   "api": 54,
+   "api_in_docs": 8,
+   "api_covered": 8,
+   "classes": 8,
+   "classes_built": 1,
+   "without_api": 65,
+   "most_used": [
+    2,
+    "importlib_metadata.PackageNotFoundError.name"
+   ]
+  },
+  {
+   "package": "pyasn1-modules",
+   "repo": "https://github.com/pyasn1/pyasn1-modules",
+   "commit": "02f9c577bcd0ad9fedfb0fd5dc598d323f7984bf",
+   "code_lines": 16514,
+   "lines": {
+    "files": 360,
+    "docstrings": 196
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 4,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "hatchling",
+   "repo": "https://github.com/pypa/hatch",
+   "commit": "893fa13ccd6129550194a4964c22c1cc6b63bc0d",
+   "code_lines": 12834,
+   "lines": {
+    "files": 5684,
+    "docstrings": 574
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 605,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 63,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "wheel",
+   "repo": "https://github.com/pypa/wheel",
+   "commit": "bfb01fb441d579c289556c305280e08168e23c5f",
+   "code_lines": 2168,
+   "lines": {
+    "files": 949,
+    "docstrings": 144
+   },
+   "examples": {
+    "docstrings": 5
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 5
+   },
+   "questions": 0,
+   "api": 27,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 2,
+   "classes_built": 0,
+   "without_api": 5,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pyparsing",
+   "repo": "https://github.com/pyparsing/pyparsing",
+   "commit": "810199f89bf916590426e1c5cb3d612584f11a2f",
+   "code_lines": 10661,
+   "lines": {
+    "files": 3997,
+    "docstrings": 2942
+   },
+   "examples": {
+    "files": 17,
+    "docstrings": 71
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 12
+   },
+   "questions": 0,
+   "api": 220,
+   "api_in_docs": 44,
+   "api_covered": 5,
+   "classes": 52,
+   "classes_built": 5,
+   "without_api": 1,
+   "most_used": [
+    9,
+    "pyparsing.ParserElement.set_parse_action"
+   ]
+  },
+  {
+   "package": "truststore",
+   "repo": "https://github.com/sethmlarson/truststore",
+   "commit": "187fb20e410ee14d9911fc9ce879603674fc6879",
+   "code_lines": 1417,
+   "lines": {
+    "files": 270,
+    "docstrings": 28
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 26,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "openai",
+   "repo": "https://github.com/openai/openai-python",
+   "commit": "3dae6090cc31cc64a437fe0bcee740b6d81ed2cc",
+   "code_lines": 192425,
+   "lines": {
+    "files": 8846,
+    "docstrings": 27767
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 2301,
+   "api_in_docs": 48,
+   "api_covered": 0,
+   "classes": 423,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "soupsieve",
+   "repo": "https://github.com/facelessuser/soupsieve",
+   "commit": "7d028fdebbb7261849ee0c2a352b602ef70b7b14",
+   "code_lines": 4387,
+   "lines": {
+    "files": 4173,
+    "docstrings": 524
+   },
+   "examples": {
+    "files": 1,
+    "docstrings": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 84,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "distro",
+   "repo": "https://github.com/python-distro/distro",
+   "commit": "6060eedc8fd432773a1dcfaff3f07b7a27edbe9a",
+   "code_lines": 1269,
+   "lines": {
+    "files": 692,
+    "docstrings": 448
+   },
+   "examples": {
+    "files": 3
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 40,
+   "api_in_docs": 3,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "shellingham",
+   "repo": "https://github.com/sarugaku/shellingham",
+   "commit": "926401c4543b84f9f579932d30fb52a104639398",
+   "code_lines": 360,
+   "lines": {
+    "files": 194,
+    "docstrings": 18
+   },
+   "examples": {
+    "files": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 6,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "sse-starlette",
+   "repo": "https://github.com/sysid/sse-starlette",
+   "commit": "e023a93774b100ccd614aedb1251f60d70b6ec29",
+   "code_lines": 623,
+   "lines": {
+    "files": 660,
+    "docstrings": 115
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 8,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "s3fs",
+   "repo": "https://github.com/fsspec/s3fs",
+   "commit": "dd194a3e4c46f424d51ef222af64b4e6d32b0184",
+   "code_lines": 7456,
+   "lines": {
+    "files": 835,
+    "docstrings": 552
+   },
+   "examples": {
+    "files": 3,
+    "docstrings": 7
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 33,
+   "api_in_docs": 6,
+   "api_covered": 0,
+   "classes": 6,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "mypy-extensions",
+   "repo": "https://github.com/python/mypy_extensions",
+   "commit": "df7b7054e3e978cc62717871f16659e51ea8171d",
+   "code_lines": 209,
+   "lines": {
+    "files": 5,
+    "docstrings": 10
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 8,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 0,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "typer",
+   "repo": "https://github.com/fastapi/typer",
+   "commit": "73500169e87b4e31717d687818c5ed955b584c18",
+   "code_lines": 11361,
+   "lines": {
+    "files": 7699,
+    "docstrings": 728
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 128,
+   "api_in_docs": 5,
+   "api_covered": 0,
+   "classes": 11,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "commit": "77001c96f9507be0f4d009b83210a384a5e08bda",
+   "code_lines": 24148,
+   "lines": {
+    "files": 73098,
+    "docstrings": 4701
+   },
+   "examples": {
+    "docstrings": 24
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 24
+   },
+   "questions": 15,
+   "api": 513,
+   "api_in_docs": 56,
+   "api_covered": 7,
+   "classes": 85,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    11,
+    "mcp.UriTemplate.parse"
+   ]
+  },
+  {
+   "package": "colorama",
+   "repo": "https://github.com/tartley/colorama",
+   "commit": "841634ed2a0da5d5ac2d867db533da8131266cb2",
+   "code_lines": 1377,
+   "lines": {
+    "files": 692,
+    "docstrings": 18
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 54,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 4,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "huggingface-hub",
+   "repo": "https://github.com/huggingface/huggingface_hub",
+   "commit": "2c61ae8c11eedb1b79e262dd9eb5e68962cac063",
+   "code_lines": 69275,
+   "lines": {
+    "files": 15196,
+    "docstrings": 18113
+   },
+   "examples": {
+    "files": 143,
+    "docstrings": 257
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 13
+   },
+   "questions": 2,
+   "api": 747,
+   "api_in_docs": 184,
+   "api_covered": 10,
+   "classes": 52,
+   "classes_built": 3,
+   "without_api": 2,
+   "most_used": [
+    3,
+    "huggingface_hub.repocard.model_index_to_eval_results"
+   ]
+  },
+  {
+   "package": "dnspython",
+   "repo": "https://github.com/rthalley/dnspython",
+   "commit": "aaf79b283345d169c692b5659609093c5a6f45b1",
+   "code_lines": 29285,
+   "lines": {
+    "files": 3367,
+    "docstrings": 4513
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 924,
+   "api_in_docs": 4,
+   "api_covered": 0,
+   "classes": 170,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "requests-oauthlib",
+   "repo": "https://github.com/requests/requests-oauthlib",
+   "commit": "f33dac32bd065b835b34e7f0a48025700aae1e31",
+   "code_lines": 1174,
+   "lines": {
+    "files": 1315,
+    "docstrings": 315
+   },
+   "examples": {
+    "files": 2,
+    "docstrings": 11
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 30,
+   "api_in_docs": 9,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "pytest-asyncio",
+   "repo": "https://github.com/pytest-dev/pytest-asyncio",
+   "commit": "00eeb9122134a386af122cf687ebf29b83ae7e71",
+   "code_lines": 935,
+   "lines": {
+    "files": 888,
+    "docstrings": 47
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 18,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "cachetools",
+   "repo": "https://github.com/tkem/cachetools",
+   "commit": "1ce79efa552d1bdda70d144d401ef9105d999184",
+   "code_lines": 1274,
+   "lines": {
+    "files": 1539,
+    "docstrings": 81
+   },
+   "examples": {
+    "files": 12
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 35,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 7,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "docstring-parser",
+   "repo": "https://github.com/rr-/docstring_parser",
+   "commit": "a8e2a3ba5a4cdd906830735cb41a6a22c9346bf4",
+   "code_lines": 7673,
+   "lines": {
+    "files": 309,
+    "docstrings": 991
+   },
+   "examples": {
+    "files": 7,
+    "docstrings": 4
+   },
+   "not_run": null,
+   "verified": {
+    "files": 3
+   },
+   "questions": 0,
+   "api": 95,
+   "api_in_docs": 3,
+   "api_covered": 3,
+   "classes": 6,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    2,
+    "docstring_parser.parse"
+   ]
+  },
+  {
+   "package": "editables",
+   "repo": "https://github.com/pfmoore/editables",
+   "commit": "e5017008352b4114c01b01d1a552c7d8a0103174",
+   "code_lines": 151,
+   "lines": {
+    "files": 487,
+    "docstrings": 0
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 16,
+   "api_in_docs": 3,
+   "api_covered": 0,
+   "classes": 2,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "oauthlib",
+   "repo": "https://github.com/oauthlib/oauthlib",
+   "commit": "179287a5f9067aac7b1c0d71c4c5e083ccbf58f2",
+   "code_lines": 10367,
+   "lines": {
+    "files": 3359,
+    "docstrings": 4355
+   },
+   "examples": {
+    "files": 3,
+    "docstrings": 29
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 1
+   },
+   "questions": 1,
+   "api": 327,
+   "api_in_docs": 14,
+   "api_covered": 1,
+   "classes": 41,
+   "classes_built": 1,
+   "without_api": 0,
+   "most_used": [
+    1,
+    "oauthlib.oauth2.BackendApplicationClient.prepare_request_body"
+   ]
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "commit": "0f43c6ebd426039e4b99ec22535c2c8a2ec2f69f",
+   "code_lines": 19082,
+   "lines": {
+    "files": 5578,
+    "docstrings": 4503
+   },
+   "examples": {
+    "files": 42,
+    "docstrings": 28
+   },
+   "not_run": null,
+   "verified": {
+    "files": 30,
+    "docstrings": 14
+   },
+   "questions": 16,
+   "api": 436,
+   "api_in_docs": 43,
+   "api_covered": 14,
+   "classes": 71,
+   "classes_built": 7,
+   "without_api": 11,
+   "most_used": [
+    16,
+    "werkzeug.Request.from_values"
+   ]
+  },
+  {
+   "package": "more-itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "commit": "ceafee8ce96f4bc1eb74c528bc247c91d648a0bb",
+   "code_lines": 5628,
+   "lines": {
+    "files": 1369,
+    "docstrings": 2501
+   },
+   "examples": {
+    "files": 9,
+    "docstrings": 374
+   },
+   "not_run": null,
+   "verified": {
+    "files": 5,
+    "docstrings": 337
+   },
+   "questions": 19,
+   "api": 176,
+   "api_in_docs": 163,
+   "api_covered": 146,
+   "classes": 6,
+   "classes_built": 4,
+   "without_api": 29,
+   "most_used": [
+    9,
+    "more_itertools.spy"
+   ]
+  },
+  {
+   "package": "defusedxml",
+   "repo": "https://github.com/tiran/defusedxml",
+   "commit": "c7445887f5e1bcea470a16f61369d29870cfcfe1",
+   "code_lines": 818,
+   "lines": {
+    "files": 1323,
+    "docstrings": 40
+   },
+   "examples": {
+    "files": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 52,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 7,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "commit": "ada19dd8000ec550fd45cf72841c416319dc568d",
+   "code_lines": 167870,
+   "lines": {
+    "files": 95464,
+    "docstrings": 53461
+   },
+   "examples": {
+    "files": 76,
+    "docstrings": 324
+   },
+   "not_run": null,
+   "verified": {
+    "files": 24,
+    "docstrings": 235
+   },
+   "questions": 20,
+   "api": 1180,
+   "api_in_docs": 779,
+   "api_covered": 175,
+   "classes": 37,
+   "classes_built": 2,
+   "without_api": 2,
+   "most_used": [
+    59,
+    "networkx.path_graph"
+   ]
+  },
+  {
+   "package": "pytest-cov",
+   "repo": "https://github.com/pytest-dev/pytest-cov",
+   "commit": "a8cb1260170754f2aff9022cfd252c488098e813",
+   "code_lines": 815,
+   "lines": {
+    "files": 1117,
+    "docstrings": 42
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 38,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 6,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "distlib",
+   "repo": "https://github.com/pypa/distlib",
+   "commit": "c2d6d6462fac26b8df36d5bdf0fe78ed0699fcff",
+   "code_lines": 9268,
+   "lines": {
+    "files": 5290,
+    "docstrings": 979
+   },
+   "examples": {
+    "files": 32
+   },
+   "not_run": null,
+   "verified": {
+    "files": 3
+   },
+   "questions": 3,
+   "api": 286,
+   "api_in_docs": 32,
+   "api_covered": 1,
+   "classes": 52,
+   "classes_built": 1,
+   "without_api": 1,
+   "most_used": [
+    2,
+    "distlib.markers.interpret"
+   ]
+  },
+  {
+   "package": "exceptiongroup",
+   "repo": "https://github.com/agronholm/exceptiongroup",
+   "commit": "62edd3a5728caa22b668a982a6682983fe3076ba",
+   "code_lines": 996,
+   "lines": {
+    "files": 259,
+    "docstrings": 10
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 11,
+   "api_in_docs": 2,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "itsdangerous",
+   "repo": "https://github.com/pallets/itsdangerous",
+   "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+   "code_lines": 951,
+   "lines": {
+    "files": 630,
+    "docstrings": 199
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 38,
+   "api_in_docs": 7,
+   "api_covered": 0,
+   "classes": 8,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "mako",
+   "repo": "https://github.com/sqlalchemy/mako",
+   "commit": "14889bc0feacd12102ee61f0769677be2fddbc1b",
+   "code_lines": 7024,
+   "lines": {
+    "files": 154,
+    "docstrings": 823
+   },
+   "examples": {
+    "docstrings": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 191,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 45,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "alembic",
+   "repo": "https://github.com/sqlalchemy/alembic",
+   "commit": "1bcba93ea0473c69b48e704f842ca96e9e5348f5",
+   "code_lines": 24225,
+   "lines": {
+    "files": 485,
+    "docstrings": 3761
+   },
+   "examples": {
+    "docstrings": 1
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 510,
+   "api_in_docs": 1,
+   "api_covered": 0,
+   "classes": 57,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "requests-toolbelt",
+   "repo": "https://github.com/requests/toolbelt",
+   "commit": "bcd5f7be229e14089052be7e3b527ebcea0ae7b8",
+   "code_lines": 2797,
+   "lines": {
+    "files": 1226,
+    "docstrings": 1011
+   },
+   "examples": {
+    "files": 1,
+    "docstrings": 6
+   },
+   "not_run": null,
+   "verified": {
+    "docstrings": 3
+   },
+   "questions": 0,
+   "api": 74,
+   "api_in_docs": 13,
+   "api_covered": 0,
+   "classes": 24,
+   "classes_built": 0,
+   "without_api": 3,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "prompt-toolkit",
+   "repo": "https://github.com/prompt-toolkit/python-prompt-toolkit",
+   "commit": "6c7fbc1080dd331a031a2be1f96d4ebc0421f7ea",
+   "code_lines": 34386,
+   "lines": {
+    "files": 3935,
+    "docstrings": 4301
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 964,
+   "api_in_docs": 35,
+   "api_covered": 0,
+   "classes": 167,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "commit": "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea",
+   "code_lines": 2241,
+   "lines": {
+    "files": 787,
+    "docstrings": 604
+   },
+   "examples": {
+    "files": 1,
+    "docstrings": 55
+   },
+   "not_run": null,
+   "verified": {
+    "files": 1,
+    "docstrings": 44
+   },
+   "questions": 17,
+   "api": 44,
+   "api_in_docs": 16,
+   "api_covered": 11,
+   "classes": 7,
+   "classes_built": 2,
+   "without_api": 20,
+   "most_used": [
+    8,
+    "rsa.common.bit_size"
+   ]
+  },
+  {
+   "package": "cloudpickle",
+   "repo": "https://github.com/cloudpipe/cloudpickle",
+   "commit": "4af5936c328de0b33fa9c636e210d9a9e1e97dd3",
+   "code_lines": 1312,
+   "lines": {
+    "files": 461,
+    "docstrings": 211
+   },
+   "examples": {
+    "files": 4
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 10,
+   "api_in_docs": 3,
+   "api_covered": 0,
+   "classes": 1,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "threadpoolctl",
+   "repo": "https://github.com/joblib/threadpoolctl",
+   "commit": "13b1a129901f353ee4820a3fb7e9a6f7d5fcf4f4",
+   "code_lines": 1736,
+   "lines": {
+    "files": 857,
+    "docstrings": 349
+   },
+   "examples": {
+    "files": 6
+   },
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 15,
+   "api_in_docs": 5,
+   "api_covered": 0,
+   "classes": 3,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  },
+  {
+   "package": "isodate",
+   "repo": "https://github.com/gweis/isodate",
+   "commit": "17cb25eb7bc3556a68f3f7b241313e9bb8b23760",
+   "code_lines": 1184,
+   "lines": {
+    "files": 203,
+    "docstrings": 245
+   },
+   "examples": {},
+   "not_run": null,
+   "verified": {},
+   "questions": null,
+   "api": 26,
+   "api_in_docs": 0,
+   "api_covered": 0,
+   "classes": 4,
+   "classes_built": 0,
+   "without_api": 0,
+   "most_used": [
+    0,
+    null
+   ]
+  }
+ ]
+}

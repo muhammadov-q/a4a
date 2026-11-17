@@ -369,6 +369,28 @@ Read on 15 November 2026, 97 repositories:
 - The solvability check is strict and drops about half of the written requests. It was not yet looked at whether a dropped request was unclear or the solver model too weak.
 - The questions are in `out/corpus/tasks/`, in the exercise format below, with the code of the example as `reference_code`.
 
+### How many exercises does a source hold, and what do they cover?
+
+```sh
+uv run repo2tools corpus-density
+```
+
+This needs no model and no sandbox. It reads the saved scans and exercises, counts lines of text in the clones, and writes `out/corpus/density.md`. Each kind of source gets its own denominator: an example found in a documentation file is counted against the lines of documentation files, an example found in a docstring against the lines of docstrings.
+
+| Kind of source | Lines | Examples | Verified | Yield | Verified per 1,000 lines | Repositories with one or more | Median per 1,000 lines in those |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Documentation files | 629,194 | 1,026 | 375 | 37% | 0.60 | 17 | 4.00 |
+| Docstrings | 206,099 | 1,997 | 1,170 | 59% | 5.68 | 27 | 5.11 |
+| All, against lines of code | 1,248,695 | | 1,545 | | 1.24 | 35 | 1.47 |
+
+- **Docstrings are about ten times as dense as documentation files:** 5.68 against 0.60 verified exercises per 1,000 lines. More of their examples also survive the check (59% against 37%).
+- **Most repositories give nothing.** Of 97, 38 have no example that could become an exercise, 23 have examples but none is verified, and 35 give at least one. The five repositories with the most hold 74% of all verified exercises, the ten with the most hold 90%.
+- **The exercises cover 3% of the public API.** 519 of 17,362 functions, methods and properties are used by at least one verified exercise. The documentation uses 2,150 of them (12.4%) at all, so the verified exercises reach about a quarter of what the documentation shows. In the median repository that has exercises, coverage is 2.0%; the highest are `more-itertools` (83%) and `packaging` (55%).
+- **The exercises repeat the same few elements.** In the median repository with exercises, 47% of them use the single most used element.
+- **Size explains little.** The rank correlation between a repository's number of verified exercises and its size is 0.27 for lines of code, 0.29 for lines of documentation files, 0.40 for lines of docstrings and 0.26 for the number of API elements.
+
+Limits. Which elements an exercise uses comes from the static usage scan, which misses a method called on a value whose class it cannot tell; 456 of the 1,545 exercises use nothing the scan can name. At most 400 examples of a repository are read, so the repositories at that limit are lower bounds (the report names them). A package that only re-exports another one has few lines here (`attrs` 79, `pytest` 193), so its number per 1,000 lines of code says little. `setuptools` is left out of the yield because its examples were not run.
+
 ### Do generated tools help on these questions?
 
 ```sh
@@ -604,6 +626,7 @@ src/repo2tools/
 │   ├── exercises.py         corpus-exercises   documentation examples as exercises, verified by two sandboxed runs
 │   ├── example_worker.py                       runs those examples; inside the library's own environment and sandbox
 │   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
+│   ├── density.py           corpus-density     verified exercises per 1,000 lines of each kind of source, and the API they cover
 │   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
