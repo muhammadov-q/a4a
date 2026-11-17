@@ -1,8 +1,17 @@
-# repo2tools
+# A4A: Anything for Agents
 
-**From a repository link to verified, chainable tools for LLM agents, with a measurement of whether models can actually use them.**
+**From a source of information to verified tasks and tools for LLM agents, with a measurement of whether they help a model.**
 
-`repo2tools` takes the URL of a Python library, has an LLM write one tool per library function, and accepts a tool only if running it gives the same result as calling the library directly. It then works out which tools can be chained, again by running them, and measures what a model does with the tools: how often it solves tasks with known answers, and what a run costs in tokens.
+A4A takes a source of information and extracts things a model can be trained and tested on: tools it can call, and tasks with known answers. An LLM proposes them; a program runs each one and keeps only what it could check.
+
+| Source | What is extracted | How it is checked | Command |
+| --- | --- | --- | --- |
+| A Python repository (its code) | Tools, one per library function | The tool gives the same result as calling the library directly, in a sandbox | `repo2tools generate` |
+| The repository's documentation | Exercises and questions with known answers | Two sandboxed runs of the documentation example give the same value, and a second model can solve the question from its wording | `repo2tools corpus-exercises`, `repo2tools corpus-tasks` |
+
+These two kinds of source are what is implemented today. Other kinds (databases, websites, PDFs) are not.
+
+The command-line tool is called `repo2tools`, after the part that was built first. It takes the URL of a Python library, has an LLM write one tool per library function, and accepts a tool only if running it gives the same result as calling the library directly. It then works out which tools can be chained, again by running them, and measures what a model does with the tools: how often it solves tasks with known answers, and what a run costs in tokens.
 
 <p align="center">
   <img src="docs/architecture.png" alt="Architecture of repo2tools. Top: a repository is scanned statically, an LLM generator turns public functions into candidate tools, and a sandbox verifier runs each tool on sample inputs and compares it with a direct library call; errors go back to the generator for up to three repair rounds, and accepted tools form the verified MCP tool set. Bottom: an LLM proposes types for the tools, a pairwise parameter check and an output-to-consumer check keep only the types that hold when the tools are run, ToolGym samples and validates tool chains into synthetic traces, an LLM agent solves 242 exercises with and without the tools, and both kinds of traces go to the trace analysis." width="100%">
