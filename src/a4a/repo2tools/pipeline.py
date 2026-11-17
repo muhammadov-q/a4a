@@ -182,7 +182,8 @@ def sandbox_profile(readable: list[Path], writable: Path, secret: Path) -> str:
     return "\n".join(lines) + "\n"
 
 
-def make_box(set_name: str, base: Path, package: str, dependencies: list[str], toolset_dir: Path) -> Box:
+def make_box(set_name: str, base: Path | None, package: str | None, dependencies: list[str], toolset_dir: Path) -> Box:
+    """An environment of its own and its sandbox. `package` is the library that is copied into it; None for a source that is not a library."""
     envs = CACHE / "envs"
     envs.mkdir(parents=True, exist_ok=True)
     box = Box(envs / set_name, envs / f"{set_name}.tmp", None)
@@ -190,10 +191,13 @@ def make_box(set_name: str, base: Path, package: str, dependencies: list[str], t
     # --no-build: wheels only, so no dependency's setup.py can run
     run(["uv", "pip", "install", "--quiet", "--python", str(box.python), "--no-build", MCP_REQUIREMENT, *dependencies])
     site_packages = next((box.env_dir / "lib").glob("python*/site-packages"))
-    shutil.rmtree(site_packages / package, ignore_errors=True)
-    if (base / package).is_dir():
+    if package is None:
+        pass
+    elif (base / package).is_dir():
+        shutil.rmtree(site_packages / package, ignore_errors=True)
         shutil.copytree(base / package, site_packages / package, ignore=shutil.ignore_patterns("__pycache__"), symlinks=True)
     else:  # a library that is one file
+        shutil.rmtree(site_packages / package, ignore_errors=True)
         shutil.copy2(base / f"{package}.py", site_packages / f"{package}.py")
     shutil.rmtree(box.scratch, ignore_errors=True)
     box.scratch.mkdir()

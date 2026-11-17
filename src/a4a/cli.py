@@ -41,6 +41,10 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "corpus-tasks": ("a4a.corpus.tasks", "a question in plain words for each verified example, in the format of run-model"),
         "corpus-benchmark": ("a4a.corpus.benchmark", "per repository: score a model on its questions without tools, with generated tools, and with one Python tool"),
     },
+    "Databases: a database -> exercises": {
+        "db-fetch": ("a4a.databases.fetch", "download the approved databases and check each file against its SHA-256"),
+        "db-exercises": ("a4a.databases.exercises", "exercises from templates over a database's schema, verified by two sandboxed runs"),
+    },
     "ToolGym": {
         "toolgym-types": ("a4a.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),
         "toolgym-export": ("a4a.toolgym.catalog_export", "write the hand-made tools into a ToolGym catalog"),

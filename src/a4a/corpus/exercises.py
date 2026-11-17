@@ -27,7 +27,6 @@ per repository, with what happened to every draft) and out/corpus/exercises.md.
 import argparse
 import doctest
 import json
-import subprocess
 import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
@@ -35,21 +34,10 @@ from pathlib import Path
 
 from a4a.corpus.scan import CLONES, OUT, folder_name
 from a4a.paths import REPO_ROOT
-from a4a.sources.python_repository import EXAMPLE_WORKER, PythonRepository, drop_box
+from a4a.sources.base import Source, run_drafts
+from a4a.sources.python_repository import PythonRepository, drop_box
 
-BATCH_SECONDS = 600
 CHECKER = doctest.OutputChecker()
-
-
-def run_drafts(box, drafts: list[dict]) -> list[dict] | None:
-    """What every draft gives, from one run of the sandboxed worker. None if the worker itself failed."""
-    request = {"items": [{"module": d["module"], "steps": d["steps"], "expression": d["expression"], "printed": d.get("printed", False)} for d in drafts]}
-    try:
-        process = subprocess.run(box.command(str(EXAMPLE_WORKER)), input=json.dumps(request), text=True, capture_output=True,
-                                 timeout=BATCH_SECONDS, env=box.clean_env, cwd=box.scratch)
-        return json.loads(process.stdout)["results"]
-    except (subprocess.TimeoutExpired, json.JSONDecodeError, KeyError):
-        return None
 
 
 def judge(draft: dict, first: dict, second: dict) -> str:
@@ -58,23 +46,21 @@ def judge(draft: dict, first: dict, second: dict) -> str:
         return first["status"]
     if second["status"] != "ok" or first["value"] != second["value"] or first["text"] != second["text"]:
         return "not_repeatable"
-    if not CHECKER.check_output(draft["documented"] + "\n", first["text"] + "\n", doctest.NORMALIZE_WHITESPACE):
+    if draft["documented"] is not None and not CHECKER.check_output(draft["documented"] + "\n", first["text"] + "\n", doctest.NORMALIZE_WHITESPACE):
         return "differs_from_docs"
     return "verified"
 
 
-def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = None, keep_environment: bool = False) -> tuple[dict, list[dict]]:
-    """(record of what happened, verified exercises) for one scanned repository. Never raises."""
-    source = PythonRepository(candidate, clones, scans)
-    record = {"package": candidate["package"], "repo": candidate["repo"], "commit": candidate.get("commit"), "error": None, "drafts": 0, "outcomes": {}}
+def exercises_from(source: Source, record: dict, shorten: str = "", keep_environment: bool = False) -> tuple[dict, list[dict]]:
+    """(record of what happened, verified exercises) for one source of any kind. Never raises. `record` is filled in; `shorten` is cut from error texts."""
+    record |= {"error": None, "drafts": 0, "outcomes": {}}
     started = time.monotonic()
-    set_name = f"examples-{source.name}"
     try:
         drafts = source.drafts()
         record["drafts"] = len(drafts)
         if not drafts:
             return record | {"seconds": round(time.monotonic() - started, 1)}, []
-        box = source.box(set_name)
+        box = source.box(source.box_name)
         first, second = run_drafts(box, drafts), run_drafts(box, drafts)
         if first is None or second is None:
             raise RuntimeError("the sandboxed run did not finish")
@@ -87,19 +73,24 @@ def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = N
                 errors[a["error"].split(":")[0]] += 1
             if outcome != "verified":
                 continue
-            verified.append({"id": f"{source.name}-{len(verified) + 1:03d}", "repo": candidate["repo"], "commit": candidate.get("commit"), "package": source.package,
-                             "file": draft["file"], "module": draft["module"], "steps": draft["steps"], "expression": draft["expression"],
+            verified.append({"id": f"{source.name}-{len(verified) + 1:03d}", **source.origin(draft), "steps": draft["steps"], "expression": draft["expression"],
                              "answer": a["value"], "answer_kinds": a.get("kinds", []), "documented": draft["documented"], "uses": source.uses(draft)})
         record["outcomes"] = dict(outcomes)
         record["errors"] = dict(errors.most_common(5))
-    except (Exception, SystemExit) as error:  # noqa: BLE001 (one repository must not stop the pass)
+    except (Exception, SystemExit) as error:  # noqa: BLE001 (one source must not stop the pass)
         text = str(error).strip().splitlines()[0][:200] if str(error).strip() else ""
-        record["error"] = f"{type(error).__name__}: {text}".replace(str(clones) + "/", "")
+        record["error"] = f"{type(error).__name__}: {text}".replace(shorten, "")
         verified = []
     finally:
         if not keep_environment:
-            drop_box(set_name)
+            drop_box(source.box_name)
     return record | {"seconds": round(time.monotonic() - started, 1)}, verified
+
+
+def exercises_for(candidate: dict, clones: Path = CLONES, scans: Path | None = None, keep_environment: bool = False) -> tuple[dict, list[dict]]:
+    """(record of what happened, verified exercises) for one scanned repository. Never raises."""
+    record = {"package": candidate["package"], "repo": candidate["repo"], "commit": candidate.get("commit")}
+    return exercises_from(PythonRepository(candidate, clones, scans), record, str(clones) + "/", keep_environment)
 
 
 def report(records: list[dict]) -> str:

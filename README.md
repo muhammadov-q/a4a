@@ -8,8 +8,9 @@ A4A takes a source of information and extracts things a model can be trained and
 | --- | --- | --- | --- |
 | A Python repository (its code) | Tools, one per library function | The tool gives the same result as calling the library directly, in a sandbox | `a4a generate` |
 | The repository's documentation | Exercises and questions with known answers | Two sandboxed runs of the documentation example give the same value, and a second model can solve the question from its wording | `a4a corpus-exercises`, `a4a corpus-tasks` |
+| A SQLite database | Exercises: queries over its tables, made from templates over the schema | Two sandboxed runs of the query give the same value | `a4a db-fetch`, `a4a db-exercises` |
 
-These two kinds of source are what is implemented today. Other kinds (databases, websites, PDFs) are not. The commands that make and measure exercises reach a source only through a small interface (`src/a4a/sources/base.py`): its text by part, the elements it offers, its candidate exercises, and its sandbox. A new kind of source is a new class there.
+These three kinds of source are what is implemented today. Other kinds (websites, PDFs) are not. The commands that make and measure exercises reach a source only through a small interface (`src/a4a/sources/base.py`): its text by part, the elements it offers, its candidate exercises, and its sandbox. A new kind of source is a new class there.
 
 The command is `a4a`. Its first part, **repo2tools**, is the one that turns a repository into tools (`src/a4a/repo2tools/`, command `a4a generate`): it takes the URL of a Python library, has an LLM write one tool per library function, and accepts a tool only if running it gives the same result as calling the library directly. It then works out which tools can be chained, again by running them, and measures what a model does with the tools: how often it solves tasks with known answers, and what a run costs in tokens.
 
@@ -29,6 +30,7 @@ Author: Kobiljon Muhammadov. Supervisor: Roman Macháček.
 - [Quick start](#quick-start)
 - [Stage 1: from a repo link to tools](#stage-1-from-a-repo-link-to-tools)
 - [Many repositories: the candidate list](#many-repositories-the-candidate-list)
+- [Databases as a source](#databases-as-a-source)
 - [Usability: can a small model call the tools](#usability-can-a-small-model-call-the-tools)
 - [Stage 2: chains and synthetic traces with ToolGym](#stage-2-chains-and-synthetic-traces-with-toolgym)
 - [Stage 3: exercises, traces and repetition](#stage-3-exercises-traces-and-repetition)
@@ -441,6 +443,29 @@ Read on 15 November 2026 (`--tag bench2`), right answers as the mean of 3 runs, 
 - What is missing for a fair picture: tools at the medium and high level; the Python tool with an API reference; more questions per repository, with fewer true-or-false answers; more repositories.
 - A first attempt used questions written without the solvability check and without the reminder: 101 of 263 right without tools, 53 with. Its questions were often too vague to answer ("a request created with specific input values"), so those numbers are not used.
 
+## Databases as a source
+
+```sh
+uv run a4a db-fetch        # download the approved databases; each file must match its SHA-256
+uv run a4a db-exercises    # drafts from templates over the schema, each run twice in the sandbox
+```
+
+A database is a source of another kind than a repository: it shows no examples with results, but every question about it can be answered exactly by a query. The list of databases a person approved is `out/databases/candidates.json`, with a fixed address (a release or a commit), the license and a SHA-256 for every file. A database file is someone else's data, so it is never opened outside the sandbox: also the schema is read there, read-only, with the standard library's `sqlite3`. A database that comes as SQL scripts is built inside the sandbox.
+
+Drafts are made without a model, from five templates over the schema: the number of rows of a table, the number of different values of a column, the smallest and the largest value of a number column, the number of rows with a column's most frequent value, and, along each foreign key, the parent row with the most child rows. The pass is the one that `a4a corpus-exercises` runs on repositories; only the source class differs (`src/a4a/sources/sqlite_database.py`).
+
+| Database | Tables | Columns | Rows | Lines of schema | Drafts | Verified | Per 1,000 rows | Per line of schema | Tables and columns covered |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `chinook` | 11 | 64 | 15,607 | 140 | 128 | 128 | 8.2 | 0.91 | 75 of 75 (100%) |
+| `northwind` | 13 | 88 | 625,890 | 336 | 165 | 165 | 0.3 | 0.49 | 95 of 101 (94%) |
+| `sakila` | 16 | 89 | 46,273 | 378 | 164 | 163 | 3.5 | 0.43 | 101 of 105 (96%) |
+
+- **456 of 457 drafts are verified.** The one that is not is a join that gives no rows.
+- **Coverage is chosen, not found.** Every draft names the tables and columns it uses, so the exercises cover 94% to 100% of them. What is left out are empty tables. For repositories the exercises cover 3% of the public API, because there the documentation decides what is shown.
+- **The number of exercises follows the schema, not the data.** It is 0.4 to 0.9 per line of schema in all three databases, while per 1,000 rows it differs by a factor of about 30 (`northwind` has 40 times the rows of `chinook`).
+
+Limits. The answer of an exercise comes from its query alone: nothing else says what it should be, unlike a documentation example, which shows its result. The templates are simple, and half of the exercises ask for the number of different values of a column. There are no questions in plain words yet, so no model has been tested on these exercises.
+
 ## Usability: can a small model call the tools
 
 A tool that agrees with the library is still of no use if the model can't pick it or call it. `a4a usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
@@ -601,7 +626,8 @@ src/a4a/
 ├── paths.py                 where the checkout and the local API key file are
 ├── sources/                 kinds of source that exercises are extracted from
 │   ├── base.py                                 the `Source` interface: parts, elements, drafts, uses, box
-│   └── python_repository.py                    a scanned Python repository: its documentation files and docstrings, and its sandbox
+│   ├── python_repository.py                    a scanned Python repository: its documentation files and docstrings, and its sandbox
+│   └── sqlite_database.py                      a SQLite database: its tables and columns, drafts from templates, read only inside the sandbox
 ├── repo2tools/              the part that was built first: repository -> checked tools
 │   ├── pipeline.py          generate           clone, propose, write, check, repair, serve
 │   ├── worker.py                               checks one tool; runs inside the tool set's own environment and sandbox
@@ -632,6 +658,9 @@ src/a4a/
 │   ├── density.py           corpus-density     verified exercises per 1,000 lines of each kind of source, and the API they cover
 │   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
+├── databases/               databases as sources
+│   ├── fetch.py             db-fetch           download the approved databases; keep a file only if its SHA-256 matches
+│   └── exercises.py         db-exercises       exercises from a database, verified by two sandboxed runs; density and coverage
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server
