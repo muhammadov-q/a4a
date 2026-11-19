@@ -1,0 +1,145 @@
+{
+ "model": "qwen3-32b",
+ "tag": "db1",
+ "min_tasks": 5,
+ "repositories": [
+  {
+   "package": "chinook",
+   "repo": "https://github.com/lerocha/chinook-database",
+   "questions": 40,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     13
+    ],
+    "sql": [
+     33
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      40
+     ],
+     "right_when_called": [
+      33
+     ],
+     "tool_calls": [
+      40
+     ],
+     "tool_errors": [
+      7
+     ],
+     "repaired_calls": [
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "northwind",
+   "repo": "https://github.com/jpwhite3/northwind-SQLite3",
+   "questions": 39,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     14
+    ],
+    "sql": [
+     39
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39
+     ],
+     "right_when_called": [
+      39
+     ],
+     "tool_calls": [
+      41
+     ],
+     "tool_errors": [
+      1
+     ],
+     "repaired_calls": [
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "sakila",
+   "repo": "https://github.com/jOOQ/sakila",
+   "questions": 39,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     14
+    ],
+    "sql": [
+     38
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39
+     ],
+     "right_when_called": [
+      38
+     ],
+     "tool_calls": [
+      39
+     ],
+     "tool_errors": [
+      0
+     ],
+     "repaired_calls": [
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0
+     ]
+    }
+   }
+  }
+ ],
+ "conditions": [
+  "none",
+  "sql"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 0,
+   "none": 0,
+   "sql": 0
+  },
+  {
+   "answer": "another value",
+   "questions": 118,
+   "none": 41,
+   "sql": 110
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "sql",
+   "only_a": 2,
+   "only_b": 71,
+   "p": 5.7e-19
+  }
+ ]
+}

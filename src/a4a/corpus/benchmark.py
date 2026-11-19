@@ -35,6 +35,7 @@ import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
+from itertools import combinations
 from pathlib import Path
 from statistics import mean
 
@@ -60,7 +61,7 @@ def repositories(min_tasks: int, tasks: str = "tasks") -> list[dict]:
 def run_tag(tag: str, stem: str, condition: str, run: int = 1, strict: bool = False) -> str:
     """Names a run. Without tools there is nothing to repair, so those runs are the same for both harnesses."""
     repair = "" if strict or condition == "none" else "-repair"
-    return f"{tag}-{stem}" + ("-python" if condition == "python" else "") + repair + ("" if run == 1 else f"-r{run}")
+    return f"{tag}-{stem}" + (f"-{condition}" if condition in ("python", "sql") else "") + repair + ("" if run == 1 else f"-r{run}")
 
 
 def run_file(model: str, condition: str, tag: str, stem: str, run: int = 1, strict: bool = False) -> Path:
@@ -82,7 +83,7 @@ def call_as_text(record: dict) -> bool:
     return raw.startswith('{"name"') and '"arguments"' in raw
 
 
-def summarize(repos: list[dict], model: str, tag: str, strict: bool = False) -> list[dict]:
+def summarize(repos: list[dict], model: str, tag: str, strict: bool = False, conditions: dict = CONDITIONS) -> list[dict]:
     """One row per repository from the saved runs: questions, tools, and per condition the right answers of each run."""
     rows = []
     for repo in repos:
@@ -91,7 +92,7 @@ def summarize(repos: list[dict], model: str, tag: str, strict: bool = False) -> 
         if report.is_file():
             generated = json.loads(report.read_text())
             row |= {"tools_picked": len(generated["tools"]), "tools_accepted": generated["accepted"]}
-        for condition in CONDITIONS:
+        for condition in conditions:
             runs = saved_runs(model, condition, tag, repo["stem"], strict)
             row["right"][condition] = [sum(r["passed"] for r in run) for run in runs]
             if condition != "none" and runs:
@@ -111,14 +112,14 @@ def sign_test(only_a: int, only_b: int) -> float:
     return 1.0 if n == 0 else min(1.0, 2 * sum(math.comb(n, i) for i in range(k + 1)) / 2**n)
 
 
-def breakdown(repos: list[dict], model: str, tag: str, strict: bool = False) -> dict:
+def breakdown(repos: list[dict], model: str, tag: str, strict: bool = False, conditions: dict = CONDITIONS) -> dict:
     """Question by question, from the first run of the repositories that have every condition.
 
     by_answer: right answers for questions whose answer is true or false (half of them can be guessed) and for the rest.
     pairs: for two conditions, the questions only one of them got right, and the sign test on that split.
     """
-    runs = {repo["stem"]: {c: saved_runs(model, c, tag, repo["stem"], strict) for c in CONDITIONS} for repo in repos}
-    shown = [c for c in CONDITIONS if any(by_condition[c] for by_condition in runs.values())]
+    runs = {repo["stem"]: {c: saved_runs(model, c, tag, repo["stem"], strict) for c in conditions} for repo in repos}
+    shown = [c for c in conditions if any(by_condition[c] for by_condition in runs.values())]
     passed, kinds = {c: {} for c in shown}, {}
     for repo in repos:
         if shown and all(runs[repo["stem"]][c] for c in shown):
@@ -128,10 +129,9 @@ def breakdown(repos: list[dict], model: str, tag: str, strict: bool = False) -> 
     by_answer = [{"answer": kind, "questions": sum(k == kind for k in kinds.values()), **{c: sum(passed[c].get(i, False) for i, k in kinds.items() if k == kind) for c in shown}}
                  for kind in ("true or false", "another value")]
     pairs = []
-    for a, b in (("none", "tools"), ("none", "python"), ("tools", "python")):
-        if a in shown and b in shown:
-            only_a, only_b = (sum(passed[x].get(i, False) and not passed[y].get(i, False) for i in kinds) for x, y in ((a, b), (b, a)))
-            pairs.append({"a": a, "b": b, "only_a": only_a, "only_b": only_b, "p": float(f"{sign_test(only_a, only_b):.2g}")})
+    for a, b in combinations(shown, 2):  # every two conditions that have runs, in the order of `conditions`
+        only_a, only_b = (sum(passed[x].get(i, False) and not passed[y].get(i, False) for i in kinds) for x, y in ((a, b), (b, a)))
+        pairs.append({"a": a, "b": b, "only_a": only_a, "only_b": only_b, "p": float(f"{sign_test(only_a, only_b):.2g}")})
     return {"conditions": shown, "by_answer": by_answer, "pairs": pairs}
 
 
@@ -145,9 +145,9 @@ def cell(values: list, of: int | None = None) -> str:
     return f"{mean(values):.1f}{share} ({', '.join(map(str, values))})"
 
 
-def report(rows: list[dict], model: str, tag: str, strict: bool = False, details: dict | None = None, tasks: str = "tasks") -> str:
-    where = "each library's own documentation questions" if tasks == "tasks" else f"the questions of out/corpus/{tasks}/"
-    shown = [c for c in CONDITIONS if any(r["right"][c] for r in rows)]
+def report(rows: list[dict], model: str, tag: str, strict: bool = False, details: dict | None = None, tasks: str = "tasks", where: str | None = None, conditions: dict = CONDITIONS) -> str:
+    where = where or ("each library's own documentation questions" if tasks == "tasks" else f"the questions of out/corpus/{tasks}/")
+    shown = [c for c in conditions if any(r["right"][c] for r in rows)]
     complete = [r for r in rows if shown and all(r["right"][c] for c in shown)]
     runs = min((len(r["right"][c]) for r in complete for c in shown), default=0)
     questions = sum(r["questions"] for r in complete)
@@ -156,9 +156,9 @@ def report(rows: list[dict], model: str, tag: str, strict: bool = False, details
                "A tool call that the model wrote as text is run as a call, and the Python tool's output is shown as text.")
     lines = [f"# Tools against no tools, on {where} ({tag}{', strict harness' if strict else ''})", "", harness, "",
              f"Model `{model}`. {len(complete)} repositories with every condition, {questions} questions, {runs} run{'s' if runs != 1 else ''} each. Right answers: "
-             + "; ".join(f"{CONDITIONS[c].lower()} {cell(totals[c], questions)}" for c in shown) + ".", "",
+             + "; ".join(f"{conditions[c].lower()} {cell(totals[c], questions)}" for c in shown) + ".", "",
              "A cell is the number of right answers: the mean of the runs, then each run in brackets.", "",
-             "| Package | Questions | Tools accepted | " + " | ".join(CONDITIONS[c] for c in shown) + " |", "| --- | --- | --- | " + " | ".join("---" for _ in shown) + " |"]
+             "| Package | Questions | Tools accepted | " + " | ".join(conditions[c] for c in shown) + " |", "| --- | --- | --- | " + " | ".join("---" for _ in shown) + " |"]
     for r in rows:
         accepted = "none" if r["tools_picked"] is None else f"{r['tools_accepted']} of {r['tools_picked']}"
         lines.append(f"| `{r['package']}` | {r['questions']} | {accepted} | " + " | ".join(cell(r["right"][c]) for c in shown) + " |")
@@ -168,16 +168,16 @@ def report(rows: list[dict], model: str, tag: str, strict: bool = False, details
               + ("Ended with a call written as text |" if strict else "Calls written as text, and run |"), "| --- | --- | --- | --- | --- | --- | --- |"]
     for r in rows:
         for condition, use in r["use"].items():
-            lines.append(f"| `{r['package']}` | {CONDITIONS[condition].lower()} | {mean(use['called_a_tool']):.1f} of {r['questions']} | {mean(use['right_when_called']):.1f} | "
+            lines.append(f"| `{r['package']}` | {conditions[condition].lower()} | {mean(use['called_a_tool']):.1f} of {r['questions']} | {mean(use['right_when_called']):.1f} | "
                          f"{mean(use['tool_calls']):.1f} | {mean(use['tool_errors']):.1f} | {mean(use['ended_with_a_call_as_text' if strict else 'repaired_calls']):.1f} |")
     if details and details["conditions"]:
         share = lambda right, of: f"{right} ({right / of:.0%})" if of else "none"  # noqa: E731
         lines += ["", "## By kind of answer", "", "First run. A true-or-false question can be answered right by guessing half of the time.", "",
-                  "| The answer is | Questions | " + " | ".join(CONDITIONS[c] for c in details["conditions"]) + " |", "| --- | --- | " + " | ".join("---" for _ in details["conditions"]) + " |"]
+                  "| The answer is | Questions | " + " | ".join(conditions[c] for c in details["conditions"]) + " |", "| --- | --- | " + " | ".join("---" for _ in details["conditions"]) + " |"]
         lines += [f"| {row['answer']} | {row['questions']} | " + " | ".join(share(row[c], row["questions"]) for c in details["conditions"]) + " |" for row in details["by_answer"]]
         lines += ["", "## Question by question", "", "First run. p is the exact two-sided sign test on the questions that only one of the two got right.", "",
                   "| A | B | Only A right | Only B right | p |", "| --- | --- | --- | --- | --- |"]
-        lines += [f"| {CONDITIONS[pair['a']].lower()} | {CONDITIONS[pair['b']].lower()} | {pair['only_a']} | {pair['only_b']} | {pair['p']:g} |" for pair in details["pairs"]]
+        lines += [f"| {conditions[pair['a']].lower()} | {conditions[pair['b']].lower()} | {pair['only_a']} | {pair['only_b']} | {pair['p']:g} |" for pair in details["pairs"]]
     return "\n".join(lines) + "\n"
 
 
@@ -243,7 +243,7 @@ def main() -> None:
     parser.add_argument("--base-url")
     parser.add_argument("--writer-model", help="the model that writes the tools; only needed for a repository that has no tool set with this tag yet")
     parser.add_argument("--writer-base-url")
-    parser.add_argument("--conditions", nargs="+", choices=tuple(CONDITIONS), default=list(CONDITIONS))
+    parser.add_argument("--conditions", nargs="+", choices=("none", "tools", "python"), default=["none", "tools", "python"])
     parser.add_argument("--runs", type=int, default=1, help="how often the model answers under each condition")
     parser.add_argument("--jobs", type=int, default=3, help="runs of one repository at the same time")
     parser.add_argument("--only", nargs="+", metavar="PACKAGE", help="run only these packages; the report still covers all")

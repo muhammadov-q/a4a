@@ -1,0 +1,145 @@
+{
+ "model": "qwen3-8b",
+ "tag": "db1",
+ "min_tasks": 5,
+ "repositories": [
+  {
+   "package": "chinook",
+   "repo": "https://github.com/lerocha/chinook-database",
+   "questions": 40,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     1
+    ],
+    "sql": [
+     36
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      40
+     ],
+     "right_when_called": [
+      36
+     ],
+     "tool_calls": [
+      49
+     ],
+     "tool_errors": [
+      6
+     ],
+     "repaired_calls": [
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "northwind",
+   "repo": "https://github.com/jpwhite3/northwind-SQLite3",
+   "questions": 39,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     6
+    ],
+    "sql": [
+     35
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39
+     ],
+     "right_when_called": [
+      35
+     ],
+     "tool_calls": [
+      41
+     ],
+     "tool_errors": [
+      2
+     ],
+     "repaired_calls": [
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "sakila",
+   "repo": "https://github.com/jOOQ/sakila",
+   "questions": 39,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     4
+    ],
+    "sql": [
+     34
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39
+     ],
+     "right_when_called": [
+      34
+     ],
+     "tool_calls": [
+      39
+     ],
+     "tool_errors": [
+      0
+     ],
+     "repaired_calls": [
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0
+     ]
+    }
+   }
+  }
+ ],
+ "conditions": [
+  "none",
+  "sql"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 0,
+   "none": 0,
+   "sql": 0
+  },
+  {
+   "answer": "another value",
+   "questions": 118,
+   "none": 11,
+   "sql": 105
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "sql",
+   "only_a": 0,
+   "only_b": 94,
+   "p": 1e-28
+  }
+ ]
+}
