@@ -574,7 +574,23 @@ uv run a4a memory-check --area databases --tasks tasks-v1 --original db1 --varia
 - **Libraries.** In every input value that has a digit, the last digit changes by one ("1.0.2" becomes "1.0.3", 7 becomes 8), the code runs again twice in the library's sandbox, and the request is written again by replacing the values (every input value appears in the request character for character, so no model is needed). 50 of 165 documentation questions and 28 of 66 aimed questions get a new answer. Many do not: a changed version often gives the same true or false.
 - **`a4a memory-check`** compares, question by question, the first run on the original questions with the first run on the changed ones, only where the answer changed: right before, right after, and how often the model gave the *old* answer, which it can only have from memory.
 
-Limits. Removing rows also makes a source smaller, and a changed input can make a question slightly different, not only its answer; the questions with an unchanged answer are reported next to them as a control. Replacing values in the wording is checked only by finding each new value in it.
+**Result for Qwen3-32B** (one run on the original questions, one on the changed ones; only the questions whose answer changed):
+
+| Questions | Condition | Changed answers | Right before | Right after | Gave the old answer | p |
+| --- | --- | --- | --- | --- | --- | --- |
+| Database | No tool | 82 | 30 (37%) | 1 (1%) | 30 (37%) | 3e-08 |
+| Database | One SQL tool | 82 | 76 (93%) | 75 (91%) | 0 | 1 |
+| Documentation | No tools | 41 | 21 (51%) | 19 (46%) | 3 (7%) | 0.75 |
+| Documentation | One Python tool | 41 | 29 (71%) | 25 (61%) | 2 (5%) | 0.22 |
+| Aimed | No tools | 28 | 13 (46%) | 11 (39%) | 2 (7%) | 0.5 |
+| Aimed | One Python tool | 28 | 18 (64%) | 19 (68%) | 1 (4%) | 1 |
+
+- **On the databases, every right answer without a tool was memory.** The 30 questions the model got right before are exactly the 30 where it now gives the old answer; it gets 1 of the changed questions right. Row counts were the most remembered (17 of 24 right before, 0 after).
+- **With the SQL tool there is no memory left.** The model queries the changed database and never gives the old answer.
+- **On the library questions the effect is small and not significant.** Without tools the model gives the old answer on 3 of 41 documentation questions and 2 of 28 aimed questions. What it knows about a library it mostly uses to work an answer out, not to recall the documented value.
+- **The control behaves.** On the questions whose answer did not change, the same question twice gives nearly the same score (databases 32% and 32% without a tool, 97% and 97% with the SQL tool).
+
+Limits. One run each, so a single question can move between the two runs by chance; the control shows how much. Removing rows also makes a source smaller, and a changed input can make a question slightly different, not only its answer. Replacing values in the wording is checked only by finding each new value in it.
 
 ## Usability: can a small model call the tools
 
