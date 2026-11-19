@@ -1,0 +1,107 @@
+{
+ "seed": 1,
+ "keep": 0.7,
+ "databases": [
+  {
+   "database": "chinook",
+   "rows_before": 15607,
+   "rows_after": 10923,
+   "questions": 40,
+   "outcomes": {
+    "changed": 28,
+    "unchanged": 11,
+    "no_answer": 1
+   },
+   "by_template": {
+    "rows": [
+     9,
+     9
+    ],
+    "distinct": [
+     9,
+     5
+    ],
+    "filter": [
+     9,
+     6
+    ],
+    "range": [
+     5,
+     1
+    ],
+    "most": [
+     7,
+     7
+    ]
+   },
+   "sha256": "e4800c66b92aa7bd4bedc04384585dc452eb5fc0d6f8c887daf3cf6fb98c37f9"
+  },
+  {
+   "database": "northwind",
+   "rows_before": 625890,
+   "rows_after": 438150,
+   "questions": 39,
+   "outcomes": {
+    "changed": 25,
+    "unchanged": 14
+   },
+   "by_template": {
+    "rows": [
+     8,
+     7
+    ],
+    "filter": [
+     8,
+     6
+    ],
+    "distinct": [
+     8,
+     6
+    ],
+    "most": [
+     7,
+     6
+    ],
+    "range": [
+     8,
+     0
+    ]
+   },
+   "sha256": "c51c377d898e81be11dde1604f90756be3ec21d64edc09160e56a9cb5fb29164"
+  },
+  {
+   "database": "sakila",
+   "rows_before": 46273,
+   "rows_after": 32211,
+   "questions": 39,
+   "outcomes": {
+    "changed": 29,
+    "unchanged": 9,
+    "no_answer": 1
+   },
+   "by_template": {
+    "rows": [
+     9,
+     8
+    ],
+    "filter": [
+     9,
+     8
+    ],
+    "distinct": [
+     9,
+     7
+    ],
+    "most": [
+     6,
+     6
+    ],
+    "range": [
+     5,
+     0
+    ]
+   },
+   "sha256": "41ae7c3c06b31ab271412124e9951b87709526f92b5440b119b9a55f0007b7b7"
+  }
+ ]
+}

@@ -1,6 +1,7 @@
 """Can a model answer the database questions, without a tool and with one tool that runs SQL?
 
     uv run a4a db-benchmark --tag db1 --model qwen3-8b --base-url http://127.0.0.1:18001/v1 [--runs 1] [--only name ...]
+    uv run a4a db-benchmark --tag db1v1 --tasks tasks-v1 --variant 1 ...     # the questions of `a4a db-variant`, on the changed databases
 
 For every database with questions (`a4a db-tasks`) the model answers them twice:
 
@@ -25,6 +26,7 @@ from pathlib import Path
 from a4a.corpus.benchmark import breakdown, report, run_file, run_tag, summarize
 from a4a.databases.exercises import OUT
 from a4a.databases.fetch import LIST, database_path
+from a4a.databases.variant import variant_path
 from a4a.paths import API_KEY_FILE, REPO_ROOT
 from a4a.sources.python_repository import drop_box
 from a4a.sources.sqlite_database import DATABASE, SqliteDatabase
@@ -33,20 +35,22 @@ SQL_TOOL = Path(__file__).resolve().parent / "sql_tool.py"
 WAYS = {"none": "No tools", "sql": "One SQL tool"}
 
 
-def databases(min_tasks: int) -> list[dict]:
-    """The approved databases with enough questions, in the shape the benchmark's summary reads: {"stem", "path", "package", "url", "tasks"} and the candidate."""
+def databases(min_tasks: int, tasks: str = "tasks", variant: int | None = None) -> list[dict]:
+    """The approved databases with enough questions in out/databases/<tasks>/, in the shape the benchmark's summary reads:
+    {"stem", "path", "package", "url", "tasks"}, the candidate, and the database file the SQL tool serves (a variant's, with `variant`)."""
     found = []
     for candidate in json.loads(LIST.read_text(encoding="utf-8"))["databases"]:
-        path = OUT / "tasks" / f"{candidate['name']}.jsonl"
+        path = OUT / tasks / f"{candidate['name']}.jsonl"
         count = len(path.read_text(encoding="utf-8").splitlines()) if path.is_file() else 0
         if count >= min_tasks:
-            found.append({"stem": candidate["name"], "path": path, "package": candidate["name"], "url": candidate["repo"], "tasks": count, "candidate": candidate})
+            file = database_path(candidate) if variant is None else variant_path(candidate, variant)
+            found.append({"stem": candidate["name"], "path": path, "package": candidate["name"], "url": candidate["repo"], "tasks": count, "candidate": candidate, "file": file})
     return found
 
 
-def sql_server(candidate: dict, set_name: str) -> list[str]:
-    """The command that serves the SQL tool inside a sandbox that holds a copy of the database."""
-    box = SqliteDatabase(candidate, database_path(candidate)).box(set_name, readable=SQL_TOOL)
+def sql_server(candidate: dict, set_name: str, file: Path) -> list[str]:
+    """The command that serves the SQL tool inside a sandbox that holds a copy of the database file."""
+    box = SqliteDatabase(candidate, file).box(set_name, readable=SQL_TOOL)
     return ["env", "-i", *(f"{name}={value}" for name, value in box.clean_env.items()), *box.command(str(SQL_TOOL), "--database", str(box.scratch / DATABASE))]
 
 
@@ -57,7 +61,7 @@ def run_database(database: dict, args, env: dict) -> None:
         return
     started, set_name = time.monotonic(), f"sql-{database['stem']}"
     try:
-        server = sql_server(database["candidate"], set_name) if any(way == "sql" for way, _ in wanted) else []
+        server = sql_server(database["candidate"], set_name, database["file"]) if any(way == "sql" for way, _ in wanted) else []
         for way, k in wanted:
             command = [sys.executable, "-m", "a4a.cli", "run-model", str(database["path"]), "--mode", "none" if way == "none" else "tools",
                        "--base-url", args.base_url, "--model", args.model, "--topic", f"the SQLite database {database['package']} ({database['candidate']['what']})", "--remind",
@@ -80,9 +84,13 @@ def main() -> None:
     parser.add_argument("--runs", type=int, default=1, help="how often the model answers in each way")
     parser.add_argument("--only", nargs="+", metavar="DATABASE", help="run only these databases; the report still covers all")
     parser.add_argument("--min-tasks", type=int, default=5)
+    parser.add_argument("--tasks", default="tasks", help="the question set: a folder under out/databases/")
+    parser.add_argument("--variant", type=int, help="serve the database of `a4a db-variant --seed N` to the SQL tool")
     parser.add_argument("--report-only", action="store_true", help="only build the report from the saved runs")
     args = parser.parse_args()
-    found = databases(args.min_tasks)
+    found = databases(args.min_tasks, args.tasks, args.variant)
+    if args.variant is not None and args.tasks == "tasks":
+        parser.error("--variant needs the questions of that variant: --tasks tasks-v<seed>")
     if not args.report_only:
         if not args.base_url:
             parser.error("--base-url is needed to run a model")

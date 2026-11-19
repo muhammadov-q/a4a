@@ -31,6 +31,7 @@ Author: Kobiljon Muhammadov. Supervisor: Roman Macháček.
 - [Stage 1: from a repo link to tools](#stage-1-from-a-repo-link-to-tools)
 - [Many repositories: the candidate list](#many-repositories-the-candidate-list)
 - [Databases as a source](#databases-as-a-source)
+- [Memory or skill?](#memory-or-skill)
 - [Usability: can a small model call the tools](#usability-can-a-small-model-call-the-tools)
 - [Stage 2: chains and synthetic traces with ToolGym](#stage-2-chains-and-synthetic-traces-with-toolgym)
 - [Stage 3: exercises, traces and repetition](#stage-3-exercises-traces-and-repetition)
@@ -557,6 +558,24 @@ uv run a4a db-benchmark --tag db1 --model qwen3-8b --base-url http://127.0.0.1:1
 
 Limits. One run, three databases, simple questions. Each answer has one witness, the query. Nothing here says how a model does on a database it has never seen.
 
+## Memory or skill?
+
+A large model has read the public sources that the questions come from. With no tool, Qwen3-32B answers 19 of 26 questions about the number of rows of the sample databases right: it remembers them. So a "no tool" score on a well-known source does not show whether a model can find a fact. The memory check changes the answers and keeps the questions:
+
+```sh
+uv run a4a db-variant --seed 1 --keep 0.7                 # each database with part of its rows removed; the same questions, new answers
+uv run a4a corpus-variant --tasks tasks --seed 1          # library questions with changed input values; new answers from a new run
+uv run a4a corpus-variant --tasks tasks-aimed --seed 1
+uv run a4a db-benchmark --tag db1v1 --tasks tasks-v1 --variant 1 --model qwen3-32b --base-url <address>
+uv run a4a memory-check --area databases --tasks tasks-v1 --original db1 --variant db1v1 --model qwen3-32b --conditions none sql
+```
+
+- **Databases.** In a copy of each database, made inside the sandbox, every row is kept with probability 0.7 (seeded by the table name). The wording of a question stays; its query runs again on the copy. 82 of the 118 questions get a new answer (Chinook's albums go from 347 to 236). Ranges rarely change (1 of 18), row counts nearly always (24 of 26).
+- **Libraries.** In every input value that has a digit, the last digit changes by one ("1.0.2" becomes "1.0.3", 7 becomes 8), the code runs again twice in the library's sandbox, and the request is written again by replacing the values (every input value appears in the request character for character, so no model is needed). 50 of 165 documentation questions and 28 of 66 aimed questions get a new answer. Many do not: a changed version often gives the same true or false.
+- **`a4a memory-check`** compares, question by question, the first run on the original questions with the first run on the changed ones, only where the answer changed: right before, right after, and how often the model gave the *old* answer, which it can only have from memory.
+
+Limits. Removing rows also makes a source smaller, and a changed input can make a question slightly different, not only its answer; the questions with an unchanged answer are reported next to them as a control. Replacing values in the wording is checked only by finding each new value in it.
+
 ## Usability: can a small model call the tools
 
 A tool that agrees with the library is still of no use if the model can't pick it or call it. `a4a usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
@@ -733,6 +752,7 @@ src/a4a/
 │   ├── reference_calls.py   check-tools        replay every known-good solution through a tool server
 │   ├── run_model.py         run-model          a model solves the exercises, with or without tools
 │   ├── compare_runs.py      compare-runs       two runs side by side
+│   ├── memory.py            memory-check       memory or skill: answers before and after the answers of the questions changed
 │   └── handover.py          handover           self-contained zip of exercises and tools for another harness
 ├── traces/
 │   ├── format.py                               one format for agent traces: every request, with token counts
@@ -748,6 +768,7 @@ src/a4a/
 │   ├── tasks.py             corpus-tasks       a question in plain words per verified example, kept if solvable from its wording
 │   ├── density.py           corpus-density     verified exercises per 1,000 lines of each kind of source, and the API they cover
 │   ├── targets.py           corpus-targets     a model writes examples free, with the API listed, or aimed at one element (by name, or with its reference); same check
+│   ├── variant.py           corpus-variant     questions with changed input values, so a remembered answer no longer fits
 │   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 ├── databases/               databases as sources
@@ -755,6 +776,7 @@ src/a4a/
 │   ├── exercises.py         db-exercises       exercises from a database, verified by two sandboxed runs; density and coverage
 │   ├── tasks.py             db-tasks           a question in plain words per query, kept if a second model can answer it with a query
 │   ├── benchmark.py         db-benchmark       per database: score a model without a tool and with one SQL tool
+│   ├── variant.py           db-variant         a copy of each database with part of its rows removed; the same questions, new answers
 │   └── sql_tool.py                             the SQL tool: an MCP server with `run_sql`, read-only, inside the sandbox
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools

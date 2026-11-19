@@ -1,0 +1,77 @@
+{
+ "tasks": "tasks-aimed",
+ "seed": 1,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "questions": 14,
+   "outcomes": {
+    "no_digits": 4,
+    "unchanged": 4,
+    "changed": 4,
+    "no_answer": 1,
+    "wording": 1
+   }
+  },
+  {
+   "package": "mcp",
+   "questions": 4,
+   "outcomes": {
+    "no_digits": 4
+   }
+  },
+  {
+   "package": "more_itertools",
+   "questions": 5,
+   "outcomes": {
+    "changed": 4,
+    "unchanged": 1
+   }
+  },
+  {
+   "package": "networkx",
+   "questions": 14,
+   "outcomes": {
+    "no_digits": 1,
+    "changed": 7,
+    "unchanged": 6
+   }
+  },
+  {
+   "package": "jinja2",
+   "questions": 3,
+   "outcomes": {
+    "no_digits": 1,
+    "no_answer": 1,
+    "changed": 1
+   }
+  },
+  {
+   "package": "werkzeug",
+   "questions": 13,
+   "outcomes": {
+    "no_digits": 4,
+    "no_answer": 1,
+    "changed": 6,
+    "unchanged": 2
+   }
+  },
+  {
+   "package": "packaging",
+   "questions": 10,
+   "outcomes": {
+    "no_digits": 4,
+    "changed": 5,
+    "unchanged": 1
+   }
+  },
+  {
+   "package": "rsa",
+   "questions": 3,
+   "outcomes": {
+    "changed": 1,
+    "no_answer": 2
+   }
+  }
+ ]
+}
