@@ -46,6 +46,14 @@ def test_the_split_keeps_a_share_of_each_kind_for_the_test_and_is_repeatable():
     assert sum(sources[s] == "repository" for s in split["test"]) == 2 and sum(sources[s] == "database" for s in split["test"]) == 1
 
 
+def test_with_folds_every_source_is_tested_once_and_fold_1_is_the_plain_split():
+    sources = {**{f"repo{i}": "repository" for i in range(7)}, **{f"db{i}": "database" for i in range(3)}}
+    folds = [split_sources(sources, 0.3, seed=1, folds=3, fold=f) for f in (1, 2, 3)]
+    assert folds[0] == split_sources(sources, 0.3, seed=1)
+    assert sorted(s for fold in folds for s in fold["test"]) == sorted(sources)
+    assert all(sum(sources[s] == "database" for s in fold["test"]) == 1 for fold in folds)
+
+
 def test_only_the_teachers_runs_with_one_tool_and_the_repairing_harness_are_read(tmp_path):
     for name in ("qwen3-32b-tools-bench2-pypa__packaging-python-repair-r2", "qwen3-8b-tools-db1-chinook-sql-repair", "qwen3-8b-tools-bench2-pypa__packaging-python",
                  "qwen3-8b-none-bench2-pypa__packaging", "qwen3-1.7b-tools-bench2-pypa__packaging-python-repair", "qwen3-8b-tools-other1-pypa__packaging-python-repair"):

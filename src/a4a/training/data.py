@@ -1,6 +1,7 @@
 """Training data from the teachers' runs: every step of a run that got the right answer with one tool.
 
     uv run a4a train-data --name sft1 [--teachers qwen3-32b qwen3-8b] [--sets bench2 aimed1 db1] [--test-share 0.3] [--seed 1]
+    uv run a4a train-data --name sft1-f2 --folds 3 --fold 2
 
 `a4a corpus-benchmark` (the Python tool) and `a4a db-benchmark` (the SQL tool) save every request of a run in
 out/traces/. Each request of a passed run becomes one example: the conversation so far, the tool list, and the
@@ -16,6 +17,8 @@ example that is already there is not added again.
 
 The sources are split first. The test sources (a share of the repositories and of the databases, chosen at
 random with --seed) give no example at all, so the trained model is tested only on sources it has not seen.
+With --folds 3, every source is tested in one of three folds: fold 1 is that split, and the sources it trains on
+are dealt at random to folds 2 and 3. One model is trained per fold.
 
 Writes out/training/<name>/train.jsonl (one example per line: messages, tools, target, meta), split.json
 (which source is where, with the questions to test on) and report.md.
@@ -89,12 +92,21 @@ def teacher_runs(teachers: list[str], sets: list[str], traces: Path = TRACES):
             yield match["stem"], KINDS[match["tool"]], match["set"], match["model"], path
 
 
-def split_sources(sources: dict[str, str], share: float, seed: int) -> dict[str, list[str]]:
-    """The test sources: `share` of each kind, at least one, at random. The rest train."""
-    rng, test = random.Random(seed), []
-    for kind in sorted(set(sources.values())):
+def split_sources(sources: dict[str, str], share: float, seed: int, folds: int = 1, fold: int = 1) -> dict[str, list[str]]:
+    """The test sources: `share` of each kind, at least one, at random. The rest train.
+
+    With `folds` > 1 every source is tested once: fold 1 is that split, and the sources it trains on are dealt at
+    random, kind by kind, to folds 2 to `folds`. Fold `fold` is tested."""
+    rng, parts = random.Random(seed), [[] for _ in range(folds)]
+    kinds = sorted(set(sources.values()))
+    for kind in kinds:
         names = sorted(s for s, k in sources.items() if k == kind)
-        test += rng.sample(names, max(1, round(share * len(names))))
+        parts[0] += rng.sample(names, max(1, round(share * len(names))))
+    for kind in kinds if folds > 1 else ():
+        rest = sorted(s for s, k in sources.items() if k == kind and s not in parts[0])
+        for i, name in enumerate(rng.sample(rest, len(rest))):
+            parts[1 + i % (folds - 1)].append(name)
+    test = parts[fold - 1]
     return {"test": sorted(test), "train": sorted(s for s in sources if s not in test)}
 
 
@@ -109,7 +121,8 @@ def key(example: dict) -> str:
 
 def report(name: str, args, split: dict, sources: dict, counts: dict, dropped: Counter) -> str:
     lines = [f"# Training data `{name}`", "",
-             f"Teachers: {', '.join(args.teachers)}. Runs: {', '.join(args.sets)}, the harness that repairs calls. Test sources: {args.test_share:.0%} of each kind, seed {args.seed}.", "",
+             f"Teachers: {', '.join(args.teachers)}. Runs: {', '.join(args.sets)}, the harness that repairs calls. Test sources: {args.test_share:.0%} of each kind, seed {args.seed}"
+             + (f"; fold {args.fold} of {args.folds}, in which every source is tested once (fold 1 is that split)." if args.folds > 1 else "."), "",
              "| Source | Kind | Split | Runs used | Questions with an example | Examples | Questions to test on |", "| --- | --- | --- | --- | --- | --- | --- |"]
     for stem in sorted(sources, key=lambda s: (sources[s], s)):
         c = counts.get(stem, {})
@@ -131,14 +144,20 @@ def main() -> None:
     parser.add_argument("--sets", nargs="+", default=["bench2", "aimed1", "db1"], help="the benchmark tags whose runs are used")
     parser.add_argument("--test-share", type=float, default=0.3, help="share of the repositories, and of the databases, kept for the test")
     parser.add_argument("--seed", type=int, default=1)
+    parser.add_argument("--folds", type=int, default=1, help="with more than 1, every source is tested in one fold; fold 1 is the split of --test-share")
+    parser.add_argument("--fold", type=int, default=1, help="the fold whose sources are tested, 1 to --folds")
     parser.add_argument("--keep-failed-calls", action="store_true", help="also learn the steps whose tool call came back as an error")
     args = parser.parse_args()
+    if not 1 <= args.fold <= args.folds:
+        parser.error("--fold must be between 1 and --folds")
 
     runs = list(teacher_runs(args.teachers, args.sets))
     sources = {stem: kind for stem, kind, *_ in runs}
     if not sources:
         parser.error("no saved runs of these teachers and sets in out/traces/")
-    split = split_sources(sources, args.test_share, args.seed)
+    split = split_sources(sources, args.test_share, args.seed, args.folds, args.fold)
+    if not split["test"]:
+        parser.error(f"fold {args.fold} has no source; use fewer folds")
     seen, examples, dropped = set(), [], Counter()
     counts = defaultdict(lambda: {"runs": 0, "questions": set(), "examples": 0})
     for stem, kind, set_name, model, path in runs:
@@ -165,7 +184,8 @@ def main() -> None:
     folder.mkdir(parents=True, exist_ok=True)
     (folder / "train.jsonl").write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in examples), encoding="utf-8")
     test = {stem: {"kind": sources[stem], "questions": questions_of(stem, sources[stem])} for stem in split["test"]}
-    record = {"name": args.name, "teachers": args.teachers, "sets": args.sets, "test_share": args.test_share, "seed": args.seed, "keep_failed_calls": args.keep_failed_calls,
+    record = {"name": args.name, "teachers": args.teachers, "sets": args.sets, "test_share": args.test_share, "seed": args.seed,
+              **({"folds": args.folds, "fold": args.fold} if args.folds > 1 else {}), "keep_failed_calls": args.keep_failed_calls,
               "train": split["train"], "test": test, "examples": len(examples), "dropped": dict(dropped),
               "per_source": {s: {**c, "questions": len(c["questions"])} for s, c in counts.items()},
               "sha256": hashlib.sha256((folder / "train.jsonl").read_bytes()).hexdigest()}
