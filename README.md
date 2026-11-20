@@ -627,7 +627,20 @@ Two variants on fold 1, neither of which helps:
 - **Keeping the failed steps** (`a4a train-data --keep-failed-calls`, `sft2`, 1,094 examples): database 82% (87% without them), documentation 37% (37%), aimed 44% (36%). The student learns to send more calls (7.8 per database answer against 2.2) and runs out of steps more often.
 - **Not running a repeated call** (`--no-repeat` in `run-model`, `corpus-benchmark`, `db-benchmark` and `train-compare`): a call the same as an earlier one of the run is not run again, and the model is told so. Untrained: database 45% to 50%, documentation 27% to 28%, aimed 43% to 35%. Trained: 87% to 86%, 37% to 33%, 36% to 51%. All within chance: on the first run at most 4 questions change on either side (sign test p ≥ 0.38). Both models go on sending the blocked call: the loop is not caused by the harness, and a message does not stop it.
 
-Reports: `out/training/sft1/compare-qwen3-1.7b-sft1-folds.md` (the table above), one per fold in `out/training/<name>/`, `out/training/sft2/compare-qwen3-1.7b-sft2.md` and `out/training/sft1/compare-qwen3-1.7b-sft1-norepeat.md`; the data, the splits and the training logs are in `out/training/`. Limits: one training run per fold and one small model; the teachers' columns come from their benchmark runs on the same questions. A SQL question needs one short query in a language the model knows; a library question needs the right part of an API the model does not know.
+**A larger student, Qwen3-4B,** on the same three folds with the same data and settings (one adapter per fold, 7 to 10 minutes each; `--model Qwen/Qwen3-4B`):
+
+| Questions | Condition | Questions | Qwen3-4B | After training | Only before | Only after | p |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Database | SQL tool | 118 | 97.3 (82%) | 114 (97%) | 0 | 17 | 1.5e-05 |
+| Documentation | Python tool | 120 | 65.3 (54%) | 61.7 (51%) | 20 | 14 | 0.39 |
+| Aimed | Python tool | 62 | 32.3 (52%) | 31.7 (51%) | 7 | 5 | 0.77 |
+
+- **On databases it reaches the teachers** (97%, 114 of 118, against 89% and 93%; the teachers made one run, so the difference is not tested), and every fold goes up (78% to 98%, 82% to 97%, 88% to 95%).
+- **On libraries there is still no gain, and training makes the loop worse:** the same call three times in a row in 19% of the answers before and 36% after, no answer in 9% before and 30% after, 6.3 calls per answer before and 13.8 after.
+
+**Why the loop grows (Verified on the data):** the training data never shows an answer after a failed call. In the data of each fold, none of the learned answers that follow a tool result (490, 397 and 553) follows an error, because the teachers' passed runs answer right after a call that worked. On a library the student does not know, most of its calls fail (89% of the tool outputs of Qwen3-4B before training, 95% after), so the trained student goes on calling until the step limit. Only 4% to 7% of the library examples show a call right after an error, so recovery is rarely shown either.
+
+Reports: `out/training/sft1/compare-qwen3-1.7b-sft1-folds.md` (the first table), one per fold in `out/training/<name>/`, `out/training/sft2/compare-qwen3-1.7b-sft2.md`, `out/training/sft1/compare-qwen3-1.7b-sft1-norepeat.md` and `out/training/sft1/compare-qwen3-4b-sft1-folds.md`; the data, the splits and the training logs are in `out/training/`. Limits: one training run per fold and model; the teachers' columns come from their benchmark runs on the same questions. A SQL question needs one short query in a language the model knows; a library question needs the right part of an API the model does not know.
 
 ## Usability: can a small model call the tools
 
