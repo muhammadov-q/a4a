@@ -1,0 +1,114 @@
+{
+ "model": "qwen3-32b",
+ "tasks": "tasks-v1",
+ "original": "db1",
+ "variant": "db1v1",
+ "conditions": {
+  "none": {
+   "rows": [
+    {
+     "source": "chinook",
+     "changed": 28,
+     "right_before": 11,
+     "right_after": 0,
+     "old_answer": 11,
+     "only_before": 11,
+     "only_after": 0,
+     "same": 11,
+     "same_right_before": 2,
+     "same_right_after": 2
+    },
+    {
+     "source": "northwind",
+     "changed": 25,
+     "right_before": 7,
+     "right_after": 1,
+     "old_answer": 7,
+     "only_before": 7,
+     "only_after": 1,
+     "same": 14,
+     "same_right_before": 7,
+     "same_right_after": 7
+    },
+    {
+     "source": "sakila",
+     "changed": 29,
+     "right_before": 12,
+     "right_after": 0,
+     "old_answer": 12,
+     "only_before": 12,
+     "only_after": 0,
+     "same": 9,
+     "same_right_before": 2,
+     "same_right_after": 2
+    }
+   ],
+   "total": {
+    "changed": 82,
+    "right_before": 30,
+    "right_after": 1,
+    "old_answer": 30,
+    "only_before": 30,
+    "only_after": 1,
+    "same": 34,
+    "same_right_before": 11,
+    "same_right_after": 11,
+    "p": 3e-08
+   },
+   "missing": []
+  },
+  "sql": {
+   "rows": [
+    {
+     "source": "chinook",
+     "changed": 28,
+     "right_before": 23,
+     "right_after": 23,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 11,
+     "same_right_before": 10,
+     "same_right_after": 10
+    },
+    {
+     "source": "northwind",
+     "changed": 25,
+     "right_before": 25,
+     "right_after": 25,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 14,
+     "same_right_before": 14,
+     "same_right_after": 14
+    },
+    {
+     "source": "sakila",
+     "changed": 29,
+     "right_before": 28,
+     "right_after": 27,
+     "old_answer": 0,
+     "only_before": 1,
+     "only_after": 0,
+     "same": 9,
+     "same_right_before": 9,
+     "same_right_after": 9
+    }
+   ],
+   "total": {
+    "changed": 82,
+    "right_before": 76,
+    "right_after": 75,
+    "old_answer": 0,
+    "only_before": 1,
+    "only_after": 0,
+    "same": 34,
+    "same_right_before": 33,
+    "same_right_after": 33,
+    "p": 1.0
+   },
+   "missing": []
+  }
+ }
+}

@@ -26,6 +26,7 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "check-tools": ("a4a.evaluation.reference_calls", "replay every known-good solution through a tool server"),
         "run-model": ("a4a.evaluation.run_model", "let a model solve the exercises, with or without tools"),
         "compare-runs": ("a4a.evaluation.compare_runs", "put two model runs side by side"),
+        "memory-check": ("a4a.evaluation.memory", "memory or skill: answers before and after the answers of the questions were changed"),
         "handover": ("a4a.evaluation.handover", "build a self-contained zip of exercises and tools"),
     },
     "Traces": {
@@ -41,12 +42,14 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "corpus-targets": ("a4a.corpus.targets", "a model writes examples for a repository in three ways: free, with the API listed, or one target per request"),
         "corpus-tasks": ("a4a.corpus.tasks", "a question in plain words for each verified example, in the format of run-model"),
         "corpus-benchmark": ("a4a.corpus.benchmark", "per repository: score a model on its questions without tools, with generated tools, and with one Python tool"),
+        "corpus-variant": ("a4a.corpus.variant", "library questions with changed input values, so that a remembered answer no longer fits"),
     },
     "Databases: a database -> exercises": {
         "db-fetch": ("a4a.databases.fetch", "download the approved databases and check each file against its SHA-256"),
         "db-exercises": ("a4a.databases.exercises", "exercises from templates over a database's schema, verified by two sandboxed runs"),
         "db-tasks": ("a4a.databases.tasks", "a question in plain words for each verified query, kept if a second model can answer it with a query"),
         "db-benchmark": ("a4a.databases.benchmark", "per database: score a model on its questions without a tool and with one SQL tool"),
+        "db-variant": ("a4a.databases.variant", "a copy of each database with part of its rows removed, and the questions with their answers computed again"),
     },
     "ToolGym": {
         "toolgym-types": ("a4a.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),

@@ -1,0 +1,176 @@
+{
+ "tasks": "tasks",
+ "seed": 1,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "questions": 11,
+   "outcomes": {
+    "no_digits": 2,
+    "wording": 3,
+    "no_answer": 1,
+    "changed": 5
+   }
+  },
+  {
+   "package": "fsspec",
+   "questions": 5,
+   "outcomes": {
+    "changed": 5
+   }
+  },
+  {
+   "package": "huggingface_hub",
+   "questions": 2,
+   "outcomes": {
+    "no_digits": 1,
+    "changed": 1
+   }
+  },
+  {
+   "package": "zipp",
+   "questions": 3,
+   "outcomes": {
+    "no_digits": 3
+   }
+  },
+  {
+   "package": "jmespath",
+   "questions": 2,
+   "outcomes": {
+    "no_digits": 2
+   }
+  },
+  {
+   "package": "mcp",
+   "questions": 15,
+   "outcomes": {
+    "no_digits": 11,
+    "unchanged": 3,
+    "changed": 1
+   }
+  },
+  {
+   "package": "more_itertools",
+   "questions": 19,
+   "outcomes": {
+    "no_digits": 5,
+    "no_answer": 2,
+    "changed": 9,
+    "unchanged": 3
+   }
+  },
+  {
+   "package": "networkx",
+   "questions": 20,
+   "outcomes": {
+    "changed": 11,
+    "unchanged": 5,
+    "no_answer": 4
+   }
+  },
+  {
+   "package": "oauthlib",
+   "questions": 1,
+   "outcomes": {
+    "no_digits": 1
+   }
+  },
+  {
+   "package": "jinja2",
+   "questions": 9,
+   "outcomes": {
+    "no_digits": 6,
+    "unchanged": 3
+   }
+  },
+  {
+   "package": "werkzeug",
+   "questions": 16,
+   "outcomes": {
+    "no_digits": 6,
+    "unchanged": 6,
+    "no_answer": 1,
+    "changed": 3
+   }
+  },
+  {
+   "package": "requests",
+   "questions": 4,
+   "outcomes": {
+    "no_digits": 4
+   }
+  },
+  {
+   "package": "pyasn1",
+   "questions": 1,
+   "outcomes": {
+    "unchanged": 1
+   }
+  },
+  {
+   "package": "distlib",
+   "questions": 3,
+   "outcomes": {
+    "unchanged": 2,
+    "changed": 1
+   }
+  },
+  {
+   "package": "packaging",
+   "questions": 28,
+   "outcomes": {
+    "no_digits": 4,
+    "unchanged": 17,
+    "changed": 6,
+    "no_answer": 1
+   }
+  },
+  {
+   "package": "attrs",
+   "questions": 1,
+   "outcomes": {
+    "unchanged": 1
+   }
+  },
+  {
+   "package": "jsonschema",
+   "questions": 1,
+   "outcomes": {
+    "changed": 1
+   }
+  },
+  {
+   "package": "importlib_metadata",
+   "questions": 4,
+   "outcomes": {
+    "no_digits": 4
+   }
+  },
+  {
+   "package": "typing_extensions",
+   "questions": 1,
+   "outcomes": {
+    "no_digits": 1
+   }
+  },
+  {
+   "package": "pytz",
+   "questions": 2,
+   "outcomes": {
+    "no_digits": 1,
+    "unchanged": 1
+   }
+  },
+  {
+   "package": "rsa",
+   "questions": 17,
+   "outcomes": {
+    "no_digits": 1,
+    "no_answer": 4,
+    "changed": 7,
+    "unchanged": 5
+   }
+  }
+ ]
+}

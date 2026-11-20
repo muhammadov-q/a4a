@@ -1,0 +1,214 @@
+{
+ "model": "qwen3-32b",
+ "tasks": "tasks-aimed-v1",
+ "original": "aimed1",
+ "variant": "aimed1v1",
+ "conditions": {
+  "none": {
+   "rows": [
+    {
+     "source": "dateutil__dateutil",
+     "changed": 4,
+     "right_before": 3,
+     "right_after": 2,
+     "old_answer": 1,
+     "only_before": 1,
+     "only_after": 0,
+     "same": 4,
+     "same_right_before": 3,
+     "same_right_after": 4
+    },
+    {
+     "source": "more-itertools__more-itertools",
+     "changed": 4,
+     "right_before": 1,
+     "right_after": 1,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 1,
+     "same_right_before": 1,
+     "same_right_after": 1
+    },
+    {
+     "source": "networkx__networkx",
+     "changed": 7,
+     "right_before": 3,
+     "right_after": 3,
+     "old_answer": 1,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 6,
+     "same_right_before": 1,
+     "same_right_after": 1
+    },
+    {
+     "source": "pallets__jinja",
+     "changed": 1,
+     "right_before": 1,
+     "right_after": 0,
+     "old_answer": 0,
+     "only_before": 1,
+     "only_after": 0,
+     "same": 0,
+     "same_right_before": 0,
+     "same_right_after": 0
+    },
+    {
+     "source": "pallets__werkzeug",
+     "changed": 6,
+     "right_before": 2,
+     "right_after": 2,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 2,
+     "same_right_before": 1,
+     "same_right_after": 1
+    },
+    {
+     "source": "pypa__packaging",
+     "changed": 5,
+     "right_before": 3,
+     "right_after": 3,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 1,
+     "same_right_before": 1,
+     "same_right_after": 1
+    },
+    {
+     "source": "sybrenstuvel__python-rsa",
+     "changed": 1,
+     "right_before": 0,
+     "right_after": 0,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 0,
+     "same_right_before": 0,
+     "same_right_after": 0
+    }
+   ],
+   "total": {
+    "changed": 28,
+    "right_before": 13,
+    "right_after": 11,
+    "old_answer": 2,
+    "only_before": 2,
+    "only_after": 0,
+    "same": 14,
+    "same_right_before": 7,
+    "same_right_after": 8,
+    "p": 0.5
+   },
+   "missing": [
+    "modelcontextprotocol__python-sdk"
+   ]
+  },
+  "python": {
+   "rows": [
+    {
+     "source": "dateutil__dateutil",
+     "changed": 4,
+     "right_before": 4,
+     "right_after": 3,
+     "old_answer": 1,
+     "only_before": 1,
+     "only_after": 0,
+     "same": 4,
+     "same_right_before": 2,
+     "same_right_after": 2
+    },
+    {
+     "source": "more-itertools__more-itertools",
+     "changed": 4,
+     "right_before": 1,
+     "right_after": 3,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 2,
+     "same": 1,
+     "same_right_before": 0,
+     "same_right_after": 0
+    },
+    {
+     "source": "networkx__networkx",
+     "changed": 7,
+     "right_before": 4,
+     "right_after": 4,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 6,
+     "same_right_before": 4,
+     "same_right_after": 4
+    },
+    {
+     "source": "pallets__jinja",
+     "changed": 1,
+     "right_before": 1,
+     "right_after": 1,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 0,
+     "same_right_before": 0,
+     "same_right_after": 0
+    },
+    {
+     "source": "pallets__werkzeug",
+     "changed": 6,
+     "right_before": 4,
+     "right_after": 4,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 2,
+     "same_right_before": 2,
+     "same_right_after": 2
+    },
+    {
+     "source": "pypa__packaging",
+     "changed": 5,
+     "right_before": 4,
+     "right_after": 3,
+     "old_answer": 0,
+     "only_before": 1,
+     "only_after": 0,
+     "same": 1,
+     "same_right_before": 1,
+     "same_right_after": 1
+    },
+    {
+     "source": "sybrenstuvel__python-rsa",
+     "changed": 1,
+     "right_before": 0,
+     "right_after": 1,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 1,
+     "same": 0,
+     "same_right_before": 0,
+     "same_right_after": 0
+    }
+   ],
+   "total": {
+    "changed": 28,
+    "right_before": 18,
+    "right_after": 19,
+    "old_answer": 1,
+    "only_before": 2,
+    "only_after": 3,
+    "same": 14,
+    "same_right_before": 9,
+    "same_right_after": 9,
+    "p": 1.0
+   },
+   "missing": [
+    "modelcontextprotocol__python-sdk"
+   ]
+  }
+ }
+}

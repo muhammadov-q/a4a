@@ -1,0 +1,240 @@
+{
+ "model": "qwen3-32b",
+ "tasks": "tasks-v1",
+ "original": "bench2",
+ "variant": "bench2v1",
+ "conditions": {
+  "none": {
+   "rows": [
+    {
+     "source": "dateutil__dateutil",
+     "changed": 5,
+     "right_before": 2,
+     "right_after": 2,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 0,
+     "same_right_before": 0,
+     "same_right_after": 0
+    },
+    {
+     "source": "more-itertools__more-itertools",
+     "changed": 9,
+     "right_before": 5,
+     "right_after": 4,
+     "old_answer": 0,
+     "only_before": 2,
+     "only_after": 1,
+     "same": 3,
+     "same_right_before": 3,
+     "same_right_after": 2
+    },
+    {
+     "source": "networkx__networkx",
+     "changed": 11,
+     "right_before": 4,
+     "right_after": 4,
+     "old_answer": 1,
+     "only_before": 1,
+     "only_after": 1,
+     "same": 5,
+     "same_right_before": 1,
+     "same_right_after": 2
+    },
+    {
+     "source": "pallets__jinja",
+     "changed": 0,
+     "right_before": 0,
+     "right_after": 0,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 3,
+     "same_right_before": 3,
+     "same_right_after": 3
+    },
+    {
+     "source": "pallets__werkzeug",
+     "changed": 3,
+     "right_before": 3,
+     "right_after": 3,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 6,
+     "same_right_before": 6,
+     "same_right_after": 6
+    },
+    {
+     "source": "pypa__packaging",
+     "changed": 6,
+     "right_before": 4,
+     "right_after": 4,
+     "old_answer": 1,
+     "only_before": 1,
+     "only_after": 1,
+     "same": 17,
+     "same_right_before": 13,
+     "same_right_after": 13
+    },
+    {
+     "source": "sybrenstuvel__python-rsa",
+     "changed": 7,
+     "right_before": 3,
+     "right_after": 2,
+     "old_answer": 1,
+     "only_before": 2,
+     "only_after": 1,
+     "same": 5,
+     "same_right_before": 4,
+     "same_right_after": 5
+    }
+   ],
+   "total": {
+    "changed": 41,
+    "right_before": 21,
+    "right_after": 19,
+    "old_answer": 3,
+    "only_before": 6,
+    "only_after": 4,
+    "same": 39,
+    "same_right_before": 30,
+    "same_right_after": 31,
+    "p": 0.75
+   },
+   "missing": [
+    "fsspec__filesystem_spec",
+    "huggingface__huggingface_hub",
+    "jaraco__zipp",
+    "jmespath__jmespath.py",
+    "modelcontextprotocol__python-sdk",
+    "oauthlib__oauthlib",
+    "psf__requests",
+    "pyasn1__pyasn1",
+    "pypa__distlib",
+    "python-attrs__attrs",
+    "python-jsonschema__jsonschema",
+    "python__importlib_metadata",
+    "python__typing_extensions",
+    "stub42__pytz"
+   ]
+  },
+  "python": {
+   "rows": [
+    {
+     "source": "dateutil__dateutil",
+     "changed": 5,
+     "right_before": 4,
+     "right_after": 4,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 0,
+     "same_right_before": 0,
+     "same_right_after": 0
+    },
+    {
+     "source": "more-itertools__more-itertools",
+     "changed": 9,
+     "right_before": 4,
+     "right_after": 2,
+     "old_answer": 0,
+     "only_before": 2,
+     "only_after": 0,
+     "same": 3,
+     "same_right_before": 2,
+     "same_right_after": 1
+    },
+    {
+     "source": "networkx__networkx",
+     "changed": 11,
+     "right_before": 8,
+     "right_after": 6,
+     "old_answer": 1,
+     "only_before": 2,
+     "only_after": 0,
+     "same": 5,
+     "same_right_before": 4,
+     "same_right_after": 4
+    },
+    {
+     "source": "pallets__jinja",
+     "changed": 0,
+     "right_before": 0,
+     "right_after": 0,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 3,
+     "same_right_before": 2,
+     "same_right_after": 2
+    },
+    {
+     "source": "pallets__werkzeug",
+     "changed": 3,
+     "right_before": 3,
+     "right_after": 3,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 6,
+     "same_right_before": 6,
+     "same_right_after": 6
+    },
+    {
+     "source": "pypa__packaging",
+     "changed": 6,
+     "right_before": 4,
+     "right_after": 4,
+     "old_answer": 1,
+     "only_before": 1,
+     "only_after": 1,
+     "same": 17,
+     "same_right_before": 9,
+     "same_right_after": 9
+    },
+    {
+     "source": "sybrenstuvel__python-rsa",
+     "changed": 7,
+     "right_before": 6,
+     "right_after": 6,
+     "old_answer": 0,
+     "only_before": 0,
+     "only_after": 0,
+     "same": 5,
+     "same_right_before": 3,
+     "same_right_after": 4
+    }
+   ],
+   "total": {
+    "changed": 41,
+    "right_before": 29,
+    "right_after": 25,
+    "old_answer": 2,
+    "only_before": 5,
+    "only_after": 1,
+    "same": 39,
+    "same_right_before": 26,
+    "same_right_after": 26,
+    "p": 0.22
+   },
+   "missing": [
+    "fsspec__filesystem_spec",
+    "huggingface__huggingface_hub",
+    "jaraco__zipp",
+    "jmespath__jmespath.py",
+    "modelcontextprotocol__python-sdk",
+    "oauthlib__oauthlib",
+    "psf__requests",
+    "pyasn1__pyasn1",
+    "pypa__distlib",
+    "python-attrs__attrs",
+    "python-jsonschema__jsonschema",
+    "python__importlib_metadata",
+    "python__typing_extensions",
+    "stub42__pytz"
+   ]
+  }
+ }
+}
