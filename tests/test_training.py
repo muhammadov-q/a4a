@@ -62,16 +62,17 @@ def test_only_the_teachers_runs_with_one_tool_and_the_repairing_harness_are_read
     assert found == [("pypa__packaging", "repository", "bench2", "qwen3-32b"), ("chinook", "database", "db1", "qwen3-8b")]
 
 
-def test_the_comparison_adds_up_the_test_sources_and_pairs_the_questions_of_the_first_run(monkeypatch):
+def test_the_comparison_adds_up_the_test_sources_each_with_its_own_trained_model_and_pairs_the_questions_of_the_first_run(monkeypatch):
     def answers(passed: list[bool], calls: int = 1) -> list[dict]:
         return [{"id": f"q{i}", "passed": ok, "tool_calls": calls, "finish": "answered"} for i, ok in enumerate(passed)]
 
     saved = {("base", "python", "bench2", "a"): [answers([True, False, False]), answers([True, True, False])],
              ("trained", "python", "bench2", "a"): [answers([True, True, True]), answers([True, True, True])],
-             ("base", "python", "bench2", "b"): [answers([False])], ("trained", "python", "bench2", "b"): [answers([True]), answers([True])]}
+             ("base", "python", "bench2", "b"): [answers([False])], ("fold2", "python", "bench2", "b"): [answers([True]), answers([True])],
+             ("trained", "python", "bench2", "b"): [answers([False]), answers([False])]}  # source b is in another fold: its own model is scored
     monkeypatch.setattr(compare_module, "saved_runs", lambda model, condition, tag, stem: saved.get((model, condition, tag, stem), []))
     test = {"a": {"kind": "repository", "questions": {"tasks": 3, "tasks-aimed": 2}}, "b": {"kind": "repository", "questions": {"tasks": 1}}}
-    [row] = compare(test, "base", "trained")  # the aimed questions and the runs without a tool have no runs, so no row
+    [row] = compare(test, "base", {"a": "trained", "b": "fold2"})  # the aimed questions and the runs without a tool have no runs, so no row
     assert (row["questions_set"], row["condition"], row["questions"], row["sources"]) == ("Documentation questions", "python", 4, ["a", "b"])
     assert row["right"] == {"base": [1], "trained": [4]}  # one run: source b has only one run of the base model
     assert (row["only_base"], row["only_trained"]) == (0, 3) and row["habits"]["trained"]["called_the_tool"] == 1.0
