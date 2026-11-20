@@ -83,3 +83,5 @@ sbatch --export=ALL,PORT=8004,ADAPTERS="qwen3-1.7b-sft1=/storage/scratch/users/$
 ```
 
 The server answers as `qwen3-1.7b` (the model before training) and as `qwen3-1.7b-sft1` (with the adapter). The adapter's `train_log.json` has the settings, the versions, the SHA-256 of the data and the loss of every step.
+
+For the folds of `a4a train-data --folds 3`, train one adapter per fold and serve them together, up to four (`--max-loras 4`): `ADAPTERS="qwen3-1.7b-sft1=<path> qwen3-1.7b-sft1-f2=<path> qwen3-1.7b-sft1-f3=<path>"`. The `gratis` account allows two RTX 4090 jobs at once, so one server and one training job can run side by side; more training jobs wait in the queue.
