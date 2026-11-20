@@ -1,0 +1,170 @@
+{
+ "model": "qwen3-1.7b",
+ "tag": "aimed1",
+ "tasks": "tasks-aimed",
+ "strict": false,
+ "min_tasks": 8,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "questions": 14,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     7,
+     7,
+     7
+    ],
+    "tools": [],
+    "python": [
+     8,
+     9,
+     9
+    ]
+   },
+   "use": {
+    "python": {
+     "called_a_tool": [
+      14,
+      14,
+      14
+     ],
+     "right_when_called": [
+      8,
+      9,
+      9
+     ],
+     "tool_calls": [
+      84,
+      79,
+      78
+     ],
+     "tool_errors": [
+      76,
+      70,
+      69
+     ],
+     "repaired_calls": [
+      40,
+      37,
+      37
+     ],
+     "ended_with_a_call_as_text": [
+      3,
+      2,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "questions": 14,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "questions": 13,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     0,
+     0,
+     0
+    ],
+    "tools": [],
+    "python": [
+     3,
+     3,
+     3
+    ]
+   },
+   "use": {
+    "python": {
+     "called_a_tool": [
+      13,
+      13,
+      13
+     ],
+     "right_when_called": [
+      3,
+      3,
+      3
+     ],
+     "tool_calls": [
+      158,
+      130,
+      136
+     ],
+     "tool_errors": [
+      154,
+      126,
+      129
+     ],
+     "repaired_calls": [
+      33,
+      33,
+      40
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "questions": 10,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  }
+ ],
+ "conditions": [
+  "none",
+  "python"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 7,
+   "none": 4,
+   "python": 1
+  },
+  {
+   "answer": "another value",
+   "questions": 20,
+   "none": 3,
+   "python": 10
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "python",
+   "only_a": 4,
+   "only_b": 8,
+   "p": 0.39
+  }
+ ]
+}

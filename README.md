@@ -31,6 +31,7 @@ Author: Kobiljon Muhammadov. Supervisor: Roman Macháček.
 - [Stage 1: from a repo link to tools](#stage-1-from-a-repo-link-to-tools)
 - [Many repositories: the candidate list](#many-repositories-the-candidate-list)
 - [Databases as a source](#databases-as-a-source)
+- [Training a small model on the verified tasks](#training-a-small-model-on-the-verified-tasks)
 - [Usability: can a small model call the tools](#usability-can-a-small-model-call-the-tools)
 - [Stage 2: chains and synthetic traces with ToolGym](#stage-2-chains-and-synthetic-traces-with-toolgym)
 - [Stage 3: exercises, traces and repetition](#stage-3-exercises-traces-and-repetition)
@@ -556,6 +557,34 @@ uv run a4a db-benchmark --tag db1 --model qwen3-8b --base-url http://127.0.0.1:1
 - **So "no tool" is not a clean baseline here.** A source that a model has seen cannot show whether the model can find a fact or only recall it. A database made for the test, or one of these with its rows changed, would.
 
 Limits. One run, three databases, simple questions. Each answer has one witness, the query. Nothing here says how a model does on a database it has never seen.
+
+## Training a small model on the verified tasks
+
+```sh
+uv run a4a train-data --name sft1                    # examples from the teachers' passed runs; test sources held out
+# on the cluster (cluster/README.md): train_sft.sbatch, then serve_student.sbatch with the adapter
+uv run a4a corpus-benchmark --tag bench2 --model qwen3-1.7b-sft1 --base-url <url> --conditions none python --runs 3 --only dateutil werkzeug
+uv run a4a corpus-benchmark --tag aimed1 --tasks tasks-aimed --model qwen3-1.7b-sft1 --base-url <url> --conditions none python --runs 3 --only dateutil werkzeug
+uv run a4a db-benchmark --tag db1 --model qwen3-1.7b-sft1 --base-url <url> --runs 3 --only chinook
+uv run a4a train-compare --name sft1 --base qwen3-1.7b --trained qwen3-1.7b-sft1
+```
+
+Can the verified questions teach a small model to use a tool on a source it has never seen? `a4a train-data` turns the saved runs of Qwen3-32B and Qwen3-8B with the Python tool and the SQL tool into training examples: each step of a run that got the right answer is one example, the conversation so far and the next assistant message. A step whose call failed is not learned, but it stays in the history of the later steps. Before anything else the sources are split at random (`--seed 1`): two of the seven repositories (`dateutil`, `werkzeug`) and one of the three databases (`chinook`) give no example and are only tested. That leaves **997 examples from 169 questions** on five repositories and two databases.
+
+`cluster/train_sft.py` fine-tunes Qwen3-1.7B with LoRA (rank 16, all linear layers, 2 epochs, 126 steps; 7 minutes on one RTX 4090). The prompt is rendered with the model's own chat template exactly as vLLM renders it in the test, and the loss is on the assistant message only. The student is then tested with the same harness as the teachers, 3 runs:
+
+| Questions on the test sources | Condition | Questions | Qwen3-1.7B | After training | Only before | Only after | p |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Database (`chinook`) | SQL tool | 40 | 18 (45%) | 34.7 (87%) | 2 | 19 | 0.0002 |
+| Documentation (`dateutil`, `werkzeug`) | Python tool | 27 | 7.3 (27%) | 10 (37%) | 2 | 4 | 0.69 |
+| Aimed (`dateutil`, `werkzeug`) | Python tool | 27 | 11.7 (43%) | 9.7 (36%) | 5 | 4 | 1 |
+| Documentation | no tool | 27 | 4 (15%) | 9 (33%) | 0 | 5 | 0.06 |
+
+- **On a database it has not seen, the trained student nearly doubles:** 45% to 87% with the SQL tool, close to Qwen3-8B on the same questions (90%). Before training it needed the reminder in 56% of its answers; after, in 6%.
+- **On libraries it has not seen, training does not help.** The small model often sends the same failing call again and again (three times in a row in about half of its answers, before and after training). After training it no longer gives up and answers: it calls until the step limit, and 36% to 46% of its answers are missing.
+- The teachers on the same test questions with the tool: Qwen3-8B 77% (documentation), 56% (aimed), 90% (database); Qwen3-32B 89%, 67%, 82%.
+
+Report: `out/training/sft1/compare-qwen3-1.7b-sft1.md`; the data, the split and the training log are in `out/training/sft1/`. Limits. One split, one training run, one small model, and few test questions: the library rows are within chance. A SQL question needs one short query; a library question needs the right part of an API the model does not know.
 
 ## Usability: can a small model call the tools
 

@@ -1,0 +1,123 @@
+"""Before and after training: the student on the questions of the test sources, which gave no training example.
+
+    uv run a4a train-compare --name sft1 --base qwen3-1.7b --trained qwen3-1.7b-sft1
+
+The runs are made by the usual commands, with the student's model names and the tags of the teachers' runs,
+only on the test sources of out/training/<name>/split.json:
+
+    uv run a4a corpus-benchmark --tag bench2 --model <model> --conditions none python --runs 3 --only <packages>
+    uv run a4a corpus-benchmark --tag aimed1 --tasks tasks-aimed --model <model> --conditions none python --runs 3 --only <packages>
+    uv run a4a db-benchmark --tag db1 --model <model> --runs 3 --only <databases>
+
+For each question set and condition: the right answers of both models over the runs, and question by question
+on the first run, the questions that only one of them got right, with the exact sign test. Then how the student
+worked: how often it called the tool, sent the same call three times in a row, wrote a call as text, needed the
+reminder, or gave no answer.
+
+Writes out/training/<name>/compare-<trained>.json and .md.
+"""
+
+import argparse
+import json
+import re
+from collections import defaultdict
+from statistics import mean
+
+from a4a.corpus.benchmark import cell, saved_runs, sign_test
+from a4a.training.data import OUT
+
+TAGS = {("repository", "tasks"): "bench2", ("repository", "tasks-aimed"): "aimed1", ("database", "tasks"): "db1"}
+LABELS = {("repository", "tasks"): "Documentation questions", ("repository", "tasks-aimed"): "Aimed questions", ("database", "tasks"): "Database questions"}
+TOOLS = {"repository": "python", "database": "sql"}
+NAMES = {"none": "no tool", "python": "Python tool", "sql": "SQL tool"}
+
+
+def stuck(record: dict, times: int = 3) -> bool:
+    """Whether the model sent the same call `times` times in a row: it repeats itself instead of changing what failed."""
+    calls = [(c["tool"], c["arguments"]) for c in record.get("trace", [])]
+    return any(len(set(calls[i:i + times])) == 1 for i in range(len(calls) - times + 1))
+
+
+def habits(runs: list[list[dict]]) -> dict:
+    """How a model worked, as shares of all its answers over the runs."""
+    records = [r for run in runs for r in run]
+    if not records:
+        return {}
+    share = lambda test: round(sum(map(test, records)) / len(records), 3)  # noqa: E731
+    return {"answers": len(records), "called_the_tool": share(lambda r: r.get("tool_calls", 0) > 0), "call_as_text": share(lambda r: r.get("repaired_calls", 0) > 0),
+            "reminded": share(lambda r: r.get("reminded", False)), "no_answer": share(lambda r: r.get("finish") != "answered"), "same_call_3_times": share(stuck),
+            "tool_calls_per_answer": round(mean(r.get("tool_calls", 0) for r in records), 2)}
+
+
+def compare(test: dict, base: str, trained: str) -> list[dict]:
+    """One row per question set and condition, summed over the test sources that have runs of both models."""
+    groups = defaultdict(lambda: {"questions": 0, "sources": [], "right": [], "pairs": {"base": set(), "trained": set()}, "runs": {"base": [], "trained": []}})
+    for stem, source in sorted(test.items()):
+        kind = source["kind"]
+        for folder, count in source["questions"].items():
+            if (kind, folder) not in TAGS:
+                continue
+            for condition in ("none", TOOLS[kind]):
+                runs = {side: saved_runs(model, condition, TAGS[(kind, folder)], stem) for side, model in (("base", base), ("trained", trained))}
+                if not (runs["base"] and runs["trained"]):
+                    continue
+                group = groups[(LABELS[(kind, folder)], condition)]
+                group["questions"] += count
+                group["sources"].append(stem)
+                group["right"].append({side: [sum(r["passed"] for r in run) for run in runs[side]] for side in runs})
+                for side in ("base", "trained"):
+                    group["runs"][side] += runs[side]
+                first = {side: {r["id"]: bool(r["passed"]) for r in runs[side][0]} for side in runs}
+                for side, other in (("base", "trained"), ("trained", "base")):
+                    group["pairs"][side] |= {(stem, i) for i, ok in first[side].items() if ok and not first[other].get(i, False)}
+    rows = []
+    for (label, condition), group in groups.items():
+        count = min(len(source[side]) for source in group["right"] for side in source)  # runs that every source has, for both models
+        right = {side: [sum(source[side][k] for source in group["right"]) for k in range(count)] for side in ("base", "trained")}
+        only_base, only_trained = len(group["pairs"]["base"]), len(group["pairs"]["trained"])
+        rows.append({"questions_set": label, "condition": condition, "sources": group["sources"], "questions": group["questions"], "right": right,
+                     "only_base": only_base, "only_trained": only_trained, "p": float(f"{sign_test(only_base, only_trained):.2g}"),
+                     "habits": {side: habits(group["runs"][side]) for side in ("base", "trained")}})
+    return rows
+
+
+def report(name: str, record: dict, rows: list[dict], base: str, trained: str) -> str:
+    lines = [f"# Before and after training: `{trained}` against `{base}`", "",
+             f"Training data `{name}`: {record['examples']} examples from the passed runs of {', '.join(record['teachers'])} on {len(record['train'])} sources. "
+             f"The test sources gave no example: {', '.join(sorted(record['test']))}.", "",
+             "A cell is the number of right answers: the mean of the runs, then each run in brackets. "
+             "*Only* counts the questions that one model got right and the other did not, on the first run; p is the exact sign test on that split.", "",
+             f"| Question set | Condition | Questions | {base} | {trained} | Only {base} | Only {trained} | p |", "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+    for row in rows:
+        lines.append(f"| {row['questions_set']} | {NAMES[row['condition']]} | {row['questions']} | {cell(row['right'].get('base', []), row['questions'])} | "
+                     f"{cell(row['right'].get('trained', []), row['questions'])} | {row['only_base']} | {row['only_trained']} | {row['p']:g} |")
+    lines += ["", "## How the student worked", "", "Shares of all answers over the runs.", "",
+              "| Question set | Condition | Model | Called the tool | Calls per answer | The same call 3 times in a row | A call written as text | Needed the reminder | No answer |",
+              "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    for row in rows:
+        for side, model in (("base", base), ("trained", trained)):
+            h = row["habits"][side]
+            if h:
+                lines.append(f"| {row['questions_set']} | {NAMES[row['condition']]} | {model} | {h['called_the_tool']:.0%} | {h['tool_calls_per_answer']} | "
+                             f"{h['same_call_3_times']:.0%} | {h['call_as_text']:.0%} | {h['reminded']:.0%} | {h['no_answer']:.0%} |")
+    return "\n".join(lines) + "\n"
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--name", required=True, help="the training data: out/training/<name>/")
+    parser.add_argument("--base", required=True, help="the student before training, as served")
+    parser.add_argument("--trained", required=True, help="the student after training: the name of its adapter on the server")
+    args = parser.parse_args()
+    record = json.loads((OUT / args.name / "split.json").read_text(encoding="utf-8"))
+    rows = compare(record["test"], args.base, args.trained)
+    if not rows:
+        parser.error("no question set has saved runs of both models on the test sources")
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "-", f"compare-{args.trained}")
+    (OUT / args.name / f"{stem}.json").write_text(json.dumps({"name": args.name, "base": args.base, "trained": args.trained, "rows": rows}, indent=1) + "\n", encoding="utf-8")
+    (OUT / args.name / f"{stem}.md").write_text(report(args.name, record, rows, args.base, args.trained), encoding="utf-8")
+    print(f"-> out/training/{args.name}/{stem}.md")
+
+
+if __name__ == "__main__":
+    main()
