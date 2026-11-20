@@ -2,6 +2,8 @@
 
     uv run a4a train-compare --name sft1 --base qwen3-1.7b --trained qwen3-1.7b-sft1
     uv run a4a train-compare --name sft1 sft1-f2 sft1-f3 --base qwen3-1.7b --trained qwen3-1.7b-sft1 qwen3-1.7b-sft1-f2 qwen3-1.7b-sft1-f3
+    uv run a4a train-compare --name rec17 rec17-f2 rec17-f3 --base qwen3-1.7b-sft1 qwen3-1.7b-sft1-f2 qwen3-1.7b-sft1-f3 \
+        --trained qwen3-1.7b-rec17 qwen3-1.7b-rec17-f2 qwen3-1.7b-rec17-f3
 
 The runs are made by the usual commands, with the student's model names and the tags of the teachers' runs,
 only on the test sources of out/training/<name>/split.json:
@@ -16,12 +18,13 @@ worked: how often it called the tool, sent the same call three times in a row, w
 reminder, or gave no answer.
 
 With the folds of `a4a train-data --folds`, give every fold's data and its trained model, in the same order: each
-test source is scored with the model of its fold, which did not see it, and the table adds up all folds.
+test source is scored with the model of its fold, which did not see it, and the table adds up all folds. `--base`
+is one model, or one per fold: then two ways of training are compared, fold by fold.
 
 `--no-repeat` compares the runs made with `--no-repeat` (a call the same as an earlier one is not run again).
 
 Writes out/training/<name>/compare-<trained>.json and .md; with folds, in the folder of the first name, with
-`-folds` added; with --no-repeat, `-norepeat`.
+`-folds` added; with one base model per fold, `-against-<first base>`; with --no-repeat, `-norepeat`.
 """
 
 import argparse
@@ -56,10 +59,10 @@ def habits(runs: list[list[dict]]) -> dict:
             "tool_calls_per_answer": round(mean(r.get("tool_calls", 0) for r in records), 2)}
 
 
-def compare(test: dict, base: str, trained: dict[str, str], no_repeat: bool = False) -> list[dict]:
+def compare(test: dict, base: dict[str, str], trained: dict[str, str], no_repeat: bool = False) -> list[dict]:
     """One row per question set and condition, summed over the test sources that have runs of both models.
 
-    `trained` gives the trained model of each test source: with folds, the model of the fold it was tested in."""
+    `base` and `trained` give the two models of each test source: with folds, the models of the fold it was tested in."""
     groups = defaultdict(lambda: {"questions": 0, "sources": [], "right": [], "pairs": {"base": set(), "trained": set()}, "runs": {"base": [], "trained": []}})
     for stem, source in sorted(test.items()):
         kind = source["kind"]
@@ -67,7 +70,7 @@ def compare(test: dict, base: str, trained: dict[str, str], no_repeat: bool = Fa
             if (kind, folder) not in TAGS:
                 continue
             for condition in ("none", TOOLS[kind]):
-                runs = {side: saved_runs(model, condition, TAGS[(kind, folder)], stem, no_repeat=no_repeat) for side, model in (("base", base), ("trained", trained[stem]))}
+                runs = {side: saved_runs(model, condition, TAGS[(kind, folder)], stem, no_repeat=no_repeat) for side, model in (("base", base[stem]), ("trained", trained[stem]))}
                 if not (runs["base"] and runs["trained"]):
                     continue
                 group = groups[(LABELS[(kind, folder)], condition)]
@@ -90,19 +93,22 @@ def compare(test: dict, base: str, trained: dict[str, str], no_repeat: bool = Fa
     return rows
 
 
-def report(records: dict[str, dict], rows: list[dict], base: str, trained: list[str], no_repeat: bool = False) -> str:
-    """`records` are the split.json of each fold, by name, in the order of `trained`."""
+def report(records: dict[str, dict], rows: list[dict], bases: list[str], trained: list[str], no_repeat: bool = False) -> str:
+    """`records` are the split.json of each fold, by name, in the order of `bases` and `trained`."""
+    base = bases[0] if len(set(bases)) == 1 else "before"
     if len(records) == 1:
         [(name, record)] = records.items()
         about = [f"# Before and after training: `{trained[0]}` against `{base}`", "",
                  f"Training data `{name}`: {record['examples']} examples from the passed runs of {', '.join(record['teachers'])} on {len(record['train'])} sources. "
                  f"The test sources gave no example: {', '.join(sorted(record['test']))}."]
     else:
-        about = [f"# Before and after training, over {len(records)} folds: `{base}` and the model trained for each fold", "",
+        title = f"`{base}` and the model trained for each fold" if base != "before" else "two models for each fold"
+        about = [f"# Before and after training, over {len(records)} folds: {title}", "",
                  "Every test source is scored with the model of its fold, whose training data did not include it.", "",
-                 "| Fold | Training data | Examples | Trained model | Test sources |", "| --- | --- | --- | --- | --- |",
-                 *(f"| {record.get('fold', i + 1)} | `{name}` | {record['examples']} | `{model}` | {', '.join(sorted(record['test']))} |"
-                   for i, ((name, record), model) in enumerate(zip(records.items(), trained)))]
+                 f"| Fold | Training data | Examples | {'' if base != 'before' else 'Before | '}Trained model | Test sources |",
+                 f"| --- | --- | --- | {'' if base != 'before' else '--- | '}--- | --- |",
+                 *(f"| {record.get('fold', i + 1)} | `{name}` | {record['examples']} | {'' if base != 'before' else f'`{before}` | '}`{model}` | {', '.join(sorted(record['test']))} |"
+                   for i, ((name, record), before, model) in enumerate(zip(records.items(), bases, trained)))]
     after = trained[0] if len(trained) == 1 else "trained"
     lines = [*about, *(["", "Tool runs with `--no-repeat`: a call that is the same as an earlier call of the run is not run again; the model is told so."] if no_repeat else []), "",
              "A cell is the number of right answers: the mean of the runs, then each run in brackets. "
@@ -126,28 +132,31 @@ def report(records: dict[str, dict], rows: list[dict], base: str, trained: list[
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--name", nargs="+", required=True, help="the training data: out/training/<name>/; with folds, one per fold")
-    parser.add_argument("--base", required=True, help="the student before training, as served")
+    parser.add_argument("--base", nargs="+", required=True, help="the student before training, as served; or one model per --name, to compare two ways of training")
     parser.add_argument("--trained", nargs="+", required=True, help="the student after training: the name of its adapter on the server; with folds, one per --name")
     parser.add_argument("--no-repeat", action="store_true", help="compare the tool runs made with --no-repeat")
     args = parser.parse_args()
-    if len(args.name) != len(args.trained):
-        parser.error("give one --trained model for each --name")
+    if len(args.name) != len(args.trained) or len(args.base) not in (1, len(args.name)):
+        parser.error("give one --trained model for each --name, and one --base model or one for each --name")
+    bases = args.base * len(args.name) if len(args.base) == 1 else args.base
     records = {name: json.loads((OUT / name / "split.json").read_text(encoding="utf-8")) for name in args.name}
-    test, models = {}, {}
-    for (name, record), model in zip(records.items(), args.trained):
+    test, before, models = {}, {}, {}
+    for (name, record), base, model in zip(records.items(), bases, args.trained):
         if set(test) & set(record["test"]):
             parser.error(f"{name} tests a source that an earlier --name tests too")
         test |= record["test"]
+        before |= dict.fromkeys(record["test"], base)
         models |= dict.fromkeys(record["test"], model)
-    rows = compare(test, args.base, models, args.no_repeat)
+    rows = compare(test, before, models, args.no_repeat)
     if not rows:
         parser.error("no question set has saved runs of both models on the test sources")
-    stem = re.sub(r"[^A-Za-z0-9._-]+", "-", f"compare-{args.trained[0]}{'-folds' if len(args.name) > 1 else ''}{'-norepeat' if args.no_repeat else ''}")
+    against = f"-against-{args.base[0]}" if len(args.base) > 1 else ""  # two ways of training: name both, so neither report replaces the other
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "-", f"compare-{args.trained[0]}{'-folds' if len(args.name) > 1 else ''}{against}{'-norepeat' if args.no_repeat else ''}")
     folder = OUT / args.name[0]
-    (folder / f"{stem}.json").write_text(json.dumps({"name": args.name[0] if len(args.name) == 1 else args.name, "base": args.base,
+    (folder / f"{stem}.json").write_text(json.dumps({"name": args.name[0] if len(args.name) == 1 else args.name, "base": args.base[0] if len(args.base) == 1 else before,
                                                      "trained": args.trained[0] if len(args.trained) == 1 else models,
                                                      **({"no_repeat": True} if args.no_repeat else {}), "rows": rows}, indent=1) + "\n", encoding="utf-8")
-    (folder / f"{stem}.md").write_text(report(records, rows, args.base, args.trained, args.no_repeat), encoding="utf-8")
+    (folder / f"{stem}.md").write_text(report(records, rows, bases, args.trained, args.no_repeat), encoding="utf-8")
     print(f"-> out/training/{args.name[0]}/{stem}.md")
 
 

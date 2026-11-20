@@ -1,0 +1,222 @@
+{
+ "model": "qwen3-4b-rec4",
+ "tag": "aimed1",
+ "tasks": "tasks-aimed",
+ "strict": false,
+ "min_tasks": 1,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "questions": 14,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     9,
+     9,
+     9
+    ],
+    "tools": [],
+    "python": [
+     9,
+     9,
+     9
+    ]
+   },
+   "use": {
+    "python": {
+     "called_a_tool": [
+      14,
+      14,
+      14
+     ],
+     "right_when_called": [
+      9,
+      9,
+      9
+     ],
+     "tool_calls": [
+      163,
+      135,
+      163
+     ],
+     "tool_errors": [
+      153,
+      124,
+      153
+     ],
+     "repaired_calls": [
+      3,
+      2,
+      3
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "questions": 4,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "more_itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "questions": 5,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "questions": 14,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "questions": 3,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "questions": 13,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     5,
+     6,
+     5
+    ],
+    "tools": [],
+    "python": [
+     6,
+     6,
+     6
+    ]
+   },
+   "use": {
+    "python": {
+     "called_a_tool": [
+      13,
+      13,
+      13
+     ],
+     "right_when_called": [
+      6,
+      6,
+      6
+     ],
+     "tool_calls": [
+      104,
+      103,
+      102
+     ],
+     "tool_errors": [
+      94,
+      93,
+      92
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "questions": 10,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "questions": 3,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  }
+ ],
+ "conditions": [
+  "none",
+  "python"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 7,
+   "none": 4,
+   "python": 3
+  },
+  {
+   "answer": "another value",
+   "questions": 20,
+   "none": 10,
+   "python": 12
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "python",
+   "only_a": 4,
+   "only_b": 5,
+   "p": 1.0
+  }
+ ]
+}

@@ -385,3 +385,20 @@ def test_with_no_repeat_a_call_the_same_as_an_earlier_one_is_not_run_again_and_t
         assert result["passed"] and result["tool_calls"] == 3 and Counting.runs == runs
         assert (endpoint.requests[2]["messages"][-1]["content"] == run_model.REPEATED) == no_repeat
         assert result.get("repeated_calls") == (1 if no_repeat else None) and result["tool_errors"] == (1 if no_repeat else 0)
+
+
+def test_a_run_can_start_from_given_messages_with_the_same_instruction():
+    system = {"role": "system", "content": run_model.SYSTEM["tools"]}
+    start = [system, {"role": "user", "content": EXERCISE["task"]}, {"role": "assistant", "content": "", "tool_calls": [
+        {"id": "s0", "type": "function", "function": {"name": "add", "arguments": json.dumps({"x": 40})}}]}, {"role": "tool", "tool_call_id": "s0", "content": "Error: wrong"}]
+    args = Namespace(mode="tools", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=5, start_messages={"e1": start})
+    endpoint = Endpoint([completion(calls=[("add", {"x": 41})]), completion(content="42")])
+    result = asyncio.run(run_model.solve(EXERCISE, args, endpoint, Session(), TOOL_LIST))
+    assert result["passed"] and result["tool_calls"] == 1 and endpoint.requests[0]["messages"] == start
+    assert result["full_trace"]["requests"][0]["messages"] == start and result["full_trace"]["meta"]["start_messages"] == 4
+    other = Namespace(**{**vars(args), "start_messages": {"e1": [{"role": "system", "content": "Another instruction."}, *start[1:]]}})
+    try:
+        asyncio.run(run_model.solve(EXERCISE, other, Endpoint([]), Session(), TOOL_LIST))
+        raise AssertionError("a start with another instruction must be refused")
+    except ValueError:
+        pass

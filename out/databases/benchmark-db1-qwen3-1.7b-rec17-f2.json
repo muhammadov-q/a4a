@@ -1,0 +1,111 @@
+{
+ "model": "qwen3-1.7b-rec17-f2",
+ "tag": "db1",
+ "min_tasks": 5,
+ "repositories": [
+  {
+   "package": "chinook",
+   "repo": "https://github.com/lerocha/chinook-database",
+   "questions": 40,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "sql": []
+   },
+   "use": {}
+  },
+  {
+   "package": "northwind",
+   "repo": "https://github.com/jpwhite3/northwind-SQLite3",
+   "questions": 39,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "sql": []
+   },
+   "use": {}
+  },
+  {
+   "package": "sakila",
+   "repo": "https://github.com/jOOQ/sakila",
+   "questions": 39,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     1,
+     1,
+     1
+    ],
+    "sql": [
+     38,
+     38,
+     38
+    ]
+   },
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39,
+      39,
+      39
+     ],
+     "right_when_called": [
+      38,
+      38,
+      38
+     ],
+     "tool_calls": [
+      40,
+      40,
+      40
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  }
+ ],
+ "conditions": [
+  "none",
+  "sql"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 0,
+   "none": 0,
+   "sql": 0
+  },
+  {
+   "answer": "another value",
+   "questions": 39,
+   "none": 1,
+   "sql": 38
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "sql",
+   "only_a": 0,
+   "only_b": 37,
+   "p": 1.5e-11
+  }
+ ]
+}
