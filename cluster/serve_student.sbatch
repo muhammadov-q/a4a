@@ -3,7 +3,7 @@
 # Free gratis account, one RTX 4090. The base model answers as NAME, each adapter by its own name:
 #   cd ~/a4a && sbatch --export=ALL,PORT=8004 serve_student.sbatch
 #   sbatch --export=ALL,PORT=8004,ADAPTERS="qwen3-1.7b-sft1=/storage/scratch/users/$USER/a4a/adapters/qwen3-1.7b-sft1" serve_student.sbatch
-# Several adapters: ADAPTERS="name1=path1 name2=path2".
+# Several adapters: ADAPTERS="name1=path1 name2=path2"; MAX_LORAS (default 4) is how many one batch may mix.
 #SBATCH --job-name=vllm-student
 #SBATCH --account=gratis
 #SBATCH --qos=job_gratis
@@ -25,7 +25,7 @@ export VLLM_USE_FLASHINFER_SAMPLER=0  # its JIT build needs nvcc, which the GPU 
 source "$HOME/envs/vllm/bin/activate"
 LORA=()
 if [ -n "${ADAPTERS:-}" ]; then
-  LORA=(--enable-lora --max-loras 4 --max-lora-rank 64 --lora-modules $ADAPTERS)  # unquoted: one name=path per word
+  LORA=(--enable-lora --max-loras "${MAX_LORAS:-4}" --max-lora-rank 64 --lora-modules $ADAPTERS)  # unquoted: one name=path per word
 fi
 exec vllm serve "${MODEL:-Qwen/Qwen3-1.7B}" \
   --served-model-name "${NAME:-qwen3-1.7b}" \
