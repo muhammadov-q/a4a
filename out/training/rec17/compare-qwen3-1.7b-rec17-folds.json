@@ -1,0 +1,308 @@
+{
+ "name": [
+  "rec17",
+  "rec17-f2",
+  "rec17-f3"
+ ],
+ "base": "qwen3-1.7b",
+ "trained": {
+  "chinook": "qwen3-1.7b-rec17",
+  "dateutil__dateutil": "qwen3-1.7b-rec17",
+  "pallets__werkzeug": "qwen3-1.7b-rec17",
+  "more-itertools__more-itertools": "qwen3-1.7b-rec17-f2",
+  "networkx__networkx": "qwen3-1.7b-rec17-f2",
+  "pypa__packaging": "qwen3-1.7b-rec17-f2",
+  "sakila": "qwen3-1.7b-rec17-f2",
+  "northwind": "qwen3-1.7b-rec17-f3",
+  "pallets__jinja": "qwen3-1.7b-rec17-f3",
+  "sybrenstuvel__python-rsa": "qwen3-1.7b-rec17-f3"
+ },
+ "rows": [
+  {
+   "questions_set": "Database questions",
+   "condition": "none",
+   "sources": [
+    "chinook",
+    "northwind",
+    "sakila"
+   ],
+   "questions": 118,
+   "right": {
+    "base": [
+     2,
+     2,
+     2
+    ],
+    "trained": [
+     6,
+     6,
+     6
+    ]
+   },
+   "only_base": 1,
+   "only_trained": 5,
+   "p": 0.22,
+   "habits": {
+    "base": {
+     "answers": 354,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.291,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    },
+    "trained": {
+     "answers": 354,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.0,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    }
+   }
+  },
+  {
+   "questions_set": "Database questions",
+   "condition": "sql",
+   "sources": [
+    "chinook",
+    "northwind",
+    "sakila"
+   ],
+   "questions": 118,
+   "right": {
+    "base": [
+     51,
+     50,
+     55
+    ],
+    "trained": [
+     105,
+     104,
+     105
+    ]
+   },
+   "only_base": 4,
+   "only_trained": 58,
+   "p": 2.6e-13,
+   "habits": {
+    "base": {
+     "answers": 354,
+     "called_the_tool": 0.997,
+     "call_as_text": 0.037,
+     "reminded": 0.579,
+     "no_answer": 0.031,
+     "same_call_3_times": 0.051,
+     "tool_calls_per_answer": 2.53
+    },
+    "trained": {
+     "answers": 354,
+     "called_the_tool": 1.0,
+     "call_as_text": 0.0,
+     "reminded": 0.017,
+     "no_answer": 0.088,
+     "same_call_3_times": 0.096,
+     "tool_calls_per_answer": 4.76
+    }
+   }
+  },
+  {
+   "questions_set": "Documentation questions",
+   "condition": "none",
+   "sources": [
+    "dateutil__dateutil",
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pallets__jinja",
+    "pallets__werkzeug",
+    "pypa__packaging",
+    "sybrenstuvel__python-rsa"
+   ],
+   "questions": 120,
+   "right": {
+    "base": [
+     32,
+     33,
+     33
+    ],
+    "trained": [
+     53,
+     53,
+     53
+    ]
+   },
+   "only_base": 5,
+   "only_trained": 26,
+   "p": 0.00019,
+   "habits": {
+    "base": {
+     "answers": 360,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.111,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    },
+    "trained": {
+     "answers": 360,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.033,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    }
+   }
+  },
+  {
+   "questions_set": "Documentation questions",
+   "condition": "python",
+   "sources": [
+    "dateutil__dateutil",
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pallets__jinja",
+    "pallets__werkzeug",
+    "pypa__packaging",
+    "sybrenstuvel__python-rsa"
+   ],
+   "questions": 120,
+   "right": {
+    "base": [
+     44,
+     41,
+     41
+    ],
+    "trained": [
+     51,
+     52,
+     53
+    ]
+   },
+   "only_base": 10,
+   "only_trained": 17,
+   "p": 0.25,
+   "habits": {
+    "base": {
+     "answers": 360,
+     "called_the_tool": 0.981,
+     "call_as_text": 0.353,
+     "reminded": 0.483,
+     "no_answer": 0.194,
+     "same_call_3_times": 0.522,
+     "tool_calls_per_answer": 10.83
+    },
+    "trained": {
+     "answers": 360,
+     "called_the_tool": 0.975,
+     "call_as_text": 0.0,
+     "reminded": 0.061,
+     "no_answer": 0.158,
+     "same_call_3_times": 0.586,
+     "tool_calls_per_answer": 12.39
+    }
+   }
+  },
+  {
+   "questions_set": "Aimed questions",
+   "condition": "none",
+   "sources": [
+    "dateutil__dateutil",
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pallets__jinja",
+    "pallets__werkzeug",
+    "pypa__packaging",
+    "sybrenstuvel__python-rsa"
+   ],
+   "questions": 62,
+   "right": {
+    "base": [
+     11,
+     11,
+     11
+    ],
+    "trained": [
+     17,
+     17,
+     17
+    ]
+   },
+   "only_base": 1,
+   "only_trained": 7,
+   "p": 0.07,
+   "habits": {
+    "base": {
+     "answers": 186,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.081,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    },
+    "trained": {
+     "answers": 186,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.016,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    }
+   }
+  },
+  {
+   "questions_set": "Aimed questions",
+   "condition": "python",
+   "sources": [
+    "dateutil__dateutil",
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pallets__jinja",
+    "pallets__werkzeug",
+    "pypa__packaging",
+    "sybrenstuvel__python-rsa"
+   ],
+   "questions": 62,
+   "right": {
+    "base": [
+     20,
+     21,
+     21
+    ],
+    "trained": [
+     27,
+     27,
+     29
+    ]
+   },
+   "only_base": 7,
+   "only_trained": 14,
+   "p": 0.19,
+   "habits": {
+    "base": {
+     "answers": 186,
+     "called_the_tool": 1.0,
+     "call_as_text": 0.269,
+     "reminded": 0.5,
+     "no_answer": 0.081,
+     "same_call_3_times": 0.511,
+     "tool_calls_per_answer": 7.68
+    },
+    "trained": {
+     "answers": 186,
+     "called_the_tool": 0.968,
+     "call_as_text": 0.0,
+     "reminded": 0.048,
+     "no_answer": 0.188,
+     "same_call_3_times": 0.473,
+     "tool_calls_per_answer": 13.34
+    }
+   }
+  }
+ ]
+}

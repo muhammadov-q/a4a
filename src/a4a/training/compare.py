@@ -24,7 +24,7 @@ is one model, or one per fold: then two ways of training are compared, fold by f
 `--no-repeat` compares the runs made with `--no-repeat` (a call the same as an earlier one is not run again).
 
 Writes out/training/<name>/compare-<trained>.json and .md; with folds, in the folder of the first name, with
-`-folds` added; with --no-repeat, `-norepeat`.
+`-folds` added; with one base model per fold, `-against-<first base>`; with --no-repeat, `-norepeat`.
 """
 
 import argparse
@@ -150,7 +150,8 @@ def main() -> None:
     rows = compare(test, before, models, args.no_repeat)
     if not rows:
         parser.error("no question set has saved runs of both models on the test sources")
-    stem = re.sub(r"[^A-Za-z0-9._-]+", "-", f"compare-{args.trained[0]}{'-folds' if len(args.name) > 1 else ''}{'-norepeat' if args.no_repeat else ''}")
+    against = f"-against-{args.base[0]}" if len(args.base) > 1 else ""  # two ways of training: name both, so neither report replaces the other
+    stem = re.sub(r"[^A-Za-z0-9._-]+", "-", f"compare-{args.trained[0]}{'-folds' if len(args.name) > 1 else ''}{against}{'-norepeat' if args.no_repeat else ''}")
     folder = OUT / args.name[0]
     (folder / f"{stem}.json").write_text(json.dumps({"name": args.name[0] if len(args.name) == 1 else args.name, "base": args.base[0] if len(args.base) == 1 else before,
                                                      "trained": args.trained[0] if len(args.trained) == 1 else models,
