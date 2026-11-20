@@ -495,7 +495,7 @@ def test_the_benchmark_report_is_built_from_the_saved_runs(tmp_path, monkeypatch
     save("tools", 1, [{"passed": False, "tool_calls": 1, "raw": '{"name": "area", "arguments": {"side": 2}}'}, {"passed": True, "tool_calls": 1, "raw": "4"}, {"passed": False, "raw": '{"a": 1}'}], strict=True)
     rows = benchmark.summarize(repos, "m", "t1")
     assert rows == [{"package": "shapes", "repo": "https://github.com/me/shapes", "questions": 3, "tools_picked": 2, "tools_accepted": 1,
-                     "right": {"none": [2, 1], "tools": [1, 1], "python": [3, 3]},
+                     "right": {"none": [2, 1], "tools": [1, 1], "python": [3, 3], "python-ref": [], "python-search": []},
                      "use": {"tools": {"called_a_tool": [2, 2], "right_when_called": [1, 1], "tool_calls": [3, 3], "tool_errors": [1, 1], "repaired_calls": [1, 1], "ended_with_a_call_as_text": [0, 0]},
                              "python": {"called_a_tool": [3, 3], "right_when_called": [3, 3], "tool_calls": [3, 3], "tool_errors": [0, 0], "repaired_calls": [0, 0], "ended_with_a_call_as_text": [0, 0]}}}]
     text = benchmark.report(rows, "m", "t1")
@@ -503,11 +503,11 @@ def test_the_benchmark_report_is_built_from_the_saved_runs(tmp_path, monkeypatch
     assert "1 repositories with every condition, 3 questions, 2 runs each. Right answers: no tools 1.5 (50%) (2, 1); generated tools 1.0 (33%) (1, 1); one python tool 3.0 (100%) (3, 3)." in text
     assert "| `shapes` | 3 | 1 of 2 | 1.5 (2, 1) | 1.0 (1, 1) | 3.0 (3, 3) |" in text and "| `shapes` | generated tools | 2.0 of 3 | 1.0 | 3.0 | 1.0 | 1.0 |" in text
     strict = benchmark.summarize(repos, "m", "t1", strict=True)  # the same runs without tools; the tool runs under their own names
-    assert strict[0]["right"] == {"none": [2, 1], "tools": [1], "python": []} and strict[0]["use"]["tools"]["ended_with_a_call_as_text"] == [1]
+    assert strict[0]["right"] == {"none": [2, 1], "tools": [1], "python": [], "python-ref": [], "python-search": []} and strict[0]["use"]["tools"]["ended_with_a_call_as_text"] == [1]
     text = benchmark.report(strict, "m", "t1", strict=True)
     assert "(t1, strict harness)" in text and "| Ended with a call written as text |" in text and "| `shapes` | generated tools | 2.0 of 3 | 1.0 | 2.0 | 0.0 | 1.0 |" in text
     missing = benchmark.summarize(repos, "m", "missing")
-    assert missing[0]["right"] == {"none": [], "tools": [], "python": []} and "0 repositories with every condition" in benchmark.report(missing, "m", "missing")
+    assert missing[0]["right"] == dict.fromkeys(benchmark.CONDITIONS, []) and "0 repositories with every condition" in benchmark.report(missing, "m", "missing")
     assert benchmark.cell([4]) == "4" and benchmark.cell([4], 8) == "4 (50%)" and benchmark.cell([]) == "none"
 
 
@@ -658,3 +658,29 @@ def test_questions_for_examples_a_model_wrote_keep_one_example_per_element_that_
     made, plain = as_exercise(examples[1], "With the shapes library, find the area of the square read from the text '3'."), as_exercise(documented[0], "The same question.")
     assert made["provenance"]["answer_from"] == "an example a model wrote for `shapes.parse`, run twice at this commit with the same result"
     assert plain["provenance"]["answer_from"].startswith("the documentation's example") and made["check"] == {"kind": "number"}
+
+
+def test_the_search_reference_finds_elements_by_the_words_of_their_names_and_documentation():
+    from a4a.corpus.reference import elements_of, references, search, words
+
+    assert words("SpecifierSet.to_range of the Properties") == ["specifier", "set", "range", "property"]
+    api = {"callables": [{"module": "shapes", "qualname": "parse", "kind": "function", "params": [{"name": "text"}], "docstring": "Read a square from text.", "summary": ""},
+                         {"module": "shapes", "qualname": "Square.area", "kind": "property", "params": [], "docstring": "The area.", "summary": ""},
+                         {"module": "shapes", "qualname": "Circle.radius", "kind": "property", "params": [], "docstring": "How far the edge is from the middle.", "summary": ""}],
+           "classes": {"Square": {"module": "shapes", "params": [{"name": "text"}], "summary": "A square."}}}
+    assert search("What is the area of the square with side 2?", elements_of(api), k=2) == ["shapes.Square.area", "Square()"]
+    assert search("Nothing here matches.", elements_of(api)) == []  # an element that shares no word is never shown
+    task = {"id": "q1", "task": "Read the square '2' from text and give its area.", "library_functions": ["shapes.parse", "shapes.Square.area", "Square <"]}
+    [used] = references([task], api, "ref")
+    assert used["reference"] == reference_of(task["library_functions"], api) and "operator `<`" in used["reference"]  # the text the question was checked with
+    [found] = references([task], api, "search")
+    assert found["used"] == ["shapes.parse", "shapes.Square.area"] and set(found["found"]) == set(found["used"]) and "shapes.Circle.radius" not in found["reference"]
+
+
+def test_runs_with_a_reference_have_their_own_names_and_never_become_training_data():
+    from a4a.training.data import RUN
+
+    assert benchmark.run_tag("bench2", "pypa__packaging", "python-ref") == "bench2-pypa__packaging-python-ref-repair"
+    assert benchmark.run_tag("bench2", "pypa__packaging", "python-search", run=2) == "bench2-pypa__packaging-python-search-repair-r2"
+    assert RUN.match("qwen3-8b-tools-bench2-pypa__packaging-python-repair.jsonl.gz")
+    assert not any(RUN.match(f"qwen3-8b-tools-{benchmark.run_tag('bench2', 'pypa__packaging', c)}.jsonl.gz") for c in ("python-ref", "python-search"))

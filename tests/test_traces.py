@@ -402,3 +402,15 @@ def test_a_run_can_start_from_given_messages_with_the_same_instruction():
         raise AssertionError("a start with another instruction must be refused")
     except ValueError:
         pass
+
+
+def test_a_reference_goes_under_the_question_only_for_the_exercises_that_have_one():
+    args = Namespace(mode="tools", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=4, references={"e1": "- add(x): one more than x."})
+    endpoint = Endpoint([completion(content="42")])
+    result = asyncio.run(run_model.solve(EXERCISE, args, endpoint, Session(), TOOL_LIST))
+    assert endpoint.requests[0]["messages"][1]["content"] == EXERCISE["task"] + run_model.REFERENCE_INTRO + "- add(x): one more than x."
+    assert result["full_trace"]["meta"]["reference"] and result["passed"]
+    other = Namespace(**{**vars(args), "references": {"e2": "- add(x)"}})
+    endpoint = Endpoint([completion(content="42")])
+    result = asyncio.run(run_model.solve(EXERCISE, other, endpoint, Session(), TOOL_LIST))
+    assert endpoint.requests[0]["messages"][1]["content"] == EXERCISE["task"] and "reference" not in result["full_trace"]["meta"]

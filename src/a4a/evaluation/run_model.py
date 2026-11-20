@@ -37,6 +37,10 @@ tool error. Small models at temperature 0 otherwise send one failing call until 
 far (for example another model's run up to a failed call). Only these exercises are run, and the model goes on
 from the last message. The first message must be the instruction this run would give, so that a continuation
 is made under the same instruction as a fresh run. `a4a train-recovery` uses it.
+
+--reference FILE adds text under a question: each line is {"id": <exercise id>, "reference": <text>}; an exercise
+without a line, or with no text, is asked as it is. `a4a corpus-benchmark` uses it to give an API reference. The
+file name does not change, so give such runs their own --tag.
 """
 
 import argparse
@@ -73,6 +77,7 @@ SUBMIT_TOOL = {"type": "function", "function": {
                    "required": ["answer"]}}}
 REPEATED = "Error: you already made this exact call, and it would give the same result again. Change the call, or give your final answer."
 REMINDER = "Reply with only the final answer as a JSON value (true or false, a number, a string, a list or an object) and nothing else."
+REFERENCE_INTRO = "\n\nParts of the library that may help (the signature, then the start of the documentation):\n"
 MAX_OUTPUT = 20_000  # characters of one tool output that the model is shown
 SUBMIT_HINT = " When you are done, give the final answer by calling submit_answer, not as text."
 
@@ -175,7 +180,9 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
     if getattr(args, "topic", None):  # exercises about another library than packaging
         system = system.replace(TOPIC, args.topic)
     system += SUBMIT_HINT if always else ""  # `a4a usability` brings its own
-    messages = [{"role": "system", "content": system}, *getattr(args, "example_messages", []), {"role": "user", "content": ex["task"]}]
+    reference = getattr(args, "references", {}).get(ex["id"])
+    question = ex["task"] + (REFERENCE_INTRO + reference if reference else "")
+    messages = [{"role": "system", "content": system}, *getattr(args, "example_messages", []), {"role": "user", "content": question}]
     start = getattr(args, "start_messages", {}).get(ex["id"])
     if start:
         if start[0] != messages[0]:
@@ -185,7 +192,7 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
                            tool_set=args.tag or ("none" if args.mode == "none" else "function"),
                            meta={"thinking": args.thinking, "tool_choice": args.tool_choice,
                                  "example_messages": len(getattr(args, "example_messages", [])), "no_repeat": getattr(args, "no_repeat", False),
-                                 **({"start_messages": len(start)} if start else {})})
+                                 **({"start_messages": len(start)} if start else {}), **({"reference": True} if reference else {})})
     used, calls, errors, tokens, finish, raw, trace, answer = [], 0, 0, 0, "max_steps", None, [], None
     reminded, repaired, limit = False, 0, getattr(args, "max_output", None) or MAX_OUTPUT
     plain_text, no_repeat, sent, repeated = getattr(args, "plain_text", False), getattr(args, "no_repeat", False), set(), 0
@@ -309,6 +316,7 @@ def main() -> None:
     parser.add_argument("--tool-choice", choices=("auto", "first", "always"), default="auto",
                         help="force tool use: see the top of this file")
     parser.add_argument("--start", type=Path, help="JSONL of {id, messages}: run only these exercises, each from its messages on (see the top of this file)")
+    parser.add_argument("--reference", type=Path, help="JSONL of {id, reference}: text added under each question (see the top of this file)")
     parser.add_argument("--examples", type=Path, help="trace file with worked examples to put before the task (see load_examples)")
     parser.add_argument("--n-examples", type=int, default=3)
     parser.add_argument("--examples-min-calls", type=int, default=0, help="only use example runs with at least this many tool calls")
@@ -321,6 +329,7 @@ def main() -> None:
     if args.start and args.examples:
         parser.error("--start and --examples do not go together: the start messages hold the whole conversation")
     args.start_messages = {row["id"]: row["messages"] for row in map(json.loads, args.start.read_text().splitlines())} if args.start else {}
+    args.references = {row["id"]: row["reference"] for row in map(json.loads, args.reference.read_text().splitlines())} if args.reference else {}
 
     shown_tasks = set(getattr(load_examples, "task_ids", [])) if args.examples else set()  # never test a task that is shown as an example
     exercises = [ex for ex in map(json.loads, open(args.exercises)) if args.horizon in (None, ex["horizon"]) and ex["id"] not in shown_tasks
