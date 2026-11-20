@@ -514,6 +514,22 @@ Read on 15 November 2026 (`--tag bench2`), right answers as the mean of 3 runs, 
 - What is missing for a fair picture: tools at the medium and high level; the Python tool with an API reference; more questions per repository, with fewer true-or-false answers; more repositories.
 - A first attempt used questions written without the solvability check and without the reminder: 101 of 263 right without tools, 53 with. Its questions were often too vague to answer ("a request created with specific input values"), so those numbers are not used.
 
+### The Python tool with an API reference
+
+```sh
+uv run a4a corpus-benchmark --tag bench2 --model qwen3-8b --base-url <url> --conditions python-ref python-search --runs 3 --only dateutil more_itertools networkx jinja2 werkzeug packaging rsa
+uv run a4a corpus-benchmark --tag aimed1 --tasks tasks-aimed --min-tasks 1 --model qwen3-8b --base-url <url> --conditions python-ref python-search --runs 3 --only <the same>
+```
+
+The Python tool runs code but tells the model nothing about the library, and the models call things that do not exist. Two more conditions put a reference under each question (`corpus/reference.py`, `run-model --reference`): per API element, its signature and the start of its documentation, the form the second model got when the question was checked as solvable. Both are built from the library's static scan; nothing from the repository runs.
+
+| Condition | The reference under each question |
+| --- | --- |
+| Python tool + reference (elements used) | the elements the verified answer uses: the text the question was checked with. The best a look-up can give |
+| Python tool + reference (search) | the 8 elements that a word search (BM25) over the library's API finds for the question's words: what a look-up gives without knowing the answer |
+
+How good the search is (`out/corpus/references/<tasks>/search.md`): on the 7 libraries of the benchmark, it finds 55% of the names the verified answers use, for both question sets (135 of 246 and 75 of 137), and every name for 48 of 120 documentation questions and 24 of 62 aimed questions. A name counts as found if an element of that name is found, because the scan cannot tell `G.degree` of a `Graph` from that of a `DiGraph`. It is weakest on networkx (1,217 elements) and dateutil, where a question describes what to do ("on the 2nd and 15th day of each month") without the words of the element's name (`rrule`). A reference is about 2,500 to 3,600 characters. Runs with a reference have their own names (`...-python-ref-repair`, `...-python-search-repair`), which `a4a train-data` does not read.
+
 ## Databases as a source
 
 ```sh
@@ -861,6 +877,7 @@ src/a4a/
 │   ├── targets.py           corpus-targets     a model writes examples free, with the API listed, or aimed at one element (by name, or with its reference); same check
 │   ├── variant.py           corpus-variant     questions with changed input values, so a remembered answer no longer fits
 │   ├── benchmark.py         corpus-benchmark   per repository: score a model without tools, with generated tools, with one Python tool
+│   ├── reference.py                            an API reference under each question: the elements the answer uses, or found by a word search
 │   └── python_tool.py                          the Python tool: an MCP server with `run_python`; inside the library's own environment and sandbox
 ├── databases/               databases as sources
 │   ├── fetch.py             db-fetch           download the approved databases; keep a file only if its SHA-256 matches

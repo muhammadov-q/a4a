@@ -60,7 +60,7 @@ def run_database(database: dict, args, env: dict) -> None:
     wanted = [(way, k) for way in WAYS for k in range(1, args.runs + 1) if not run_file(args.model, way, args.tag, database["stem"], k, no_repeat=args.no_repeat).is_file()]
     if not wanted:
         return
-    started, set_name = time.monotonic(), f"sql-{database['stem']}"
+    started, set_name = time.monotonic(), f"sql-{database['stem']}-{os.getpid()}"  # a box per process, as in corpus-benchmark
     try:
         server = sql_server(database["candidate"], set_name, database["file"]) if any(way == "sql" for way, _ in wanted) else []
         for way, k in wanted:

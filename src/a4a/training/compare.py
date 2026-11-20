@@ -12,6 +12,9 @@ only on the test sources of out/training/<name>/split.json:
     uv run a4a corpus-benchmark --tag aimed1 --tasks tasks-aimed --model <model> --conditions none python --runs 3 --only <packages>
     uv run a4a db-benchmark --tag db1 --model <model> --runs 3 --only <databases>
 
+The conditions python-ref and python-search of `corpus-benchmark` (the Python tool with an API reference under each
+question) get rows of their own when both models have runs of them.
+
 For each question set and condition: the right answers of both models over the runs, and question by question
 on the first run, the questions that only one of them got right, with the exact sign test. Then how the student
 worked: how often it called the tool, sent the same call three times in a row, wrote a call as text, needed the
@@ -38,8 +41,8 @@ from a4a.training.data import OUT
 
 TAGS = {("repository", "tasks"): "bench2", ("repository", "tasks-aimed"): "aimed1", ("database", "tasks"): "db1"}
 LABELS = {("repository", "tasks"): "Documentation questions", ("repository", "tasks-aimed"): "Aimed questions", ("database", "tasks"): "Database questions"}
-TOOLS = {"repository": "python", "database": "sql"}
-NAMES = {"none": "no tool", "python": "Python tool", "sql": "SQL tool"}
+CONDITIONS = {"repository": ("none", "python", "python-ref", "python-search"), "database": ("none", "sql")}
+NAMES = {"none": "no tool", "python": "Python tool", "python-ref": "Python tool + reference (elements used)", "python-search": "Python tool + reference (search)", "sql": "SQL tool"}
 
 
 def stuck(record: dict, times: int = 3) -> bool:
@@ -69,7 +72,7 @@ def compare(test: dict, base: dict[str, str], trained: dict[str, str], no_repeat
         for folder, count in source["questions"].items():
             if (kind, folder) not in TAGS:
                 continue
-            for condition in ("none", TOOLS[kind]):
+            for condition in CONDITIONS[kind]:
                 runs = {side: saved_runs(model, condition, TAGS[(kind, folder)], stem, no_repeat=no_repeat) for side, model in (("base", base[stem]), ("trained", trained[stem]))}
                 if not (runs["base"] and runs["trained"]):
                     continue

@@ -74,9 +74,9 @@ def sources(sets: list[str]) -> list[dict]:
 def server(source: dict, scanned: dict) -> tuple[list[str], str]:
     """The command that serves the source's one tool in its sandbox, and the sandbox's name (to drop it after)."""
     if source["kind"] == "database":
-        name = f"sql-{source['stem']}"
+        name = f"sql-{source['stem']}-{os.getpid()}"
         return sql_server(source["database"]["candidate"], name, source["database"]["file"]), name
-    name = f"python-{source['stem']}"
+    name = f"python-{source['stem']}-{os.getpid()}"
     return python_server(scanned[source["stem"]], name), name
 
 

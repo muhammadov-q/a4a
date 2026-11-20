@@ -13,9 +13,15 @@ the model answers the repository's questions under three conditions, `--runs` ti
             tag; if it is already in toolsets/generated/, only its environment is rebuilt and no writer is needed
     python  with one tool that runs Python where the library is installed (python_tool.py): the baseline that
             generated tools have to beat
+    python-ref     the Python tool, and under each question the reference of the API elements its verified answer
+                   uses (reference.py): the best case of a look-up
+    python-search  the Python tool, and under each question the reference of the elements a word search over the
+                   library's API finds for it (reference.py): what a look-up gives without knowing the answer
+
+The two conditions with a reference run only when named with --conditions.
 
 All conditions use the same instruction, one reminder if the reply is not a bare value, and the same cap on
-tool output. In the two conditions with tools, a tool call that the model wrote as text is run as a call, and the
+tool output. In the conditions with tools, a tool call that the model wrote as text is run as a call, and the
 Python tool's output is shown as text (`run-model --repair-calls`, `--plain-text`). `--strict` leaves both out:
 that is how the first runs were made, and they showed that the harness, not the tools, then decides a quarter of
 the answers of a small model. Strict runs and reports have their own names. `--no-repeat` does not run a call that
@@ -40,12 +46,15 @@ from itertools import combinations
 from pathlib import Path
 from statistics import mean
 
+from a4a.corpus.reference import WAYS, reference_file, write_references
 from a4a.corpus.scan import OUT, folder_name
 from a4a.paths import API_KEY_FILE, REPO_ROOT
 from a4a.repo2tools.pipeline import repo_name
 from a4a.sources.python_repository import box_for, drop_box
 
-CONDITIONS = {"none": "No tools", "tools": "Generated tools", "python": "One Python tool"}
+CONDITIONS = {"none": "No tools", "tools": "Generated tools", "python": "One Python tool", "python-ref": "Python tool + reference (elements used)",
+              "python-search": "Python tool + reference (search)"}
+PYTHON = ("python", *WAYS)
 PYTHON_TOOL = Path(__file__).resolve().parent / "python_tool.py"
 
 
@@ -62,7 +71,7 @@ def repositories(min_tasks: int, tasks: str = "tasks") -> list[dict]:
 def run_tag(tag: str, stem: str, condition: str, run: int = 1, strict: bool = False) -> str:
     """Names a run. Without tools there is nothing to repair, so those runs are the same for both harnesses."""
     repair = "" if strict or condition == "none" else "-repair"
-    return f"{tag}-{stem}" + (f"-{condition}" if condition in ("python", "sql") else "") + repair + ("" if run == 1 else f"-r{run}")
+    return f"{tag}-{stem}" + (f"-{condition}" if condition.startswith(("python", "sql")) else "") + repair + ("" if run == 1 else f"-r{run}")
 
 
 def run_file(model: str, condition: str, tag: str, stem: str, run: int = 1, strict: bool = False, no_repeat: bool = False) -> Path:
@@ -213,14 +222,14 @@ def run_repository(repo: dict, candidate: dict, args, env: dict) -> None:
     if not wanted:
         return
     started = time.monotonic()
-    set_name, python_set = f"{repo_name(repo['url'])}-{args.tag}", f"python-{repo['stem']}"
+    set_name, python_set = f"{repo_name(repo['url'])}-{args.tag}", f"python-{repo['stem']}-{os.getpid()}"  # a box per process: two scorings of one library at once must not share it
     servers = {"none": []}
     try:
         if any(c == "tools" for c, _ in wanted):
             servers["tools"] = tool_set_server(repo, candidate["commit"], args, env)
-        if any(c == "python" for c, _ in wanted):
+        if any(c in PYTHON for c, _ in wanted):
             try:
-                servers["python"] = python_server(candidate, python_set)
+                servers |= dict.fromkeys(PYTHON, python_server(candidate, python_set))
             except (RuntimeError, SystemExit, subprocess.CalledProcessError) as error:
                 print(f"{repo['package']}: no environment for the Python tool ({str(error)[:200]})", flush=True)
 
@@ -229,7 +238,9 @@ def run_repository(repo: dict, candidate: dict, args, env: dict) -> None:
                        "--base-url", args.base_url, "--model", args.model, "--topic", f"the Python library {repo['package']}", "--remind",
                        "--tag", run_tag(args.tag, repo["stem"], condition, run, args.strict)]
             if not args.strict and condition != "none":
-                command += ["--repair-calls"] + (["--plain-text"] if condition == "python" else [])
+                command += ["--repair-calls"] + (["--plain-text"] if condition in PYTHON else [])
+            if condition in WAYS:
+                command += ["--reference", str(reference_file(repo["stem"], args.tasks, condition))]
             if args.no_repeat and condition != "none":
                 command += ["--no-repeat"]
             done = subprocess.run(command + (["--", *servers[condition]] if servers[condition] else []), env=env, cwd=REPO_ROOT, capture_output=True, text=True)
@@ -251,7 +262,7 @@ def main() -> None:
     parser.add_argument("--base-url")
     parser.add_argument("--writer-model", help="the model that writes the tools; only needed for a repository that has no tool set with this tag yet")
     parser.add_argument("--writer-base-url")
-    parser.add_argument("--conditions", nargs="+", choices=("none", "tools", "python"), default=["none", "tools", "python"])
+    parser.add_argument("--conditions", nargs="+", choices=list(CONDITIONS), default=["none", "tools", "python"])
     parser.add_argument("--runs", type=int, default=1, help="how often the model answers under each condition")
     parser.add_argument("--jobs", type=int, default=3, help="runs of one repository at the same time")
     parser.add_argument("--only", nargs="+", metavar="PACKAGE", help="run only these packages; the report still covers all")
@@ -263,6 +274,8 @@ def main() -> None:
     parser.add_argument("--report-only", action="store_true", help="only build the report from the saved runs")
     args = parser.parse_args()
     repos = repositories(args.min_tasks, args.tasks)
+    if set(args.conditions) & set(WAYS) and not args.report_only:
+        print(f"-> {write_references(repos, args.tasks)}")
     if not args.report_only:
         if not args.base_url:
             parser.error("give --base-url, or --report-only")
