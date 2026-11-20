@@ -9,7 +9,8 @@ For every database with questions (`a4a db-tasks`) the model answers them twice:
     sql    one tool, `run_sql`, that runs a read-only query on the database inside the sandbox (`sql_tool.py`)
 
 The runs are made by `a4a run-model` with the same harness as `a4a corpus-benchmark`, and the report is
-built by the same code, so the two can be read side by side. A saved run is not made again.
+built by the same code, so the two can be read side by side. A saved run is not made again. `--no-repeat` does
+not run a call that is the same as an earlier one of the run; its runs and report end in `-norepeat`.
 
 Writes out/databases/benchmark-<tag>-<model>.json and .md; the runs are in out/runs/, the traces in out/traces/.
 """
@@ -56,7 +57,7 @@ def sql_server(candidate: dict, set_name: str, file: Path) -> list[str]:
 
 def run_database(database: dict, args, env: dict) -> None:
     """Every run of this database that is not saved yet."""
-    wanted = [(way, k) for way in WAYS for k in range(1, args.runs + 1) if not run_file(args.model, way, args.tag, database["stem"], k).is_file()]
+    wanted = [(way, k) for way in WAYS for k in range(1, args.runs + 1) if not run_file(args.model, way, args.tag, database["stem"], k, no_repeat=args.no_repeat).is_file()]
     if not wanted:
         return
     started, set_name = time.monotonic(), f"sql-{database['stem']}"
@@ -67,7 +68,7 @@ def run_database(database: dict, args, env: dict) -> None:
                        "--base-url", args.base_url, "--model", args.model, "--topic", f"the SQLite database {database['package']} ({database['candidate']['what']})", "--remind",
                        "--tag", run_tag(args.tag, database["stem"], way, k)]
             if way == "sql":
-                command += ["--repair-calls", "--plain-text", "--", *server]
+                command += ["--repair-calls", "--plain-text", *(["--no-repeat"] if args.no_repeat else []), "--", *server]
             done = subprocess.run(command, env=env, cwd=REPO_ROOT, capture_output=True, text=True)
             if done.returncode != 0:
                 print(f"{database['package']}: {way} run {k} failed: {done.stderr.strip()[-300:]}", flush=True)
@@ -87,6 +88,7 @@ def main() -> None:
     parser.add_argument("--tasks", default="tasks", help="the question set: a folder under out/databases/")
     parser.add_argument("--variant", type=int, help="serve the database of `a4a db-variant --seed N` to the SQL tool")
     parser.add_argument("--report-only", action="store_true", help="only build the report from the saved runs")
+    parser.add_argument("--no-repeat", action="store_true", help="do not run a call that is the same as an earlier one of the run (run-model --no-repeat)")
     args = parser.parse_args()
     found = databases(args.min_tasks, args.tasks, args.variant)
     if args.variant is not None and args.tasks == "tasks":
@@ -98,10 +100,13 @@ def main() -> None:
         for database in found:
             if not args.only or database["package"] in args.only:
                 run_database(database, args, env)
-    rows, details = summarize(found, args.model, args.tag, conditions=WAYS), breakdown(found, args.model, args.tag, conditions=WAYS)
-    name = re.sub(r"[^A-Za-z0-9._-]+", "-", f"benchmark-{args.tag}-{args.model}")
-    (OUT / f"{name}.json").write_text(json.dumps({"model": args.model, "tag": args.tag, "min_tasks": args.min_tasks, "repositories": rows, **details}, indent=1) + "\n", encoding="utf-8")
-    (OUT / f"{name}.md").write_text(report(rows, args.model, args.tag, False, details, where="the questions about each database; a row is a database", conditions=WAYS), encoding="utf-8")
+    rows = summarize(found, args.model, args.tag, conditions=WAYS, no_repeat=args.no_repeat)
+    details = breakdown(found, args.model, args.tag, conditions=WAYS, no_repeat=args.no_repeat)
+    name = re.sub(r"[^A-Za-z0-9._-]+", "-", f"benchmark-{args.tag}-{args.model}{'-norepeat' if args.no_repeat else ''}")
+    record = {"model": args.model, "tag": args.tag, **({"no_repeat": True} if args.no_repeat else {}), "min_tasks": args.min_tasks}
+    (OUT / f"{name}.json").write_text(json.dumps({**record, "repositories": rows, **details}, indent=1) + "\n", encoding="utf-8")
+    (OUT / f"{name}.md").write_text(report(rows, args.model, args.tag, False, details, where="the questions about each database; a row is a database", conditions=WAYS,
+                                           no_repeat=args.no_repeat), encoding="utf-8")
     print(f"-> out/databases/{name}.md")
 
 

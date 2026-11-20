@@ -28,6 +28,10 @@ Two options keep the harness from deciding a result:
                     instead of being taken as the final answer.
     --plain-text    a tool result that is text is shown as it is, not as a JSON string in quotes. For tools
                     whose result is terminal output.
+
+--no-repeat stops a loop: a call with the same tool and arguments as an earlier call of the run is not run again
+(the tools here keep no state, so it would give the same result). The model is told so, and the call counts as a
+tool error. Small models at temperature 0 otherwise send one failing call until the step limit.
 """
 
 import argparse
@@ -62,6 +66,7 @@ SUBMIT_TOOL = {"type": "function", "function": {
     "description": "Give your final answer and end the task. Call this once you know the answer.",
     "parameters": {"type": "object", "properties": {"answer": {"description": "The final answer as a JSON value"}},
                    "required": ["answer"]}}}
+REPEATED = "Error: you already made this exact call, and it would give the same result again. Change the call, or give your final answer."
 REMINDER = "Reply with only the final answer as a JSON value (true or false, a number, a string, a list or an object) and nothing else."
 MAX_OUTPUT = 20_000  # characters of one tool output that the model is shown
 SUBMIT_HINT = " When you are done, give the final answer by calling submit_answer, not as text."
@@ -105,6 +110,14 @@ async def list_tools(session: ClientSession) -> list[dict]:
     """The server's tools in OpenAI function format."""
     return [{"type": "function", "function": {"name": t.name, "description": t.description, "parameters": t.inputSchema}}
             for t in (await session.list_tools()).tools]
+
+
+def same_call(name: str, arguments: str | None) -> tuple[str, str]:
+    """A call as a key: the tool and its arguments, read as JSON when they are, so spacing does not make a call new."""
+    try:
+        return name, json.dumps(json.loads(arguments or "{}"), sort_keys=True)
+    except json.JSONDecodeError:
+        return name, arguments or ""
 
 
 def is_json(text: str) -> bool:
@@ -161,10 +174,10 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
     full_trace = new_trace("model", ex["id"], ex["task"], offered, kind=ex["kind"], horizon=ex["horizon"], model=args.model,
                            tool_set=args.tag or ("none" if args.mode == "none" else "function"),
                            meta={"thinking": args.thinking, "tool_choice": args.tool_choice,
-                                 "example_messages": len(getattr(args, "example_messages", []))})
+                                 "example_messages": len(getattr(args, "example_messages", [])), "no_repeat": getattr(args, "no_repeat", False)})
     used, calls, errors, tokens, finish, raw, trace, answer = [], 0, 0, 0, "max_steps", None, [], None
     reminded, repaired, limit = False, 0, getattr(args, "max_output", None) or MAX_OUTPUT
-    plain_text = getattr(args, "plain_text", False)
+    plain_text, no_repeat, sent, repeated = getattr(args, "plain_text", False), getattr(args, "no_repeat", False), set(), 0
     for step in range(args.max_steps):
         tool_choice = None if not offered else "required" if always or (forced and step == 0) else "auto"
         started = time.monotonic()
@@ -211,13 +224,18 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
                 break
             calls += 1
             used.append(tc.function.name)
-            try:
-                result = await session.call_tool(tc.function.name, json.loads(tc.function.arguments or "{}"))
-                value = None if result.isError else output_value(result)
-                content = result.content[0].text if result.isError else value if plain_text and isinstance(value, str) else json.dumps(value)
-                errors += result.isError
-            except Exception as e:  # noqa: BLE001  (bad JSON arguments or an unknown tool count as a tool error)
-                content, errors = f"Error: {e}", errors + 1
+            key = same_call(tc.function.name, tc.function.arguments)
+            if no_repeat and key in sent:
+                content, errors, repeated = REPEATED, errors + 1, repeated + 1
+            else:
+                sent.add(key)
+                try:
+                    result = await session.call_tool(tc.function.name, json.loads(tc.function.arguments or "{}"))
+                    value = None if result.isError else output_value(result)
+                    content = result.content[0].text if result.isError else value if plain_text and isinstance(value, str) else json.dumps(value)
+                    errors += result.isError
+                except Exception as e:  # noqa: BLE001  (bad JSON arguments or an unknown tool count as a tool error)
+                    content, errors = f"Error: {e}", errors + 1
             if len(content) > limit:  # one huge output must not fill the model's context
                 content = content[:limit] + f"\n[output cut: {len(content):,} characters in all]"
             messages.append({"role": "tool", "tool_call_id": tc.id, "content": content})
@@ -232,7 +250,7 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
             "passed": passed, "answer": answer, "raw": raw, "finish": finish,
             "tool_calls": calls, "tool_errors": errors, "tools_used": sorted(set(used)),
             "used_all_reference_tools": reference_tools <= set(used), "reference_call_count": ex["reference_call_count"], "reminded": reminded, "repaired_calls": repaired,
-            "tokens": tokens, "trace": trace, "full_trace": full_trace}
+            **({"repeated_calls": repeated} if no_repeat else {}), "tokens": tokens, "trace": trace, "full_trace": full_trace}
 
 
 async def run(exercises: list[dict], args) -> list[dict]:
@@ -274,6 +292,7 @@ def main() -> None:
     parser.add_argument("--remind", action="store_true", help="if the final message is not a JSON value, ask once more for only the value")
     parser.add_argument("--repair-calls", action="store_true", help="run a tool call that the model wrote as text, instead of taking it as the answer")
     parser.add_argument("--plain-text", action="store_true", help="show a tool result that is text as it is, not as a JSON string")
+    parser.add_argument("--no-repeat", action="store_true", help="do not run a call that is the same as an earlier one; tell the model instead")
     parser.add_argument("--max-output", type=int, default=MAX_OUTPUT, help="characters of one tool output shown to the model; the rest is cut")
     parser.add_argument("--tag", help="label for the output file name, e.g. the tool set's granularity")
     parser.add_argument("--tool-choice", choices=("auto", "first", "always"), default="auto",
@@ -293,7 +312,7 @@ def main() -> None:
     results = asyncio.run(run(exercises, args))
     forced = f"force-{args.tool_choice}" if args.tool_choice != "auto" else None
     shown = f"examples{args.n_examples}" if args.examples else None
-    suffix = "".join(f"-{part}" for part in (args.tag, args.horizon, "thinking" if args.thinking else None, forced, shown) if part)
+    suffix = "".join(f"-{part}" for part in (args.tag, args.horizon, "thinking" if args.thinking else None, forced, shown, "norepeat" if args.no_repeat else None) if part)
     out = REPO_ROOT / "out" / "runs" / f"{args.model}-{args.mode}{suffix}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
     write_traces(REPO_ROOT / "out" / "traces" / f"{out.name}.gz", [r.pop("full_trace") for r in results if "full_trace" in r])

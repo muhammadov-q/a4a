@@ -1,0 +1,171 @@
+{
+ "model": "qwen3-1.7b-sft1",
+ "tag": "aimed1",
+ "tasks": "tasks-aimed",
+ "strict": false,
+ "no_repeat": true,
+ "min_tasks": 8,
+ "repositories": [
+  {
+   "package": "dateutil",
+   "repo": "https://github.com/dateutil/dateutil",
+   "questions": 14,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     7,
+     7,
+     7
+    ],
+    "tools": [],
+    "python": [
+     7,
+     6,
+     8
+    ]
+   },
+   "use": {
+    "python": {
+     "called_a_tool": [
+      14,
+      14,
+      14
+     ],
+     "right_when_called": [
+      7,
+      6,
+      8
+     ],
+     "tool_calls": [
+      233,
+      209,
+      143
+     ],
+     "tool_errors": [
+      224,
+      199,
+      134
+     ],
+     "repaired_calls": [
+      3,
+      17,
+      19
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "networkx",
+   "repo": "https://github.com/networkx/networkx",
+   "questions": 14,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  },
+  {
+   "package": "werkzeug",
+   "repo": "https://github.com/pallets/werkzeug",
+   "questions": 13,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [
+     3,
+     3,
+     3
+    ],
+    "tools": [],
+    "python": [
+     6,
+     7,
+     7
+    ]
+   },
+   "use": {
+    "python": {
+     "called_a_tool": [
+      12,
+      13,
+      12
+     ],
+     "right_when_called": [
+      6,
+      7,
+      7
+     ],
+     "tool_calls": [
+      192,
+      157,
+      145
+     ],
+     "tool_errors": [
+      188,
+      150,
+      139
+     ],
+     "repaired_calls": [
+      10,
+      10,
+      9
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "package": "packaging",
+   "repo": "https://github.com/pypa/packaging",
+   "questions": 10,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": []
+   },
+   "use": {}
+  }
+ ],
+ "conditions": [
+  "none",
+  "python"
+ ],
+ "by_answer": [
+  {
+   "answer": "true or false",
+   "questions": 7,
+   "none": 4,
+   "python": 3
+  },
+  {
+   "answer": "another value",
+   "questions": 20,
+   "none": 6,
+   "python": 10
+  }
+ ],
+ "pairs": [
+  {
+   "a": "none",
+   "b": "python",
+   "only_a": 5,
+   "only_b": 8,
+   "p": 0.58
+  }
+ ]
+}

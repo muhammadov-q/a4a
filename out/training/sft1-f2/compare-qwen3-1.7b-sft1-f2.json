@@ -1,0 +1,273 @@
+{
+ "name": "sft1-f2",
+ "base": "qwen3-1.7b",
+ "trained": "qwen3-1.7b-sft1-f2",
+ "rows": [
+  {
+   "questions_set": "Documentation questions",
+   "condition": "none",
+   "sources": [
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pypa__packaging"
+   ],
+   "questions": 67,
+   "right": {
+    "base": [
+     21,
+     22,
+     22
+    ],
+    "trained": [
+     27,
+     27,
+     27
+    ]
+   },
+   "only_base": 1,
+   "only_trained": 7,
+   "p": 0.07,
+   "habits": {
+    "base": {
+     "answers": 201,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.169,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    },
+    "trained": {
+     "answers": 201,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.045,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    }
+   }
+  },
+  {
+   "questions_set": "Documentation questions",
+   "condition": "python",
+   "sources": [
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pypa__packaging"
+   ],
+   "questions": 67,
+   "right": {
+    "base": [
+     22,
+     20,
+     20
+    ],
+    "trained": [
+     27,
+     25,
+     24
+    ]
+   },
+   "only_base": 4,
+   "only_trained": 9,
+   "p": 0.27,
+   "habits": {
+    "base": {
+     "answers": 201,
+     "called_the_tool": 0.99,
+     "call_as_text": 0.393,
+     "reminded": 0.493,
+     "no_answer": 0.214,
+     "same_call_3_times": 0.572,
+     "tool_calls_per_answer": 11.95
+    },
+    "trained": {
+     "answers": 201,
+     "called_the_tool": 0.99,
+     "call_as_text": 0.01,
+     "reminded": 0.01,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.701,
+     "tool_calls_per_answer": 4.32
+    }
+   }
+  },
+  {
+   "questions_set": "Aimed questions",
+   "condition": "none",
+   "sources": [
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pypa__packaging"
+   ],
+   "questions": 29,
+   "right": {
+    "base": [
+     3,
+     3,
+     3
+    ],
+    "trained": [
+     3,
+     3,
+     3
+    ]
+   },
+   "only_base": 1,
+   "only_trained": 1,
+   "p": 1.0,
+   "habits": {
+    "base": {
+     "answers": 87,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.138,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    },
+    "trained": {
+     "answers": 87,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.034,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    }
+   }
+  },
+  {
+   "questions_set": "Aimed questions",
+   "condition": "python",
+   "sources": [
+    "more-itertools__more-itertools",
+    "networkx__networkx",
+    "pypa__packaging"
+   ],
+   "questions": 29,
+   "right": {
+    "base": [
+     8,
+     8,
+     8
+    ],
+    "trained": [
+     8,
+     9,
+     8
+    ]
+   },
+   "only_base": 5,
+   "only_trained": 5,
+   "p": 1.0,
+   "habits": {
+    "base": {
+     "answers": 87,
+     "called_the_tool": 1.0,
+     "call_as_text": 0.31,
+     "reminded": 0.609,
+     "no_answer": 0.023,
+     "same_call_3_times": 0.46,
+     "tool_calls_per_answer": 5.76
+    },
+    "trained": {
+     "answers": 87,
+     "called_the_tool": 0.977,
+     "call_as_text": 0.0,
+     "reminded": 0.023,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.632,
+     "tool_calls_per_answer": 5.11
+    }
+   }
+  },
+  {
+   "questions_set": "Database questions",
+   "condition": "none",
+   "sources": [
+    "sakila"
+   ],
+   "questions": 39,
+   "right": {
+    "base": [
+     0,
+     0,
+     0
+    ],
+    "trained": [
+     0,
+     0,
+     0
+    ]
+   },
+   "only_base": 0,
+   "only_trained": 0,
+   "p": 1.0,
+   "habits": {
+    "base": {
+     "answers": 117,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.197,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    },
+    "trained": {
+     "answers": 117,
+     "called_the_tool": 0.0,
+     "call_as_text": 0.0,
+     "reminded": 0.0,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.0,
+     "tool_calls_per_answer": 0
+    }
+   }
+  },
+  {
+   "questions_set": "Database questions",
+   "condition": "sql",
+   "sources": [
+    "sakila"
+   ],
+   "questions": 39,
+   "right": {
+    "base": [
+     18,
+     14,
+     19
+    ],
+    "trained": [
+     38,
+     38,
+     38
+    ]
+   },
+   "only_base": 0,
+   "only_trained": 20,
+   "p": 1.9e-06,
+   "habits": {
+    "base": {
+     "answers": 117,
+     "called_the_tool": 0.991,
+     "call_as_text": 0.017,
+     "reminded": 0.598,
+     "no_answer": 0.009,
+     "same_call_3_times": 0.017,
+     "tool_calls_per_answer": 1.16
+    },
+    "trained": {
+     "answers": 117,
+     "called_the_tool": 1.0,
+     "call_as_text": 0.0,
+     "reminded": 0.009,
+     "no_answer": 0.0,
+     "same_call_3_times": 0.017,
+     "tool_calls_per_answer": 1.42
+    }
+   }
+  }
+ ]
+}

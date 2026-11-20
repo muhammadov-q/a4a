@@ -56,3 +56,32 @@ The free H100 quota is shared by everyone on `gratis`. When it's full, `squeue` 
 - One H100 allows at most 16 CPUs and 92,160 MB of RAM, so `--mem=96G` is refused.
 - `VLLM_USE_FLASHINFER_SAMPLER=0` is needed: FlashInfer's sampler compiles itself on first use and needs `nvcc`, which the GPU nodes don't have.
 - All H100s can be busy while RTX 4090s are free. On a 4090, Qwen3-8B leaves about 3.1 GiB for the KV cache: 22,672 tokens, or about 1.4 full-length requests at once.
+
+## Training a small model
+
+`train_sft.py` fine-tunes a small model with LoRA on the examples of `a4a train-data`; `serve_student.sbatch` serves the model and its adapters for `a4a corpus-benchmark`, `a4a db-benchmark` and `a4a train-compare`. Both run on one RTX 4090.
+
+Once, on the login node:
+
+```sh
+uv venv --managed-python --python 3.12 ~/envs/train
+uv pip install --python ~/envs/train/bin/python torch==2.13.0 transformers==5.19.0 peft accelerate  # torch and transformers as in ~/envs/vllm
+HF_HOME=/storage/scratch/users/$USER/hf uvx --from huggingface_hub hf download Qwen/Qwen3-1.7B
+mkdir -p ~/a4a /storage/scratch/users/$USER/a4a/data /storage/scratch/users/$USER/a4a/adapters
+```
+
+Each time, from your own computer, then on the cluster:
+
+```sh
+scp cluster/train_sft.py cluster/train_sft.sbatch cluster/serve_student.sbatch <your UBELIX login>:a4a/
+scp out/training/sft1/train.jsonl <your UBELIX login>:/storage/scratch/users/<user>/a4a/data/sft1/
+
+cd ~/a4a
+python train_sft.py --check --data <data> --out x     # in ~/envs/train: renders every example, no GPU needed
+sbatch --export=ALL,DATA=<data>,OUT=/storage/scratch/users/$USER/a4a/adapters/qwen3-1.7b-sft1 train_sft.sbatch
+sbatch --export=ALL,PORT=8004,ADAPTERS="qwen3-1.7b-sft1=/storage/scratch/users/$USER/a4a/adapters/qwen3-1.7b-sft1" serve_student.sbatch
+```
+
+The server answers as `qwen3-1.7b` (the model before training) and as `qwen3-1.7b-sft1` (with the adapter). The adapter's `train_log.json` has the settings, the versions, the SHA-256 of the data and the loss of every step.
+
+For the folds of `a4a train-data --folds 3`, train one adapter per fold and serve them together, up to four (`--max-loras 4`): `ADAPTERS="qwen3-1.7b-sft1=<path> qwen3-1.7b-sft1-f2=<path> qwen3-1.7b-sft1-f3=<path>"`. The `gratis` account allows two RTX 4090 jobs at once, so one server and one training job can run side by side; more training jobs wait in the queue.

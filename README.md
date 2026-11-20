@@ -32,6 +32,7 @@ Author: Kobiljon Muhammadov. Supervisor: Roman Macháček.
 - [Many repositories: the candidate list](#many-repositories-the-candidate-list)
 - [Databases as a source](#databases-as-a-source)
 - [Memory or skill?](#memory-or-skill)
+- [Training a small model on the verified tasks](#training-a-small-model-on-the-verified-tasks)
 - [Usability: can a small model call the tools](#usability-can-a-small-model-call-the-tools)
 - [Stage 2: chains and synthetic traces with ToolGym](#stage-2-chains-and-synthetic-traces-with-toolgym)
 - [Stage 3: exercises, traces and repetition](#stage-3-exercises-traces-and-repetition)
@@ -593,6 +594,40 @@ uv run a4a memory-check --area databases --tasks tasks-v1 --original db1 --varia
 So memory is a property of the kind of source. Facts of famous data are recalled; library behavior is worked out. A "no tool" score on public data needs a changed copy next to it.
 
 Limits. One run each, so a single question can move between the two runs by chance; the control shows how much. Removing rows also makes a source smaller, and a changed input can make a question slightly different, not only its answer. Replacing values in the wording is checked only by finding each new value in it.
+
+## Training a small model on the verified tasks
+
+```sh
+uv run a4a train-data --name sft1                    # examples from the teachers' passed runs; test sources held out
+uv run a4a train-data --name sft1-f2 --folds 3 --fold 2   # folds 2 and 3: every source is tested once
+# on the cluster (cluster/README.md): train_sft.sbatch, then serve_student.sbatch with the adapters
+uv run a4a corpus-benchmark --tag bench2 --model qwen3-1.7b-sft1 --base-url <url> --conditions none python --runs 3 --only dateutil werkzeug
+uv run a4a corpus-benchmark --tag aimed1 --tasks tasks-aimed --min-tasks 1 --model qwen3-1.7b-sft1 --base-url <url> --conditions none python --runs 3 --only dateutil werkzeug
+uv run a4a db-benchmark --tag db1 --model qwen3-1.7b-sft1 --base-url <url> --runs 3 --only chinook
+uv run a4a train-compare --name sft1 sft1-f2 sft1-f3 --base qwen3-1.7b --trained qwen3-1.7b-sft1 qwen3-1.7b-sft1-f2 qwen3-1.7b-sft1-f3
+```
+
+Can the verified questions teach a small model to use a tool on a source it has never seen? `a4a train-data` turns the saved runs of Qwen3-32B and Qwen3-8B with the Python tool and the SQL tool into training examples: each step of a run that got the right answer is one example, the conversation so far and the next assistant message. A step whose call failed is not learned, but it stays in the history of the later steps. Before anything else the sources are split, so that a source is either trained on or tested, never both. With `--folds 3` there are three splits and every source is tested once: fold 1 holds out `chinook`, `dateutil` and `werkzeug` (997 examples from the other seven sources), fold 2 `sakila`, `more-itertools`, `networkx` and `packaging` (801 examples), fold 3 `northwind`, `jinja` and `python-rsa` (1,122 examples).
+
+`cluster/train_sft.py` fine-tunes Qwen3-1.7B with LoRA, one model per fold (rank 16, all linear layers, 2 epochs; 6 to 8 minutes on one RTX 4090). The prompt is rendered with the model's own chat template exactly as vLLM renders it in the test, and the loss is on the assistant message only. Each test source is then scored with the model of its fold, with the same harness as the teachers, 3 runs. All three folds together, so every question of the benchmarks:
+
+| Questions | Condition | Questions | Qwen3-1.7B | After training | Only before | Only after | p | Qwen3-8B | Qwen3-32B |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Database | SQL tool | 118 | 52 (44%) | 105.7 (90%) | 2 | 57 | 6e-15 | 89% | 93% |
+| Documentation | Python tool | 120 | 42 (35%) | 49.3 (41%) | 8 | 15 | 0.21 | 58% | 68% |
+| Aimed | Python tool | 62 | 20.7 (33%) | 18.3 (30%) | 11 | 9 | 0.82 | 61% | 63% |
+| Documentation | no tool | 120 | 32.7 (27%) | 49 (41%) | 2 | 19 | 0.0002 | 45% | 58% |
+
+- **On databases it has not seen, the trained student doubles and reaches Qwen3-8B:** 44% to 90% with the SQL tool, and in every fold (45% to 87%, 44% to 97%, 44% to 85%). Before training it needed the reminder in 58% of its answers; after, in 2%.
+- **On libraries it has not seen, training does not help with the tool.** The small model sends the same failing call again and again (three times in a row in 52% to 60% of its answers, before and after training).
+- **Without a tool, documentation questions rise from 27% to 41%,** though training saw only runs with a tool. Read by hand, of the 19 questions only the trained model gets right, 7 were the right value in another shape before (`{"status_code": 404}` for `404`), 7 were true or false where a number or a string was asked, and 5 had another value. So mostly the form of the answer, learned from the teachers' final answers.
+
+Two variants on fold 1, neither of which helps:
+
+- **Keeping the failed steps** (`a4a train-data --keep-failed-calls`, `sft2`, 1,094 examples): database 82% (87% without them), documentation 37% (37%), aimed 44% (36%). The student learns to send more calls (7.8 per database answer against 2.2) and runs out of steps more often.
+- **Not running a repeated call** (`--no-repeat` in `run-model`, `corpus-benchmark`, `db-benchmark` and `train-compare`): a call the same as an earlier one of the run is not run again, and the model is told so. Untrained: database 45% to 50%, documentation 27% to 28%, aimed 43% to 35%. Trained: 87% to 86%, 37% to 33%, 36% to 51%. All within chance: on the first run at most 4 questions change on either side (sign test p ≥ 0.38). Both models go on sending the blocked call: the loop is not caused by the harness, and a message does not stop it.
+
+Reports: `out/training/sft1/compare-qwen3-1.7b-sft1-folds.md` (the table above), one per fold in `out/training/<name>/`, `out/training/sft2/compare-qwen3-1.7b-sft2.md` and `out/training/sft1/compare-qwen3-1.7b-sft1-norepeat.md`; the data, the splits and the training logs are in `out/training/`. Limits: one training run per fold and one small model; the teachers' columns come from their benchmark runs on the same questions. A SQL question needs one short query in a language the model knows; a library question needs the right part of an API the model does not know.
 
 ## Usability: can a small model call the tools
 

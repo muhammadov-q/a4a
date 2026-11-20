@@ -51,6 +51,10 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "db-benchmark": ("a4a.databases.benchmark", "per database: score a model on its questions without a tool and with one SQL tool"),
         "db-variant": ("a4a.databases.variant", "a copy of each database with part of its rows removed, and the questions with their answers computed again"),
     },
+    "Training: a small model on the verified tasks": {
+        "train-data": ("a4a.training.data", "training examples from the teachers' passed runs with one tool; test sources held out"),
+        "train-compare": ("a4a.training.compare", "the student before and after training, on the questions of the test sources"),
+    },
     "ToolGym": {
         "toolgym-types": ("a4a.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),
         "toolgym-export": ("a4a.toolgym.catalog_export", "write the hand-made tools into a ToolGym catalog"),
