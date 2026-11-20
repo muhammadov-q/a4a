@@ -63,10 +63,51 @@
    "tools_picked": null,
    "tools_accepted": null,
    "right": {
-    "none": [],
-    "sql": []
+    "none": [
+     0,
+     0,
+     0
+    ],
+    "sql": [
+     15,
+     18,
+     18
+    ]
    },
-   "use": {}
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39,
+      39,
+      39
+     ],
+     "right_when_called": [
+      15,
+      18,
+      18
+     ],
+     "tool_calls": [
+      126,
+      139,
+      124
+     ],
+     "tool_errors": [
+      92,
+      88,
+      89
+     ],
+     "repaired_calls": [
+      68,
+      61,
+      59
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      1,
+      0
+     ]
+    }
+   }
   },
   {
    "package": "sakila",
@@ -75,10 +116,51 @@
    "tools_picked": null,
    "tools_accepted": null,
    "right": {
-    "none": [],
-    "sql": []
+    "none": [
+     0,
+     0,
+     0
+    ],
+    "sql": [
+     18,
+     14,
+     19
+    ]
    },
-   "use": {}
+   "use": {
+    "sql": {
+     "called_a_tool": [
+      39,
+      38,
+      39
+     ],
+     "right_when_called": [
+      18,
+      14,
+      19
+     ],
+     "tool_calls": [
+      48,
+      40,
+      48
+     ],
+     "tool_errors": [
+      2,
+      2,
+      2
+     ],
+     "repaired_calls": [
+      7,
+      0,
+      7
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
   }
  ],
  "conditions": [
@@ -94,9 +176,9 @@
   },
   {
    "answer": "another value",
-   "questions": 40,
+   "questions": 118,
    "none": 2,
-   "sql": 18
+   "sql": 51
   }
  ],
  "pairs": [
@@ -104,8 +186,8 @@
    "a": "none",
    "b": "sql",
    "only_a": 0,
-   "only_b": 16,
-   "p": 3.1e-05
+   "only_b": 49,
+   "p": 3.6e-15
   }
  ]
 }

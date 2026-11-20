@@ -79,11 +79,52 @@
    "tools_picked": 59,
    "tools_accepted": 25,
    "right": {
-    "none": [],
+    "none": [
+     5,
+     5,
+     6
+    ],
     "tools": [],
-    "python": []
+    "python": [
+     8,
+     7,
+     7
+    ]
    },
-   "use": {}
+   "use": {
+    "python": {
+     "called_a_tool": [
+      19,
+      19,
+      19
+     ],
+     "right_when_called": [
+      8,
+      7,
+      7
+     ],
+     "tool_calls": [
+      114,
+      110,
+      132
+     ],
+     "tool_errors": [
+      104,
+      98,
+      121
+     ],
+     "repaired_calls": [
+      19,
+      18,
+      35
+     ],
+     "ended_with_a_call_as_text": [
+      1,
+      2,
+      1
+     ]
+    }
+   }
   },
   {
    "package": "networkx",
@@ -92,11 +133,52 @@
    "tools_picked": 45,
    "tools_accepted": 3,
    "right": {
-    "none": [],
+    "none": [
+     1,
+     2,
+     1
+    ],
     "tools": [],
-    "python": []
+    "python": [
+     7,
+     6,
+     7
+    ]
    },
-   "use": {}
+   "use": {
+    "python": {
+     "called_a_tool": [
+      20,
+      19,
+      20
+     ],
+     "right_when_called": [
+      7,
+      6,
+      7
+     ],
+     "tool_calls": [
+      287,
+      283,
+      384
+     ],
+     "tool_errors": [
+      276,
+      264,
+      368
+     ],
+     "repaired_calls": [
+      130,
+      106,
+      147
+     ],
+     "ended_with_a_call_as_text": [
+      1,
+      2,
+      2
+     ]
+    }
+   }
   },
   {
    "package": "jinja2",
@@ -105,11 +187,52 @@
    "tools_picked": 58,
    "tools_accepted": 11,
    "right": {
-    "none": [],
+    "none": [
+     5,
+     5,
+     5
+    ],
     "tools": [],
-    "python": []
+    "python": [
+     4,
+     4,
+     4
+    ]
    },
-   "use": {}
+   "use": {
+    "python": {
+     "called_a_tool": [
+      9,
+      9,
+      9
+     ],
+     "right_when_called": [
+      4,
+      4,
+      4
+     ],
+     "tool_calls": [
+      71,
+      35,
+      67
+     ],
+     "tool_errors": [
+      65,
+      29,
+      61
+     ],
+     "repaired_calls": [
+      2,
+      3,
+      3
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
   },
   {
    "package": "werkzeug",
@@ -172,11 +295,52 @@
    "tools_picked": 60,
    "tools_accepted": 41,
    "right": {
-    "none": [],
+    "none": [
+     15,
+     15,
+     15
+    ],
     "tools": [],
-    "python": []
+    "python": [
+     7,
+     7,
+     6
+    ]
    },
-   "use": {}
+   "use": {
+    "python": {
+     "called_a_tool": [
+      28,
+      28,
+      27
+     ],
+     "right_when_called": [
+      7,
+      7,
+      6
+     ],
+     "tool_calls": [
+      315,
+      386,
+      390
+     ],
+     "tool_errors": [
+      298,
+      370,
+      376
+     ],
+     "repaired_calls": [
+      123,
+      199,
+      147
+     ],
+     "ended_with_a_call_as_text": [
+      3,
+      5,
+      3
+     ]
+    }
+   }
   },
   {
    "package": "rsa",
@@ -185,11 +349,52 @@
    "tools_picked": 24,
    "tools_accepted": 11,
    "right": {
-    "none": [],
+    "none": [
+     2,
+     2,
+     2
+    ],
     "tools": [],
-    "python": []
+    "python": [
+     10,
+     10,
+     10
+    ]
    },
-   "use": {}
+   "use": {
+    "python": {
+     "called_a_tool": [
+      16,
+      16,
+      16
+     ],
+     "right_when_called": [
+      10,
+      10,
+      10
+     ],
+     "tool_calls": [
+      107,
+      108,
+      118
+     ],
+     "tool_errors": [
+      96,
+      96,
+      107
+     ],
+     "repaired_calls": [
+      62,
+      61,
+      59
+     ],
+     "ended_with_a_call_as_text": [
+      1,
+      1,
+      1
+     ]
+    }
+   }
   }
  ],
  "conditions": [
@@ -199,24 +404,24 @@
  "by_answer": [
   {
    "answer": "true or false",
-   "questions": 2,
-   "none": 2,
-   "python": 0
+   "questions": 44,
+   "none": 26,
+   "python": 16
   },
   {
    "answer": "another value",
-   "questions": 25,
-   "none": 2,
-   "python": 8
+   "questions": 76,
+   "none": 6,
+   "python": 28
   }
  ],
  "pairs": [
   {
    "a": "none",
    "b": "python",
-   "only_a": 3,
-   "only_b": 7,
-   "p": 0.34
+   "only_a": 17,
+   "only_b": 29,
+   "p": 0.1
   }
  ]
 }
