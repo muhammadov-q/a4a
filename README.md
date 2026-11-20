@@ -635,7 +635,7 @@ Two variants on fold 1, neither of which helps:
 | Documentation | Python tool | 120 | 65.3 (54%) | 61.7 (51%) | 20 | 14 | 0.39 |
 | Aimed | Python tool | 62 | 32.3 (52%) | 31.7 (51%) | 7 | 5 | 0.77 |
 
-- **On databases it ends above both teachers** (97% against 89% and 93%), and every fold goes up (78% to 98%, 82% to 97%, 88% to 95%).
+- **On databases it reaches the teachers** (97%, 114 of 118, against 89% and 93%; the teachers made one run, so the difference is not tested), and every fold goes up (78% to 98%, 82% to 97%, 88% to 95%).
 - **On libraries there is still no gain, and training makes the loop worse:** the same call three times in a row in 19% of the answers before and 36% after, no answer in 9% before and 30% after, 6.3 calls per answer before and 13.8 after.
 
 **Why the loop grows (Verified on the data):** the training data never shows an answer after a failed call. In the data of each fold, none of the learned answers that follow a tool result (490, 397 and 553) follows an error, because the teachers' passed runs answer right after a call that worked. On a library the student does not know, most of its calls fail (89% of the tool outputs of Qwen3-4B before training, 95% after), so the trained student goes on calling until the step limit. Only 4% to 7% of the library examples show a call right after an error, so recovery is rarely shown either.
