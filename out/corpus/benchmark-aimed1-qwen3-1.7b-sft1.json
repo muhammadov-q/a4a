@@ -3,7 +3,7 @@
  "tag": "aimed1",
  "tasks": "tasks-aimed",
  "strict": false,
- "min_tasks": 8,
+ "min_tasks": 1,
  "repositories": [
   {
    "package": "dateutil",
@@ -21,6 +21,16 @@
     "python": [
      6,
      5,
+     6
+    ],
+    "python-ref": [
+     8,
+     8,
+     8
+    ],
+    "python-search": [
+     5,
+     6,
      6
     ]
    },
@@ -56,8 +66,102 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      14,
+      14,
+      14
+     ],
+     "right_when_called": [
+      8,
+      8,
+      8
+     ],
+     "tool_calls": [
+      256,
+      256,
+      256
+     ],
+     "tool_errors": [
+      248,
+      248,
+      248
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      13,
+      13,
+      13
+     ],
+     "right_when_called": [
+      5,
+      5,
+      6
+     ],
+     "tool_calls": [
+      325,
+      298,
+      247
+     ],
+     "tool_errors": [
+      320,
+      293,
+      240
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
+  },
+  {
+   "package": "mcp",
+   "repo": "https://github.com/modelcontextprotocol/python-sdk",
+   "questions": 4,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": [],
+    "python-ref": [],
+    "python-search": []
+   },
+   "use": {}
+  },
+  {
+   "package": "more_itertools",
+   "repo": "https://github.com/more-itertools/more-itertools",
+   "questions": 5,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": [],
+    "python-ref": [],
+    "python-search": []
+   },
+   "use": {}
   },
   {
    "package": "networkx",
@@ -68,7 +172,24 @@
    "right": {
     "none": [],
     "tools": [],
-    "python": []
+    "python": [],
+    "python-ref": [],
+    "python-search": []
+   },
+   "use": {}
+  },
+  {
+   "package": "jinja2",
+   "repo": "https://github.com/pallets/jinja",
+   "questions": 3,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": [],
+    "python-ref": [],
+    "python-search": []
    },
    "use": {}
   },
@@ -89,6 +210,16 @@
      4,
      4,
      4
+    ],
+    "python-ref": [
+     9,
+     9,
+     9
+    ],
+    "python-search": [
+     8,
+     8,
+     9
     ]
    },
    "use": {
@@ -123,6 +254,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      13,
+      13,
+      13
+     ],
+     "right_when_called": [
+      9,
+      9,
+      9
+     ],
+     "tool_calls": [
+      109,
+      109,
+      111
+     ],
+     "tool_errors": [
+      99,
+      99,
+      101
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      13,
+      13,
+      13
+     ],
+     "right_when_called": [
+      8,
+      8,
+      9
+     ],
+     "tool_calls": [
+      133,
+      133,
+      96
+     ],
+     "tool_errors": [
+      123,
+      123,
+      85
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -135,27 +330,50 @@
    "right": {
     "none": [],
     "tools": [],
-    "python": []
+    "python": [],
+    "python-ref": [],
+    "python-search": []
+   },
+   "use": {}
+  },
+  {
+   "package": "rsa",
+   "repo": "https://github.com/sybrenstuvel/python-rsa",
+   "questions": 3,
+   "tools_picked": null,
+   "tools_accepted": null,
+   "right": {
+    "none": [],
+    "tools": [],
+    "python": [],
+    "python-ref": [],
+    "python-search": []
    },
    "use": {}
   }
  ],
  "conditions": [
   "none",
-  "python"
+  "python",
+  "python-ref",
+  "python-search"
  ],
  "by_answer": [
   {
    "answer": "true or false",
    "questions": 7,
    "none": 4,
-   "python": 2
+   "python": 2,
+   "python-ref": 5,
+   "python-search": 3
   },
   {
    "answer": "another value",
    "questions": 20,
    "none": 6,
-   "python": 8
+   "python": 8,
+   "python-ref": 12,
+   "python-search": 10
   }
  ],
  "pairs": [
@@ -165,6 +383,41 @@
    "only_a": 7,
    "only_b": 7,
    "p": 1.0
+  },
+  {
+   "a": "none",
+   "b": "python-ref",
+   "only_a": 3,
+   "only_b": 10,
+   "p": 0.092
+  },
+  {
+   "a": "none",
+   "b": "python-search",
+   "only_a": 3,
+   "only_b": 6,
+   "p": 0.51
+  },
+  {
+   "a": "python",
+   "b": "python-ref",
+   "only_a": 3,
+   "only_b": 10,
+   "p": 0.092
+  },
+  {
+   "a": "python",
+   "b": "python-search",
+   "only_a": 4,
+   "only_b": 7,
+   "p": 0.55
+  },
+  {
+   "a": "python-ref",
+   "b": "python-search",
+   "only_a": 5,
+   "only_b": 1,
+   "p": 0.22
   }
  ]
 }

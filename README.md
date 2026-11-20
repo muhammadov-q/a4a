@@ -530,6 +530,38 @@ The Python tool runs code but tells the model nothing about the library, and the
 
 How good the search is (`out/corpus/references/<tasks>/search.md`): on the 7 libraries of the benchmark, it finds 55% of the names the verified answers use, for both question sets (135 of 246 and 75 of 137), and every name for 48 of 120 documentation questions and 24 of 62 aimed questions. A name counts as found if an element of that name is found, because the scan cannot tell `G.degree` of a `Graph` from that of a `DiGraph`. It is weakest on networkx (1,217 elements) and dateutil, where a question describes what to do ("on the 2nd and 15th day of each month") without the words of the element's name (`rrule`). A reference is about 2,500 to 3,600 characters. Runs with a reference have their own names (`...-python-ref-repair`, `...-python-search-repair`), which `a4a train-data` does not read.
 
+Results on the 7 libraries (documentation questions / aimed questions, 120 / 62, right answers in %, the mean of 3 runs). The trained students are each scored on the libraries of their test fold only, so every library is a library they never saw in training; the three folds together cover all 7.
+
+| Model | Python tool | + reference (elements used) | + reference (search) |
+| --- | --- | --- | --- |
+| Qwen3-1.7B | 35 / 33 | 32 / 48 | 32 / 33 |
+| Qwen3-1.7B, trained | 41 / 30 | 60 / 59 | 60 / 53 |
+| Qwen3-1.7B, trained + recovery | 43 / 45 | 61 / 54 | 57 / 44 |
+| Qwen3-4B | 54 / 52 | 74 / 82 | 68 / 68 |
+| Qwen3-4B, trained | 51 / 51 | 76 / 81 | 75 / 73 |
+| Qwen3-4B, trained + recovery | 53 / 53 | 80 / 88 | 79 / 78 |
+| Qwen3-8B | 58 / 57 | 74 / 81 | 58 / 71 |
+| Qwen3-32B | 68 / 65 | 89 / 85 | 85 / 78 |
+
+Sign tests on the first run of each of the 182 questions (both sets together; questions only the first condition gets right against those only the second gets right):
+
+| Comparison | Only the first | Only the second | p |
+| --- | --- | --- | --- |
+| Qwen3-4B: Python tool against + search | 22 | 45 | 0.0067 |
+| Qwen3-4B, trained + recovery: Python tool against + search | 11 | 58 | 7.6e-9 |
+| Qwen3-32B: Python tool against + search | 11 | 42 | 2.2e-5 |
+| Qwen3-8B: Python tool against + search | 29 | 35 | 0.53 |
+| Qwen3-1.7B: Python tool against + search | 40 | 34 | 0.56 |
+| + search: Qwen3-1.7B against trained | 12 | 57 | 3.7e-8 |
+| + search: Qwen3-4B against trained + recovery | 9 | 30 | 0.0011 |
+| + search: Qwen3-4B trained + recovery against Qwen3-32B | 14 | 21 | 0.31 |
+
+- **The reference brings what training did not.** Without it, training does not move the students on libraries they never saw (about 50% for the 4B). With the search reference, the trained 4B gets 79% / 78%, and the difference to the 32B with the same reference is not significant.
+- **Training makes the reference usable.** The untrained 1.7B gains nothing significant from either reference (p = 0.6 and 0.56); trained, it goes from 32% to 60% with the search reference. The untrained 4B gains from it too (54% / 52% to 68% / 68%), and training adds about 10 points on top.
+- **The search reference is weaker than the best case**, by up to 16 points, because it finds only about half of the names the answers use. The 8B gains nothing from it on the documentation questions (58% both).
+
+Limits. 7 libraries, 182 questions, one model family. The best-case reference is the text the questions were checked with, so it is an upper bound and not a fair condition. Temperature is 0, so the 3 runs of a model differ only a little.
+
 ## Databases as a source
 
 ```sh

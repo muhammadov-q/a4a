@@ -1,6 +1,7 @@
 {
  "model": "qwen3-32b",
  "tag": "bench2",
+ "tasks": "tasks",
  "strict": false,
  "min_tasks": 8,
  "repositories": [
@@ -25,6 +26,16 @@
      9,
      9,
      9
+    ],
+    "python-ref": [
+     10,
+     10,
+     10
+    ],
+    "python-search": [
+     7,
+     7,
+     8
     ]
    },
    "use": {
@@ -91,6 +102,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      11,
+      11,
+      11
+     ],
+     "right_when_called": [
+      10,
+      10,
+      10
+     ],
+     "tool_calls": [
+      11,
+      11,
+      11
+     ],
+     "tool_errors": [
+      0,
+      0,
+      0
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      11,
+      11,
+      11
+     ],
+     "right_when_called": [
+      7,
+      7,
+      8
+     ],
+     "tool_calls": [
+      13,
+      13,
+      12
+     ],
+     "tool_errors": [
+      4,
+      4,
+      3
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -107,7 +182,9 @@
      12
     ],
     "tools": [],
-    "python": []
+    "python": [],
+    "python-ref": [],
+    "python-search": []
    },
    "use": {}
   },
@@ -132,6 +209,16 @@
      11,
      11,
      11
+    ],
+    "python-ref": [
+     18,
+     18,
+     18
+    ],
+    "python-search": [
+     16,
+     16,
+     16
     ]
    },
    "use": {
@@ -198,6 +285,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      19,
+      19,
+      19
+     ],
+     "right_when_called": [
+      18,
+      18,
+      18
+     ],
+     "tool_calls": [
+      19,
+      19,
+      19
+     ],
+     "tool_errors": [
+      0,
+      0,
+      0
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      19,
+      19,
+      19
+     ],
+     "right_when_called": [
+      16,
+      16,
+      16
+     ],
+     "tool_calls": [
+      19,
+      19,
+      19
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -222,6 +373,16 @@
      16,
      16,
      16
+    ],
+    "python-ref": [
+     15,
+     15,
+     15
+    ],
+    "python-search": [
+     16,
+     15,
+     15
     ]
    },
    "use": {
@@ -288,6 +449,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      20,
+      20,
+      20
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      21,
+      21,
+      21
+     ],
+     "tool_errors": [
+      2,
+      2,
+      2
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      20,
+      20,
+      20
+     ],
+     "right_when_called": [
+      16,
+      15,
+      15
+     ],
+     "tool_calls": [
+      22,
+      22,
+      22
+     ],
+     "tool_errors": [
+      3,
+      3,
+      3
+     ],
+     "repaired_calls": [
+      1,
+      1,
+      1
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -312,6 +537,16 @@
      3,
      3,
      3
+    ],
+    "python-ref": [
+     8,
+     8,
+     8
+    ],
+    "python-search": [
+     9,
+     9,
+     9
     ]
    },
    "use": {
@@ -378,6 +613,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      5,
+      5,
+      5
+     ],
+     "right_when_called": [
+      4,
+      4,
+      4
+     ],
+     "tool_calls": [
+      5,
+      5,
+      5
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      8,
+      8,
+      8
+     ],
+     "right_when_called": [
+      8,
+      8,
+      8
+     ],
+     "tool_calls": [
+      8,
+      8,
+      8
+     ],
+     "tool_errors": [
+      0,
+      0,
+      0
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -399,6 +698,16 @@
      11
     ],
     "python": [
+     15,
+     15,
+     15
+    ],
+    "python-ref": [
+     15,
+     15,
+     15
+    ],
+    "python-search": [
      15,
      15,
      15
@@ -468,6 +777,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      16,
+      16,
+      16
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      16,
+      16,
+      16
+     ],
+     "tool_errors": [
+      0,
+      0,
+      0
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      16,
+      16,
+      16
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      17,
+      17,
+      17
+     ],
+     "tool_errors": [
+      2,
+      2,
+      2
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -492,6 +865,16 @@
      15,
      15,
      15
+    ],
+    "python-ref": [
+     27,
+     26,
+     26
+    ],
+    "python-search": [
+     24,
+     24,
+     24
     ]
    },
    "use": {
@@ -558,6 +941,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      28,
+      28,
+      28
+     ],
+     "right_when_called": [
+      27,
+      26,
+      26
+     ],
+     "tool_calls": [
+      30,
+      30,
+      30
+     ],
+     "tool_errors": [
+      2,
+      3,
+      3
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      28,
+      28,
+      28
+     ],
+     "right_when_called": [
+      24,
+      24,
+      24
+     ],
+     "tool_calls": [
+      33,
+      33,
+      33
+     ],
+     "tool_errors": [
+      6,
+      6,
+      6
+     ],
+     "repaired_calls": [
+      1,
+      1,
+      1
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   },
@@ -582,6 +1029,16 @@
      12,
      12,
      12
+    ],
+    "python-ref": [
+     15,
+     15,
+     15
+    ],
+    "python-search": [
+     15,
+     15,
+     15
     ]
    },
    "use": {
@@ -648,6 +1105,70 @@
       0,
       0
      ]
+    },
+    "python-ref": {
+     "called_a_tool": [
+      17,
+      17,
+      17
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      17,
+      17,
+      17
+     ],
+     "tool_errors": [
+      0,
+      0,
+      0
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
+    },
+    "python-search": {
+     "called_a_tool": [
+      17,
+      17,
+      17
+     ],
+     "right_when_called": [
+      15,
+      15,
+      15
+     ],
+     "tool_calls": [
+      17,
+      17,
+      17
+     ],
+     "tool_errors": [
+      1,
+      1,
+      1
+     ],
+     "repaired_calls": [
+      0,
+      0,
+      0
+     ],
+     "ended_with_a_call_as_text": [
+      0,
+      0,
+      0
+     ]
     }
    }
   }
@@ -655,7 +1176,9 @@
  "conditions": [
   "none",
   "tools",
-  "python"
+  "python",
+  "python-ref",
+  "python-search"
  ],
  "by_answer": [
   {
@@ -663,14 +1186,18 @@
    "questions": 44,
    "none": 33,
    "tools": 29,
-   "python": 26
+   "python": 26,
+   "python-ref": 41,
+   "python-search": 40
   },
   {
    "answer": "another value",
    "questions": 76,
    "none": 37,
    "tools": 35,
-   "python": 55
+   "python": 55,
+   "python-ref": 67,
+   "python-search": 62
   }
  ],
  "pairs": [
@@ -689,11 +1216,60 @@
    "p": 0.14
   },
   {
+   "a": "none",
+   "b": "python-ref",
+   "only_a": 1,
+   "only_b": 39,
+   "p": 7.5e-11
+  },
+  {
+   "a": "none",
+   "b": "python-search",
+   "only_a": 5,
+   "only_b": 37,
+   "p": 4.4e-07
+  },
+  {
    "a": "tools",
    "b": "python",
    "only_a": 19,
    "only_b": 36,
    "p": 0.03
+  },
+  {
+   "a": "tools",
+   "b": "python-ref",
+   "only_a": 2,
+   "only_b": 46,
+   "p": 8.4e-12
+  },
+  {
+   "a": "tools",
+   "b": "python-search",
+   "only_a": 5,
+   "only_b": 43,
+   "p": 1.4e-08
+  },
+  {
+   "a": "python",
+   "b": "python-ref",
+   "only_a": 2,
+   "only_b": 29,
+   "p": 4.6e-07
+  },
+  {
+   "a": "python",
+   "b": "python-search",
+   "only_a": 6,
+   "only_b": 27,
+   "p": 0.00032
+  },
+  {
+   "a": "python-ref",
+   "b": "python-search",
+   "only_a": 11,
+   "only_b": 5,
+   "p": 0.21
   }
  ]
 }
