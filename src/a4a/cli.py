@@ -54,6 +54,7 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
     "Training: a small model on the verified tasks": {
         "train-data": ("a4a.training.data", "training examples from the teachers' passed runs with one tool; test sources held out"),
         "train-compare": ("a4a.training.compare", "the student before and after training, on the questions of the test sources"),
+        "train-recovery": ("a4a.training.recovery", "a teacher goes on from the student's failed call: training examples of recovery"),
     },
     "ToolGym": {
         "toolgym-types": ("a4a.toolgym.type_inference", "ToolGym types for a generated tool set, checked by running the tools"),

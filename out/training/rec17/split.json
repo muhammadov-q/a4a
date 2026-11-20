@@ -1,0 +1,95 @@
+{
+ "name": "rec17",
+ "teachers": [
+  "qwen3-32b",
+  "qwen3-8b"
+ ],
+ "sets": [
+  "bench2",
+  "aimed1",
+  "db1",
+  "bench2rec17",
+  "aimed1rec17",
+  "db1rec17"
+ ],
+ "test_share": 0.3,
+ "seed": 1,
+ "folds": 3,
+ "fold": 1,
+ "keep_failed_calls": false,
+ "train": [
+  "more-itertools__more-itertools",
+  "networkx__networkx",
+  "northwind",
+  "pallets__jinja",
+  "pypa__packaging",
+  "sakila",
+  "sybrenstuvel__python-rsa"
+ ],
+ "test": {
+  "chinook": {
+   "kind": "database",
+   "questions": {
+    "tasks": 40
+   }
+  },
+  "dateutil__dateutil": {
+   "kind": "repository",
+   "questions": {
+    "tasks": 11,
+    "tasks-aimed": 14
+   }
+  },
+  "pallets__werkzeug": {
+   "kind": "repository",
+   "questions": {
+    "tasks": 16,
+    "tasks-aimed": 13
+   }
+  }
+ },
+ "examples": 1067,
+ "dropped": {
+  "steps with a failed call": 101,
+  "runs with a wrong answer": 339,
+  "runs that needed the reminder": 19
+ },
+ "per_source": {
+  "more-itertools__more-itertools": {
+   "runs": 10,
+   "questions": 19,
+   "examples": 164
+  },
+  "networkx__networkx": {
+   "runs": 10,
+   "questions": 29,
+   "examples": 236
+  },
+  "pallets__jinja": {
+   "runs": 10,
+   "questions": 6,
+   "examples": 47
+  },
+  "pypa__packaging": {
+   "runs": 10,
+   "questions": 25,
+   "examples": 159
+  },
+  "sybrenstuvel__python-rsa": {
+   "runs": 10,
+   "questions": 18,
+   "examples": 151
+  },
+  "northwind": {
+   "runs": 3,
+   "questions": 39,
+   "examples": 166
+  },
+  "sakila": {
+   "runs": 3,
+   "questions": 38,
+   "examples": 144
+  }
+ },
+ "sha256": "f4072628eee22c8e59de815540799f75b808b3e3aef6699f9f4f5a104e7435dc"
+}

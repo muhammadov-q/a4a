@@ -72,7 +72,7 @@ def test_the_comparison_adds_up_the_test_sources_each_with_its_own_trained_model
              ("trained", "python", "bench2", "b"): [answers([False]), answers([False])]}  # source b is in another fold: its own model is scored
     monkeypatch.setattr(compare_module, "saved_runs", lambda model, condition, tag, stem, no_repeat=False: saved.get((model, condition, tag, stem), []))
     test = {"a": {"kind": "repository", "questions": {"tasks": 3, "tasks-aimed": 2}}, "b": {"kind": "repository", "questions": {"tasks": 1}}}
-    [row] = compare(test, "base", {"a": "trained", "b": "fold2"})  # the aimed questions and the runs without a tool have no runs, so no row
+    [row] = compare(test, {"a": "base", "b": "base"}, {"a": "trained", "b": "fold2"})  # the aimed questions and the runs without a tool have no runs, so no row
     assert (row["questions_set"], row["condition"], row["questions"], row["sources"]) == ("Documentation questions", "python", 4, ["a", "b"])
     assert row["right"] == {"base": [1], "trained": [4]}  # one run: source b has only one run of the base model
     assert (row["only_base"], row["only_trained"]) == (0, 3) and row["habits"]["trained"]["called_the_tool"] == 1.0
@@ -81,3 +81,17 @@ def test_the_comparison_adds_up_the_test_sources_each_with_its_own_trained_model
 def test_a_model_is_stuck_when_it_sends_the_same_call_three_times_in_a_row():
     same, other = {"tool": "run_python", "arguments": "{\"code\": \"1/0\"}"}, {"tool": "run_python", "arguments": "{\"code\": \"1\"}"}
     assert stuck({"trace": [other, same, same, same]}) and not stuck({"trace": [same, same, other, same]}) and not stuck({})
+
+
+def test_a_failed_state_is_the_conversation_right_after_the_first_failed_call_and_never_after_the_reminder():
+    from a4a.training.recovery import failed_state
+
+    run = trace()
+    assert failed_state(run) == run["requests"][1]["messages"] and failed_state(run)[-1]["content"].startswith("Error")
+    reminded = trace(reminded=True)
+    reminded["requests"][1]["messages"] = [*reminded["requests"][1]["messages"][:2], {"role": "user", "content": REMINDER}, *reminded["requests"][1]["messages"][2:]]
+    assert failed_state(reminded) is None
+    clean = trace()
+    clean["requests"][1]["messages"][-1] = {"role": "tool", "tool_call_id": "c0", "content": "2"}
+    clean["requests"][2]["messages"][3] = clean["requests"][1]["messages"][-1]
+    assert failed_state(clean) is None

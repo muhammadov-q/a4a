@@ -1,0 +1,160 @@
+{
+ "student": "qwen3-4b",
+ "teacher": "qwen3-32b",
+ "tag": "rec4",
+ "sources": [
+  {
+   "set": "bench2",
+   "stem": "dateutil__dateutil",
+   "runs": 11,
+   "failed": 7,
+   "student_right": 2,
+   "continued": 7,
+   "teacher_right": 1
+  },
+  {
+   "set": "bench2",
+   "stem": "more-itertools__more-itertools",
+   "runs": 19,
+   "failed": 6,
+   "student_right": 2,
+   "continued": 6,
+   "teacher_right": 1
+  },
+  {
+   "set": "bench2",
+   "stem": "networkx__networkx",
+   "runs": 20,
+   "failed": 10,
+   "student_right": 6,
+   "continued": 10,
+   "teacher_right": 5
+  },
+  {
+   "set": "bench2",
+   "stem": "pallets__jinja",
+   "runs": 9,
+   "failed": 6,
+   "student_right": 1,
+   "continued": 6,
+   "teacher_right": 2
+  },
+  {
+   "set": "bench2",
+   "stem": "pallets__werkzeug",
+   "runs": 16,
+   "failed": 2,
+   "student_right": 2,
+   "continued": 2,
+   "teacher_right": 1
+  },
+  {
+   "set": "bench2",
+   "stem": "pypa__packaging",
+   "runs": 28,
+   "failed": 27,
+   "student_right": 11,
+   "continued": 27,
+   "teacher_right": 5
+  },
+  {
+   "set": "bench2",
+   "stem": "sybrenstuvel__python-rsa",
+   "runs": 17,
+   "failed": 8,
+   "student_right": 4,
+   "continued": 8,
+   "teacher_right": 1
+  },
+  {
+   "set": "aimed1",
+   "stem": "dateutil__dateutil",
+   "runs": 14,
+   "failed": 9,
+   "student_right": 3,
+   "continued": 9,
+   "teacher_right": 1
+  },
+  {
+   "set": "aimed1",
+   "stem": "more-itertools__more-itertools",
+   "runs": 5,
+   "failed": 4,
+   "student_right": 2,
+   "continued": 4,
+   "teacher_right": 1
+  },
+  {
+   "set": "aimed1",
+   "stem": "networkx__networkx",
+   "runs": 14,
+   "failed": 10,
+   "student_right": 6,
+   "continued": 10,
+   "teacher_right": 3
+  },
+  {
+   "set": "aimed1",
+   "stem": "pallets__jinja",
+   "runs": 3,
+   "failed": 2,
+   "student_right": 0,
+   "continued": 2,
+   "teacher_right": 0
+  },
+  {
+   "set": "aimed1",
+   "stem": "pallets__werkzeug",
+   "runs": 13,
+   "failed": 7,
+   "student_right": 2,
+   "continued": 7,
+   "teacher_right": 2
+  },
+  {
+   "set": "aimed1",
+   "stem": "pypa__packaging",
+   "runs": 10,
+   "failed": 4,
+   "student_right": 2,
+   "continued": 4,
+   "teacher_right": 0
+  },
+  {
+   "set": "aimed1",
+   "stem": "sybrenstuvel__python-rsa",
+   "runs": 3,
+   "failed": 3,
+   "student_right": 2,
+   "continued": 3,
+   "teacher_right": 2
+  },
+  {
+   "set": "db1",
+   "stem": "chinook",
+   "runs": 40,
+   "failed": 6,
+   "student_right": 1,
+   "continued": 6,
+   "teacher_right": 0
+  },
+  {
+   "set": "db1",
+   "stem": "northwind",
+   "runs": 39,
+   "failed": 1,
+   "student_right": 0,
+   "continued": 1,
+   "teacher_right": 1
+  },
+  {
+   "set": "db1",
+   "stem": "sakila",
+   "runs": 39,
+   "failed": 0,
+   "student_right": 0,
+   "continued": 0,
+   "teacher_right": 0
+  }
+ ]
+}

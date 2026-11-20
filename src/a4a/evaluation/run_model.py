@@ -32,6 +32,11 @@ Two options keep the harness from deciding a result:
 --no-repeat stops a loop: a call with the same tool and arguments as an earlier call of the run is not run again
 (the tools here keep no state, so it would give the same result). The model is told so, and the call counts as a
 tool error. Small models at temperature 0 otherwise send one failing call until the step limit.
+
+--start FILE begins runs in the middle: each line is {"id": <exercise id>, "messages": [...]}, the conversation so
+far (for example another model's run up to a failed call). Only these exercises are run, and the model goes on
+from the last message. The first message must be the instruction this run would give, so that a continuation
+is made under the same instruction as a fresh run. `a4a train-recovery` uses it.
 """
 
 import argparse
@@ -171,10 +176,16 @@ async def solve(ex: dict, args, client: AsyncOpenAI, session: ClientSession | No
         system = system.replace(TOPIC, args.topic)
     system += SUBMIT_HINT if always else ""  # `a4a usability` brings its own
     messages = [{"role": "system", "content": system}, *getattr(args, "example_messages", []), {"role": "user", "content": ex["task"]}]
+    start = getattr(args, "start_messages", {}).get(ex["id"])
+    if start:
+        if start[0] != messages[0]:
+            raise ValueError("the start messages begin with another instruction than this run would give")
+        messages = json.loads(json.dumps(start))
     full_trace = new_trace("model", ex["id"], ex["task"], offered, kind=ex["kind"], horizon=ex["horizon"], model=args.model,
                            tool_set=args.tag or ("none" if args.mode == "none" else "function"),
                            meta={"thinking": args.thinking, "tool_choice": args.tool_choice,
-                                 "example_messages": len(getattr(args, "example_messages", [])), "no_repeat": getattr(args, "no_repeat", False)})
+                                 "example_messages": len(getattr(args, "example_messages", [])), "no_repeat": getattr(args, "no_repeat", False),
+                                 **({"start_messages": len(start)} if start else {})})
     used, calls, errors, tokens, finish, raw, trace, answer = [], 0, 0, 0, "max_steps", None, [], None
     reminded, repaired, limit = False, 0, getattr(args, "max_output", None) or MAX_OUTPUT
     plain_text, no_repeat, sent, repeated = getattr(args, "plain_text", False), getattr(args, "no_repeat", False), set(), 0
@@ -297,6 +308,7 @@ def main() -> None:
     parser.add_argument("--tag", help="label for the output file name, e.g. the tool set's granularity")
     parser.add_argument("--tool-choice", choices=("auto", "first", "always"), default="auto",
                         help="force tool use: see the top of this file")
+    parser.add_argument("--start", type=Path, help="JSONL of {id, messages}: run only these exercises, each from its messages on (see the top of this file)")
     parser.add_argument("--examples", type=Path, help="trace file with worked examples to put before the task (see load_examples)")
     parser.add_argument("--n-examples", type=int, default=3)
     parser.add_argument("--examples-min-calls", type=int, default=0, help="only use example runs with at least this many tool calls")
@@ -306,9 +318,13 @@ def main() -> None:
         parser.error("--examples needs --mode tools: the examples call tools")
     if args.mode == "tools" and not args.command:
         parser.error("--mode tools needs the MCP server command after --")
+    if args.start and args.examples:
+        parser.error("--start and --examples do not go together: the start messages hold the whole conversation")
+    args.start_messages = {row["id"]: row["messages"] for row in map(json.loads, args.start.read_text().splitlines())} if args.start else {}
 
     shown_tasks = set(getattr(load_examples, "task_ids", [])) if args.examples else set()  # never test a task that is shown as an example
-    exercises = [ex for ex in map(json.loads, open(args.exercises)) if args.horizon in (None, ex["horizon"]) and ex["id"] not in shown_tasks][: args.limit]
+    exercises = [ex for ex in map(json.loads, open(args.exercises)) if args.horizon in (None, ex["horizon"]) and ex["id"] not in shown_tasks
+                 and (not args.start or ex["id"] in args.start_messages)][: args.limit]
     results = asyncio.run(run(exercises, args))
     forced = f"force-{args.tool_choice}" if args.tool_choice != "auto" else None
     shown = f"examples{args.n_examples}" if args.examples else None
