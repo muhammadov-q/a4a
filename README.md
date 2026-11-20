@@ -638,9 +638,34 @@ Two variants on fold 1, neither of which helps:
 - **On databases it reaches the teachers** (97%, 114 of 118, against 89% and 93%; the teachers made one run, so the difference is not tested), and every fold goes up (78% to 98%, 82% to 97%, 88% to 95%).
 - **On libraries there is still no gain, and training makes the loop worse:** the same call three times in a row in 19% of the answers before and 36% after, no answer in 9% before and 30% after, 6.3 calls per answer before and 13.8 after.
 
-**Why the loop grows (Verified on the data):** the training data never shows an answer after a failed call. In the data of each fold, none of the learned answers that follow a tool result (490, 397 and 553) follows an error, because the teachers' passed runs answer right after a call that worked. On a library the student does not know, most of its calls fail (89% of the tool outputs of Qwen3-4B before training, 95% after), so the trained student goes on calling until the step limit. Only 4% to 7% of the library examples show a call right after an error, so recovery is rarely shown either.
+**Why the loop grows (Verified on the data):** the training data never shows an answer after a failed call. In the data of each fold, none of the learned answers that follow a tool result (490, 397 and 553) follows an error, because the teachers' passed runs answer right after a call that worked. Only 4% to 7% of the library examples show a call right after an error, so recovery is rarely shown either. The trained Qwen3-4B learned this: on the library questions, after its first failed call it answers right after an error in 12% of the runs (43% before training), and 50 of 182 runs end at the step limit (12 before). The trained Qwen3-1.7B did not: it answers right after an error as often as before (64% and 60%); it fails because it sends the same call again (the next call differs in 26% of the runs, 34% before).
 
-Reports: `out/training/sft1/compare-qwen3-1.7b-sft1-folds.md` (the first table), one per fold in `out/training/<name>/`, `out/training/sft2/compare-qwen3-1.7b-sft2.md`, `out/training/sft1/compare-qwen3-1.7b-sft1-norepeat.md` and `out/training/sft1/compare-qwen3-4b-sft1-folds.md`; the data, the splits and the training logs are in `out/training/`. Limits: one training run per fold and model; the teachers' columns come from their benchmark runs on the same questions. A SQL question needs one short query in a language the model knows; a library question needs the right part of an API the model does not know.
+**Recovery examples** (`a4a train-recovery`): the untrained student's own run is cut right after its first failed call, and Qwen3-32B goes on from there with the same harness (`run-model --start`). A continuation with the right answer shows a way out of the student's own mistake; the student's call stays in the history and is never learned.
+
+```sh
+uv run a4a train-recovery --student qwen3-1.7b --teacher qwen3-32b --base-url <url> --tag rec17
+uv run a4a train-data --name rec17 --folds 3 --fold 1 --sets bench2 aimed1 db1 bench2rec17 aimed1rec17 db1rec17   # and folds 2, 3
+uv run a4a train-compare --name rec17 rec17-f2 rec17-f3 --base qwen3-1.7b-sft1 qwen3-1.7b-sft1-f2 qwen3-1.7b-sft1-f3 \
+    --trained qwen3-1.7b-rec17 qwen3-1.7b-rec17-f2 qwen3-1.7b-rec17-f3
+```
+
+From 147 failed runs of Qwen3-1.7B the teacher gets 52 right (35%), from 112 of Qwen3-4B 26 (23%): a small model's wrong first step is hard to recover from, even for the 32B model. In 48 of the 52 the teacher reads the error and changes the call (for example `ParserInfo` to `parserinfo` after "Did you mean"); it never looks the API up with `dir` or `help`. Only continuations on the training sources of a fold are used, so a fold gains 22 to 74 examples (3% to 7% of its data). Same three folds, same settings, scored as before:
+
+| Student | Questions | Untrained | Trained (`sft1`) | With recovery | Recovery against `sft1`: only before, only after, p |
+| --- | --- | --- | --- | --- | --- |
+| Qwen3-1.7B | Database (118) | 44% | 90% | 89% | 3, 2, 1 |
+| Qwen3-1.7B | Documentation (120) | 35% | 41% | 43% | 10, 10, 1 |
+| Qwen3-1.7B | Aimed (62) | 33% | 30% | 45% | 4, 13, 0.049 |
+| Qwen3-4B | Database (118) | 82% | 97% | 98% | 1, 2, 1 |
+| Qwen3-4B | Documentation (120) | 54% | 51% | 53% | 6, 9, 0.61 |
+| Qwen3-4B | Aimed (62) | 52% | 51% | 53% | 3, 5, 0.73 |
+
+- **Recovery examples undo the loop of the 4B:** after a failed call it answers right after an error in 39% of the runs again (12% without them, 43% untrained), it changes the call in 65% (50%, 63%), and 24 runs end at the step limit (50, 12). No answer: 16% on documentation questions (30%).
+- **They keep the database gain** (98% and 89%) **but do not teach a new library:** the library rows end where the untrained model was, except the 1.7B's aimed questions (45% against 30%, p = 0.049; one of six rows, so weak on its own).
+- So the questions teach how to work with a tool, and with recovery examples training does no harm on libraries; knowing a library the student has not seen does not come from 5 other libraries.
+
+
+Reports: `out/training/sft1/compare-qwen3-1.7b-sft1-folds.md` (the first table), one per fold in `out/training/<name>/`, `out/training/sft2/compare-qwen3-1.7b-sft2.md`, `out/training/sft1/compare-qwen3-1.7b-sft1-norepeat.md`, `out/training/sft1/compare-qwen3-4b-sft1-folds.md`, `out/training/recovery-<tag>.md` and `out/training/rec17/` and `out/training/rec4/` (against the untrained model and against `sft1`); the data, the splits and the training logs are in `out/training/`. Limits: one training run per fold and model; the teachers' columns come from their benchmark runs on the same questions. A SQL question needs one short query in a language the model knows; a library question needs the right part of an API the model does not know.
 
 ## Usability: can a small model call the tools
 
