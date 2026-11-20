@@ -70,7 +70,7 @@ def test_the_comparison_adds_up_the_test_sources_each_with_its_own_trained_model
              ("trained", "python", "bench2", "a"): [answers([True, True, True]), answers([True, True, True])],
              ("base", "python", "bench2", "b"): [answers([False])], ("fold2", "python", "bench2", "b"): [answers([True]), answers([True])],
              ("trained", "python", "bench2", "b"): [answers([False]), answers([False])]}  # source b is in another fold: its own model is scored
-    monkeypatch.setattr(compare_module, "saved_runs", lambda model, condition, tag, stem: saved.get((model, condition, tag, stem), []))
+    monkeypatch.setattr(compare_module, "saved_runs", lambda model, condition, tag, stem, no_repeat=False: saved.get((model, condition, tag, stem), []))
     test = {"a": {"kind": "repository", "questions": {"tasks": 3, "tasks-aimed": 2}}, "b": {"kind": "repository", "questions": {"tasks": 1}}}
     [row] = compare(test, "base", {"a": "trained", "b": "fold2"})  # the aimed questions and the runs without a tool have no runs, so no row
     assert (row["questions_set"], row["condition"], row["questions"], row["sources"]) == ("Documentation questions", "python", 4, ["a", "b"])

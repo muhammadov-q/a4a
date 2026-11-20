@@ -365,3 +365,23 @@ def test_a_tool_call_written_as_text_is_run_when_asked_and_text_results_can_be_s
         endpoint = Endpoint([completion(calls=[("add", {"x": 41})]), completion(content="42")])
         asyncio.run(run_model.solve(EXERCISE, args, endpoint, Terminal(), TOOL_LIST))
         assert endpoint.requests[1]["messages"][-1]["content"] == shown
+
+
+def test_with_no_repeat_a_call_the_same_as_an_earlier_one_is_not_run_again_and_the_model_is_told():
+    class Counting(Session):
+        runs = 0
+
+        async def call_tool(self, name, arguments):
+            Counting.runs += 1
+            return await super().call_tool(name, arguments)
+
+    assert run_model.same_call("add", '{"x": 41, "y": 1}') == run_model.same_call("add", '{"y":1,"x":41}') != run_model.same_call("add", '{"x": 40}')
+    replies = [completion(calls=[("add", {"x": 41})]), completion(calls=[("add", {"x": 41})]), completion(calls=[("add", {"x": 40})]), completion(content="42")]
+    for no_repeat, runs in ((True, 2), (False, 3)):
+        Counting.runs = 0
+        args = Namespace(mode="tools", model="m", thinking=False, tag=None, tool_choice="auto", max_steps=5, no_repeat=no_repeat)
+        endpoint = Endpoint(list(replies))
+        result = asyncio.run(run_model.solve(EXERCISE, args, endpoint, Counting(), TOOL_LIST))
+        assert result["passed"] and result["tool_calls"] == 3 and Counting.runs == runs
+        assert (endpoint.requests[2]["messages"][-1]["content"] == run_model.REPEATED) == no_repeat
+        assert result.get("repeated_calls") == (1 if no_repeat else None) and result["tool_errors"] == (1 if no_repeat else 0)

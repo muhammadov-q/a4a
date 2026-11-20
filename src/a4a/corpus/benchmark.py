@@ -18,12 +18,13 @@ All conditions use the same instruction, one reminder if the reply is not a bare
 tool output. In the two conditions with tools, a tool call that the model wrote as text is run as a call, and the
 Python tool's output is shown as text (`run-model --repair-calls`, `--plain-text`). `--strict` leaves both out:
 that is how the first runs were made, and they showed that the harness, not the tools, then decides a quarter of
-the answers of a small model. Strict runs and reports have their own names.
+the answers of a small model. Strict runs and reports have their own names. `--no-repeat` does not run a call that
+is the same as an earlier one of the run (`run-model --no-repeat`); its runs and reports end in `-norepeat`.
 
 A run that is already saved in out/runs/ is not repeated, so the command can be stopped and started again, and
 `--report-only` builds the report from the saved runs at any time.
 
-Writes out/corpus/benchmark-<tag>-<model>.json and .md (with --strict: ...-strict.json and .md).
+Writes out/corpus/benchmark-<tag>-<model>.json and .md (with --strict: ...-strict.json and .md; with --no-repeat: ...-norepeat).
 """
 
 import argparse
@@ -64,15 +65,18 @@ def run_tag(tag: str, stem: str, condition: str, run: int = 1, strict: bool = Fa
     return f"{tag}-{stem}" + (f"-{condition}" if condition in ("python", "sql") else "") + repair + ("" if run == 1 else f"-r{run}")
 
 
-def run_file(model: str, condition: str, tag: str, stem: str, run: int = 1, strict: bool = False) -> Path:
-    """Where `a4a run-model` saves this run. The Python tool is a tool set too, so its mode is `tools`."""
-    return REPO_ROOT / "out" / "runs" / f"{model}-{'none' if condition == 'none' else 'tools'}-{run_tag(tag, stem, condition, run, strict)}.jsonl"
+def run_file(model: str, condition: str, tag: str, stem: str, run: int = 1, strict: bool = False, no_repeat: bool = False) -> Path:
+    """Where `a4a run-model` saves this run. The Python tool is a tool set too, so its mode is `tools`.
+
+    `run-model --no-repeat` adds `-norepeat`; without tools it is not given, so those runs are shared."""
+    guard = "-norepeat" if no_repeat and condition != "none" else ""
+    return REPO_ROOT / "out" / "runs" / f"{model}-{'none' if condition == 'none' else 'tools'}-{run_tag(tag, stem, condition, run, strict)}{guard}.jsonl"
 
 
-def saved_runs(model: str, condition: str, tag: str, stem: str, strict: bool = False) -> list[list[dict]]:
+def saved_runs(model: str, condition: str, tag: str, stem: str, strict: bool = False, no_repeat: bool = False) -> list[list[dict]]:
     """The saved runs of one condition, in order: run 1, run 2, ... up to the first that is missing."""
     runs = []
-    while (path := run_file(model, condition, tag, stem, len(runs) + 1, strict)).is_file():
+    while (path := run_file(model, condition, tag, stem, len(runs) + 1, strict, no_repeat)).is_file():
         runs.append([json.loads(line) for line in path.read_text().splitlines()])
     return runs
 
@@ -83,7 +87,7 @@ def call_as_text(record: dict) -> bool:
     return raw.startswith('{"name"') and '"arguments"' in raw
 
 
-def summarize(repos: list[dict], model: str, tag: str, strict: bool = False, conditions: dict = CONDITIONS) -> list[dict]:
+def summarize(repos: list[dict], model: str, tag: str, strict: bool = False, conditions: dict = CONDITIONS, no_repeat: bool = False) -> list[dict]:
     """One row per repository from the saved runs: questions, tools, and per condition the right answers of each run."""
     rows = []
     for repo in repos:
@@ -93,7 +97,7 @@ def summarize(repos: list[dict], model: str, tag: str, strict: bool = False, con
             generated = json.loads(report.read_text())
             row |= {"tools_picked": len(generated["tools"]), "tools_accepted": generated["accepted"]}
         for condition in conditions:
-            runs = saved_runs(model, condition, tag, repo["stem"], strict)
+            runs = saved_runs(model, condition, tag, repo["stem"], strict, no_repeat)
             row["right"][condition] = [sum(r["passed"] for r in run) for run in runs]
             if condition != "none" and runs:
                 called = [[r for r in run if r.get("tool_calls")] for run in runs]
@@ -112,13 +116,13 @@ def sign_test(only_a: int, only_b: int) -> float:
     return 1.0 if n == 0 else min(1.0, 2 * sum(math.comb(n, i) for i in range(k + 1)) / 2**n)
 
 
-def breakdown(repos: list[dict], model: str, tag: str, strict: bool = False, conditions: dict = CONDITIONS) -> dict:
+def breakdown(repos: list[dict], model: str, tag: str, strict: bool = False, conditions: dict = CONDITIONS, no_repeat: bool = False) -> dict:
     """Question by question, from the first run of the repositories that have every condition.
 
     by_answer: right answers for questions whose answer is true or false (half of them can be guessed) and for the rest.
     pairs: for two conditions, the questions only one of them got right, and the sign test on that split.
     """
-    runs = {repo["stem"]: {c: saved_runs(model, c, tag, repo["stem"], strict) for c in conditions} for repo in repos}
+    runs = {repo["stem"]: {c: saved_runs(model, c, tag, repo["stem"], strict, no_repeat) for c in conditions} for repo in repos}
     shown = [c for c in conditions if any(by_condition[c] for by_condition in runs.values())]
     passed, kinds = {c: {} for c in shown}, {}
     for repo in repos:
@@ -145,7 +149,8 @@ def cell(values: list, of: int | None = None) -> str:
     return f"{mean(values):.1f}{share} ({', '.join(map(str, values))})"
 
 
-def report(rows: list[dict], model: str, tag: str, strict: bool = False, details: dict | None = None, tasks: str = "tasks", where: str | None = None, conditions: dict = CONDITIONS) -> str:
+def report(rows: list[dict], model: str, tag: str, strict: bool = False, details: dict | None = None, tasks: str = "tasks", where: str | None = None,
+           conditions: dict = CONDITIONS, no_repeat: bool = False) -> str:
     where = where or ("each library's own documentation questions" if tasks == "tasks" else f"the questions of out/corpus/{tasks}/")
     shown = [c for c in conditions if any(r["right"][c] for r in rows)]
     complete = [r for r in rows if shown and all(r["right"][c] for c in shown)]
@@ -154,7 +159,8 @@ def report(rows: list[dict], model: str, tag: str, strict: bool = False, details
     totals = {c: [sum(r["right"][c][k] for r in complete) for k in range(runs)] for c in shown}
     harness = ("Strict harness: a tool call that the model wrote as text was taken as its answer, and the Python tool's output was shown as a JSON string." if strict else
                "A tool call that the model wrote as text is run as a call, and the Python tool's output is shown as text.")
-    lines = [f"# Tools against no tools, on {where} ({tag}{', strict harness' if strict else ''})", "", harness, "",
+    harness += " A call that is the same as an earlier call of the run is not run again; the model is told so." if no_repeat else ""
+    lines = [f"# Tools against no tools, on {where} ({tag}{', strict harness' if strict else ''}{', no repeated calls' if no_repeat else ''})", "", harness, "",
              f"Model `{model}`. {len(complete)} repositories with every condition, {questions} questions, {runs} run{'s' if runs != 1 else ''} each. Right answers: "
              + "; ".join(f"{conditions[c].lower()} {cell(totals[c], questions)}" for c in shown) + ".", "",
              "A cell is the number of right answers: the mean of the runs, then each run in brackets.", "",
@@ -203,7 +209,7 @@ def python_server(candidate: dict, set_name: str) -> list[str]:
 
 def run_repository(repo: dict, candidate: dict, args, env: dict) -> None:
     """Every run of this repository that is not saved yet."""
-    wanted = [(c, k) for c in args.conditions for k in range(1, args.runs + 1) if not run_file(args.model, c, args.tag, repo["stem"], k, args.strict).is_file()]
+    wanted = [(c, k) for c in args.conditions for k in range(1, args.runs + 1) if not run_file(args.model, c, args.tag, repo["stem"], k, args.strict, args.no_repeat).is_file()]
     if not wanted:
         return
     started = time.monotonic()
@@ -224,6 +230,8 @@ def run_repository(repo: dict, candidate: dict, args, env: dict) -> None:
                        "--tag", run_tag(args.tag, repo["stem"], condition, run, args.strict)]
             if not args.strict and condition != "none":
                 command += ["--repair-calls"] + (["--plain-text"] if condition == "python" else [])
+            if args.no_repeat and condition != "none":
+                command += ["--no-repeat"]
             done = subprocess.run(command + (["--", *servers[condition]] if servers[condition] else []), env=env, cwd=REPO_ROOT, capture_output=True, text=True)
             if done.returncode != 0:
                 print(f"{repo['package']}: {condition} run {run} failed: {done.stderr.strip()[-300:]}", flush=True)
@@ -251,6 +259,7 @@ def main() -> None:
     parser.add_argument("--tasks", default="tasks", help="the question set to score: a folder under out/corpus/ written by `a4a corpus-tasks --name`")
     parser.add_argument("--max-tools", type=int, default=60)
     parser.add_argument("--strict", action="store_true", help="without --repair-calls and --plain-text, as in the first runs")
+    parser.add_argument("--no-repeat", action="store_true", help="do not run a call that is the same as an earlier one of the run (run-model --no-repeat)")
     parser.add_argument("--report-only", action="store_true", help="only build the report from the saved runs")
     args = parser.parse_args()
     repos = repositories(args.min_tasks, args.tasks)
@@ -262,10 +271,12 @@ def main() -> None:
         for repo in repos:
             if not args.only or repo["package"] in args.only:
                 run_repository(repo, scanned[repo["stem"]], args, env)
-    rows, details = summarize(repos, args.model, args.tag, args.strict), breakdown(repos, args.model, args.tag, args.strict)
-    name = re.sub(r"[^A-Za-z0-9._-]+", "-", f"benchmark-{args.tag}-{args.model}{'-strict' if args.strict else ''}")
-    (OUT / f"{name}.json").write_text(json.dumps({"model": args.model, "tag": args.tag, "tasks": args.tasks, "strict": args.strict, "min_tasks": args.min_tasks, "repositories": rows, **details}, indent=1) + "\n", encoding="utf-8")
-    (OUT / f"{name}.md").write_text(report(rows, args.model, args.tag, args.strict, details, args.tasks), encoding="utf-8")
+    rows = summarize(repos, args.model, args.tag, args.strict, no_repeat=args.no_repeat)
+    details = breakdown(repos, args.model, args.tag, args.strict, no_repeat=args.no_repeat)
+    name = re.sub(r"[^A-Za-z0-9._-]+", "-", f"benchmark-{args.tag}-{args.model}{'-strict' if args.strict else ''}{'-norepeat' if args.no_repeat else ''}")
+    record = {"model": args.model, "tag": args.tag, "tasks": args.tasks, "strict": args.strict, **({"no_repeat": True} if args.no_repeat else {}), "min_tasks": args.min_tasks}
+    (OUT / f"{name}.json").write_text(json.dumps({**record, "repositories": rows, **details}, indent=1) + "\n", encoding="utf-8")
+    (OUT / f"{name}.md").write_text(report(rows, args.model, args.tag, args.strict, details, args.tasks, no_repeat=args.no_repeat), encoding="utf-8")
     print(f"-> out/corpus/{name}.md")
 
 
