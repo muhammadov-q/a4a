@@ -17,6 +17,7 @@ from statistics import mean
 
 from a4a.corpus.benchmark import sign_test
 from a4a.downstream.humaneval import OUT as HUMANEVAL
+from a4a.downstream.spider import KINDS
 from a4a.downstream.spider_tasks import OUT as SPIDER
 from a4a.paths import REPO_ROOT
 
@@ -24,12 +25,16 @@ OUT = REPO_ROOT / "out" / "downstream"
 TRAINED = re.compile(r"^(?P<base>.+?)-(?P<recipe>sft\d+|rec\d+)(?:-(?P<fold>f\d+))?$")
 
 
+def spider_records() -> dict[str, dict]:
+    """model -> the record of `a4a spider-benchmark`."""
+    return {r["model"]: r for r in (json.loads(p.read_text(encoding="utf-8")) for p in sorted(SPIDER.glob("benchmark-*.json")))}
+
+
 def scores() -> dict[str, dict[str, dict[str, bool]]]:
     """benchmark -> model -> question id -> right."""
     found = {"spider": {}, "humaneval": {}}
-    for path in sorted(SPIDER.glob("benchmark-*.json")):
-        record = json.loads(path.read_text(encoding="utf-8"))
-        found["spider"][record["model"]] = record["passed"]
+    for model, record in spider_records().items():
+        found["spider"][model] = record["passed"]
     for path in sorted(p for p in HUMANEVAL.glob("*.jsonl") if not re.search(r"-first\d+$", p.stem)):  # smoke tests are left out
         found["humaneval"][path.stem] = {r["task_id"]: bool(r["passed"]) for r in map(json.loads, path.read_text(encoding="utf-8").splitlines())}
     return found
@@ -77,7 +82,16 @@ def share(members: list[dict], benchmark: str) -> str:
     return f"{mean(values):.0%} ({min(values):.0%} to {max(values):.0%})" if values else "not run"
 
 
-def report(table: list[dict]) -> str:
+def spider_kinds(records: dict[str, dict]) -> list[str]:
+    """What became of the Spider questions, per model."""
+    lines = ["What became of the Spider questions:", "", "| Model | " + " | ".join(KINDS.values()) + " | Tool calls per question |", "|" + " --- |" * (len(KINDS) + 2)]
+    for model, record in records.items():
+        if "kinds" in record:
+            lines.append(f"| `{model}` | " + " | ".join(str(record["kinds"][k]) for k in KINDS) + f" | {record['calls_per_question']} |")
+    return lines + [""]
+
+
+def report(table: list[dict], records: dict[str, dict] | None = None) -> str:
     lines = ["# Public benchmarks: does training on the verified tasks help or hurt elsewhere?", "",
              "Spider dev (questions on SQLite databases, with the SQL tool; `out/downstream/spider/tasks.md`) and HumanEval (plain Python, no tools, pass@1). "
              "One run each, temperature 0, thinking off. A trained student is compared with its untrained base on the same questions: "
@@ -94,6 +108,8 @@ def report(table: list[dict]) -> str:
         for (base, recipe), members in groups.items():
             lines.append(f"| `{base}` | {recipe} | {len(members)} | {share(members, 'spider')} | {share(members, 'humaneval')} |")
         lines.append("")
+    if records:
+        lines += spider_kinds(records)
     return "\n".join(lines)
 
 
@@ -101,7 +117,7 @@ def main() -> None:
     argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter).parse_args()
     table = rows(scores())
     (OUT / "report.json").write_text(json.dumps(table, indent=1) + "\n", encoding="utf-8")
-    (OUT / "report.md").write_text(report(table), encoding="utf-8")
+    (OUT / "report.md").write_text(report(table, spider_records()), encoding="utf-8")
     print(f"{len(table)} models -> out/downstream/report.md")
 
 

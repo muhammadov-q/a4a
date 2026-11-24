@@ -54,16 +54,33 @@ def run_database(database: dict, args, env: dict) -> str:
     return f"{database['stem']}: " + ("done" if done.returncode == 0 else f"failed: {done.stderr.strip()[-300:]}")
 
 
+KINDS = {"right": "Right", "error": "Answered with an error", "no_answer": "No answer (step limit or full context)", "wrong": "Another wrong answer"}
+
+
+def kind_of(record: dict) -> str:
+    """What became of one question: right, the model gave a tool error as its answer, no answer (the step limit, or a run that grew past the
+    server's context), or another wrong answer."""
+    if record["passed"]:
+        return "right"
+    if record.get("finish") != "answered":
+        return "no_answer"
+    answer = record.get("answer")
+    return "error" if isinstance(answer, (dict, str)) and "error" in json.dumps(answer).lower() else "wrong"
+
+
 def summary(found: list[dict], model: str) -> dict:
-    """Right answers per database from the saved runs, and every question's result by id."""
-    rows, passed = [], {}
+    """Right answers per database from the saved runs, what became of the other questions, and every question's result by id."""
+    rows, passed, kinds, calls = [], {}, dict.fromkeys(KINDS, 0), 0
     for database in found:
         runs = saved_runs(model, WAY, TAG, database["stem"])
         if runs:
             passed |= {r["id"]: bool(r["passed"]) for r in runs[0]}
+            for r in runs[0]:
+                kinds[kind_of(r)] += 1
+                calls += r.get("tool_calls", 0)
             rows.append({"database": database["stem"], "questions": database["tasks"], "right": sum(r["passed"] for r in runs[0]),
                          "no_answer": sum(r.get("finish") != "answered" for r in runs[0]), "tool_calls": sum(r.get("tool_calls", 0) for r in runs[0])})
-    return {"model": model, "tag": TAG, "databases": rows, "passed": passed}
+    return {"model": model, "tag": TAG, "kinds": kinds, "calls_per_question": round(calls / max(len(passed), 1), 1), "databases": rows, "passed": passed}
 
 
 def report(record: dict, total_databases: int) -> str:
@@ -71,7 +88,8 @@ def report(record: dict, total_databases: int) -> str:
     questions, right = sum(r["questions"] for r in rows), sum(r["right"] for r in rows)
     lines = [f"# Spider dev with the SQL tool: `{record['model']}`", "",
              f"{len(rows)} of {total_databases} databases run, {questions} questions, one run. Right: {right} ({right / max(questions, 1):.0%}). "
-             "An answer is right when it gives the same rows as the gold query (out/downstream/spider/tasks.md).", "",
+             "An answer is right when it gives the same rows as the gold query (out/downstream/spider/tasks.md). "
+             + ", ".join(f"{KINDS[k].lower()}: {n}" for k, n in record["kinds"].items()) + f"; {record['calls_per_question']} tool calls per question.", "",
              "| Database | Questions | Right | No answer | Tool calls |", "| --- | --- | --- | --- | --- |",
              *(f"| `{r['database']}` | {r['questions']} | {r['right']} ({r['right'] / r['questions']:.0%}) | {r['no_answer']} | {r['tool_calls']} |" for r in rows), ""]
     return "\n".join(lines)

@@ -116,3 +116,12 @@ def test_each_trained_student_is_compared_with_its_untrained_base():
     assert "against_base" not in table["qwen3-8b"]["spider"] and "humaneval" not in trained
     text = report.report(list(table.values()))
     assert "| `qwen3-4b-rec4-f2` | 3 of 3 (100%) | 0 / 2, p = 0.5 | not run |  |" in text and "| `qwen3-4b` | rec4 | 1 |" in text
+
+
+def test_each_spider_question_ends_in_one_kind():
+    assert spider.kind_of({"passed": True, "finish": "answered", "answer": [[1]]}) == "right"
+    assert spider.kind_of({"passed": False, "finish": "max_steps", "answer": None}) == "no_answer"
+    assert spider.kind_of({"passed": False, "finish": "answered", "answer": {"error": "no such table: car"}}) == "error"
+    assert spider.kind_of({"passed": False, "finish": "answered", "answer": [[2]]}) == "wrong"
+    text = "\n".join(report.spider_kinds({"m": {"kinds": {"right": 1, "error": 2, "no_answer": 3, "wrong": 4}, "calls_per_question": 7.5}}))
+    assert "| `m` | 1 | 2 | 3 | 4 | 7.5 |" in text
