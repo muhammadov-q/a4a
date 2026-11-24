@@ -51,6 +51,13 @@ COMMANDS: dict[str, dict[str, tuple[str, str]]] = {
         "db-benchmark": ("a4a.databases.benchmark", "per database: score a model on its questions without a tool and with one SQL tool"),
         "db-variant": ("a4a.databases.variant", "a copy of each database with part of its rows removed, and the questions with their answers computed again"),
     },
+    "Public benchmarks: does training help or hurt elsewhere?": {
+        "public-fetch": ("a4a.downstream.fetch", "download the approved public benchmarks (Spider, HumanEval) and check each file against its SHA-256"),
+        "spider-tasks": ("a4a.downstream.spider_tasks", "Spider's dev questions with answers from the gold query, run twice in the sandbox"),
+        "spider-benchmark": ("a4a.downstream.spider", "score a model on Spider's dev questions with the SQL tool"),
+        "humaneval-benchmark": ("a4a.downstream.humaneval", "score a model on HumanEval; its code runs in the sandbox"),
+        "public-report": ("a4a.downstream.report", "the public benchmarks side by side, each trained student against its untrained base"),
+    },
     "Training: a small model on the verified tasks": {
         "train-data": ("a4a.training.data", "training examples from the teachers' passed runs with one tool; test sources held out"),
         "train-compare": ("a4a.training.compare", "the student before and after training, on the questions of the test sources"),
@@ -71,9 +78,10 @@ MODULES = {name: module for group in COMMANDS.values() for name, (module, _) in 
 
 def usage() -> str:
     lines = ["usage: a4a <command> [arguments]", "       a4a <command> --help", ""]
+    width = max(map(len, MODULES))
     for title, group in COMMANDS.items():
         lines.append(f"{title}:")
-        lines += [f"  {name:<18} {text}" for name, (_, text) in group.items()]
+        lines += [f"  {name:<{width}} {text}" for name, (_, text) in group.items()]
         lines.append("")
     return "\n".join(lines)
 

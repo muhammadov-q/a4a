@@ -33,6 +33,7 @@ Author: Kobiljon Muhammadov. Supervisor: Roman Macháček.
 - [Databases as a source](#databases-as-a-source)
 - [Memory or skill?](#memory-or-skill)
 - [Training a small model on the verified tasks](#training-a-small-model-on-the-verified-tasks)
+- [Public benchmarks: does training help or hurt elsewhere?](#public-benchmarks-does-training-help-or-hurt-elsewhere)
 - [Usability: can a small model call the tools](#usability-can-a-small-model-call-the-tools)
 - [Stage 2: chains and synthetic traces with ToolGym](#stage-2-chains-and-synthetic-traces-with-toolgym)
 - [Stage 3: exercises, traces and repetition](#stage-3-exercises-traces-and-repetition)
@@ -715,6 +716,23 @@ From 147 failed runs of Qwen3-1.7B the teacher gets 52 right (35%), from 112 of 
 
 Reports: `out/training/sft1/compare-qwen3-1.7b-sft1-folds.md` (the first table), one per fold in `out/training/<name>/`, `out/training/sft2/compare-qwen3-1.7b-sft2.md`, `out/training/sft1/compare-qwen3-1.7b-sft1-norepeat.md`, `out/training/sft1/compare-qwen3-4b-sft1-folds.md`, `out/training/recovery-<tag>.md` and `out/training/rec17/` and `out/training/rec4/` (against the untrained model and against `sft1`); the data, the splits and the training logs are in `out/training/`. Limits: one training run per fold and model; the teachers' columns come from their benchmark runs on the same questions. A SQL question needs one short query in a language the model knows; a library question needs the right part of an API the model does not know.
 
+## Public benchmarks: does training help or hurt elsewhere?
+
+```sh
+uv run a4a public-fetch                    # the approved benchmarks; each file must match its SHA-256
+uv run a4a spider-tasks                    # Spider's dev questions, answers from the gold query in the sandbox
+uv run a4a spider-benchmark --model qwen3-4b-rec4 --base-url <url>
+uv run a4a humaneval-benchmark --model qwen3-4b-rec4 --base-url <url>
+uv run a4a public-report                   # every model side by side; each trained student against its untrained base
+```
+
+Our own test questions come from the same pipeline as the training data. Two public benchmarks, made by others and never seen by the pipeline, show whether training on the verified tasks carries over, and above all whether it makes a model worse at related work. The list a person approved is `out/downstream/benchmarks.json`, with a fixed address, the license and a SHA-256 for every file.
+
+- **Spider** (dev set; https://yale-lily.github.io/spider, CC BY-SA 4.0): questions in English over 20 SQLite databases, each with a gold query. Only the dev questions and their databases are taken out of the zip, and a database file is opened only in the sandbox. The gold query is run twice there; a question is kept when both runs give the same plain rows, at most 20 (`out/downstream/spider/tasks.md`): **964 of 1,034**. Not kept: 38 with more than 20 rows, 30 whose result is too long for the worker, 2 with text that is not UTF-8. The model answers with the same `run_sql` tool, instruction and harness as `a4a db-benchmark`, and gives a JSON value. It is right when the value gives the same rows as the gold query: in order if the query orders its result, with the columns in any order, numbers to 4 decimals. This is close to Spider's execution match, **not its official metric**, which runs the model's query. The files in `out/downstream/spider/` are under CC BY-SA 4.0, like Spider.
+- **HumanEval** (https://github.com/openai/human-eval, MIT, commit `b9453e8`): 164 Python functions to write from their signature and docstring. No tools; the model is asked for the whole function, and the program (the prompt's imports and helpers, the model's function, HumanEval's tests) runs in a sandbox with no network, no home folder and 10 seconds; pass@1 from one answer at temperature 0. HumanEval's own solutions pass 164 of 164 in this harness, as a whole function and as a body.
+
+One run per model (temperature 0, thinking off); each trained student is compared with its untrained base question by question, with the exact sign test. Every fold's student is scored on the whole benchmark, since no fold saw any of it.
+
 ## Usability: can a small model call the tools
 
 A tool that agrees with the library is still of no use if the model can't pick it or call it. `a4a usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
@@ -918,6 +936,12 @@ src/a4a/
 │   ├── benchmark.py         db-benchmark       per database: score a model without a tool and with one SQL tool
 │   ├── variant.py           db-variant         a copy of each database with part of its rows removed; the same questions, new answers
 │   └── sql_tool.py                             the SQL tool: an MCP server with `run_sql`, read-only, inside the sandbox
+├── downstream/              public benchmarks that the pipeline did not make
+│   ├── fetch.py             public-fetch       download the approved benchmarks; keep a file only if its SHA-256 matches; take Spider's dev set out of its zip
+│   ├── spider_tasks.py      spider-tasks       Spider's dev questions, with answers from the gold query run twice in the sandbox
+│   ├── spider.py            spider-benchmark   score a model on Spider's dev questions with the SQL tool
+│   ├── humaneval.py         humaneval-benchmark score a model on HumanEval; its code runs in the sandbox
+│   └── report.py            public-report      every model side by side; each trained student against its untrained base
 └── toolgym/                 everything that talks to ToolGym; this repo contains no ToolGym code
     ├── type_inference.py    toolgym-types      types for a generated tool set, checked by running the tools
     ├── catalog_export.py    toolgym-export     the hand-made tools as a ToolGym catalog server
@@ -930,7 +954,7 @@ src/a4a/
 
 | Path | What is there |
 | --- | --- |
-| `tests/` | 181 tests. `helpers.py` holds the scripted LLM they share. |
+| `tests/` | 243 tests. `helpers.py` holds the scripted LLM they share. |
 | `toolsets/pypa_packaging/` | The reference tool set (called "hand-made"), written in a chat session with an LLM before the pipeline existed: 21 tools over pypa/packaging (`tools.py`), a coarser cut (`coarse_tools.py`), the MCP server (`server.py`, stdio or `--http PORT`; `--level function\|feature\|workflow\|all`), and its ToolGym types. These files stay flat so that they can be handed to other harnesses as they are. |
 | `toolsets/generated/` | Generated tool sets, one folder per run and one file per tool, each with `server.py`, `run_server.sh` and `manifest.json`. Not reviewed by a person. |
 | `out/` | Results: `corpus/` (candidate repositories for the many-repo experiments), `baseline/` (ToolGym's catalog today), `packaging/` (API, exercises, tool check), `packaging_toolgym/` (ToolGym's view of our tools), `usage/` (usage scans), `runs/` (model runs), `traces/` (full traces and their analysis), `generated/` (reports and LLM logs of generated tool sets), `toolgym_exercises/` (ToolGym tasks as exercises), `toolgym_runs/` (summaries of ToolGym pipeline runs). |
