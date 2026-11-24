@@ -58,7 +58,7 @@ def _cell(value) -> tuple:
 
 
 def _readings(answer) -> list[list]:
-    """The ways an answer can be read as rows: one value, one column, one row, a list of rows, or rows as objects."""
+    """The ways an answer can be read as rows: one value, one column, one row, a list of rows, rows as objects, or a column wrapped in one more list."""
     if answer is None:
         return [[[None]], []]
     if isinstance(answer, dict):
@@ -72,6 +72,8 @@ def _readings(answer) -> list[list]:
         readings.append([list(row.values()) for row in answer])
     if answer and not any(isinstance(row, (list, dict)) for row in answer):
         readings += [[[value] for value in answer], [answer]]
+    if len(answer) == 1 and isinstance(answer[0], list) and not any(isinstance(value, (list, dict)) for value in answer[0]):
+        readings.append([[value] for value in answer[0]])  # a list of values in one more list: [["a", "b"]] for one column
     return readings
 
 

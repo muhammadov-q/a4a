@@ -16,6 +16,7 @@ from a4a.training import data
 def test_an_answer_gives_the_rows_of_the_query_in_any_reasonable_shape():
     assert rows_match(6, [[6]], False) and rows_match("6", [[6]], False) and rows_match(6.0, [[6]], False)
     assert rows_match(["a", "b"], [["b"], ["a"]], False) and not rows_match(["a", "b"], [["b"], ["a"]], True)
+    assert rows_match([["a", "b"]], [["b"], ["a"]], False) and rows_match([["a", "b"]], [["a", "b"]], False)  # one column wrapped once more, or one row
     assert rows_match(["Bern", 3], [["Bern", 3]], False)  # one row as a flat list
     assert rows_match([[3, "Bern"], [1, "Basel"]], [["Bern", 3], ["Basel", 1]], True)  # columns in another order
     assert rows_match([{"city": "Bern", "n": 3}], [["Bern", 3]], False)  # rows as objects
