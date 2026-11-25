@@ -52,8 +52,8 @@ def database_path(candidate: dict, cache: Path = CACHE) -> Path:
     return cache / candidate["name"] / candidate["database"]
 
 
-def download(url: str, target: Path) -> None:
-    """The bytes at a fixed address, into a file. Stops at MAX_BYTES."""
+def download(url: str, target: Path, max_bytes: int = MAX_BYTES) -> None:
+    """The bytes at a fixed address, into a file. Stops at `max_bytes`."""
     target.parent.mkdir(parents=True, exist_ok=True)
     partial = target.with_name(target.name + ".part")
     with httpx.stream("GET", url, headers={"User-Agent": "a4a-corpus"}, timeout=120, follow_redirects=True) as reply:
@@ -62,9 +62,9 @@ def download(url: str, target: Path) -> None:
         with partial.open("wb") as file:
             for block in reply.iter_bytes():
                 size += len(block)
-                if size > MAX_BYTES:
+                if size > max_bytes:
                     partial.unlink()
-                    raise RuntimeError(f"more than {MAX_BYTES:,} bytes")
+                    raise RuntimeError(f"more than {max_bytes:,} bytes")
                 file.write(block)
     partial.replace(target)
 

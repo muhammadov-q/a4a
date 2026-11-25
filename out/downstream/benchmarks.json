@@ -1,0 +1,35 @@
+{
+ "approved": "2026-11-24",
+ "benchmarks": [
+  {
+   "name": "spider",
+   "what": "Spider 1.0: questions in English over SQLite databases, each with a gold SQL query; the dev set is used",
+   "home": "https://yale-lily.github.io/spider",
+   "paper": "https://arxiv.org/abs/1809.08887",
+   "license": "CC BY-SA 4.0 (linked from the home page); files made from it in out/downstream/spider/ are under the same license",
+   "version": "spider_data.zip, the Google Drive file linked from the home page, fetched on 2026-11-24",
+   "files": [
+    {
+     "name": "spider_data.zip",
+     "url": "https://drive.usercontent.google.com/download?id=1403EGqzIDoHMdQF4c9Bkyl7dZLZ5Wt6J&export=download&confirm=t",
+     "sha256": "00636695dabed6b5f4b8328a16b13e069a2f16591d5efcce57660669c85b121b"
+    }
+   ]
+  },
+  {
+   "name": "humaneval",
+   "what": "HumanEval: 164 Python functions to write from their signature and docstring, each with tests",
+   "home": "https://github.com/openai/human-eval",
+   "paper": "https://arxiv.org/abs/2107.03374",
+   "license": "MIT",
+   "version": "commit b9453e8f1865df0a0057a1383767caa400acfbcf",
+   "files": [
+    {
+     "name": "HumanEval.jsonl.gz",
+     "url": "https://raw.githubusercontent.com/openai/human-eval/b9453e8f1865df0a0057a1383767caa400acfbcf/data/HumanEval.jsonl.gz",
+     "sha256": "b796127e635a67f93fb35c04f4cb03cf06f38c8072ee7cee8833d7bee06979ef"
+    }
+   ]
+  }
+ ]
+}
