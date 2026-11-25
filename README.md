@@ -733,6 +733,25 @@ Our own test questions come from the same pipeline as the training data. Two pub
 
 One run per model (temperature 0, thinking off); each trained student is compared with its untrained base question by question, with the exact sign test. Every fold's student is scored on the whole benchmark, since no fold saw any of it.
 
+Results (`out/downstream/report.md`; the trained students are those of the training section, three folds each):
+
+| Model | Spider dev (964) | HumanEval (164) |
+| --- | --- | --- |
+| Qwen3-1.7B | 13% | 70% |
+| Qwen3-1.7B, trained (`sft1`), three folds | 29%, 21%, 23% | 66%, 60%, 64% |
+| Qwen3-1.7B, trained + recovery (`rec17`) | 22%, 34%, 19% | 65%, 63%, 63% |
+| Qwen3-4B | 17% | 79% |
+| Qwen3-4B, trained (`sft1`) | 23%, 38%, 25% | 76%, 76%, 79% |
+| Qwen3-4B, trained + recovery (`rec4`) | 20%, 24%, 26% | 76%, 81%, 79% |
+| Qwen3-8B (a teacher, for scale) | 43% | 84% |
+
+- **Spider goes up for every trained student**, by 3 to 21 points: all 12 against their untrained base with p ≤ 0.023 (questions only the trained model gets right against only the base: from 79 against 52 up to 244 against 40). The training data of a fold hold two small databases with questions from 5 simple templates, and nothing from Spider. The students stay well below Qwen3-8B.
+- **HumanEval goes down a little for the 1.7B and not for the 4B.** The 1.7B is lower in all 6 trained models (60% to 66% against 70%), significant in one (p = 0.014); the 4B ends between 76% and 81% against 79%, none significant (p ≥ 0.3).
+- **What changes on Spider** (the last table of the report): the untrained models often guess a table name and give the tool's error as their answer (1.7B: 120 questions, 4B: 266). Training cuts this for the 1.7B (0 to 18) but makes the students loop: no answer, because of the step limit or a run that grew past the 16,384-token context, rises from 36 to 185 to 526 questions (4B: 127 to 103 to 610), with up to 26 tool calls per question (untrained: 3 and 8). Two of the three 4B students trained with recovery examples answer with the error more often (492 and 497).
+- **Absolute Spider scores are low** because nothing tells the model the tables: it has to find them with the tool, as in `a4a db-benchmark`, and the untrained models mostly guess. Published Spider scores put the schema into the question and run the model's query; these numbers are not comparable with them, only with each other.
+
+Limits: one run per model; Spider is scored by the rows of the answer, not by Spider's metric; HumanEval is one benchmark of plain Python, and the students were trained on tool use, not on writing functions. Files made from Spider (`out/downstream/spider/` and the runs `out/runs/*-spider1-*`) are under CC BY-SA 4.0, like Spider.
+
 ## Usability: can a small model call the tools
 
 A tool that agrees with the library is still of no use if the model can't pick it or call it. `a4a usability` measures this per tool, with two models: a larger one writes, a small one uses the tools.
